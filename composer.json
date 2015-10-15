@@ -1,0 +1,17 @@
+{
+    "name": "paynl/api",
+    "require": {
+        "guzzlehttp/guzzle": "* 6.0.2"
+    },
+    "authors": [
+        {
+            "name": "Andy Pieters",
+            "email": "andy@pay.nl"
+        }
+    ],
+    "autoload":{
+        "psr-4": {
+            "Paynl\\": "src/"
+        }
+    }
+}

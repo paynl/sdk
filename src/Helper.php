@@ -7,6 +7,7 @@ namespace Paynl;
 
 use Paynl\Config;
 use Paynl\Error;
+
 /**
  * Description of Helper
  *
@@ -32,6 +33,11 @@ class Helper
     public static function getIp()
     {
         return $_SERVER['REMOTE_ADDR'];
+    }
+
+    public static function redirect($url)
+    {
+        header('location: '.$url);
     }
 
     public static function getBrowserData()

@@ -36,16 +36,16 @@ class Transaction
         if(isset($options['returnUrl'])){
             $api->setFinishUrl($options['returnUrl']);
         }
-        if(isset($options['paymentMethod'])){
+        if(isset($options['paymentMethod']) && !empty($options['paymentMethod'])){
             $api->setPaymentOptionId($options['paymentMethod']);
         }
-        if(isset($options['bank'])){
+        if(isset($options['bank']) && !empty($options['bank'])){
             $api->setPaymentOptionSubId($options['bank']);
         }
 
         $result = $api->doRequest();
 
-        return new Result\Transaction($result);
+        return new Result\Start($result);
     }
     
     public static function get($transactionId){

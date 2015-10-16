@@ -10,6 +10,7 @@ use \Paynl\Api\Api;
 use \Paynl\Helper;
 use \Paynl\Config;
 use \Paynl\Error\Required as ErrorRequired;
+use Paynl\Error\Error as Error;
 /**
  * Description of Start
  *
@@ -64,14 +65,14 @@ class Start extends Api
      * @param int $price
      * @param int $quantity
      * @param int $vatPercentage
-     * @throws Pay_Exception
+     * @throws Error
      */
     public function addProduct($id, $description, $price, $quantity, $vatPercentage) {
         if (!is_numeric($price)) {
-            throw new Pay_Exception('Price moet numeriek zijn', 1);
+            throw new Error('Price moet numeriek zijn', 1);
         }
         if (!is_numeric($quantity)) {
-            throw new Pay_Exception('Quantity moet numeriek zijn', 1);
+            throw new Error('Quantity moet numeriek zijn', 1);
         }
 
         $quantity = $quantity * 1;
@@ -133,13 +134,13 @@ class Start extends Api
      * Set the amount(in cents) of the transaction
      *
      * @param int $amount
-     * @throws Pay_Exception
+     * @throws Error
      */
     public function setAmount($amount) {
         if (is_numeric($amount)) {
             $this->_amount = $amount;
         } else {
-            throw new Pay_Exception('Amount is niet numeriek', 1);
+            throw new Error('Amount is niet numeriek', 1);
         }
     }
 
@@ -147,7 +148,7 @@ class Start extends Api
         if (is_numeric($paymentOptionId)) {
             $this->_paymentOptionId = $paymentOptionId;
         } else {
-            throw new Pay_Exception('PaymentOptionId is niet numeriek', 1);
+            throw new Error('PaymentOptionId is niet numeriek', 1);
         }
     }
 
@@ -155,7 +156,7 @@ class Start extends Api
         if (is_numeric($paymentOptionSubId)) {
             $this->_paymentOptionSubId = $paymentOptionSubId;
         } else {
-            throw new Pay_Exception('PaymentOptionSubId is niet numeriek', 1);
+            throw new Error('PaymentOptionSubId is niet numeriek', 1);
         }
     }
 

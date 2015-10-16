@@ -15,4 +15,5 @@ class Transaction extends Result
     public function isPaid(){
         return $this->data['paymentDetails']['stateName'] == 'PAID';
     }
+    
 }

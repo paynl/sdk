@@ -1,5 +1,5 @@
 {
-    "name": "paynl/api",
+    "name": "paynl/sdk",
     "require": {
         "php-curl-class/php-curl-class": "^4.8"
     },

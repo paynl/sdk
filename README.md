@@ -27,9 +27,7 @@ Also the php curl extension needs to be installed.
 
 ### Quick start and examples
 
-**Set the configuration**
-
-
+Set the configuration
 ```php
 require __DIR__ . '/vendor/autoload.php';
 
@@ -37,10 +35,8 @@ require __DIR__ . '/vendor/autoload.php';
 \Paynl\Config::setServiceId('SL-3490-4320');
 ```
 
-**Get available payment methods**
-
+Get available payment methods
 ```php
-
 require __DIR__ . '/vendor/autoload.php';
 
 \Paynl\Config::setApiToken('e41f83b246b706291ea9ad798ccfd9f0fee5e0ab');
@@ -48,13 +44,10 @@ require __DIR__ . '/vendor/autoload.php';
 
 $paymentMethods = \Paynl\Paymentmethods::getList();
 var_dump($paymentMethods);
-
 ```
 
-**Start a transaction**
-
+Start a transaction
 ```php
-
 require __DIR__ . '/vendor/autoload.php';
 
 \Paynl\Config::setApiToken('e41f83b246b706291ea9ad798ccfd9f0fee5e0ab');
@@ -122,13 +115,10 @@ $transactionId = $result->getTransactionId();
 
 // Redirect the customer to this url to complete the payment
 $redirect = $result->getRedirectUrl();
-
 ```
 
-**On the return page, redirect the user to the thank you page or back to checkout**
-
+On the return page, redirect the user to the thank you page or back to checkout
 ```php
-
 require __DIR__ . '/vendor/autoload.php';
 
 \Paynl\Config::setApiToken('e41f83b246b706291ea9ad798ccfd9f0fee5e0ab');
@@ -144,14 +134,10 @@ if( $transaction->isPaid() || $transaction->isPending()
     // redirect back to checkout
    
 }
-
-
 ```
 
-**On the exchange script, process the order**
-
+On the exchange script, process the order
 ```php
-
 require __DIR__ . '/vendor/autoload.php';
 
 \Paynl\Config::setApiToken('e41f83b246b706291ea9ad798ccfd9f0fee5e0ab');

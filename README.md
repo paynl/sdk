@@ -153,7 +153,8 @@ if($transaction->isPaid()){
 // always start your response with TRUE|
 echo "TRUE| ";
 
-// Optionally you can send a message after TRUE|, you can view this messages in the logs. https://admin.pay.nl/logs/payment_state
+// Optionally you can send a message after TRUE|, you can view this messages in the logs.
+// https://admin.pay.nl/logs/payment_state
 echo $transaction->isPaid()?'Paid':'Not paid';
 
 

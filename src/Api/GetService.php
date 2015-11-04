@@ -28,6 +28,8 @@ use Paynl\Config;
  */
 class GetService extends Api {
 
+    private static $cache = array();
+
     protected function getData() {
         Helper::requireServiceId();
 
@@ -37,7 +39,13 @@ class GetService extends Api {
     }
     
     public function doRequest($endpoint = null) {
-        return parent::doRequest('transaction/getServicePaymentOptions');
+        if(isset(self::$cache[Config::getServiceId()])){
+            return self::$cache[Config::getServiceId()];
+        } else { 
+            $result = parent::doRequest('transaction/getService');
+            self::$cache[Config::getServiceId()] = $result;
+            return $result;
+        }
     }
 
 

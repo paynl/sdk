@@ -30,14 +30,37 @@ class Paymentmethods
 
     private static function reorderOutput($input)
     {
-        $output         = array();
-        $paymentMethods = $input['paymentProfiles'];
-        foreach ($paymentMethods as $paymentMethod) {
-            unset($paymentMethod['visibleName']);
-            $paymentMethod['countries'] = array_keys($paymentMethod['countries']);
-            $output[]                   = $paymentMethod;
+        $paymentMethods = array();
+
+        foreach ($input['countryOptionList'] as $country) {
+            foreach ($country['paymentOptionList'] as $paymentOption) {
+                if (isset($paymentMethods[$paymentOption['id']])) {
+                    $paymentMethods[$paymentOption['id']]['countries'][] = $country['id'];
+                } else {
+                    $banks = array();
+                    if (!empty($paymentOption['paymentOptionSubList'])) {
+                        foreach ($paymentOption['paymentOptionSubList'] as $optionSub) {
+                            $bank                = array();
+                            $bank['id']          = $optionSub['id'];
+                            $bank['name']        = $optionSub['name'];
+                            $bank['visibleName'] = $optionSub['visibleName'];
+                            $banks[]             = $bank;
+                        }
+                    }
+
+                    $paymentMethod                        = array(
+                        'id' => $paymentOption['id'],
+                        'name' => $paymentOption['name'],
+                        'visibleName' => $paymentOption['visibleName'],
+                        'countries' => array($country['id']),
+                        'banks' => $banks,
+                    );
+                    $paymentMethods[$paymentOption['id']] = $paymentMethod;
+                }
+            }
         }
-        return $output;
+
+        return $paymentMethods;
     }
 
     private static function filterCountry($paymentMethods, $country)
@@ -68,22 +91,11 @@ class Paymentmethods
 
     public static function getBanks($paymentMethodId = 10)
     {
-        $api    = new Api\GetService();
-        $result = $api->doRequest();
-        $banks  = array();
-        foreach ($result['countryOptionList'] as $methodsForCountry) {
-            if (!empty($methodsForCountry['paymentOptionList'][$paymentMethodId])) {
-                foreach ($methodsForCountry['paymentOptionList'][$paymentMethodId]['paymentOptionSubList'] as $bank) {
-                    if ($bank['state'] == 1) {
-                        $banks[] = [
-                            'id' => $bank['id'],
-                            'name' => $bank['name'],
-                        ];
-                    }
-                }
-                break;
-            }
+        $paymentMethods = self::getList();
+        if(isset($paymentMethods[$paymentMethodId])){
+            return $paymentMethods[$paymentMethodId]['banks'];
         }
-        return $banks;
+        return array();
+        
     }
 }

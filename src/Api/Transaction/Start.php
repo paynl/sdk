@@ -1,15 +1,28 @@
 <?php
 /*
- * Copyright (C) 2015 Pay.nl
+ * Copyright (C) 2015 Andy Pieters <andy@pay.nl>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 namespace Paynl\Api\Transaction;
 
 
-use \Paynl\Api\Api;
-use \Paynl\Helper;
-use \Paynl\Config;
-use \Paynl\Error\Required as ErrorRequired;
+use Paynl\Api\Api;
+use Paynl\Helper;
+use Paynl\Config;
+use Paynl\Error\Required as ErrorRequired;
 use Paynl\Error\Error as Error;
 /**
  * Description of Start
@@ -29,6 +42,8 @@ class Start extends Api
     private $_extra1;
     private $_extra2;
     private $_extra3;
+
+    private $_testMode = false;
 
     private $_promotorId;
     private $_info;
@@ -178,6 +193,9 @@ class Start extends Api
         $this->_exchangeUrl = $exchangeUrl;
     }
 
+    public function setTestMode($testmode){
+        $this->_testMode = (bool)$testmode;
+    }
 
 
     public function setExtra1($extra1) {
@@ -208,6 +226,12 @@ class Start extends Api
        
         $data['serviceId'] = Config::getServiceId();
 
+        if($this->_testMode === true){
+            $data['testMode'] = '1';
+        } else {
+            $data['testMode'] = '0';
+        }
+
         if (empty($this->_amount)) {
             throw new \ErrorRequired('Amount is niet geset', 1);
         } else {
@@ -235,10 +259,10 @@ class Start extends Api
 
         //ip en browserdata setten browserdata set ik met dummydata
         $data['ipAddress'] = Helper::getIp();
-        $data['browserData'] = Helper::getBrowserData();
+//        $data['browserData'] = Helper::getBrowserData();
         if (!empty($this->_products)) {
-            $data['saleData']['invoiceDate'] = date('d-m-Y');
-            $data['saleData']['deliveryDate'] = date('d-m-Y', strtotime('+1 day'));
+//            $data['saleData']['invoiceDate'] = date('d-m-Y');
+//            $data['saleData']['deliveryDate'] = date('d-m-Y', strtotime('+1 day'));
             $data['saleData']['orderData'] = $this->_products;
         }
 

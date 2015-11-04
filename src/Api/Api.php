@@ -1,5 +1,4 @@
 <?php
-
 /*
  * Copyright (C) 2015 Andy Pieters <andy@andypieters.nl>
  *
@@ -19,40 +18,50 @@
 
 namespace Paynl\Api;
 
-use GuzzleHttp\Client;
+use Curl\Curl;
 use Paynl\Config;
 use Paynl\Error;
+use Paynl\Helper;
+
 /**
  * Description of Api
  *
  * @author Andy Pieters <andy@andypieters.nl>
  */
-class Api {
-
+class Api
+{
     protected $data = array();
 
-    protected function getData() {
-        if (empty(Config::getApiToken())) {
-            throw new Error\Required\ApiToken();
-        }
+    protected function getData()
+    {
+        Helper::requireApiToken();
+        
         $this->data['token'] = Config::getApiToken();
         return $this->data;
     }
 
-    public function doRequest($endpoint) {
+    protected function processResult($result)
+    {
+        $output = Helper::objectToArray($result);
+
+        if ($output['request']['result'] != 1) {
+            throw new Error\Api($output['request']['errorId'].' - '.$output['request']['errorMessage']);
+        }
+        return $output;
+    }
+
+    public function doRequest($endpoint)
+    {
         $data = $this->getData();
 
         $uri = Config::getApiUrl($endpoint);
-        $client = new Client(['verify'=>false]);
 
-        $response = $client->post($uri, ['form_params' => $data]);
-        
-        $result = json_decode((string)$response->getBody(), true);
-     
-        if($result['request']['result'] != 1){
-            throw new Error\Api($result['request']['errorId'].' - '.$result['request']['errorMessage']);
-        }
-        return $result;
+        $curl = new Curl();
+
+        $result = $curl->post($uri, $data);
+
+        $output = self::processResult($result);
+
+        return $output;
     }
-
 }

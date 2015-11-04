@@ -1,5 +1,5 @@
 <?php
-/*
+/* 
  * Copyright (C) 2015 Andy Pieters <andy@pay.nl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,31 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Paynl\Api\Transaction;
+require_once '../vendor/autoload.php';
 
+\Paynl\Config::setApiToken('e41f83b246b706291ea9ad798ccfd9f0fee5e0ab');
 
-use Paynl\Api\Api;
-use Paynl\Error;
-/**
- * Description of Info
- *
- * @author Andy Pieters <andy@pay.nl>
- */
-class Info extends Api
-{
-    private $transactionId;
+$transaction = \Paynl\Transaction::getForExchange();
 
-    protected function getData() {
-        if(empty($this->transactionId)){
-            throw new Error\Required('TransactionId is niet geset');
-        }
-        $this->data['transactionId'] = $this->transactionId;
-        return parent::getData();
-    }
-    public function setTransactionId($transactionId){
-        $this->transactionId = $transactionId;
-    }
-    public function doRequest($endpoint = null) {
-        return parent::doRequest('transaction/info');
-    }
+if($transaction->isPaid()){
+    // process the payment
+} elseif($transaction->isCanceled()){
+    // payment canceled, restock items
 }
+// always start your response with TRUE|
+echo "TRUE| ";
+// Optionally you can send a message after TRUE|, you can view this messages in the logs. https://admin.pay.nl/logs/payment_state
+echo $transaction->isPaid()?'Paid':'Not paid';

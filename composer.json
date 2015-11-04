@@ -1,7 +1,7 @@
 {
     "name": "paynl/api",
     "require": {
-        "guzzlehttp/guzzle": "* 6.0.2"
+        "php-curl-class/php-curl-class": "^4.8"
     },
     "authors": [
         {

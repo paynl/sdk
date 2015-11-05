@@ -126,8 +126,7 @@ require __DIR__ . '/vendor/autoload.php';
 $transaction = \Paynl\Transaction::getForReturn();
 
 //manual transfer transactions are always pending when the user is returned
-if( $transaction->isPaid() || $transaction->isPending() 
-    ){
+if( $transaction->isPaid() || $transaction->isPending()){
     // redirect to thank you page
     
 } elseif($transaction->isCanceled()) {

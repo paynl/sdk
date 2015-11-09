@@ -31,7 +31,7 @@ Set the configuration
 ```php
 require __DIR__ . '/vendor/autoload.php';
 
-// Replace apitoken and serviceId With your own.
+// Replace apitoken and serviceId with your own.
 \Paynl\Config::setApiToken('e41f83b246b706291ea9ad798ccfd9f0fee5e0ab');
 \Paynl\Config::setServiceId('SL-3490-4320');
 ```

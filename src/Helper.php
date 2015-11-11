@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 namespace Paynl;
 
 use Paynl\Config;
@@ -48,7 +47,26 @@ class Helper
 
     public static function getIp()
     {
-        return $_SERVER['REMOTE_ADDR'];
+        //Just get the headers if we can or else use the SERVER global
+        if (function_exists('apache_request_headers')) {
+            $headers = apache_request_headers();
+        } else {
+            $headers = $_SERVER;
+        }
+        //Get the forwarded IP if it exists
+        if (array_key_exists('X-Forwarded-For', $headers)) {
+            $the_ip = $headers['X-Forwarded-For'];
+        } elseif (array_key_exists('HTTP_X_FORWARDED_FOR', $headers)) {
+            $the_ip = $headers['HTTP_X_FORWARDED_FOR'];
+        } else {
+            $the_ip = $_SERVER['REMOTE_ADDR'];
+        }
+        $arrIp  = explode(',', $the_ip);
+        $the_ip = $arrIp[0];
+
+        $the_ip = filter_var(trim($the_ip), FILTER_VALIDATE_IP);
+
+        return $the_ip;
     }
 
     public static function redirect($url)
@@ -56,28 +74,6 @@ class Helper
         header('location: '.$url);
     }
 
-    public static function getBrowserData()
-    {
-        if (function_exists('get_browser')) {
-            return get_browser();
-        } else {
-            return array(
-                'browser_name_regex' => '^mozilla/5\.0 (windows; .; windows nt 5\.1; .*rv:.*) gecko/.* firefox/0\.9.*$',
-                'browser_name_pattern' => 'Mozilla/5.0 (Windows; ?; Windows NT 5.1; *rv:*) Gecko/* Firefox/0.9*',
-                'parent' => 'Firefox 0.9',
-                'platform' => 'WinXP',
-                'browser' => 'Firefox',
-                'version' => 0.9,
-                'majorver' => 0,
-                'minorver' => 9,
-                'cssversion' => 2,
-                'frames' => 1,
-                'iframes' => 1,
-                'tables' => 1,
-                'cookies' => 1,
-            );
-        }
-    }
 
     private static function nearest($number, $numbers)
     {

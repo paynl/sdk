@@ -259,7 +259,7 @@ class Start extends Api
 
         //ip en browserdata setten browserdata set ik met dummydata
         $data['ipAddress'] = Helper::getIp();
-//        $data['browserData'] = Helper::getBrowserData();
+
         if (!empty($this->_products)) {
 //            $data['saleData']['invoiceDate'] = date('d-m-Y');
 //            $data['saleData']['deliveryDate'] = date('d-m-Y', strtotime('+1 day'));

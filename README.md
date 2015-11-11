@@ -31,6 +31,7 @@ Set the configuration
 ```php
 require __DIR__ . '/vendor/autoload.php';
 
+// Replace apitoken and serviceId with your own.
 \Paynl\Config::setApiToken('e41f83b246b706291ea9ad798ccfd9f0fee5e0ab');
 \Paynl\Config::setServiceId('SL-3490-4320');
 ```
@@ -126,8 +127,7 @@ require __DIR__ . '/vendor/autoload.php';
 $transaction = \Paynl\Transaction::getForReturn();
 
 //manual transfer transactions are always pending when the user is returned
-if( $transaction->isPaid() || $transaction->isPending() 
-    ){
+if( $transaction->isPaid() || $transaction->isPending()){
     // redirect to thank you page
     
 } elseif($transaction->isCanceled()) {
@@ -153,7 +153,7 @@ if($transaction->isPaid()){
 // always start your response with TRUE|
 echo "TRUE| ";
 
-// Optionally you can send a message after TRUE|, you can view this messages in the logs.
+// Optionally you can send a message after TRUE|, you can view these messages in the logs.
 // https://admin.pay.nl/logs/payment_state
 echo $transaction->isPaid()?'Paid':'Not paid';
 

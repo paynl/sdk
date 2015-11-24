@@ -1,5 +1,5 @@
 <?php
-/*
+/* 
  * Copyright (C) 2015 Andy Pieters <andy@pay.nl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,25 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Paynl\Result;
+require_once '../../vendor/autoload.php';
 
-/**
- * Description of Transaction
- *
- * @author Andy Pieters <andy@pay.nl>
- */
-class Transaction extends Result
-{
-    public function getId(){
-        return $this->data['transactionId'];
-    }
-    public function isPaid(){
-        return $this->data['paymentDetails']['stateName'] == 'PAID';
-    }
-    public function isPending(){
-        return $this->data['paymentDetails']['stateName'] == 'PENDING';
-    }
-    public function isCanceled(){
-        return $this->data['paymentDetails']['state'] < 0;
-    }
+\Paynl\Config::setApiToken('e41f83b246b706291ea9ad798ccfd9f0fee5e0ab');
+
+$transactionId=$_GET['transactionId'];
+try{
+    $result = \Paynl\Transaction::refund($transactionId, 5);
+} catch(\Paynl\Error\Api $e){
+    echo $e->getMessage();
 }

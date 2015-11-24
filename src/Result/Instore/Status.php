@@ -16,10 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once '../vendor/autoload.php';
+namespace Paynl\Result\Instore;
 
-\Paynl\Config::setApiToken('e41f83b246b706291ea9ad798ccfd9f0fee5e0ab');
-\Paynl\Config::setServiceId('SL-3490-4320');
+use Paynl\Result\Result;
 
-$paymentMethods = \Paynl\Paymentmethods::getList();
-var_dump($paymentMethods);
+/**
+ * Description of Status
+ *
+ * @author Andy Pieters <andy@pay.nl>
+ */
+class Status extends Result
+{
+    //put your code here
+}

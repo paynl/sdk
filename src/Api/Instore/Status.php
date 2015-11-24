@@ -1,5 +1,5 @@
 <?php
-/* 
+/*
  * Copyright (C) 2015 Andy Pieters <andy@pay.nl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,13 +16,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once '../vendor/autoload.php';
+namespace Paynl\Api\Instore;
 
-\Paynl\Config::setApiToken('e41f83b246b706291ea9ad798ccfd9f0fee5e0ab');
+use Paynl\Error;
+/**
+ * Description of Status
+ *
+ * @author Andy Pieters <andy@pay.nl>
+ */
+class Status extends Instore
+{   
+    private $hash;
 
-$transactionId=$_GET['transactionId'];
-try{
-    $result = \Paynl\Transaction::refund($transactionId, 5);
-} catch(\Paynl\Error\Api $e){
-    echo $e->getMessage();
+    protected function getData() {
+        if(empty($this->hash)){
+            throw new Error\Required('Hash is niet geset');
+        }
+        $this->data['hash'] = $this->hash;
+        return parent::getData();
+    }
+    public function setHash($hash){
+        $this->hash = $hash;
+    }
+    public function doRequest($endpoint = null, $version = null) {
+        return parent::doRequest('instore/status');
+    }
 }

@@ -233,7 +233,7 @@ class Start extends Api
         }
 
         if (empty($this->_amount)) {
-            throw new \ErrorRequired('Amount is niet geset', 1);
+            throw new ErrorRequired('Amount is niet geset', 1);
         } else {
             $data['amount'] = $this->_amount;
         }
@@ -302,7 +302,7 @@ class Start extends Api
 
         return parent::getData();
     }
-    public function doRequest($endpoint = null) {
+    public function doRequest($endpoint = null, $version = null) {
         return parent::doRequest('transaction/start');
     }
 }

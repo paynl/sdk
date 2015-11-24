@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once '../vendor/autoload.php';
+require_once '../../vendor/autoload.php';
 
 \Paynl\Config::setApiToken('e41f83b246b706291ea9ad798ccfd9f0fee5e0ab');
 \Paynl\Config::setServiceId('SL-3490-4320');
@@ -24,10 +24,10 @@ require_once '../vendor/autoload.php';
 $result = \Paynl\Transaction::start(array(
     // required
         'amount' => 10,
-        'returnUrl' => Paynl\Helper::getBaseUrl().'/return.php',
+        'returnUrl' => dirname(Paynl\Helper::getBaseUrl()).'/return.php',
 
     // optional
-        'exchangeUrl' => Paynl\Helper::getBaseUrl().'/exchange.php',
+        'exchangeUrl' => dirname(Paynl\Helper::getBaseUrl()).'/exchange.php',
         'paymentMethod' => 10,
         'bank' => 1,
         'description' => 'demo betaling',

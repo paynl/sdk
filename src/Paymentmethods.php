@@ -18,7 +18,7 @@
 
 namespace Paynl;
 
-use Paynl\Api;
+use Paynl\Api\Transaction as Api;
 
 /**
  * Description of Paymentmethods

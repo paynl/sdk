@@ -16,23 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace Paynl\Result\Transaction;
 
-namespace Paynl\Result;
+use Paynl\Result\Result;
 
 /**
- * Description of Start
+ * Description of Refund
  *
  * @author Andy Pieters <andy@pay.nl>
  */
-class Start extends Result
+class Refund extends Result
 {
-    public function getTransactionId(){
-        return $this->data['transaction']['transactionId'];
-    }
-    public function getRedirectUrl(){
-        return $this->data['transaction']['paymentURL'];
-    }
-    public function getPaymentReference(){
-        return $this->data['transaction']['paymentReference'];
-    }
+    //put your code here
 }

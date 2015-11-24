@@ -16,23 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once '../vendor/autoload.php';
-
+require_once '../../vendor/autoload.php';
 
 \Paynl\Config::setApiToken('e41f83b246b706291ea9ad798ccfd9f0fee5e0ab');
 
-$transaction = \Paynl\Transaction::getForReturn();
+$transactionId = $_GET['transactionId']; // The transactionId you get from transaction/start
+$terminalId = $_GET['terminalId']; // the terminalId you get from getAllTerminals
 
+try{
+    $result = \Paynl\Instore::payment(array(
+        'transactionId' => $transactionId,
+        'terminalId' => $terminalId
+    ));
 
-if( $transaction->isPaid() ||
-    $transaction->isPending() //manual transfer transactions are always pending when the user is returned
-    ){
-    // redirect to thank you page
-    echo "Thank you<br /><a href='transaction/start.php'>New payment<a/>";
-    if($transaction->isPaid()){
-        echo "<br /><a href='transaction/refund.php?transactionId=".$transaction->getId()."'>Refund</a>";
-    }
-} elseif($transaction->isCanceled()) {
-    // redirect back to checkout
-    echo "Payment canceled <br /><a href='transaction/start.php'>Try again<a/>";
+    header('location: '.$result->getRedirectUrl());
+} catch (Paynl\Error\Api $e){
+    echo 'Fout: '.$e->getMessage();
 }

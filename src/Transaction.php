@@ -18,7 +18,7 @@
 
 namespace Paynl;
 
-use Paynl\Result;
+use Paynl\Result\Transaction as Result;
 use Paynl\Helper;
 use Paynl\Api\Transaction as Api;
 /**
@@ -107,7 +107,6 @@ class Transaction
         }
 
         $result = $api->doRequest();
-
 
         return new Result\Start($result);
     }

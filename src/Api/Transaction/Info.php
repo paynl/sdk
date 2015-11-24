@@ -40,7 +40,7 @@ class Info extends Api
     public function setTransactionId($transactionId){
         $this->transactionId = $transactionId;
     }
-    public function doRequest($endpoint = null) {
+    public function doRequest($endpoint = null, $version = null) {
         return parent::doRequest('transaction/info');
     }
 }

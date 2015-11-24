@@ -1,5 +1,5 @@
 <?php
-/* 
+/*
  * Copyright (C) 2015 Andy Pieters <andy@pay.nl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,23 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once '../vendor/autoload.php';
+namespace Paynl\Api\Instore;
 
-
-\Paynl\Config::setApiToken('e41f83b246b706291ea9ad798ccfd9f0fee5e0ab');
-
-$transaction = \Paynl\Transaction::getForReturn();
-
-
-if( $transaction->isPaid() ||
-    $transaction->isPending() //manual transfer transactions are always pending when the user is returned
-    ){
-    // redirect to thank you page
-    echo "Thank you<br /><a href='transaction/start.php'>New payment<a/>";
-    if($transaction->isPaid()){
-        echo "<br /><a href='transaction/refund.php?transactionId=".$transaction->getId()."'>Refund</a>";
+/**
+ * Description of GetAllTerminals
+ *
+ * @author Andy Pieters <andy@pay.nl>
+ */
+class GetAllTerminals extends Instore
+{     
+    public function doRequest($endpoint = null, $version = null) {
+        return parent::doRequest('instore/getAllTerminals');
     }
-} elseif($transaction->isCanceled()) {
-    // redirect back to checkout
-    echo "Payment canceled <br /><a href='transaction/start.php'>Try again<a/>";
 }

@@ -60,6 +60,7 @@ $result = \Paynl\Transaction::start(array(
         'returnUrl' => Paynl\Helper::getBaseUrl().'/return.php',
 
     // optional
+    	'currency' => 'EUR',
         'exchangeUrl' => Paynl\Helper::getBaseUrl().'/exchange.php',
         'paymentMethod' => 10,
         'bank' => 1,

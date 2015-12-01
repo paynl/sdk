@@ -18,12 +18,12 @@
 
 namespace Paynl\Api\Transaction;
 
-
 use Paynl\Api\Api;
 use Paynl\Helper;
 use Paynl\Config;
 use Paynl\Error\Required as ErrorRequired;
 use Paynl\Error\Error as Error;
+
 /**
  * Description of Start
  *
@@ -35,42 +35,52 @@ class Start extends Api
     private $_paymentOptionId;
     private $_paymentOptionSubId;
     private $_finishUrl;
-
+    private $_currency;
     private $_exchangeUrl;
     private $_description;
     private $_enduser;
     private $_extra1;
     private $_extra2;
     private $_extra3;
-
     private $_testMode = false;
-
     private $_promotorId;
     private $_info;
     private $_tool;
     private $_object;
     private $_domainId;
     private $_transferData;
-
     private $_products = array();
 
-
-    public function setPromotorId($promotorId){
+    public function setPromotorId($promotorId)
+    {
         $this->_promotorId = $promotorId;
     }
-    public function setInfo($info){
+
+    public function setCurrency($currency)
+    {
+        $this->_currency = $currency;
+    }
+
+    public function setInfo($info)
+    {
         $this->_info = $info;
     }
-    public function setTool($tool){
+
+    public function setTool($tool)
+    {
         $this->_tool = $tool;
     }
-    public function setObject($object){
+
+    public function setObject($object)
+    {
         $this->_object = $object;
     }
 
-    public function setTransferData($transferData){
+    public function setTransferData($transferData)
+    {
         $this->_transferData = $transferData;
     }
+
     /**
      * Add a product to an order
      * Attention! This is purely an adminstrative option, the amount of the order is not modified.
@@ -82,7 +92,9 @@ class Start extends Api
      * @param int $vatPercentage
      * @throws Error
      */
-    public function addProduct($id, $description, $price, $quantity, $vatPercentage) {
+    public function addProduct($id, $description, $price, $quantity,
+                               $vatPercentage)
+    {
         if (!is_numeric($price)) {
             throw new Error('Price moet numeriek zijn', 1);
         }
@@ -95,7 +107,7 @@ class Start extends Api
         //description mag maar 45 chars lang zijn
         $description = substr($description, 0, 45);
 
-        $arrProduct = array(
+        $arrProduct        = array(
             'productId' => $id,
             'description' => $description,
             'price' => $price,
@@ -141,7 +153,8 @@ class Start extends Api
      * )
      * @param array $enduser
      */
-    public function setEnduser($enduser) {
+    public function setEnduser($enduser)
+    {
         $this->_enduser = $enduser;
     }
 
@@ -151,7 +164,8 @@ class Start extends Api
      * @param int $amount
      * @throws Error
      */
-    public function setAmount($amount) {
+    public function setAmount($amount)
+    {
         if (is_numeric($amount)) {
             $this->_amount = $amount;
         } else {
@@ -159,7 +173,8 @@ class Start extends Api
         }
     }
 
-    public function setPaymentOptionId($paymentOptionId) {
+    public function setPaymentOptionId($paymentOptionId)
+    {
         if (is_numeric($paymentOptionId)) {
             $this->_paymentOptionId = $paymentOptionId;
         } else {
@@ -167,7 +182,8 @@ class Start extends Api
         }
     }
 
-    public function setPaymentOptionSubId($paymentOptionSubId) {
+    public function setPaymentOptionSubId($paymentOptionSubId)
+    {
         if (is_numeric($paymentOptionSubId)) {
             $this->_paymentOptionSubId = $paymentOptionSubId;
         } else {
@@ -180,7 +196,8 @@ class Start extends Api
      *
      * @param string $finishUrl
      */
-    public function setFinishUrl($finishUrl) {
+    public function setFinishUrl($finishUrl)
+    {
         $this->_finishUrl = $finishUrl;
     }
 
@@ -189,26 +206,33 @@ class Start extends Api
      *
      * @param string $exchangeUrl
      */
-    public function setExchangeUrl($exchangeUrl) {
+    public function setExchangeUrl($exchangeUrl)
+    {
         $this->_exchangeUrl = $exchangeUrl;
     }
 
-    public function setTestMode($testmode){
-        $this->_testMode = (bool)$testmode;
+    public function setTestMode($testmode)
+    {
+        $this->_testMode = (bool) $testmode;
     }
 
-
-    public function setExtra1($extra1) {
+    public function setExtra1($extra1)
+    {
         $this->_extra1 = $extra1;
     }
-    public function setExtra2($extra2) {
+
+    public function setExtra2($extra2)
+    {
         $this->_extra2 = $extra2;
     }
 
-    public function setExtra3($extra3) {
+    public function setExtra3($extra3)
+    {
         $this->_extra3 = $extra3;
     }
-    public function setDomainId($domainId) {
+
+    public function setDomainId($domainId)
+    {
         $this->_domainId = $domainId;
     }
 
@@ -216,17 +240,19 @@ class Start extends Api
      * Set the description for the transaction
      * @param type $description
      */
-    public function setDescription($description) {
+    public function setDescription($description)
+    {
         $this->_description = $description;
     }
 
-    protected function getData() {
+    protected function getData()
+    {
         // Checken of alle verplichte velden geset zijn      
         Helper::requireServiceId();
-       
+
         $data['serviceId'] = Config::getServiceId();
 
-        if($this->_testMode === true){
+        if ($this->_testMode === true) {
             $data['testMode'] = '1';
         } else {
             $data['testMode'] = '0';
@@ -237,6 +263,8 @@ class Start extends Api
         } else {
             $data['amount'] = $this->_amount;
         }
+
+
         if (!empty($this->_paymentOptionId)) {
             $data['paymentOptionId'] = $this->_paymentOptionId;
         }
@@ -251,6 +279,9 @@ class Start extends Api
 
         if (!empty($this->_description)) {
             $data['transaction']['description'] = $this->_description;
+        }
+        if (isset($this->_currency)) {
+            $data['transaction']['currency'] = $this->_currency;
         }
 
         if (!empty($this->_paymentOptionSubId)) {
@@ -270,7 +301,7 @@ class Start extends Api
             $data['enduser'] = $this->_enduser;
         }
 
-         if (!empty($this->_extra1)) {
+        if (!empty($this->_extra1)) {
             $data['statsData']['extra1'] = $this->_extra1;
         }
         if (!empty($this->_extra2)) {
@@ -279,22 +310,22 @@ class Start extends Api
         if (!empty($this->_extra3)) {
             $data['statsData']['extra3'] = $this->_extra3;
         }
-        if(!empty($this->_promotorId)){
+        if (!empty($this->_promotorId)) {
             $data['statsData']['promotorId'] = $this->_promotorId;
         }
-        if(!empty($this->_info)){
+        if (!empty($this->_info)) {
             $data['statsData']['info'] = $this->_info;
         }
-        if(!empty($this->_tool)){
+        if (!empty($this->_tool)) {
             $data['statsData']['tool'] = $this->_tool;
         }
-        if(!empty($this->_object)){
+        if (!empty($this->_object)) {
             $data['statsData']['object'] = $this->_object;
         }
-        if(!empty($this->_domainId)){
+        if (!empty($this->_domainId)) {
             $data['statsData']['domain_id'] = $this->_domainId;
         }
-        if(!empty($this->_transferData)){
+        if (!empty($this->_transferData)) {
             $data['statsData']['transferData'] = $this->_transferData;
         }
 
@@ -302,7 +333,9 @@ class Start extends Api
 
         return parent::getData();
     }
-    public function doRequest($endpoint = null) {
+
+    public function doRequest($endpoint = null)
+    {
         return parent::doRequest('transaction/start');
     }
 }

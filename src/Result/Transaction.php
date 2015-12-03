@@ -37,4 +37,32 @@ class Transaction extends Result
     public function isCanceled(){
         return $this->data['paymentDetails']['state'] < 0;
     }
+    public function getPaidAmount(){
+        return $this->data['paymentDetails']['paidAmount']/100;
+    }
+    public function getPaidCurrency(){
+        return $this->data['paymentDetails']['paidCurrency'];
+    }
+    public function getAccountHolderName(){
+        return $this->data['paymentDetails']['identifierName'];
+    }
+    public function getAccountNumber(){
+        return $this->data['paymentDetails']['identifierPublic'];
+    }
+    public function getAccountHash(){
+        return $this->data['paymentDetails']['identifierHash'];
+    }
+    public function getDescription(){
+        return $this->data['paymentDetails']['description'];
+    }
+    public function getExtra1(){
+        return $this->data['statsDetails']['extra1'];
+    }
+    public function getExtra2(){
+        return $this->data['statsDetails']['extra2'];
+    }
+    public function getExtra3(){
+        return $this->data['statsDetails']['extra3'];
+    }
+
 }

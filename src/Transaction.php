@@ -74,6 +74,10 @@ class Transaction
             $api->setExtra3($options['extra3']);
         }
 
+        if(isset($options['ipaddress'])){
+            $api->setIpAddress($options['ipaddress']);
+        }
+
         if (isset($options['products'])) {
             foreach ($options['products'] as $product) {
                 $taxClass = Helper::calculateTaxClass($product['price'],
@@ -188,8 +192,6 @@ class Transaction
             // maybe its xml
             $input = file_get_contents('php://input');
             $xml   = simplexml_load_string($input);
-
-
 
             $transactionId = $xml->order_id;
         }

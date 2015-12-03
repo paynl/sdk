@@ -49,7 +49,13 @@ class Start extends Api
     private $_object;
     private $_domainId;
     private $_transferData;
+    private $_ipaddress;
+
     private $_products = array();
+
+    public function setIpAddress($ipAddress){
+        $this->_ipaddress = $ipAddress;
+    }
 
     public function setPromotorId($promotorId)
     {
@@ -288,12 +294,14 @@ class Start extends Api
             $data['paymentOptionSubId'] = $this->_paymentOptionSubId;
         }
 
-        //ip en browserdata setten browserdata set ik met dummydata
-        $data['ipAddress'] = Helper::getIp();
+
+        if(isset($this->_ipaddress)){
+            $data['ipAddress'] = $this->_ipaddress;
+        } else {
+            $data['ipAddress'] = Helper::getIp();
+        }
 
         if (!empty($this->_products)) {
-//            $data['saleData']['invoiceDate'] = date('d-m-Y');
-//            $data['saleData']['deliveryDate'] = date('d-m-Y', strtotime('+1 day'));
             $data['saleData']['orderData'] = $this->_products;
         }
 

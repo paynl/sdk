@@ -116,6 +116,26 @@ class Helper
         return($taxClasses[$nearestTaxRate]);
     }
 
+	public static function splitAddress($strAddress)
+    {
+        $strAddress = trim($strAddress);
+
+        $a               = preg_split('/([0-9]+)/', $strAddress, 2,
+            PREG_SPLIT_DELIM_CAPTURE);
+        $strStreetName   = trim(array_shift($a));
+        $strStreetNumber = trim(implode('', $a));
+
+        if (empty($strStreetName)) { // American address notation
+            $a = preg_split('/([a-zA-Z]{2,})/', $strAddress, 2,
+                PREG_SPLIT_DELIM_CAPTURE);
+
+            $strStreetNumber = trim(array_shift($a));
+            $strStreetName   = implode(' ', $a);
+        }
+
+        return array($strStreetName, $strStreetNumber);
+    }
+	
     public static function getBaseUrl()
     {
         $protocol = isset($_SERVER["HTTPS"]) ? 'https' : 'http';

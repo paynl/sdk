@@ -244,7 +244,7 @@ class Start extends Api
 
     /**
      * Set the description for the transaction
-     * @param type $description
+     * @param string $description
      */
     public function setDescription($description)
     {
@@ -265,7 +265,7 @@ class Start extends Api
         }
 
         if (empty($this->_amount)) {
-            throw new \ErrorRequired('Amount is niet geset', 1);
+            throw new ErrorRequired('Amount is niet geset', 1);
         } else {
             $data['amount'] = $this->_amount;
         }

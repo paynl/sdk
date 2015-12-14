@@ -34,6 +34,9 @@ class Transaction extends Result
     public function isPending(){
         return $this->data['paymentDetails']['stateName'] == 'PENDING';
     }
+    public function isCancelled(){
+        return $this->isCanceled();
+    }
     public function isCanceled(){
         return $this->data['paymentDetails']['state'] < 0;
     }

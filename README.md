@@ -56,10 +56,11 @@ require __DIR__ . '/vendor/autoload.php';
 
 $result = \Paynl\Transaction::start(array(
     // required
-        'amount' => 10,
+        'amount' => 10.00,
         'returnUrl' => Paynl\Helper::getBaseUrl().'/return.php',
 
     // optional
+    	'currency' => 'EUR',
         'exchangeUrl' => Paynl\Helper::getBaseUrl().'/exchange.php',
         'paymentMethod' => 10,
         'bank' => 1,
@@ -72,14 +73,14 @@ $result = \Paynl\Transaction::start(array(
             array(
                 'id' => 1,
                 'name' => 'een product',
-                'price' => 5,
+                'price' => 5.00,
                 'tax' => 0.87,
                 'qty' => 1,
             ),
             array(
                 'id' => 2,
                 'name' => 'ander product',
-                'price' => 5,
+                'price' => 5.00,
                 'tax' => 0.87,
                 'qty' => 1,
             )

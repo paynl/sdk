@@ -22,13 +22,15 @@ require_once '../../vendor/autoload.php';
 \Paynl\Config::setServiceId('SL-3490-4320');
 
 $result = \Paynl\Transaction::start(array(
-    // required
+        // required
         'amount' => 10,
         'returnUrl' => dirname(Paynl\Helper::getBaseUrl()).'/return.php',
 
-    // optional
+		// optional
         'exchangeUrl' => dirname(Paynl\Helper::getBaseUrl()).'/exchange.php',
+
         'paymentMethod' => 10,
+        'currency' => 'USD',
         'bank' => 1,
         'description' => 'demo betaling',
         'testmode' => 1,

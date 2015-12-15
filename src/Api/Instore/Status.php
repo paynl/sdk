@@ -16,23 +16,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+namespace Paynl\Api\Instore;
 
-namespace Paynl\Result;
-
+use Paynl\Error;
 /**
- * Description of Start
+ * Description of Status
  *
  * @author Andy Pieters <andy@pay.nl>
  */
-class Start extends Result
-{
-    public function getTransactionId(){
-        return $this->data['transaction']['transactionId'];
+class Status extends Instore
+{   
+    private $hash;
+
+    protected function getData() {
+        if(empty($this->hash)){
+            throw new Error\Required('Hash is niet geset');
+        }
+        $this->data['hash'] = $this->hash;
+        return parent::getData();
     }
-    public function getRedirectUrl(){
-        return $this->data['transaction']['paymentURL'];
+    public function setHash($hash){
+        $this->hash = $hash;
     }
-    public function getPaymentReference(){
-        return $this->data['transaction']['paymentReference'];
+    public function doRequest($endpoint = null, $version = null) {
+        return parent::doRequest('instore/status');
     }
 }

@@ -16,7 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Paynl\Result;
+namespace Paynl\Result\Transaction;
+
+use Paynl\Result\Result;
 
 /**
  * Description of Transaction

@@ -1,5 +1,5 @@
 <?php
-/*
+/* 
  * Copyright (C) 2015 Andy Pieters <andy@pay.nl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,14 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Paynl\Result;
+namespace Paynl\Result\Instore;
+
+use Paynl\Result\Result;
 
 /**
- * Description of Refund
+ * Description of Terminals
  *
  * @author Andy Pieters <andy@pay.nl>
  */
-class Refund
+class Terminals extends Result
 {
     //put your code here
 }

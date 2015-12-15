@@ -16,51 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Paynl\Api\Transaction;
+namespace Paynl\Api\Instore;
 
 use Paynl\Api\Api;
-use Paynl\Error;
 
 /**
- * Description of Refund
+ * Description of Instore
  *
  * @author Andy Pieters <andy@pay.nl>
  */
-class Refund extends Api
+class Instore extends Api
 {
-    private $transactionId;
-
-    private $amount;
-    private $description;
-
-    protected function getData()
-    {
-        if (empty($this->transactionId)) {
-            throw new Error\Required('TransactionId is niet geset');
-        }
-        $this->data['transactionId'] = $this->transactionId;
-
-        if(!empty($this->amount)){
-
-        }
-
-        return parent::getData();
-    }
-
-    public function setTransactionId($transactionId)
-    {
-        $this->transactionId = $transactionId;
-    }
-    public function setAmount($amount)
-    {
-        $this->amount = (int)$amount;
-    }
-    public function setDescription($description)
-    {
-        $this->description = $description;
-    }
+    protected $version = 1;
 
     public function doRequest($endpoint = null, $version = null) {
-        return parent::doRequest('transaction/refund');
+        if(is_null($version)){
+            $version = $this->version;
+        }
+        return parent::doRequest($endpoint, $version);
     }
 }

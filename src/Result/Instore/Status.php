@@ -16,13 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once '../vendor/autoload.php';
+namespace Paynl\Result\Instore;
 
-\Paynl\Config::setApiToken('e41f83b246b706291ea9ad798ccfd9f0fee5e0ab');
+use Paynl\Result\Result;
 
-$transactionId=$_GET['transactionId'];
-try{
-    $result = \Paynl\Transaction::refund($transactionId, 5);
-} catch(\Paynl\Error\Api $e){
-    echo $e->getMessage();
+/**
+ * Description of Status
+ *
+ * @author Andy Pieters <andy@pay.nl>
+ */
+class Status extends Result
+{
+    //put your code here
 }

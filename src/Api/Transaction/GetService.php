@@ -17,8 +17,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Paynl\Api;
+namespace Paynl\Api\Transaction;
 
+use Paynl\Api\Api;
 use Paynl\Helper;
 use Paynl\Config;
 /**
@@ -38,7 +39,7 @@ class GetService extends Api {
         return parent::getData();
     }
     
-    public function doRequest($endpoint = null) {
+    public function doRequest($endpoint = null, $version = null) {
         if(isset(self::$cache[Config::getServiceId()])){
             return self::$cache[Config::getServiceId()];
         } else { 

@@ -44,17 +44,18 @@ class Api
     {
         $output = Helper::objectToArray($result);
 
-        if ($output['request']['result'] != 1) {
+        if ($output['request']['result'] != 1 && $output['request']['result'] != 'TRUE') {         
             throw new Error\Api($output['request']['errorId'].' - '.$output['request']['errorMessage']);
+
         }
         return $output;
     }
 
-    public function doRequest($endpoint)
+    public function doRequest($endpoint, $version = null)
     {
         $data = $this->getData();
 
-        $uri = Config::getApiUrl($endpoint);
+        $uri = Config::getApiUrl($endpoint, $version);
 
         $curl = new Curl();
 

@@ -16,31 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Paynl\Api\Transaction;
+namespace Paynl\Result\Transaction;
 
+use Paynl\Result\Result;
 
-use Paynl\Api\Api;
-use Paynl\Error;
 /**
- * Description of Info
+ * Description of Refund
  *
  * @author Andy Pieters <andy@pay.nl>
  */
-class Info extends Api
+class Refund extends Result
 {
-    private $transactionId;
-
-    protected function getData() {
-        if(empty($this->transactionId)){
-            throw new Error\Required('TransactionId is niet geset');
-        }
-        $this->data['transactionId'] = $this->transactionId;
-        return parent::getData();
-    }
-    public function setTransactionId($transactionId){
-        $this->transactionId = $transactionId;
-    }
-    public function doRequest($endpoint = null, $version = null) {
-        return parent::doRequest('transaction/info');
-    }
+    //put your code here
 }

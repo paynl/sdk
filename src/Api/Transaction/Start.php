@@ -342,7 +342,7 @@ class Start extends Api
         return parent::getData();
     }
 
-    public function doRequest($endpoint = null)
+    public function doRequest($endpoint = null, $version = null)
     {
         return parent::doRequest('transaction/start');
     }

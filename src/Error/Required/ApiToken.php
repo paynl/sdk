@@ -19,6 +19,8 @@
 
 namespace Paynl\Error\Required;
 
+use \Paynl\Error\Required;
+
 /**
  * Description of ApiToken
  *

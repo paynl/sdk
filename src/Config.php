@@ -81,10 +81,12 @@ class Config {
         self::$apiVersion = $apiVersion;
     }
 
-    /**
-     * @param string $endpoint The endpoint of the API, for example Transaction/Start
-     * @return string The url to the api
-     */
+	/**
+	 * @param string      $endpoint The endpoint of the API, for example Transaction/Start
+	 * @param string|null $version
+	 *
+	 * @return string The url to the api
+	 */
     public static function getApiUrl($endpoint, $version = null) {
         if(is_null($version)){
             $version = self::$apiVersion;

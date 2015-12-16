@@ -198,8 +198,15 @@ class Transaction
         return self::get($transactionId);
     }
 
-    public static function refund($transactionId, $amount = null,
-                                  $description = null)
+	/**
+	 * @param string         $transactionId
+	 * @param int|float|null $amount
+	 * @param string|null    $description
+	 *
+	 * @return array
+	 */
+	public static function refund($transactionId, $amount = null,
+	                              $description = null)
     {
         $api = new Api\Refund();
         $api->setTransactionId($transactionId);
@@ -212,5 +219,7 @@ class Transaction
             $api->setDescription($description);
         }
         $result = $api->doRequest();
+
+	    return $result;
     }
 }

@@ -82,7 +82,7 @@ class Config {
     }
 
     /**
-     * @param string $endpoint The endpoint of the API, for examlpe Transaction/Start
+     * @param string $endpoint The endpoint of the API, for example Transaction/Start
      * @return string The url to the api
      */
     public static function getApiUrl($endpoint, $version = null) {

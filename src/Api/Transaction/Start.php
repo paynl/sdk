@@ -127,7 +127,7 @@ class Start extends Api
      * Set the enduser data in the following format
      *
      * array(
-     *  initals
+     *  initials
      *  lastName
      *  language
      *  accessCode
@@ -208,7 +208,7 @@ class Start extends Api
     }
 
     /**
-     * Set the comunication url, the pay.nl server will call this url when the status of the transaction changes
+     * Set the communication url, the pay.nl server will call this url when the status of the transaction changes
      *
      * @param string $exchangeUrl
      */

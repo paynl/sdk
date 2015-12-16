@@ -52,11 +52,13 @@ class Instore
         return new Result\Status($result);
     }
 
-    /**
-     * Send the payment to a terminal
-     *
-     * @return \Paynl\Result\Instore\Payment
-     */
+	/**
+	 * Send the payment to a terminal
+	 *
+	 * @param array $options
+	 *
+	 * @return Result\Payment
+	 */
     public static function payment($options){
         $api = new Api\Payment();
 

@@ -19,7 +19,7 @@
 namespace Paynl;
 
 use Paynl\Result\Instore as Result;
-use Paynl\Helper;
+
 use Paynl\Api\Instore as Api;
 /**
  * Description of Transaction

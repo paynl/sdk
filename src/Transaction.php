@@ -152,7 +152,7 @@ class Transaction
      * Get the transaction
      *
      * @param string $transactionId
-     * @return \Paynl\Result\Transaction
+     * @return \Paynl\Result\Transaction\Transaction
      */
     public static function get($transactionId)
     {
@@ -167,7 +167,7 @@ class Transaction
      * Get the transaction in an exchange script.
      * This will automatically load orderId from the get string to fetch the transaction
      *
-     * @return \Paynl\Result\Transaction
+     * @return \Paynl\Result\Transaction\Transaction
      */
     public static function getForReturn()
     {
@@ -179,7 +179,7 @@ class Transaction
      * Get the transaction in an exchange script.
      * This will work for all kinds of exchange calls (GET, POST AND POST_XML)
      *
-     * @return \Paynl\Result\Transaction
+     * @return \Paynl\Result\Transaction\Transaction
      */
     public static function getForExchange()
     {

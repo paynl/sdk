@@ -28,11 +28,11 @@ if( $transaction->isPaid() ||
     $transaction->isPending() //manual transfer transactions are always pending when the user is returned
     ){
     // redirect to thank you page
-    echo "Thank you<br /><a href='transaction/start.php'>New payment<a/>";
+    echo "Thank you<br /><a href='transaction/start.php'>New payment</a>";
     if($transaction->isPaid()){
         echo "<br /><a href='transaction/refund.php?transactionId=".$transaction->getId()."'>Refund</a>";
     }
 } elseif($transaction->isCanceled()) {
     // redirect back to checkout
-    echo "Payment canceled <br /><a href='transaction/start.php'>Try again<a/>";
+    echo "Payment canceled <br /><a href='transaction/start.php'>Try again</a>";
 }

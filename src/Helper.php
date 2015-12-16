@@ -18,7 +18,7 @@
 
 namespace Paynl;
 
-use Paynl\Config;
+
 use Paynl\Error;
 
 /**

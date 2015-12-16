@@ -22,65 +22,65 @@ require_once '../../vendor/autoload.php';
 \Paynl\Config::setServiceId('SL-3490-4320');
 
 $result = \Paynl\Transaction::start(array(
-        // required
-        'amount' => 10,
-        'returnUrl' => dirname(Paynl\Helper::getBaseUrl()).'/return.php',
+    // required
+    'amount' => 10,
+    'returnUrl' => dirname(Paynl\Helper::getBaseUrl()) . '/return.php',
 
-		// optional
-        'exchangeUrl' => dirname(Paynl\Helper::getBaseUrl()).'/exchange.php',
+    // optional
+    'exchangeUrl' => dirname(Paynl\Helper::getBaseUrl()) . '/exchange.php',
 
-        'paymentMethod' => 10,
-        'currency' => 'USD',
-        'bank' => 1,
-        'description' => 'demo betaling',
-        'testmode' => 1,
-        'extra1' => 'ext1',
-        'extra2' => 'ext2',
-        'extra3' => 'ext3',
-        'products' => array(
-            array(
-                'id' => 1,
-                'name' => 'een product',
-                'price' => 5,
-                'tax' => 0.87,
-                'qty' => 1,
-            ),
-            array(
-                'id' => 2,
-                'name' => 'ander product',
-                'price' => 5,
-                'tax' => 0.87,
-                'qty' => 1,
-            )
+    'paymentMethod' => 10,
+    'currency' => 'USD',
+    'bank' => 1,
+    'description' => 'demo betaling',
+    'testmode' => 1,
+    'extra1' => 'ext1',
+    'extra2' => 'ext2',
+    'extra3' => 'ext3',
+    'products' => array(
+        array(
+            'id' => 1,
+            'name' => 'een product',
+            'price' => 5,
+            'tax' => 0.87,
+            'qty' => 1,
         ),
-        'language' => 'EN',
-        'enduser' => array(
-            'initials' => 'T',
-            'lastName' => 'Test',
-            'gender' => 'M',
-            'dob' => '14-05-1999',
-            'phoneNumber' => '0612345678',
-            'emailAddress' => 'test@test.nl',
-        ),
-        'address' => array(
-            'streetName' => 'Test',
-            'houseNumber' => '10',
-            'zipCode' => '1234AB',
-            'city' => 'Test',
-            'country' => 'NL',
-        ),
-        'invoiceAddress' => array(
-            'initials' => 'IT',
-            'lastName' => 'ITEST',
-            'streetName' => 'Istreet',
-            'houseNumber' => '70',
-            'zipCode' => '5678CD',
-            'city' => 'ITest',
-            'country' => 'NL',
-        ),
-    ));
+        array(
+            'id' => 2,
+            'name' => 'ander product',
+            'price' => 5,
+            'tax' => 0.87,
+            'qty' => 1,
+        )
+    ),
+    'language' => 'EN',
+    'enduser' => array(
+        'initials' => 'T',
+        'lastName' => 'Test',
+        'gender' => 'M',
+        'dob' => '14-05-1999',
+        'phoneNumber' => '0612345678',
+        'emailAddress' => 'test@test.nl',
+    ),
+    'address' => array(
+        'streetName' => 'Test',
+        'houseNumber' => '10',
+        'zipCode' => '1234AB',
+        'city' => 'Test',
+        'country' => 'NL',
+    ),
+    'invoiceAddress' => array(
+        'initials' => 'IT',
+        'lastName' => 'ITEST',
+        'streetName' => 'Istreet',
+        'houseNumber' => '70',
+        'zipCode' => '5678CD',
+        'city' => 'ITest',
+        'country' => 'NL',
+    ),
+));
 
 // Save this transactionid and link it to your order
 $transactionId = $result->getTransactionId();
 
-echo '<a href="'.$result->getRedirectUrl().'">'.$result->getRedirectUrl().'</a>';
+echo '<a href="' . $result->getRedirectUrl() . '">' . $result->getRedirectUrl() . '</a>';

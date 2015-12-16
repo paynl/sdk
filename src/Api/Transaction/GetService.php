@@ -22,27 +22,47 @@ namespace Paynl\Api\Transaction;
 use Paynl\Api\Api;
 use Paynl\Helper;
 use Paynl\Config;
+
 /**
  * Description of GetService
  *
  * @author Andy Pieters <andy@andypieters.nl>
  */
-class GetService extends Api {
+class GetService extends Api
+{
 
+    /**
+     * @var array cached result
+     */
     private static $cache = array();
 
-    protected function getData() {
+    /**
+     * Get data to send to the api
+     *
+     * @return array
+     * @throws \Paynl\Error\Required\ServiceId
+     */
+    protected function getData()
+    {
         Helper::requireServiceId();
 
         $this->data['serviceId'] = Config::getServiceId();
 
         return parent::getData();
     }
-    
-    public function doRequest($endpoint = null, $version = null) {
-        if(isset(self::$cache[Config::getServiceId()])){
+
+    /**
+     * Do the request
+     *
+     * @param null $endpoint
+     * @param null $version
+     * @return array The result
+     */
+    public function doRequest($endpoint = null, $version = null)
+    {
+        if (isset(self::$cache[Config::getServiceId()])) {
             return self::$cache[Config::getServiceId()];
-        } else { 
+        } else {
             $result = parent::doRequest('transaction/getService');
             self::$cache[Config::getServiceId()] = $result;
             return $result;

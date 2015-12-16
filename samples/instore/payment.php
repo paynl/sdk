@@ -23,13 +23,13 @@ require_once '../../vendor/autoload.php';
 $transactionId = $_GET['transactionId']; // The transactionId you get from transaction/start
 $terminalId = $_GET['terminalId']; // the terminalId you get from getAllTerminals
 
-try{
+try {
     $result = \Paynl\Instore::payment(array(
         'transactionId' => $transactionId,
         'terminalId' => $terminalId
     ));
 
-    header('location: '.$result->getRedirectUrl());
-} catch (Paynl\Error\Api $e){
-    echo 'Fout: '.$e->getMessage();
+    header('location: ' . $result->getRedirectUrl());
+} catch (Paynl\Error\Api $e) {
+    echo 'Fout: ' . $e->getMessage();
 }

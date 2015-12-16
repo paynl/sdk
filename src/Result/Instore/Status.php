@@ -21,7 +21,7 @@ namespace Paynl\Result\Instore;
 use Paynl\Result\Result;
 
 /**
- * Description of Status
+ * Result class for terminal status
  *
  * @author Andy Pieters <andy@pay.nl>
  */

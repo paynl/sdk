@@ -21,7 +21,7 @@ namespace Paynl\Result\Transaction;
 use Paynl\Result\Result;
 
 /**
- * Description of Refund
+ * Result class for a refund
  *
  * @author Andy Pieters <andy@pay.nl>
  */

@@ -25,35 +25,96 @@ use Paynl\Error\Required as ErrorRequired;
 use Paynl\Error\Error as Error;
 
 /**
- * Description of Start
+ * Api class to start a new transaction
  *
  * @author Andy Pieters <andy@pay.nl>
  */
 class Start extends Api
 {
+    /**
+     * @var int amount in cents
+     */
     private $_amount;
+    /**
+     * @var int the payment method id
+     */
     private $_paymentOptionId;
+    /**
+     * @var int the bank id
+     */
     private $_paymentOptionSubId;
+    /**
+     * @var string the finish url
+     */
     private $_finishUrl;
+    /**
+     * @var string the currency
+     */
     private $_currency;
+    /**
+     * @var string the exchagne url
+     */
     private $_exchangeUrl;
+    /**
+     * @var string the description
+     */
     private $_description;
+    /**
+     * @var array The enduser data
+     */
     private $_enduser;
+    /**
+     * @var string additional data extra1
+     */
     private $_extra1;
+    /**
+     * @var string additional data extra2
+     */
     private $_extra2;
+    /**
+     * @var string additional data extra3
+     */
     private $_extra3;
+    /**
+     * @var bool start transaction in testmode
+     */
     private $_testMode = false;
+    /**
+     * @var string additional data promotorId
+     */
     private $_promotorId;
+    /**
+     * @var string additional data info
+     */
     private $_info;
+    /**
+     * @var string additional data tool
+     */
     private $_tool;
+    /**
+     * @var string additional data info
+     */
     private $_object;
+    /**
+     * @var string additional data domainId
+     */
     private $_domainId;
+    /**
+     * @var string additional data transferData
+     */
     private $_transferData;
+    /**
+     * @var string the ipaddress of the enduser, used for fraud detecion
+     */
     private $_ipaddress;
 
+    /**
+     * @var array the products for the order
+     */
     private $_products = array();
 
-    public function setIpAddress($ipAddress){
+    public function setIpAddress($ipAddress)
+    {
         $this->_ipaddress = $ipAddress;
     }
 
@@ -113,7 +174,7 @@ class Start extends Api
         //description mag maar 45 chars lang zijn
         $description = substr($description, 0, 45);
 
-        $arrProduct        = array(
+        $arrProduct = array(
             'productId' => $id,
             'description' => $description,
             'price' => $price,
@@ -219,7 +280,7 @@ class Start extends Api
 
     public function setTestMode($testmode)
     {
-        $this->_testMode = (bool) $testmode;
+        $this->_testMode = (bool)$testmode;
     }
 
     public function setExtra1($extra1)
@@ -295,7 +356,7 @@ class Start extends Api
         }
 
 
-        if(isset($this->_ipaddress)){
+        if (isset($this->_ipaddress)) {
             $data['ipAddress'] = $this->_ipaddress;
         } else {
             $data['ipAddress'] = Helper::getIp();

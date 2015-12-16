@@ -35,7 +35,7 @@ class Api
     protected function getData()
     {
         Helper::requireApiToken();
-        
+
         $this->data['token'] = Config::getApiToken();
         return $this->data;
     }
@@ -44,9 +44,8 @@ class Api
     {
         $output = Helper::objectToArray($result);
 
-        if ($output['request']['result'] != 1 && $output['request']['result'] != 'TRUE') {         
-            throw new Error\Api($output['request']['errorId'].' - '.$output['request']['errorMessage']);
-
+        if ($output['request']['result'] != 1 && $output['request']['result'] != 'TRUE') {
+            throw new Error\Api($output['request']['errorId'] . ' - ' . $output['request']['errorMessage']);
         }
         return $output;
     }

@@ -28,8 +28,17 @@ use Paynl\Error;
  */
 class Info extends Api
 {
+    /**
+     * @var string
+     */
     private $transactionId;
 
+    /**
+     * Get data to send to the api
+     *
+     * @return array
+     * @throws Error\Required
+     */
     protected function getData() {
         if(empty($this->transactionId)){
             throw new Error\Required('TransactionId is niet geset');
@@ -37,9 +46,23 @@ class Info extends Api
         $this->data['transactionId'] = $this->transactionId;
         return parent::getData();
     }
+
+    /**
+     * Set the transactionId
+     *
+     * @param string $transactionId
+     */
     public function setTransactionId($transactionId){
         $this->transactionId = $transactionId;
     }
+
+    /**
+     * Do the request
+     *
+     * @param null $endpoint
+     * @param null $version
+     * @return array the result
+     */
     public function doRequest($endpoint = null, $version = null) {
         return parent::doRequest('transaction/info');
     }

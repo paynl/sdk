@@ -24,8 +24,14 @@ namespace Paynl\Api\Instore;
  * @author Andy Pieters <andy@pay.nl>
  */
 class GetAllTerminals extends Instore
-{     
-    public function doRequest($endpoint = null, $version = null) {
+{
+    /**
+     * @param null $endpoint
+     * @param null $version
+     * @return array the result
+     */
+    public function doRequest($endpoint = null, $version = null)
+    {
         return parent::doRequest('instore/getAllTerminals');
     }
 }

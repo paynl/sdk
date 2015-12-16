@@ -30,6 +30,13 @@ use Paynl\Api\Transaction as Api;
 class Transaction
 {
 
+    /**
+     * Start a new transaction
+     *
+     * @param array|null $options
+     * @return Result\Start
+     * @throws Error\Error
+     */
     public static function start($options = array())
     {
         $api = new Api\Start();
@@ -74,14 +81,14 @@ class Transaction
             $api->setExtra3($options['extra3']);
         }
 
-        if(isset($options['ipaddress'])){
+        if (isset($options['ipaddress'])) {
             $api->setIpAddress($options['ipaddress']);
         }
 
         if (isset($options['products'])) {
             foreach ($options['products'] as $product) {
                 $taxClass = Helper::calculateTaxClass($product['price'],
-                        $product['tax']);
+                    $product['tax']);
                 $api->addProduct($product['id'], $product['name'],
                     round($product['price'] * 100), $product['qty'], $taxClass);
             }
@@ -156,9 +163,9 @@ class Transaction
      */
     public static function get($transactionId)
     {
-        $api                     = new Api\Info();
+        $api = new Api\Info();
         $api->setTransactionId($transactionId);
-        $result                  = $api->doRequest();
+        $result = $api->doRequest();
         $result['transactionId'] = $transactionId;
         return new Result\Transaction($result);
     }
@@ -190,7 +197,7 @@ class Transaction
         } else {
             // maybe its xml
             $input = file_get_contents('php://input');
-            $xml   = simplexml_load_string($input);
+            $xml = simplexml_load_string($input);
 
             $transactionId = $xml->order_id;
         }
@@ -198,15 +205,18 @@ class Transaction
         return self::get($transactionId);
     }
 
-	/**
-	 * @param string $transactionId
-	 * @param int|float|null $amount
-	 * @param string|null $description
-	 *
-	 * @return Result\Refund
-	 */
-	public static function refund($transactionId, $amount = null,
-	                              $description = null)
+    /**
+     * (Partially) Refund a transaction
+     * If only the transactionId is supplied, the full amount of transaction will be refunded
+     *
+     * @param string $transactionId
+     * @param int|float|null $amount
+     * @param string|null $description
+     *
+     * @return Result\Refund
+     */
+    public static function refund($transactionId, $amount = null,
+                                  $description = null)
     {
         $api = new Api\Refund();
         $api->setTransactionId($transactionId);
@@ -220,6 +230,6 @@ class Transaction
         }
         $result = $api->doRequest();
 
-	    return new Result\Refund($result);
+        return new Result\Refund($result);
     }
 }

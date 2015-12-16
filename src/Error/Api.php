@@ -20,7 +20,7 @@
 namespace Paynl\Error;
 
 /**
- * Description of Api
+ * Api error
  *
  * @author Andy Pieters <andy@pay.nl>
  */

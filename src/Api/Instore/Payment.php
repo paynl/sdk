@@ -19,38 +19,65 @@
 namespace Paynl\Api\Instore;
 
 use Paynl\Error;
+
 /**
  * Description of Status
  *
  * @author Andy Pieters <andy@pay.nl>
  */
 class Payment extends Instore
-{   
+{
+    /**
+     * @var string the TransactionId
+     */
     private $transactionId;
 
+    /**
+     * @var string the terminalId
+     */
     private $terminalId;
 
-    protected function getData() {
-        if(empty($this->transactionId)){
+    /**
+     * @return array The data
+     * @throws Error\Required
+     */
+    protected function getData()
+    {
+        if (empty($this->transactionId)) {
             throw new Error\Required('transactionId is niet geset');
         }
         $this->data['transactionId'] = $this->transactionId;
 
-        if(!empty($this->terminalId)){
+        if (!empty($this->terminalId)) {
             $this->data['terminalId'] = $this->terminalId;
         }
 
         return parent::getData();
     }
-    public function setTransactionId($transactionId){
+
+    /**
+     * @param string $transactionId
+     */
+    public function setTransactionId($transactionId)
+    {
         $this->transactionId = $transactionId;
     }
 
-    public function setTerminalId($terminalId){
+    /**
+     * @param string $terminalId
+     */
+    public function setTerminalId($terminalId)
+    {
         $this->terminalId = $terminalId;
     }
 
-    public function doRequest($endpoint = null, $version = null) {
+    /**
+     * @param null $endpoint
+     * @param null $version
+     * @return array The result
+     */
+    public function doRequest($endpoint = null, $version = null)
+    {
         return parent::doRequest('instore/payment');
     }
 }

@@ -22,17 +22,32 @@ use Paynl\Api\Api;
 use Paynl\Error;
 
 /**
- * Description of Refund
+ * Api class to refund a transaction
  *
  * @author Andy Pieters <andy@pay.nl>
  */
 class Refund extends Api
 {
+    /**
+     * @var string the transactionId
+     */
     private $transactionId;
 
+    /**
+     * @var int the amount in cents
+     */
     private $amount;
+    /**
+     * @var string the description for this refund
+     */
     private $description;
 
+    /**
+     * Get data to send to the api
+     *
+     * @return array
+     * @throws Error\Required
+     */
     protected function getData()
     {
         if (empty($this->transactionId)) {
@@ -40,27 +55,44 @@ class Refund extends Api
         }
         $this->data['transactionId'] = $this->transactionId;
 
-        if(!empty($this->amount)){
-
+        if (!empty($this->amount)) {
+            $this->data['amount'];
         }
 
         return parent::getData();
     }
 
+    /**
+     * @param string $transactionId
+     */
     public function setTransactionId($transactionId)
     {
         $this->transactionId = $transactionId;
     }
+
+    /**
+     * @param int $amount
+     */
     public function setAmount($amount)
     {
         $this->amount = (int)$amount;
     }
+
+    /**
+     * @param string $description
+     */
     public function setDescription($description)
     {
         $this->description = $description;
     }
 
-    public function doRequest($endpoint = null, $version = null) {
+    /**
+     * @param null $endpoint
+     * @param null $version
+     * @return array
+     */
+    public function doRequest($endpoint = null, $version = null)
+    {
         return parent::doRequest('transaction/refund');
     }
 }

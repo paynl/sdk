@@ -28,13 +28,27 @@ use Paynl\Result\Result;
  */
 class Start extends Result
 {
-    public function getTransactionId(){
+    /**
+     * @return string The transactionId
+     */
+    public function getTransactionId()
+    {
         return $this->data['transaction']['transactionId'];
     }
-    public function getRedirectUrl(){
+
+    /**
+     * @return string The url where the customer can complete the payment
+     */
+    public function getRedirectUrl()
+    {
         return $this->data['transaction']['paymentURL'];
     }
-    public function getPaymentReference(){
+
+    /**
+     * @return string The payment reference (for manual transfer)
+     */
+    public function getPaymentReference()
+    {
         return $this->data['transaction']['paymentReference'];
     }
 }

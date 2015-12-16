@@ -29,6 +29,11 @@ use Paynl\Error;
 class Helper
 {
 
+    /**
+     * Checks if the apiToken is set
+     *
+     * @throws Error\Required\ApiToken
+     */
     public static function requireApiToken()
     {
         $apiToken = Config::getApiToken();
@@ -37,6 +42,11 @@ class Helper
         }
     }
 
+    /**
+     * Checks if the serviceId is set
+     *
+     * @throws Error\Required\ServiceId
+     */
     public static function requireServiceId()
     {
         $serviceId = Config::getServiceId();
@@ -45,6 +55,11 @@ class Helper
         }
     }
 
+    /**
+     * Get the ip of the user
+     *
+     * @return string
+     */
     public static function getIp()
     {
         //Just get the headers if we can or else use the SERVER global
@@ -61,7 +76,7 @@ class Helper
         } else {
             $the_ip = $_SERVER['REMOTE_ADDR'];
         }
-        $arrIp  = explode(',', $the_ip);
+        $arrIp = explode(',', $the_ip);
         $the_ip = $arrIp[0];
 
         $the_ip = filter_var(trim($the_ip), FILTER_VALIDATE_IP);
@@ -69,12 +84,23 @@ class Helper
         return $the_ip;
     }
 
+    /**
+     * Redirect the user to a url
+     *
+     * @param $url
+     */
     public static function redirect($url)
     {
-        header('location: '.$url);
+        header('location: ' . $url);
     }
 
-
+    /**
+     * Get the nearest number
+     *
+     * @param int $number
+     * @param array $numbers
+     * @return int|bool nearest number false on error
+     */
     private static function nearest($number, $numbers)
     {
         $output = FALSE;
@@ -85,12 +111,18 @@ class Helper
                 $NDat[abs($number - $n)] = $n;
             }
             ksort($NDat);
-            $NDat   = array_values($NDat);
+            $NDat = array_values($NDat);
             $output = $NDat[0];
         }
         return $output;
     }
 
+    /**
+     * Convert a stdClass object to an array
+     *
+     * @param \stdClass $d
+     * @return array
+     */
     public static function objectToArray($d)
     {
         if (is_object($d)) {
@@ -103,26 +135,40 @@ class Helper
         }
     }
 
+    /**
+     * Determine the tax class to send to Pay.nl
+     *
+     * @param int|float $amountInclTax
+     * @param int|float $taxAmount
+     * @return string The tax class (N, L or H)
+     */
     public static function calculateTaxClass($amountInclTax, $taxAmount)
     {
-        $taxClasses     = array(
+        $taxClasses = array(
             0 => 'N',
             6 => 'L',
             21 => 'H'
         );
-        $amountExclTax  = $amountInclTax - $taxAmount;
-        $taxRate        = ($taxAmount / $amountExclTax) * 100;
+        $amountExclTax = $amountInclTax - $taxAmount;
+        $taxRate = ($taxAmount / $amountExclTax) * 100;
         $nearestTaxRate = self::nearest($taxRate, array_keys($taxClasses));
-        return($taxClasses[$nearestTaxRate]);
+        return ($taxClasses[$nearestTaxRate]);
     }
 
-	public static function splitAddress($strAddress)
+    /**
+     * Try to split an address into street and housenumber
+     * This is not guaranteed to always return a correct answer
+     *
+     * @param string $strAddress
+     * @return array
+     */
+    public static function splitAddress($strAddress)
     {
         $strAddress = trim($strAddress);
 
-        $a               = preg_split('/([0-9]+)/', $strAddress, 2,
+        $a = preg_split('/([0-9]+)/', $strAddress, 2,
             PREG_SPLIT_DELIM_CAPTURE);
-        $strStreetName   = trim(array_shift($a));
+        $strStreetName = trim(array_shift($a));
         $strStreetNumber = trim(implode('', $a));
 
         if (empty($strStreetName)) { // American address notation
@@ -130,17 +176,23 @@ class Helper
                 PREG_SPLIT_DELIM_CAPTURE);
 
             $strStreetNumber = trim(array_shift($a));
-            $strStreetName   = implode(' ', $a);
+            $strStreetName = implode(' ', $a);
         }
 
         return array($strStreetName, $strStreetNumber);
     }
-	
+
+    /**
+     * Get the url where this script is running.
+     * This is used in samples to determine the exchange and return urls
+     *
+     * @return string
+     */
     public static function getBaseUrl()
     {
         $protocol = isset($_SERVER["HTTPS"]) ? 'https' : 'http';
 
-        $url = $protocol.'://'.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
+        $url = $protocol . '://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
 
         // op de laatste / afknippen (index.php willen we niet zien)
         $baseUrl = substr($url, 0, strrpos($url, '/'));

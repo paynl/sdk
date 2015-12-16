@@ -28,6 +28,12 @@ use Paynl\Api\Transaction as Api;
 class Paymentmethods
 {
 
+    /**
+     * Reorder the result from the Transaction/getService API into a more logical format
+     *
+     * @param array $input The result from the getService API
+     * @return array
+     */
     private static function reorderOutput($input)
     {
         $paymentMethods = array();
@@ -40,15 +46,15 @@ class Paymentmethods
                     $banks = array();
                     if (!empty($paymentOption['paymentOptionSubList'])) {
                         foreach ($paymentOption['paymentOptionSubList'] as $optionSub) {
-                            $bank                = array();
-                            $bank['id']          = $optionSub['id'];
-                            $bank['name']        = $optionSub['name'];
+                            $bank = array();
+                            $bank['id'] = $optionSub['id'];
+                            $bank['name'] = $optionSub['name'];
                             $bank['visibleName'] = $optionSub['visibleName'];
-                            $banks[]             = $bank;
+                            $banks[] = $bank;
                         }
                     }
 
-                    $paymentMethod                        = array(
+                    $paymentMethod = array(
                         'id' => $paymentOption['id'],
                         'name' => $paymentOption['name'],
                         'visibleName' => $paymentOption['visibleName'],
@@ -63,39 +69,59 @@ class Paymentmethods
         return $paymentMethods;
     }
 
+    /**
+     * Filter the result to only return payment methods allowed for a country
+     *
+     * @param array $paymentMethods
+     * @param string $country
+     * @return array filtered paymentmethods
+     */
     private static function filterCountry($paymentMethods, $country)
     {
         $output = array();
         foreach ($paymentMethods as $paymentMethod) {
             if (in_array($country, $paymentMethod['countries']) || in_array('ALL',
-                    $paymentMethod['countries'])) {
+                    $paymentMethod['countries'])
+            ) {
                 $output[] = $paymentMethod;
             }
         }
         return $output;
     }
 
+    /**
+     * Get a list of available payment methods
+     *
+     * @param array|null $options
+     * @return array
+     */
     public static function getList($options = array())
     {
-        $api            = new Api\GetService();
-        $result         = $api->doRequest();
+        $api = new Api\GetService();
+        $result = $api->doRequest();
         $paymentMethods = self::reorderOutput($result);
 
         if (isset($options['country'])) {
             $paymentMethods = self::filterCountry($paymentMethods,
-                    $options['country']);
+                $options['country']);
         }
 
         return $paymentMethods;
     }
 
+    /**
+     * Get a list of available banks
+     *
+     * @param int|null $paymentMethodId If empty, the paymentMethodId for iDEAL will be used
+     * @return array
+     */
     public static function getBanks($paymentMethodId = 10)
     {
         $paymentMethods = self::getList();
-        if(isset($paymentMethods[$paymentMethodId])){
+        if (isset($paymentMethods[$paymentMethodId])) {
             return $paymentMethods[$paymentMethodId]['banks'];
         }
         return array();
-        
+
     }
 }

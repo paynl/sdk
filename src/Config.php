@@ -24,13 +24,14 @@ namespace Paynl;
  *
  * @author Andy Pieters <andy@andypieters.nl>
  */
-class Config {
+class Config
+{
 
     // @var string The Pay.nl  API token to be used for requests.
     private static $apiToken;
     // @var string The service id (SL-xxxx-xxxx)
     private static $serviceId;
-    // @var string The base URL for the Stripe API.
+    // @var string The base URL for the Pay.nl API.
     private static $apiBase = 'https://rest-api.pay.nl';
     // @var int The version of the Pay.nl API to use for requests.
     private static $apiVersion = 5;
@@ -38,7 +39,8 @@ class Config {
     /**
      * @return string The API token used for requests.
      */
-    public static function getApiToken() {
+    public static function getApiToken()
+    {
         return self::$apiToken;
     }
 
@@ -47,14 +49,16 @@ class Config {
      *
      * @param string $apiToken
      */
-    public static function setApiToken($apiToken) {
+    public static function setApiToken($apiToken)
+    {
         self::$apiToken = $apiToken;
     }
 
     /**
      * @return string The service id used for requests.
      */
-    public static function getServiceId() {
+    public static function getServiceId()
+    {
         return self::$serviceId;
     }
 
@@ -63,32 +67,36 @@ class Config {
      *
      * @param string $serviceId
      */
-    public static function setServiceId($serviceId) {
+    public static function setServiceId($serviceId)
+    {
         self::$serviceId = $serviceId;
     }
 
     /**
      * @return string The API version used for requests.
      */
-    public static function getApiVersion() {
+    public static function getApiVersion()
+    {
         return self::$apiVersion;
     }
 
     /**
      * @param string $apiVersion The API version to use for requests.
      */
-    public static function setApiVersion($apiVersion) {
+    public static function setApiVersion($apiVersion)
+    {
         self::$apiVersion = $apiVersion;
     }
 
-	/**
-	 * @param string      $endpoint The endpoint of the API, for example Transaction/Start
-	 * @param string|null $version
-	 *
-	 * @return string The url to the api
-	 */
-    public static function getApiUrl($endpoint, $version = null) {
-        if(is_null($version)){
+    /**
+     * @param string $endpoint The endpoint of the API, for example Transaction/Start
+     * @param string|null $version
+     *
+     * @return string The url to the api
+     */
+    public static function getApiUrl($endpoint, $version = null)
+    {
+        if (is_null($version)) {
             $version = self::$apiVersion;
         }
         return self::$apiBase . '/v' . $version . '/' . $endpoint . '/json';

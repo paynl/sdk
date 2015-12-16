@@ -24,15 +24,15 @@ require_once '../vendor/autoload.php';
 $transaction = \Paynl\Transaction::getForReturn();
 
 
-if( $transaction->isPaid() ||
+if ($transaction->isPaid() ||
     $transaction->isPending() //manual transfer transactions are always pending when the user is returned
-    ){
+) {
     // redirect to thank you page
     echo "Thank you<br /><a href='transaction/start.php'>New payment</a>";
-    if($transaction->isPaid()){
-        echo "<br /><a href='transaction/refund.php?transactionId=".$transaction->getId()."'>Refund</a>";
+    if ($transaction->isPaid()) {
+        echo "<br /><a href='transaction/refund.php?transactionId=" . $transaction->getId() . "'>Refund</a>";
     }
-} elseif($transaction->isCanceled()) {
+} elseif ($transaction->isCanceled()) {
     // redirect back to checkout
     echo "Payment canceled <br /><a href='transaction/start.php'>Try again</a>";
 }

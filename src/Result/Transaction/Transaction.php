@@ -27,46 +27,125 @@ use Paynl\Result\Result;
  */
 class Transaction extends Result
 {
-    public function getId(){
+    /**
+     * @return string The transaction id
+     */
+    public function getId()
+    {
         return $this->data['transactionId'];
     }
-    public function isPaid(){
+
+    /**
+     * @return bool Transaction is paid
+     */
+    public function isPaid()
+    {
         return $this->data['paymentDetails']['stateName'] == 'PAID';
     }
-    public function isPending(){
+
+    /**
+     * @return bool
+     */
+    public function isPending()
+    {
         return $this->data['paymentDetails']['stateName'] == 'PENDING';
     }
-    public function isCancelled(){
+
+    /**
+     * Alias for isCanceled
+     *
+     * @return bool Transaction is Canceled
+     */
+    public function isCancelled()
+    {
         return $this->isCanceled();
     }
-    public function isCanceled(){
+
+    /**
+     * @return bool Transaction is Canceled
+     */
+    public function isCanceled()
+    {
         return $this->data['paymentDetails']['state'] < 0;
     }
-    public function getPaidAmount(){
-        return $this->data['paymentDetails']['paidAmount']/100;
+
+    /**
+     * @return float Paid amount in original currency
+     */
+    public function getPaidCurrencyAmount()
+    {
+        return $this->data['paymentDetails']['paidCurrenyAmount'] / 100;
     }
-    public function getPaidCurrency(){
+
+    /**
+     * @return float Paid amount
+     */
+    public function getPaidAmount()
+    {
+        return $this->data['paymentDetails']['paidAmount'] / 100;
+    }
+
+    /**
+     * @return string Currency in which the transaction is actually paid
+     */
+    public function getPaidCurrency()
+    {
         return $this->data['paymentDetails']['paidCurrency'];
     }
-    public function getAccountHolderName(){
+
+    /**
+     * @return string The name of the account holder
+     */
+    public function getAccountHolderName()
+    {
         return $this->data['paymentDetails']['identifierName'];
     }
-    public function getAccountNumber(){
+
+    /**
+     * @return string The account number, or masked creditcard number
+     */
+    public function getAccountNumber()
+    {
         return $this->data['paymentDetails']['identifierPublic'];
     }
-    public function getAccountHash(){
+
+    /**
+     * @return string The account number, or masked creditcard number
+     */
+    public function getAccountHash()
+    {
         return $this->data['paymentDetails']['identifierHash'];
     }
-    public function getDescription(){
+
+    /**
+     * @return string The transaction description, as defined while starting the transaction
+     */
+    public function getDescription()
+    {
         return $this->data['paymentDetails']['description'];
     }
-    public function getExtra1(){
+
+    /**
+     * @return string The extra1 variable, as defined while starting the transaction
+     */
+    public function getExtra1()
+    {
         return $this->data['statsDetails']['extra1'];
     }
-    public function getExtra2(){
+
+    /**
+     * @return string The extra2 variable, as defined while starting the transaction
+     */
+    public function getExtra2()
+    {
         return $this->data['statsDetails']['extra2'];
     }
-    public function getExtra3(){
+
+    /**
+     * @return string The extra3 variable, as defined while starting the transaction
+     */
+    public function getExtra3()
+    {
         return $this->data['statsDetails']['extra3'];
     }
 

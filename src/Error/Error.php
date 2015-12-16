@@ -24,6 +24,7 @@ namespace Paynl\Error;
  *
  * @author Andy Pieters <andy@andypieters.nl>
  */
-class Error extends \Exception{
+class Error extends \Exception
+{
     //put your code here
 }

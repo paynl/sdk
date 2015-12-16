@@ -21,7 +21,7 @@ namespace Paynl\Result\Instore;
 use Paynl\Result\Result;
 
 /**
- * Description of Terminals
+ * Result class for getTerminals
  *
  * @author Andy Pieters <andy@pay.nl>
  */

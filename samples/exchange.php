@@ -22,12 +22,12 @@ require_once '../vendor/autoload.php';
 
 $transaction = \Paynl\Transaction::getForExchange();
 
-if($transaction->isPaid()){
+if ($transaction->isPaid()) {
     // process the payment
-} elseif($transaction->isCanceled()){
+} elseif ($transaction->isCanceled()) {
     // payment canceled, restock items
 }
 // always start your response with TRUE|
 echo "TRUE| ";
 // Optionally you can send a message after TRUE|, you can view this messages in the logs. https://admin.pay.nl/logs/payment_state
-echo $transaction->isPaid()?'Paid':'Not paid';
+echo $transaction->isPaid() ? 'Paid' : 'Not paid';

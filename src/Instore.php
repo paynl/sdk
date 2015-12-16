@@ -28,31 +28,29 @@ use Paynl\Api\Instore as Api;
  */
 class Instore
 {
-	public static function status($options)
-	{
-		$api = new Api\Status();
+    public static function status($options){
+        $api = new Api\Status();
 
-		if (isset($options['hash'])) {
-			$api->setHash($options['hash']);
-		}
+        if(isset($options['hash'])){
+            $api->setHash($options['hash']);
+        }
+       
+        $result = $api->doRequest();
 
-		$result = $api->doRequest();
+        return new Result\Status($result);
+    }
 
-		return new Result\Status($result);
-	}
+    public static function getAllTerminals(){
+        $api = new Api\GetAllTerminals();
 
-	public static function getAllTerminals()
-	{
-		$api = new Api\GetAllTerminals();
+        if(isset($options['hash'])){
+            $api->setHash($options['hash']);
+        }
 
-		if (isset($options['hash'])) {
-			$api->setHash($options['hash']);
-		}
+        $result = $api->doRequest();
 
-		$result = $api->doRequest();
-
-		return new Result\Status($result);
-	}
+        return new Result\Status($result);
+    }
 
 	/**
 	 * Send the payment to a terminal
@@ -61,18 +59,27 @@ class Instore
 	 *
 	 * @return Result\Payment
 	 */
-	public static function payment($options)
-	{
-		$api = new Api\Payment();
+    public static function payment($options){
+        $api = new Api\Payment();
 
-		if (isset($options['transactionId'])) {
-			$api->setTransactionId($options['transactionId']);
-		}
-		if (isset($options['terminalId'])) {
-			$api->setTerminalId($options['terminalId']);
-		}
+        if(isset($options['transactionId'])){
+            $api->setTransactionId($options['transactionId']);
+        }
+        if(isset($options['terminalId'])){
+            $api->setTerminalId($options['terminalId']);
+        }
 
+        $result = $api->doRequest();
+        return new Result\Payment($result);
+    }
+
+    
+
+<<<<<<< HEAD
 		$result = $api->doRequest();
 		return new Result\Payment($result);
 	}
 }
+=======
+}
+>>>>>>> parent of 4c032ff... Removed empty lines

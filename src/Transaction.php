@@ -199,11 +199,11 @@ class Transaction
     }
 
 	/**
-	 * @param string         $transactionId
+	 * @param string $transactionId
 	 * @param int|float|null $amount
-	 * @param string|null    $description
+	 * @param string|null $description
 	 *
-	 * @return array
+	 * @return Result\Refund
 	 */
 	public static function refund($transactionId, $amount = null,
 	                              $description = null)
@@ -220,6 +220,6 @@ class Transaction
         }
         $result = $api->doRequest();
 
-	    return $result;
+	    return new Result\Refund($result);
     }
 }

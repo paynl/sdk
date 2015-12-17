@@ -52,7 +52,7 @@ class Start extends Api
      */
     private $_currency;
     /**
-     * @var string the exchagne url
+     * @var string the exchange url
      */
     private $_exchangeUrl;
     /**
@@ -104,7 +104,7 @@ class Start extends Api
      */
     private $_transferData;
     /**
-     * @var string the ipaddress of the enduser, used for fraud detecion
+     * @var string the ipaddress of the enduser, used for fraud detection
      */
     private $_ipaddress;
 

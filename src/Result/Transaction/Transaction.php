@@ -74,7 +74,7 @@ class Transaction extends Result
      */
     public function getPaidCurrencyAmount()
     {
-        return $this->data['paymentDetails']['paidCurrenyAmount'] / 100;
+        return $this->data['paymentDetails']['paidCurrencyAmount'] / 100;
     }
 
     /**

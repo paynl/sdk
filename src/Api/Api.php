@@ -60,7 +60,7 @@ class Api
 
         $result = $curl->post($uri, $data);
 
-        $output = self::processResult($result);
+        $output = static::processResult($result);
 
         return $output;
     }

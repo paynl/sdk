@@ -2,3 +2,4 @@ nbproject/*
 index.php
 vendor/*
 composer.lock
+.idea/*

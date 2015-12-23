@@ -87,8 +87,8 @@ class Instore
      * Confirm the payment, and send the receipt
      *
      * ['hash'] string the hash of the transaction
-     * ['email'] string the emailaddress to send the receipt to
-     * ['language'] int the languageId
+     * ['emailAddress'] string the emailaddress to send the receipt to
+     * ['languageId'] int the languageId
      *                  1. Dutch
      *                  2. Flemish
      *                  4. English
@@ -98,6 +98,7 @@ class Instore
      *                  9. Italian
      *
      * @param array $options (See above)
+     * @return Result\ConfirmPayment
      */
     public static function confirmPayment($options)
     {
@@ -106,11 +107,11 @@ class Instore
         if (isset($options['hash'])) {
             $api->setHash($options['hash']);
         }
-        if (isset($options['email'])) {
-            $api->setEmail($options['email']);
+        if (isset($options['emailAddress'])) {
+            $api->setEmailAddress($options['emailAddress']);
         }
-        if (isset($options['language'])) {
-            $api->setLanguage($options['language']);
+        if (isset($options['languageId'])) {
+            $api->setLanguageId($options['languageId']);
         }
 
         $result = $api->doRequest();

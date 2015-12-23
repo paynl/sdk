@@ -34,7 +34,7 @@ class ConfirmPayment extends Instore
     /**
      * @var string The email address of the end-user
      */
-    protected $email;
+    protected $emailAddress;
 
     /**
      * @param string $hash
@@ -45,25 +45,25 @@ class ConfirmPayment extends Instore
     }
 
     /**
-     * @param string $email
+     * @param string $emailAddress
      */
-    public function setEmail($email)
+    public function setEmailAddress($emailAddress)
     {
-        $this->email = $email;
+        $this->emailAddress = $emailAddress;
     }
 
     /**
-     * @param int $language
+     * @param int $languageId
      */
-    public function setLanguage($language)
+    public function setLanguageId($languageId)
     {
-        $this->language = (int)$language;
+        $this->languageId = (int)$languageId;
     }
 
     /**
      * @var int The language of the email sent
      */
-    protected $language;
+    protected $languageId;
 
     /**
      * @return array The data
@@ -76,11 +76,11 @@ class ConfirmPayment extends Instore
         }
         $this->data['hash'] = $this->hash;
 
-        if (!empty($this->email)) {
-            $this->data['email'] = $this->email;
+        if (!empty($this->emailAddress)) {
+            $this->data['emailAddress'] = $this->emailAddress;
         }
-        if (!empty($this->language)) {
-            $this->data['language'] = $this->language;
+        if (!empty($this->languageId)) {
+            $this->data['languageId'] = $this->languageId;
         }
 
         return parent::getData();

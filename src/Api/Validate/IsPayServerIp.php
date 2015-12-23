@@ -8,10 +8,9 @@
 
 namespace Paynl\Api\Validate;
 
-use \Paynl\Api\Api;
 use \Paynl\Error;
 
-class isPayServerIp extends Api
+class isPayServerIp extends Validate
 {
     protected function getData()
     {
@@ -35,6 +34,6 @@ class isPayServerIp extends Api
 
     public function doRequest($endpoint = null, $version = null)
     {
-        return parent::doRequest('validate/isPayServerIp', 1);
+        return parent::doRequest('validate/isPayServerIp');
     }
 }

@@ -18,7 +18,6 @@
 
 namespace Paynl\Api\Transaction;
 
-use Paynl\Api\Api;
 use Paynl\Error;
 
 /**
@@ -26,7 +25,7 @@ use Paynl\Error;
  *
  * @author Andy Pieters <andy@pay.nl>
  */
-class Refund extends Api
+class Refund extends Transaction
 {
     /**
      * @var string the transactionId
@@ -56,7 +55,7 @@ class Refund extends Api
         $this->data['transactionId'] = $this->transactionId;
 
         if (!empty($this->amount)) {
-            $this->data['amount'];
+            $this->data['amount'] = $this->amount;
         }
 
         return parent::getData();

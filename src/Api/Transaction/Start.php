@@ -18,7 +18,6 @@
 
 namespace Paynl\Api\Transaction;
 
-use Paynl\Api\Api;
 use Paynl\Helper;
 use Paynl\Config;
 use Paynl\Error\Required as ErrorRequired;
@@ -29,7 +28,7 @@ use Paynl\Error\Error as Error;
  *
  * @author Andy Pieters <andy@pay.nl>
  */
-class Start extends Api
+class Start extends Transaction
 {
     /**
      * @var int amount in cents
@@ -52,7 +51,7 @@ class Start extends Api
      */
     private $_currency;
     /**
-     * @var string the exchange url
+     * @var string the exchagne url
      */
     private $_exchangeUrl;
     /**
@@ -104,7 +103,7 @@ class Start extends Api
      */
     private $_transferData;
     /**
-     * @var string the ipaddress of the enduser, used for fraud detection
+     * @var string the ipaddress of the enduser, used for fraud detecion
      */
     private $_ipaddress;
 

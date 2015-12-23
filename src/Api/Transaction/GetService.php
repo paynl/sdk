@@ -19,7 +19,6 @@
 
 namespace Paynl\Api\Transaction;
 
-use Paynl\Api\Api;
 use Paynl\Helper;
 use Paynl\Config;
 
@@ -28,7 +27,7 @@ use Paynl\Config;
  *
  * @author Andy Pieters <andy@andypieters.nl>
  */
-class GetService extends Api
+class GetService extends Transaction
 {
 
     /**

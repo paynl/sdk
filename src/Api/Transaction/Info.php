@@ -18,15 +18,13 @@
 
 namespace Paynl\Api\Transaction;
 
-
-use Paynl\Api\Api;
 use Paynl\Error;
 /**
  * Description of Info
  *
  * @author Andy Pieters <andy@pay.nl>
  */
-class Info extends Api
+class Info extends Transaction
 {
     /**
      * @var string

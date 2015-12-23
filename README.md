@@ -27,7 +27,7 @@ If you don't have experience with composer, it is possible to use the SDK withou
 
 You can download the zip on the projects [releases](https://github.com/paynl/sdk/releases) page.
 
-1. Download the package zip (not the source code).
+1. Download the package zip (SDKvx.x.x.zip).
 2. Unzip the contents of the zip, and upload the vendor directory to your server.
 3. In your project, require the file vendor/autoload.php
 4. You can now use the SDK in your project

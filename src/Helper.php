@@ -144,11 +144,17 @@ class Helper
      */
     public static function calculateTaxClass($amountInclTax, $taxAmount)
     {
+
         $taxClasses = array(
             0 => 'N',
             6 => 'L',
             21 => 'H'
         );
+
+        // return 0 if amount or tax is 0
+        if ($taxAmount == 0 || $amountInclTax == 0) {
+            return $taxClasses[0];
+        }
         $amountExclTax = $amountInclTax - $taxAmount;
         $taxRate = ($taxAmount / $amountExclTax) * 100;
         $nearestTaxRate = self::nearest($taxRate, array_keys($taxClasses));

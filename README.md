@@ -3,6 +3,7 @@
 ---
 
 - [Installation](#installation)
+- [Installation without composer](#installation-without-composer)
 - [Requirements](#requirements)
 - [Quick start and examples](#quick-start-and-examples)
 
@@ -19,6 +20,16 @@ For more information on how to use/install composer, please visit: [https://gith
 To install the Pay.nl PHP sdk into your project, simply
 
 	$ composer require paynl/sdk
+	
+### Installation without composer
+
+If you don't have experience with composer, it is possible to use the SDK without using composer
+You can download the zip on the projects [https://github.com/paynl/sdk/releases](releases) page.
+
+1. Download the package zip (not the source code).
+2. Unzip the contents of the zip, and upload the vendor directory to your server.
+3. In your project, require the file vendor/autoload.php
+4. You can now use the SDK in your project
 
 ### Requirements
 

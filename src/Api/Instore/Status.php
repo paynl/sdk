@@ -27,6 +27,9 @@ use Paynl\Error;
  */
 class Status extends Instore
 {
+    protected $apiTokenRequired = false;
+    protected $serviceIdRequired = false;
+
     /**
      * @var string The hash of the instore transaction
      */

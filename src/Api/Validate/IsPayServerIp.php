@@ -12,6 +12,9 @@ use \Paynl\Error;
 
 class isPayServerIp extends Validate
 {
+    protected $apiTokenRequired = false;
+    protected $serviceIdRequired = false;
+
     protected function getData()
     {
 

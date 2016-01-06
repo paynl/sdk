@@ -19,6 +19,7 @@
 namespace Paynl\Api\Instore;
 
 use Paynl\Api\Api;
+use Paynl\Error;
 
 /**
  * Description of Instore

@@ -30,6 +30,9 @@ use Paynl\Error\Error as Error;
  */
 class Start extends Transaction
 {
+    protected $apiTokenRequired = true;
+    protected $serviceIdRequired = true;
+
     /**
      * @var int amount in cents
      */

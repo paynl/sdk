@@ -26,6 +26,9 @@ use Paynl\Error;
  */
 class Info extends Transaction
 {
+    protected $apiTokenRequired = true;
+    protected $serviceIdRequired = false;
+
     /**
      * @var string
      */

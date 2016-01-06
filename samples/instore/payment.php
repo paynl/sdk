@@ -17,8 +17,7 @@
  */
 
 require_once '../../vendor/autoload.php';
-
-\Paynl\Config::setApiToken('e41f83b246b706291ea9ad798ccfd9f0fee5e0ab');
+require_once '../config.php';
 
 $transactionId = $_GET['transactionId']; // The transactionId you get from transaction/start
 $terminalId = $_GET['terminalId']; // the terminalId you get from getAllTerminals
@@ -29,7 +28,14 @@ try {
         'terminalId' => $terminalId
     ));
 
-    header('location: ' . $result->getRedirectUrl());
-} catch (Paynl\Error\Api $e) {
+    $hash = $result->getHash();
+
+    echo "<a href='getReceipt.php?hash=".$hash."'>Receipt</a><br />";
+    echo "<a href='confirmPayment.php?hash=".$hash."'>Confirm</a><br />";
+    echo "<a href='status.php?hash=".$hash."'>Status</a><br />";
+
+    echo "<br /><a href='".$result->getRedirectUrl()."'>Status - Paynl</a><br />";
+
+} catch (Paynl\Error\Error $e) {
     echo 'Fout: ' . $e->getMessage();
 }

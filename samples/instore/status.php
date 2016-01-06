@@ -17,10 +17,14 @@
  */
 
 require_once '../../vendor/autoload.php';
-
-\Paynl\Config::setApiToken('e41f83b246b706291ea9ad798ccfd9f0fee5e0ab');
+require_once '../config.php';
 
 $hash = $_GET['hash']; //The hash you get from instore/payment
-$result = \Paynl\Instore::status(array('hash' => $hash));
 
-var_dump($result->getData());
+try {
+    $result = \Paynl\Instore::status(array('hash' => $hash));
+
+    var_dump($result->getData());
+} catch (\Paynl\Error\Error $e) {
+    echo "Fout: " . $e->getMessage();
+}

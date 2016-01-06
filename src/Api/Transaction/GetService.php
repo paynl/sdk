@@ -29,6 +29,8 @@ use Paynl\Config;
  */
 class GetService extends Transaction
 {
+    protected $apiTokenRequired = true;
+    protected $serviceIdRequired = true;
 
     /**
      * @var array cached result

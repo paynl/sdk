@@ -27,6 +27,9 @@ use Paynl\Error;
  */
 class Payment extends Instore
 {
+    protected $apiTokenRequired = true;
+    protected $serviceIdRequired = false;
+
     /**
      * @var string the TransactionId
      */

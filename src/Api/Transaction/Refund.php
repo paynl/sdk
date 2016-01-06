@@ -27,6 +27,9 @@ use Paynl\Error;
  */
 class Refund extends Transaction
 {
+    protected $apiTokenRequired = true;
+    protected $serviceIdRequired = false;
+
     /**
      * @var string the transactionId
      */

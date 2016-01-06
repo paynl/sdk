@@ -32,11 +32,37 @@ class Api
 {
     protected $data = array();
 
+    /**
+     * @var bool Is the ApiToken required for this API
+     */
+    protected $apiTokenRequired = false;
+    /**
+     * @var bool Is the serviceId required for this API
+     */
+    protected $serviceIdRequired = false;
+
+    public function isApiTokenRequired()
+    {
+        return $this->apiTokenRequired;
+    }
+
+    public function isServiceIdRequired()
+    {
+        return $this->serviceIdRequired;
+    }
+
     protected function getData()
     {
-        Helper::requireApiToken();
+        if($this->isApiTokenRequired()) {
+            Helper::requireApiToken();
 
-        $this->data['token'] = Config::getApiToken();
+            $this->data['token'] = Config::getApiToken();
+        }
+        if($this->isServiceIdRequired()){
+            Helper::requireServiceId();
+
+            $this->data['serviceId'] = Config::getServiceId();
+        }
         return $this->data;
     }
 

@@ -25,6 +25,8 @@ namespace Paynl\Api\Instore;
  */
 class GetAllTerminals extends Instore
 {
+    protected $apiTokenRequired = true;
+    protected $serviceIdRequired = false;
     /**
      * @param null $endpoint
      * @param null $version

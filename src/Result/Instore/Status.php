@@ -27,5 +27,13 @@ use Paynl\Result\Result;
  */
 class Status extends Result
 {
-    //put your code here
+    public function getTransactionState(){
+        return $this->data['transaction']['state'];
+    }
+    public function getTerminalState(){
+        return $this->data['terminal']['state'];
+    }
+    public function getProgressPercentage(){
+        return $this->data['progress']['percentage'];
+    }
 }

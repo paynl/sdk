@@ -27,5 +27,8 @@ use Paynl\Result\Result;
  */
 class Terminals extends Result
 {
-    //put your code here
+    public function getList()
+    {
+        return $this->data['terminals'];
+    }
 }

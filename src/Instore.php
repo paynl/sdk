@@ -64,7 +64,10 @@ class Instore
     /**
      * Send the payment to a terminal
      *
-     * @param array $options
+     * Options:
+     * ['transactionId'] The transactionId (result from Transaction::Start())
+     * ['terminalId'] The id of the terminal, to get a list of terminals use \Paynl\Instore::getAllTerminals()
+     * @param array $options (see above)
      *
      * @return Result\Payment
      */
@@ -84,11 +87,15 @@ class Instore
     }
 
     /**
-     * Confirm the payment, and send the receipt
+     * Confirm the payment
      *
+     * When email address is set, the customer will receive a receipt of the transaction.
+     * The language can be set to define the language of the email
+     *
+     * Options:
      * ['hash'] string the hash of the transaction
-     * ['email'] string the emailaddress to send the receipt to
-     * ['language'] int the languageId
+     * ['emailAddress'] string the email address to send the receipt to
+     * ['languageId'] int the languageId
      *                  1. Dutch
      *                  2. Flemish
      *                  4. English
@@ -98,6 +105,7 @@ class Instore
      *                  9. Italian
      *
      * @param array $options (See above)
+     * @return Result\ConfirmPayment
      */
     public static function confirmPayment($options)
     {
@@ -106,14 +114,34 @@ class Instore
         if (isset($options['hash'])) {
             $api->setHash($options['hash']);
         }
-        if (isset($options['email'])) {
-            $api->setEmail($options['email']);
+        if (isset($options['emailAddress'])) {
+            $api->setEmailAddress($options['emailAddress']);
         }
-        if (isset($options['language'])) {
-            $api->setLanguage($options['language']);
+        if (isset($options['languageId'])) {
+            $api->setLanguageId($options['languageId']);
         }
 
         $result = $api->doRequest();
         return new Result\ConfirmPayment($result);
+    }
+
+    /**
+     * Get the receipt data of an instore payment
+     * ONLY AVAILABLE FOR 30 MINUTES AFTER COMPLETING THE TRANSACTION!
+     *
+     * Options:
+     * ['hash'] The hash of the instore payment transaction
+     *
+     * @param array $options (see above)
+     * @return Result\Receipt
+     */
+    public static function getReceipt($options){
+        $api = new Api\GetTransactionTicket();
+        if (isset($options['hash'])) {
+            $api->setHash($options['hash']);
+        }
+
+        $result = $api->doRequest();
+        return new Result\Receipt($result);
     }
 }

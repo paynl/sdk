@@ -17,9 +17,12 @@
  */
 
 require_once '../../vendor/autoload.php';
+require_once '../config.php';
 
-\Paynl\Config::setApiToken('e41f83b246b706291ea9ad798ccfd9f0fee5e0ab');
+try {
+    $result = \Paynl\Instore::getAllTerminals();
 
-$result = \Paynl\Instore::getAllTerminals();
-
-var_dump($result->getData());
+    var_dump($result->getData());
+} catch (\Paynl\Error\Error $e) {
+    echo "Fout: " . $e->getMessage();
+}

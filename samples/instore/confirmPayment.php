@@ -17,17 +17,20 @@
  */
 
 require_once '../../vendor/autoload.php';
-
-\Paynl\Config::setApiToken('e41f83b246b706291ea9ad798ccfd9f0fee5e0ab');
+require_once '../config.php';
 
 $hash = $_GET['hash']; //The hash you get from instore/payment
-$email = $_GET['email'];
-$language = $_GET['language'];
+$emailAddress = @$_GET['emailAddress'];
+$languageId = @$_GET['languageId'];
 
-$result = \Paynl\Instore::confirmPayment(array(
-    'hash' => $hash,
-    'email' => $email,
-    'language' => $language
-));
+try {
+    $result = \Paynl\Instore::confirmPayment(array(
+        'hash' => $hash,
+        'emailAddress' => $emailAddress,
+        'languageId' => $languageId
+    ));
 
-var_dump($result->getData());
+    var_dump($result->getData());
+} catch (\Paynl\Error\Error $e) {
+    echo "Fout: " . $e->getMessage();
+}

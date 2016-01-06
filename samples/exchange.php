@@ -17,17 +17,20 @@
  */
 
 require_once '../vendor/autoload.php';
+require_once 'config.php';
 
-\Paynl\Config::setApiToken('e41f83b246b706291ea9ad798ccfd9f0fee5e0ab');
+try {
+    $transaction = \Paynl\Transaction::getForExchange();
 
-$transaction = \Paynl\Transaction::getForExchange();
-
-if ($transaction->isPaid()) {
-    // process the payment
-} elseif ($transaction->isCanceled()) {
-    // payment canceled, restock items
-}
+    if ($transaction->isPaid()) {
+        // process the payment
+    } elseif ($transaction->isCanceled()) {
+        // payment canceled, restock items
+    }
 // always start your response with TRUE|
-echo "TRUE| ";
+    echo "TRUE| ";
 // Optionally you can send a message after TRUE|, you can view this messages in the logs. https://admin.pay.nl/logs/payment_state
-echo $transaction->isPaid() ? 'Paid' : 'Not paid';
+    echo $transaction->isPaid() ? 'Paid' : 'Not paid';
+} catch (\Paynl\Error\Error $e) {
+    echo "Fout: " . $e->getMessage();
+}

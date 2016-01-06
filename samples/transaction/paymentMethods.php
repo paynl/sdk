@@ -17,9 +17,12 @@
  */
 
 require_once '../../vendor/autoload.php';
+require_once '../config.php';
 
-\Paynl\Config::setApiToken('e41f83b246b706291ea9ad798ccfd9f0fee5e0ab');
-\Paynl\Config::setServiceId('SL-3490-4320');
+try {
+    $paymentMethods = \Paynl\Paymentmethods::getList();
+    var_dump($paymentMethods);
+} catch (\Paynl\Error\Error $e) {
+    echo "Fout: " . $e->getMessage();
+}
 
-$paymentMethods = \Paynl\Paymentmethods::getList();
-var_dump($paymentMethods);

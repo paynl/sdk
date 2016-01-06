@@ -17,12 +17,11 @@
  */
 
 require_once '../../vendor/autoload.php';
-
-\Paynl\Config::setApiToken('e41f83b246b706291ea9ad798ccfd9f0fee5e0ab');
+require_once '../config.php';
 
 $transactionId = $_GET['transactionId'];
 try {
     $result = \Paynl\Transaction::refund($transactionId, 5);
-} catch (\Paynl\Error\Api $e) {
+} catch (\Paynl\Error\Error $e) {
     echo $e->getMessage();
 }

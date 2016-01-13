@@ -30,6 +30,8 @@ use Paynl\Helper;
  */
 class Api
 {
+    protected $version = 1;
+
     protected $data = array();
 
     /**
@@ -78,6 +80,10 @@ class Api
 
     public function doRequest($endpoint, $version = null)
     {
+        if(is_null($version)){
+            $version = $this->version;
+        }
+
         $data = $this->getData();
 
         $uri = Config::getApiUrl($endpoint, $version);

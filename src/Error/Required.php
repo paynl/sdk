@@ -24,6 +24,11 @@ namespace Paynl\Error;
  *
  * @author Andy Pieters <andy@andypieters.nl>
  */
-class Required extends \Exception{
-    //put your code here
+class Required extends \Exception
+{
+    public function __construct($message, $code, Exception $previous)
+    {
+        $message = "'$message' is required";
+        parent::__construct($message, $code, $previous);
+    }
 }

@@ -72,6 +72,10 @@ class Api
     {
         $output = Helper::objectToArray($result);
 
+        if(!is_array($output)){
+            throw new Error\Api($output);
+        }
+
         if ($output['request']['result'] != 1 && $output['request']['result'] != 'TRUE') {
             throw new Error\Api($output['request']['errorId'] . ' - ' . $output['request']['errorMessage']);
         }
@@ -85,6 +89,7 @@ class Api
         }
 
         $data = $this->getData();
+
 
         $uri = Config::getApiUrl($endpoint, $version);
 

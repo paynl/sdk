@@ -99,6 +99,9 @@ $result = \Paynl\Transaction::start(array(
             )
         ),
         'language' => 'EN',
+        'ipaddress' => '127.0.0.1',
+        'invoiceDate' => new DateTime('2016-02-16'),
+        'deliveryDate' => new DateTime('2016-06-06'), // in case of tickets for an event, use the event date here
         'enduser' => array(
             'initials' => 'T',
             'lastName' => 'Test',

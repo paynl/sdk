@@ -111,9 +111,34 @@ class Start extends Transaction
     private $_ipaddress;
 
     /**
+     * @var \DateTime
+     */
+    private $_invoiceDate;
+    /**
+     * @var \DateTime
+     */
+    private $_deliveryDate;
+
+    /**
      * @var array the products for the order
      */
     private $_products = array();
+
+    /**
+     * @param \DateTime $invoiceDate
+     */
+    public function setInvoiceDate(\DateTime $invoiceDate)
+    {
+        $this->_invoiceDate = $invoiceDate;
+    }
+
+    /**
+     * @param \DateTime $deliveryDate
+     */
+    public function setDeliveryDate(\DateTime $deliveryDate)
+    {
+        $this->_deliveryDate = $deliveryDate;
+    }
 
     public function setIpAddress($ipAddress)
     {
@@ -366,6 +391,12 @@ class Start extends Transaction
 
         if (!empty($this->_products)) {
             $data['saleData']['orderData'] = $this->_products;
+        }
+        if(!empty($this->_deliveryDate)){
+            $data['saleData']['deliveryDate'] = $this->_deliveryDate->format('d-m-Y');
+        }
+        if(!empty($this->_invoiceDate)){
+            $data['saleData']['invoiceDate'] = $this->_invoiceDate->format('d-m-Y');
         }
 
         if (!empty($this->_enduser)) {

@@ -22,7 +22,7 @@ require_once '../config.php';
 try {
     $result = \Paynl\Transaction::start(array(
         // required
-        'amount' => 0.01,
+        'amount' => 10,
         'returnUrl' => dirname(Paynl\Helper::getBaseUrl()) . '/return.php',
 
         // optional
@@ -35,6 +35,9 @@ try {
         'extra1' => 'ext1',
         'extra2' => 'ext2',
         'extra3' => 'ext3',
+        'ipaddress' => '127.0.0.1',
+        'invoiceDate' => new DateTime('2016-02-16'),
+        'deliveryDate' => new DateTime('2016-06-06'),
         'products' => array(
             array(
                 'id' => 1,

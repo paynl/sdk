@@ -85,6 +85,14 @@ class Transaction
             $api->setIpAddress($options['ipaddress']);
         }
 
+        if(isset($options['invoiceDate'])){
+            $api->setInvoiceDate($options['invoiceDate']);
+        }
+
+        if(isset($options['deliveryDate'])){
+            $api->setDeliveryDate($options['deliveryDate']);
+        }
+
         if (isset($options['products'])) {
             foreach ($options['products'] as $product) {
                 $taxClass = Helper::calculateTaxClass($product['price'],

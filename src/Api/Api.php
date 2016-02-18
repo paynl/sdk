@@ -95,7 +95,16 @@ class Api
 
         $curl = new Curl();
 
+        if(Config::getCAInfoLocation()){
+            // set a custom CAInfo file
+            $curl->setOpt(CURLOPT_CAINFO, Config::getCAInfoLocation());
+        }
+
         $result = $curl->post($uri, $data);
+
+        if($curl->error){
+            throw new Error\Error($curl->errorMessage);
+        }
 
         $output = static::processResult($result);
 

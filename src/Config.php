@@ -37,6 +37,27 @@ class Config
     private static $apiVersion = 5;
 
     /**
+     * @var string path tho CAInfo location
+     */
+    private static $CAInfoLocation = null;
+
+    /**
+     * @return string
+     */
+    public static function getCAInfoLocation()
+    {
+        return self::$CAInfoLocation;
+    }
+
+    /**
+     * @param string $CAInfoLocation
+     */
+    public static function setCAInfoLocation($CAInfoLocation)
+    {
+        self::$CAInfoLocation = $CAInfoLocation;
+    }
+
+    /**
      * @return string The API token used for requests.
      */
     public static function getApiToken()

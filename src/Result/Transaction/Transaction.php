@@ -48,7 +48,7 @@ class Transaction extends Result
      */
     public function isPending()
     {
-        return $this->data['paymentDetails']['stateName'] == 'PENDING';
+        return $this->data['paymentDetails']['stateName'] == 'PENDING' || $this->data['paymentDetails']['stateName'] == 'VERIFY';
     }
 
     /**

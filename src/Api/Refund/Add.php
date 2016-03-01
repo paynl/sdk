@@ -1,0 +1,262 @@
+<?php
+/*
+ * Copyright (C) 2015 Andy Pieters <andy@pay.nl>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+namespace Paynl\Api\Refund;
+
+use Paynl\Helper;
+use Paynl\Config;
+use Paynl\Error\Required as ErrorRequired;
+
+/**
+ * Api class to refund a transaction
+ *
+ * @author Chris de Jong <chris@eventix.io>
+ */
+class Add extends Refund
+{
+    protected $apiTokenRequired = true;
+    protected $serviceIdRequired = true;
+
+    /**
+     * @var int the amount in cents
+     */
+    private $_amount;
+    /**
+     * @var string the bankAccountHolder
+     */
+    private $_bankAccountHolder;
+    /**
+     * @var string the bankAccountNumber
+     */
+    private $_bankAccountNumber;
+    /**
+     * @var string the bankAccountBic
+     */
+    private $_bankAccountBic;
+    /**
+     * @var string the description for this refund
+     */
+    private $_description;
+    /**
+     * @var string additional data promotorId
+     */
+    private $_promotorId;
+    /**
+     * @var string additional data tool
+     */
+    private $_tool;
+    /**
+     * @var string additional data info
+     */
+    private $_info;
+    /**
+     * @var string additional data info
+     */
+    private $_object;
+    /**
+     * @var string additional data extra1
+     */
+    private $_extra1;
+    /**
+     * @var string additional data extra2
+     */
+    private $_extra2;
+    /**
+     * @var string additional data extra3
+     */
+    private $_extra3;
+    /**
+     * @var string the orderId
+     */
+    private $_orderId;
+    /**
+     * @var string the currency
+     */
+    private $_currency;
+    /**
+     * @var string the currency
+     */
+    private $_processDate;
+
+    /**
+     * Get data to send to the api
+     *
+     * @return array
+     * @throws ErrorRequired
+     */
+    protected function getData()
+    {
+        Helper::requireServiceId();
+
+        $this->data['serviceId'] = Config::getServiceId();
+
+        if (empty($this->_amount)) {
+            throw new ErrorRequired('Amount is not set', 1);
+        }
+        $this->data['amount'] = $this->_amount;
+
+        if (empty($this->_bankAccountHolder)) {
+            throw new ErrorRequired('bankAccountHolder is not set', 1);
+        }
+        $this->data['bankAccountHolder'] = $this->_bankAccountHolder;
+
+        if (empty($this->_bankAccountNumber)) {
+            throw new ErrorRequired('bankAccountNumber is not set', 1);
+        }
+        $this->data['bankAccountNumber'] = $this->_bankAccountNumber;
+
+        if (!empty($this->_bankAccountBic)) {
+            $this->data['bankAccountBic'] = $this->_bankAccountBic;
+        }
+        if (!empty($this->_description)) {
+            $this->data['description'] = $this->_description;
+        }
+        if (!empty($this->_promotorId)) {
+            $this->data['promotorId'] = $this->_promotorId;
+        }
+        if (!empty($this->_info)) {
+            $this->data['info'] = $this->_info;
+        }
+        if (!empty($this->_tool)) {
+            $this->data['tool'] = $this->_tool;
+        }
+        if (!empty($this->_object)) {
+            $this->data['object'] = $this->_object;
+        }
+        if (!empty($this->_extra1)) {
+            $this->data['extra1'] = $this->_extra1;
+        }
+        if (!empty($this->_extra2)) {
+            $this->data['extra2'] = $this->_extra2;
+        }
+        if (!empty($this->_extra3)) {
+            $this->data['extra3'] = $this->_extra3;
+        }
+        if (isset($this->_orderId)) {
+            $this->data['orderId'] = $this->_orderId;
+        }
+        if (isset($this->_currency)) {
+            $this->data['currency'] = $this->_currency;
+        }
+        if(!empty($this->_processDate)){
+            $this->data['processDate'] = $this->_processDate->format('d-m-Y');
+        }
+
+        return parent::getData();
+    }
+
+    /**
+     * @param int $amount
+     */
+    public function setAmount($amount)
+    {
+        $this->_amount = (int)$amount;
+    }
+
+    /**
+     * @param string $bankAccountHolder
+     */
+    public function setBankAccountHolder($bankAccountHolder)
+    {
+        $this->_bankAccountHolder = $bankAccountHolder;
+    }
+
+    /**
+     * @param string $bankAccountHolder
+     */
+    public function setBankAccountNumber($bankAccountNumber)
+    {
+        $this->_bankAccountNumber = $bankAccountNumber;
+    }
+
+    /**
+     * @param string $bankAccountHolder
+     */
+    public function setBankAccountBic($bankAccountBic)
+    {
+        $this->_bankAccountBic = $bankAccountBic;
+    }
+
+    /**
+     * @param string $description
+     */
+    public function setDescription($description)
+    {
+        $this->_description = $description;
+    }
+
+    public function setPromotorId($promotorId)
+    {
+        $this->_promotorId = $promotorId;
+    }
+
+    public function setTool($tool)
+    {
+        $this->_tool = $tool;
+    }
+
+    public function setInfo($info)
+    {
+        $this->_info = $info;
+    }
+
+    public function setObject($object)
+    {
+        $this->_object = $object;
+    }
+
+    public function setExtra1($extra1)
+    {
+        $this->_extra1 = $extra1;
+    }
+
+    public function setExtra2($extra2)
+    {
+        $this->_extra2 = $extra2;
+    }
+
+    public function setExtra3($extra3)
+    {
+        $this->_extra3 = $extra3;
+    }
+
+    public function setOrderId($orderId)
+    {
+        $this->_orderId = $orderId;
+    }
+
+    public function setCurrency($currency)
+    {
+        $this->_currency = $currency;
+    }
+
+    public function setProcessDate(\DateTime $processDate)
+    {
+        $this->_processDate = $processDate;
+    }
+
+    /**
+     * @param null $endpoint
+     * @param null $version
+     * @return array
+     */
+    public function doRequest($endpoint = null, $version = null)
+    {
+        return parent::doRequest('Refund/add');
+    }
+}

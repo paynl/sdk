@@ -1,9 +1,11 @@
 {
     "name": "paynl/sdk",
     "require": {
-        "php-curl-class/php-curl-class": "^4.8",
-        "phpunit/phpunit": "^5.2"
+        "php-curl-class/php-curl-class": "^4.8"
     },
+    "require-dev": {
+        "phpunit/phpunit": "^5.2"
+    }
     "authors": [
         {
             "name": "Andy Pieters",

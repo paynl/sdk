@@ -34,6 +34,8 @@ class Api
 
     protected $data = array();
 
+    protected $curl;
+
     /**
      * @var bool Is the ApiToken required for this API
      */
@@ -42,6 +44,46 @@ class Api
      * @var bool Is the serviceId required for this API
      */
     protected $serviceIdRequired = false;
+
+    /**
+     * @return int
+     */
+    public function getVersion()
+    {
+        return $this->version;
+    }
+
+    /**
+     * @param int $version
+     *
+     * @return Api
+     */
+    public function setVersion($version)
+    {
+        $this->version = $version;
+
+        return $this;
+    }
+
+    /**
+     * @return object
+     */
+    public function getCurl()
+    {
+        return $this->curl;
+    }
+
+    /**
+     * @param object $curl
+     *
+     * @return Api
+     */
+    public function setCurl($curl)
+    {
+        $this->curl = $curl;
+
+        return $this;
+    }
 
     public function isApiTokenRequired()
     {
@@ -93,17 +135,19 @@ class Api
 
         $uri = Config::getApiUrl($endpoint, $version);
 
-        $curl = new Curl();
+        if (null === $this->curl) {
+            $this->curl = new Curl();
+        }
 
         if(Config::getCAInfoLocation()){
             // set a custom CAInfo file
-            $curl->setOpt(CURLOPT_CAINFO, Config::getCAInfoLocation());
+            $this->curl->setOpt(CURLOPT_CAINFO, Config::getCAInfoLocation());
         }
 
-        $result = $curl->post($uri, $data);
+        $result = $this->curl->post($uri, $data);
 
-        if($curl->error){
-            throw new Error\Error($curl->errorMessage);
+        if($this->curl->error){
+            throw new Error\Error($this->curl->errorMessage);
         }
 
         $output = static::processResult($result);

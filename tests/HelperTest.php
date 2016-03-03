@@ -24,4 +24,14 @@ class HelperTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals('L', $calculatedTaxClass);
     }
+
+    public function testSplitAddress()
+    {
+        $splittedAddress = \Paynl\Helper::splitAddress('Voorstraat 2');
+
+        $this->assertEquals([
+            'Voorstraat',
+            '2'
+        ], $splittedAddress);
+    }
 }

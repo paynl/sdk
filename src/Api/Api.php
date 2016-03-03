@@ -132,7 +132,6 @@ class Api
 
         $data = $this->getData();
 
-
         $uri = Config::getApiUrl($endpoint, $version);
 
         if (null === $this->curl) {

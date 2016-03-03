@@ -29,9 +29,9 @@ class HelperTest extends PHPUnit_Framework_TestCase
     {
         $splittedAddress = \Paynl\Helper::splitAddress('Voorstraat 2');
 
-        $this->assertEquals([
+        $this->assertEquals(array(
             'Voorstraat',
             '2'
-        ], $splittedAddress);
+        ), $splittedAddress);
     }
 }

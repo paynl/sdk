@@ -1,7 +1,8 @@
 {
     "name": "paynl/sdk",
     "require": {
-        "php-curl-class/php-curl-class": "^4.8"
+        "php-curl-class/php-curl-class": "^4.8",
+        "phpunit/phpunit": "^5.2"
     },
     "authors": [
         {

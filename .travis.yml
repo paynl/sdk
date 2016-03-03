@@ -1,0 +1,26 @@
+language: php
+
+sudo: false
+
+# whitelist for building branches
+branches:
+  only:
+    - master
+    - stable
+
+matrix:
+    include:
+        - php: 5.4
+        - php: 5.5
+        - php: 5.6
+        - php: 7
+    fast_finish: true
+
+before_install:
+    - composer self-update
+
+before_script:
+    - composer install
+
+script:
+    - phpunit --bootstrap vendor/autoload.php  tests/

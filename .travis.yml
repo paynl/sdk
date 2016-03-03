@@ -24,4 +24,4 @@ before_script:
     - composer install
 
 script:
-    - vendor/bin/phpunit --bootstrap vendor/autoload.php  tests/
+    - phpunit --bootstrap vendor/autoload.php  tests/

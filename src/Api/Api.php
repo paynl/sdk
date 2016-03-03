@@ -46,26 +46,6 @@ class Api
     protected $serviceIdRequired = false;
 
     /**
-     * @return int
-     */
-    public function getVersion()
-    {
-        return $this->version;
-    }
-
-    /**
-     * @param int $version
-     *
-     * @return Api
-     */
-    public function setVersion($version)
-    {
-        $this->version = $version;
-
-        return $this;
-    }
-
-    /**
      * @return object
      */
     public function getCurl()

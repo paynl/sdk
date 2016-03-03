@@ -176,3 +176,6 @@ echo $transaction->isPaid()?'Paid':'Not paid';
 
 
 ```
+
+### Testing
+Please run ```phpunit --bootstrap vendor/autoload.php  tests/``` to test the application

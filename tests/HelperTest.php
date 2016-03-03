@@ -4,7 +4,7 @@ class HelperTest extends PHPUnit_Framework_TestCase
 {
     public function testRequireApiTokenException()
     {
-        $this->expectException('\Paynl\Error\Required\ApiToken');
+        $this->setExpectedException('\Paynl\Error\Required\ApiToken');
 
         \Paynl\Config::setApiToken('');
         \Paynl\Helper::requireApiToken();
@@ -12,7 +12,7 @@ class HelperTest extends PHPUnit_Framework_TestCase
 
     public function testRequireServiceIdException()
     {
-        $this->expectException('\Paynl\Error\Required\ServiceId');
+        $this->setExpectedException('\Paynl\Error\Required\ServiceId');
 
         \Paynl\Config::setServiceId('');
         \Paynl\Helper::requireServiceId();

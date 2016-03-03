@@ -93,7 +93,7 @@ class Api
 
         $uri = Config::getApiUrl($endpoint, $version);
 
-        $curl = new Curl();
+        $curl = Config::getCurl();
 
         if(Config::getCAInfoLocation()){
             // set a custom CAInfo file

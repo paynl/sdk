@@ -19,6 +19,8 @@
 
 namespace Paynl;
 
+use Curl\Curl;
+
 /**
  * Description of Pay
  *
@@ -35,6 +37,8 @@ class Config
     private static $apiBase = 'https://rest-api.pay.nl';
     // @var int The version of the Pay.nl API to use for requests.
     private static $apiVersion = 5;
+
+    private static $curl;
 
     /**
      * @var string path tho CAInfo location
@@ -123,4 +127,27 @@ class Config
         return self::$apiBase . '/v' . $version . '/' . $endpoint . '/json';
     }
 
+    /**
+     * @return object
+     */
+    public static function getCurl()
+    {
+        if (null === self::$curl) {
+            self::$curl = new Curl();
+        }
+
+        return self::$curl;
+    }
+
+    /**
+     * @param mixed $curl
+     */
+    public static function setCurl($curl)
+    {
+        if (is_string($curl)) {
+            $curl = new $curl;
+        }
+
+        self::$curl = $curl;
+    }
 }

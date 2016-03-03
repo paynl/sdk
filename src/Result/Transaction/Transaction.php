@@ -70,6 +70,40 @@ class Transaction extends Result
     }
 
     /**
+     * @param bool|true $allowPartialRefunds
+     *
+     * @return bool
+     */
+    public function isRefunded($allowPartialRefunds = true)
+    {
+        if ($this->data['paymentDetails']['state'] == 'REFUND') {
+            return true;
+        }
+
+        if ($allowPartialRefunds && $this->data['paymentDetails']['stateName'] == 'PARTIAL_REFUND') {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPartiallyRefunded()
+    {
+        return $this->data['paymentDetails']['stateName'] == 'PARTIAL_REFUND';
+    }
+
+    /**
+     * @return bool
+     */
+    public function isBeingVerified()
+    {
+        return $this->data['paymentDetails']['stateName'] == 'VERIFY';
+    }
+
+    /**
      * @return float Paid amount in original currency
      */
     public function getPaidCurrencyAmount()

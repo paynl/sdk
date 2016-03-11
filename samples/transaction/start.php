@@ -28,14 +28,15 @@ try {
         // optional
         'exchangeUrl' => dirname(Paynl\Helper::getBaseUrl()) . '/exchange.php',
         'paymentMethod' => 10,
-        'currency' => 'USD',
-        'bank' => 1,
-        'description' => 'demo betaling',
-        'testmode' => 1,
+        'currency' => 'EUR',
+        'expireDate' => new DateTime('2016-04-01'),
+//        'bank' => 1,
+        'description' => '123456',
+        'testmode' => 0,
         'extra1' => 'ext1',
         'extra2' => 'ext2',
         'extra3' => 'ext3',
-        'ipaddress' => '127.0.0.1',
+        'ipaddress' => \Paynl\Helper::getIp(),
         'invoiceDate' => new DateTime('now'),
         'deliveryDate' => new DateTime('2016-06-06'), // in case of tickets for an event, use the event date here
         'products' => array(

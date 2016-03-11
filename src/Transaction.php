@@ -47,6 +47,9 @@ class Transaction
         if (isset($options['currency'])) {
             $api->setCurrency($options['currency']);
         }
+        if(isset($options['expireDate'])){
+            $api->setExpireDate($options['expireDate']);
+        }
 
         if (isset($options['returnUrl'])) {
             $api->setFinishUrl($options['returnUrl']);

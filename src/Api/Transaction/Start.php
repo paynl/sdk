@@ -125,6 +125,20 @@ class Start extends Transaction
     private $_products = array();
 
     /**
+     * @var \DateTime
+     */
+    private $_expireDate;
+
+    /**
+     * @param \DateTime $expireDate
+     */
+    public function setExpireDate(\DateTime $expireDate)
+    {
+        $this->_expireDate = $expireDate;
+    }
+
+
+    /**
      * @param \DateTime $invoiceDate
      */
     public function setInvoiceDate(\DateTime $invoiceDate)
@@ -376,6 +390,10 @@ class Start extends Transaction
         }
         if (isset($this->_currency)) {
             $data['transaction']['currency'] = $this->_currency;
+        }
+
+        if(isset($this->_expireDate)){
+            $data['transaction']['expireDate'] = $this->_expireDate->format('d-m-Y H:i:s');
         }
 
         if (!empty($this->_paymentOptionSubId)) {

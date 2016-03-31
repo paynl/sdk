@@ -197,8 +197,8 @@ class Helper
     public static function getBaseUrl()
     {
         $protocol = isset($_SERVER["HTTPS"]) ? 'https' : 'http';
+        $url = $protocol . '://' . $_SERVER['SERVER_NAME'] .':'.$_SERVER['SERVER_PORT']. $_SERVER['REQUEST_URI'];
 
-        $url = $protocol . '://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
 
         // op de laatste / afknippen (index.php willen we niet zien)
         $baseUrl = substr($url, 0, strrpos($url, '/'));

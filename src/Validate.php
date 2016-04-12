@@ -18,7 +18,7 @@
 
 namespace Paynl;
 
-use \Paynl\Api\Validate\isPayServerIp as Api;
+use \Paynl\Api\Validate\IsPayServerIp as Api;
 
 /**
  * Description of Paymentmethods

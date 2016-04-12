@@ -10,7 +10,7 @@ namespace Paynl\Api\Validate;
 
 use \Paynl\Error;
 
-class isPayServerIp extends Validate
+class IsPayServerIp extends Validate
 {
     protected $apiTokenRequired = false;
     protected $serviceIdRequired = false;

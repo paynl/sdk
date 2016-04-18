@@ -38,15 +38,20 @@ class HelperTest extends PHPUnit_Framework_TestCase
 
     public function testSplitAddress()
     {
-        // @todo Test more types of addresses here
+        // @todo Straatnamen met een nummer er in bijvoorbeeld: Boulevard 1945
         $addresses = array(
             array('Voorstraat 2', 'Voorstraat', '2'),
             array('Kopersteden 10', 'Kopersteden', '10'),
+            array('Kopersteden 10A', 'Kopersteden', '10A'),
             array('Kopersteden 10 A', 'Kopersteden', '10 A'),
+            array('Kopersteden 10-A', 'Kopersteden', '10-A'),
             array('25 American street', 'American street', '25'),
             array('1e Wereldoorlogweg 12', '1e Wereldoorlogweg', '12'),
             array('Lang huisnummer 1234567890', 'Lang huisnummer', '1234567890'),
-
+            array('2e Bothofdwarsstraat 2-44', '2e Bothofdwarsstraat', '2-44'),
+            array('Straat 145-Boven', 'Straat', '145-Boven'),
+            array('Appartementenweg 12-786', 'Appartementenweg', '12-786'),
+            array('Appartementenweg 3 hoog achter', 'Appartementenweg', '3 hoog achter'),
         );
 
         foreach($addresses as $address){

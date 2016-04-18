@@ -172,12 +172,12 @@ class Helper
     {
         $strAddress = trim($strAddress);
 
-        $a = preg_split('/([0-9]+)/', $strAddress, 2,
+        $a = preg_split('/(\\s+)([0-9]+)/', $strAddress, 2,
             PREG_SPLIT_DELIM_CAPTURE);
         $strStreetName = trim(array_shift($a));
         $strStreetNumber = trim(implode('', $a));
 
-        if (empty($strStreetName)) { // American address notation
+        if (empty($strStreetName) || empty($strStreetNumber)) { // American address notation
             $a = preg_split('/([a-zA-Z]{2,})/', $strAddress, 2,
                 PREG_SPLIT_DELIM_CAPTURE);
 

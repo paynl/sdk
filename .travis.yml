@@ -25,3 +25,6 @@ before_script:
 
 script:
     - vendor/bin/phpunit --bootstrap vendor/autoload.php  tests/
+
+after_success:
+  - travis_retry php vendor/bin/coveralls

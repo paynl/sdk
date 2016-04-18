@@ -12,7 +12,7 @@ class PaymentmethodsTest extends PHPUnit_Framework_TestCase
 
 
     private function setDummyData(){
-        $this->testApiResult = file_get_contents(dirname(dirname(__FILE__)).'/dummyData/getService.json');
+        $this->testApiResult = file_get_contents(dirname(__FILE__).'/dummyData/getService.json');
         \Paynl\Config::setCurl(new \Paynl\Curl\Dummy($this->testApiResult));
     }
 
@@ -47,6 +47,25 @@ class PaymentmethodsTest extends PHPUnit_Framework_TestCase
             $this->assertArrayHasKey('visibleName', $paymentMethod);
         }
     }
+    public function testGetPaymentMethodsCountry(){
+        $this->setDummyData();
+
+        \Paynl\Config::setServiceId('SL-1234-5678');
+        \Paynl\Config::setApiToken('123456789012345678901234567890');
+
+        $list = \Paynl\Paymentmethods::getList(array('country' => 'NL'));
+
+        $this->assertInternalType('array',$list);
+
+        foreach($list as $paymentMethod){
+            $this->assertArrayHasKey('id', $paymentMethod);
+            $this->assertArrayHasKey('name', $paymentMethod);
+            $this->assertArrayHasKey('visibleName', $paymentMethod);
+            $this->assertTrue(in_array('ALL',$paymentMethod['countries']) ||
+                              in_array('NL',$paymentMethod['countries']),
+                'Returned paymentMethod invalid for this country');
+        }
+    }
 
     public function testGetBanksNoToken(){
         $this->setExpectedException('\Paynl\Error\Required\Apitoken');
@@ -75,6 +94,22 @@ class PaymentmethodsTest extends PHPUnit_Framework_TestCase
         \Paynl\Config::setApiToken('123456789012345678901234567890');
 
         $banks = \Paynl\Paymentmethods::getBanks();
+
+        $this->assertInternalType('array',$banks);
+
+        foreach($banks as $bank){
+            $this->assertArrayHasKey('id', $bank);
+            $this->assertArrayHasKey('name', $bank);
+            $this->assertArrayHasKey('visibleName', $bank);
+        }
+    }
+    public function testGetBanksInvalidPaymentMethod(){
+        $this->setDummyData();
+
+        \Paynl\Config::setServiceId('SL-1234-5678');
+        \Paynl\Config::setApiToken('123456789012345678901234567890');
+
+        $banks = \Paynl\Paymentmethods::getBanks(12345);//Non existent paymentmethod
 
         $this->assertInternalType('array',$banks);
 

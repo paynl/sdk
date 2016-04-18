@@ -182,7 +182,7 @@ class Helper
                 PREG_SPLIT_DELIM_CAPTURE);
 
             $strStreetNumber = trim(array_shift($a));
-            $strStreetName = implode(' ', $a);
+            $strStreetName = implode('', $a);
         }
 
         return array($strStreetName, $strStreetNumber);

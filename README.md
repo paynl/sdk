@@ -1,4 +1,4 @@
-[![Latest Stable Version](https://poser.pugx.org/paynl/sdk/v/stable)](https://packagist.org/packages/paynl/sdk) [![Total Downloads](https://poser.pugx.org/paynl/sdk/downloads)](https://packagist.org/packages/paynl/sdk) [![Latest Unstable Version](https://poser.pugx.org/paynl/sdk/v/unstable)](https://packagist.org/packages/paynl/sdk) [![Build Status](https://travis-ci.org/paynl/sdk.svg?branch=master)](https://travis-ci.org/paynl/sdk)
+[![Latest Stable Version](https://poser.pugx.org/paynl/sdk/v/stable)](https://packagist.org/packages/paynl/sdk) [![Total Downloads](https://poser.pugx.org/paynl/sdk/downloads)](https://packagist.org/packages/paynl/sdk) [![Latest Unstable Version](https://poser.pugx.org/paynl/sdk/v/unstable)](https://packagist.org/packages/paynl/sdk) [![Build Status](https://travis-ci.org/paynl/sdk.svg?branch=master)](https://travis-ci.org/paynl/sdk)[![Coverage Status](https://coveralls.io/repos/github/paynl/sdk/badge.svg?branch=master)](https://coveralls.io/github/paynl/sdk?branch=master)
 # Pay.nl PHP SDK
 
 ---

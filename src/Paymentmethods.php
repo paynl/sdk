@@ -122,6 +122,5 @@ class Paymentmethods
             return $paymentMethods[$paymentMethodId]['banks'];
         }
         return array();
-
     }
 }

@@ -4,7 +4,8 @@
         "php-curl-class/php-curl-class": "^4.8"
     },
     "require-dev": {
-        "phpunit/phpunit": "^4.8"
+        "phpunit/phpunit": "^4.8",
+        "satooshi/php-coveralls": "~1.0"
     },
     "authors": [
         {

@@ -44,7 +44,11 @@ class ConfigTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf('\Curl\Curl', \Paynl\Config::getCurl());
     }
     public function testGetCurlCustom(){
-        \Paynl\Config::setCurl(new DateTime());
-        $this->assertInstanceOf('\DateTime', \Paynl\Config::getCurl());
+        \Paynl\Config::setCurl(new \Paynl\Curl\Dummy());
+        $this->assertInstanceOf('\Paynl\Curl\Dummy', \Paynl\Config::getCurl());
+    }
+    public function testGetCurlCustomString(){
+        \Paynl\Config::setCurl('\Paynl\Curl\Dummy');
+        $this->assertInstanceOf('\Paynl\Curl\Dummy', \Paynl\Config::getCurl());
     }
 }

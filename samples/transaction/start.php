@@ -60,7 +60,7 @@ try {
             'initials' => 'T',
             'lastName' => 'Test',
             'gender' => 'M',
-            'dob' => '14-05-1999',
+            'birthDate' => '14-05-1999',
             'phoneNumber' => '0612345678',
             'emailAddress' => 'test@test.nl',
         ),

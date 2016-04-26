@@ -6,17 +6,10 @@ class Dummy
     private $_result;
 
     public $error;
-
-    /**
-     * Set the result, this will be returned when post
-     *
-     * @param $result
-     */
-    public function __construct($result)
-    {
+    
+    public function setResult($result){
         $this->_result = $result;
     }
-
 
     //dummy function to prevent errors
     public function __call($name, $arguments)

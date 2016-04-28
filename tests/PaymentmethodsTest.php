@@ -13,7 +13,10 @@ class PaymentmethodsTest extends PHPUnit_Framework_TestCase
 
     private function setDummyData(){
         $this->testApiResult = file_get_contents(dirname(__FILE__).'/dummyData/getService.json');
-        \Paynl\Config::setCurl(new \Paynl\Curl\Dummy($this->testApiResult));
+
+        $curl = new \Paynl\Curl\Dummy();
+        $curl->setResult($this->testApiResult);
+        \Paynl\Config::setCurl($curl);
     }
 
     public function testGetPaymentMethodsNoServiceId(){

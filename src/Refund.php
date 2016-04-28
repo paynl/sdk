@@ -34,7 +34,7 @@ class Refund
      * Start a new transaction
      *
      * @param array|null $options
-     * @return Result\Start
+     * @return Result\Add
      * @throws Error\Error
      */
     public static function add($options = array())
@@ -89,6 +89,9 @@ class Refund
             $api->setCurrency($options['currency']);
         }
         if (isset($options['processDate'])) {
+            if(is_string($options['processDate'])){
+                $options['processDate'] = new \DateTime($options['processDate']);
+            }
             $api->setProcessDate($options['processDate']);
         }
 

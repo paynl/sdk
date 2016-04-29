@@ -76,7 +76,7 @@ class Transaction extends Result
      */
     public function isRefunded($allowPartialRefunds = true)
     {
-        if ($this->data['paymentDetails']['state'] == 'REFUND') {
+        if ($this->data['paymentDetails']['stateName'] == 'REFUND') {
             return true;
         }
 

@@ -126,6 +126,7 @@ class Transaction
         if (isset($options['address'])) {
             $address = array();
             if (isset($options['address']['streetName'])) {
+                $address['streetName'] = $options['deliveryAddress']['streetName'];
                 $address['streetName'] = $options['address']['streetName'];
             }
             if (isset($options['address']['houseNumber'])) {

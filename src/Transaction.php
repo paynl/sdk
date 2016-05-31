@@ -166,6 +166,9 @@ class Transaction
             if (isset($options['invoiceAddress']['country'])) {
                 $invoiceAddress['countryCode'] = $options['invoiceAddress']['country'];
             }
+            if (isset($options['invoiceAddress']['gender'])) {
+                $invoiceAddress['gender'] = $options['invoiceAddress']['gender'];
+            }
 
             $enduser['invoiceAddress'] = $invoiceAddress;
         }

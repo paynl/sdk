@@ -85,6 +85,7 @@ class TransactionTest extends PHPUnit_Framework_TestCase
                 'zipCode' => '5678CD',
                 'city' => 'ITest',
                 'country' => 'NL',
+                'gender' => 'F'
             ),
         ));
         return $result;

@@ -197,7 +197,7 @@ class Transaction
     }
 
     /**
-     * Get the transaction in an exchange script.
+     * Get the transaction in a return script.
      * This will automatically load orderId from the get string to fetch the transaction
      *
      * @return \Paynl\Result\Transaction\Transaction

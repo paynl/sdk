@@ -19,7 +19,7 @@
 namespace Paynl\Result\Transaction;
 
 use Paynl\Result\Result;
-
+use Paynl\Error\Error;
 /**
  * Description of Transaction
  *
@@ -181,6 +181,29 @@ class Transaction extends Result
     public function getExtra3()
     {
         return $this->data['statsDetails']['extra3'];
+    }
+
+    private function _reload(){
+        $result = \Paynl\Transaction::get($this->getId());
+        $this->data = $result->getData();
+    }
+
+    public function approve(){
+        if($this->isBeingVerified()){
+            \Paynl\Transaction::approve($this->getId());
+            $this->_reload(); //status is changed, so refresh the object
+        } else {
+            throw new Error("Cannot approve transaction because it does not have the status 'verify'");
+        }
+    }
+
+    public function decline(){
+        if($this->isBeingVerified()){
+            \Paynl\Transaction::decline($this->getId());
+            $this->_reload();//status is changed, so refresh the object
+        } else {
+            throw new Error("Cannot decline transaction because it does not have the status 'verify'");
+        }
     }
 
 }

@@ -258,4 +258,17 @@ class Transaction
 
         return new Result\Refund($result);
     }
+    public static function approve($transactionId){
+        $api = new Api\Approve();
+        $api->setTransactionId($transactionId);
+        $result = $api->doRequest();
+        return $result['request']['result'] == 1;
+    }
+
+    public static function decline($transactionId){
+        $api = new Api\Decline();
+        $api->setTransactionId($transactionId);
+        $result = $api->doRequest();
+        return $result['request']['result'] == 1;
+    }
 }

@@ -21,12 +21,27 @@ require_once 'config.php';
 
 try {
     $transaction = \Paynl\Transaction::getForExchange();
+    if($transaction->isBeingVerified()){
+        // here you can do your own checks en approve or decline the order yourself
+        // we stop the script after approving or declining, because a new exchange call will follow after declining or approving.
+        // the status of the new exchange call will be paid (approved) or canceled (declined)
+        $approved = false; // use your own function to determine if this should be true or false.
+        $declined = false; // use your own function to determine if this should be true or false.
+        if($approved){
+            $transaction->approve();
+            die("TRUE| Transaction approved");
+        } elseif($declined) {
+            $transaction->decline();
+            die("TRUE| Transaction declined");
+        }
+    }
 
     if ($transaction->isPaid()) {
         // process the payment
     } elseif ($transaction->isCanceled()) {
         // payment canceled, restock items
     }
+
 // always start your response with TRUE|
     echo "TRUE| ";
 // Optionally you can send a message after TRUE|, you can view these messages in the logs. https://admin.pay.nl/logs/payment_state

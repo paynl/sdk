@@ -22,9 +22,9 @@ require_once 'config.php';
 try {
     $transaction = \Paynl\Transaction::getForExchange();
     if($transaction->isBeingVerified()){
-        // here you can do your own checks en approve or decline the order yourself
-        // we stop the script after approving or declining, because a new exchange call will follow after declining or approving.
-        // the status of the new exchange call will be paid (approved) or canceled (declined)
+        // here you can do your own checks and approve or decline the order yourself
+        // the script is stopped after approving or declining, after which a new exchange call will follow.
+        // the status of this new exchange call will be paid (approved) or canceled (declined)
         $approved = false; // use your own function to determine if this should be true or false.
         $declined = false; // use your own function to determine if this should be true or false.
         if($approved){

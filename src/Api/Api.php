@@ -103,6 +103,11 @@ class Api
         $result = $curl->post($uri, $data);
 
         if($curl->error){
+            if(!empty($result)) {
+                if ($result->status == "FALSE") {
+                    throw new Error\Api($result->error);
+                }
+            }
             throw new Error\Error($curl->errorMessage);
         }
 

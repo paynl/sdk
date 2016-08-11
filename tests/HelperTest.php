@@ -52,6 +52,7 @@ class HelperTest extends PHPUnit_Framework_TestCase
             array('Straat 145-Boven', 'Straat', '145-Boven'),
             array('Appartementenweg 12-786', 'Appartementenweg', '12-786'),
             array('Appartementenweg 3 hoog achter', 'Appartementenweg', '3 hoog achter'),
+            array('driesplein 22/2', 'driesplein', '22/2'),
         );
 
         foreach($addresses as $address){

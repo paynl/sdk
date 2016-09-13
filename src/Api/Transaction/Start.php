@@ -106,6 +106,14 @@ class Start extends Transaction
      */
     private $_transferData;
     /**
+     * @var string
+     */
+    private $_transferType;
+    /**
+     * @var string
+     */
+    private $_transferValue;
+    /**
      * @var string the ipaddress of the enduser, used for fraud detecion
      */
     private $_ipaddress;
@@ -188,6 +196,15 @@ class Start extends Transaction
     {
         $this->_transferData = $transferData;
     }
+
+    public function setTransferType($transferType){
+        $this->_transferType = $transferType;
+    }
+
+    public function setTransferValue($transferValue){
+        $this->_transferValue = $transferValue;
+    }
+
 
     /**
      * Add a product to an order
@@ -447,6 +464,13 @@ class Start extends Transaction
         }
         if (!empty($this->_transferData)) {
             $data['statsData']['transferData'] = $this->_transferData;
+        }
+
+        if(!empty($this->_transferType)){
+            $data['transferType'] = $this->_transferType;
+        }
+        if(!empty($this->_transferValue)){
+            $data['transferValue'] = $this->_transferValue;
         }
 
         $this->data = array_merge($data, $this->data);

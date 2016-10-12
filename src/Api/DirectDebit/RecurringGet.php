@@ -8,6 +8,7 @@
 
 namespace Paynl\Api\DirectDebit;
 
+use Paynl\Error\Required;
 
 class RecurringGet extends DirectDebit
 {

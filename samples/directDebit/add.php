@@ -4,8 +4,8 @@ require_once '../config.php';
 try {
     $result = Paynl\DirectDebit::add(array(
         'amount' => 0.1,
-        'bankaccountHolder' => 'A.M. Pieters',
-        'bankaccountNumber' => 'NL91RABO0160099439',
+        'bankaccountHolder' => 'N. Klant',
+        'bankaccountNumber' => 'NL00RAB0123456789',
         
         // optional
         'bankaccountBic' => 'RABONL2U',
@@ -13,7 +13,7 @@ try {
         'processDate' => new DateTime('tomorrow'),
         'description' => 'De omschrijving',
         'ipAddress' => '192.168.20.123',
-        'email' => 'andy@pay.nl',
+        'email' => 'naam@emai.com',
         'promotorId' => '123456789',
         'tool' => 'sdk',
         'info' => 'info',

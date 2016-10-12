@@ -9,6 +9,8 @@
 namespace Paynl\Api\DirectDebit;
 
 
+use Paynl\Error\Required;
+
 class DebitGet extends DirectDebit
 {
     protected $apiTokenRequired = true;

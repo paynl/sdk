@@ -22,7 +22,7 @@ require_once '../config.php';
 try {
     $result = \Paynl\Transaction::start(array(
         // required
-        'amount' => 10,
+        'amount' => 0.1,
         'returnUrl' => dirname(Paynl\Helper::getBaseUrl()) . '/return.php',
 
         // optional
@@ -80,6 +80,13 @@ try {
             'city' => 'ITest',
             'country' => 'NL',
         ),
+
+        // Only use this if you are told to
+//        'transferType' => 'merchant',
+//        'transferValue' => 'M-0123-4567', // the merchantCode
+//
+//        'transferType' => 'transaction',
+//        'transferValue' => '12345678X260bc5', // The transactionId
     ));
 
 // Save this transactionid and link it to your order

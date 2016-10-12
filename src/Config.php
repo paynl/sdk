@@ -46,6 +46,16 @@ class Config
     private static $CAInfoLocation = null;
 
     /**
+     * @param string $apiBase
+     */
+    public static function setApiBase($apiBase)
+    {
+        self::$apiBase = $apiBase;
+    }
+
+
+
+    /**
      * @return string
      */
     public static function getCAInfoLocation()

@@ -176,6 +176,14 @@ class Transaction
             $api->setEnduser($enduser);
         }
 
+        if(isset($options['transferType'])){
+            $api->setTransferType($options['transferType']);
+        }
+
+        if(isset($options['transferValue'])){
+            $api->setTransferValue($options['transferValue']);
+        }
+
         $result = $api->doRequest();
 
         return new Result\Start($result);

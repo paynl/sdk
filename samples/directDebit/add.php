@@ -9,11 +9,11 @@ try {
         
         // optional
         'bankaccountBic' => 'RABONL2U',
-        'exchangeUrl' => 'http://requestb.in/th07swth',
+//        'exchangeUrl' => 'http://path_to_your_exchange/file.php',
         'processDate' => new DateTime('tomorrow'),
         'description' => 'De omschrijving',
         'ipAddress' => '192.168.20.123',
-        'email' => 'naam@emai.com',
+        'email' => 'naam@email.com',
         'promotorId' => '123456789',
         'tool' => 'sdk',
         'info' => 'info',

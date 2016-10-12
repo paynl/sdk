@@ -13,7 +13,7 @@ try {
         'processDate' => '08-07-2016',
 
 //         optional
-        'exchangeUrl' => 'http://requestb.in/th07swth',
+//        'exchangeUrl' => 'http://path_to_your_exchange/file.php',
         'description' => 'De omschrijving',
         'ipAddress' => '192.168.20.123',
         'email' => 'naam@email.com',

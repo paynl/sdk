@@ -1,5 +1,5 @@
 nbproject/*
 composer.lock
 samples/config.php
-.idea/
+.idea/*
 vendor/

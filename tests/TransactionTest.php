@@ -44,6 +44,8 @@ class TransactionTest extends PHPUnit_Framework_TestCase
             'extra3' => 'ext3',
             'ipaddress' => '123.123.123.123',
             'invoiceDate' => 'now',
+            'transferType' => 'transaction',
+            'transferValue' => '123441x12341',
             'deliveryDate' => 'tomorrow', // in case of tickets for an event, use the event date here
             'products' => array(
                 array(
@@ -244,5 +246,65 @@ class TransactionTest extends PHPUnit_Framework_TestCase
 
         $this->setDummyData('Result/refundError');
         \Paynl\Transaction::refund('645958819Xdd3ea1', 5, 'Description');
+    }
+    public function testApprove(){
+        \Paynl\Config::setApiToken('123456789012345678901234567890');
+
+        $this->setDummyData('Result/transactionVerify');
+
+        $transaction = Paynl\Transaction::get('12456789');
+
+        $this->setDummyData('Result/approve');
+        $result = $transaction->approve();
+
+        $this->assertEquals(true, $result);
+    }
+    public function testApprovePaidTransaction(){
+        \Paynl\Config::setApiToken('123456789012345678901234567890');
+
+        $this->setDummyData('Result/transactionPaid');
+
+        $transaction = Paynl\Transaction::get('12456789');
+
+        $this->setDummyData('Result/approve');
+        $this->setExpectedException('\Paynl\Error\Error');
+        $transaction->approve();
+    }
+    public function testDecline(){
+        \Paynl\Config::setApiToken('123456789012345678901234567890');
+
+        $this->setDummyData('Result/transactionVerify');
+
+        $transaction = Paynl\Transaction::get('12456789');
+
+        $this->setDummyData('Result/decline');
+        $result = $transaction->decline();
+
+        $this->assertEquals(true, $result);
+    }
+    public function testDeclinePaidTransaction(){
+        \Paynl\Config::setApiToken('123456789012345678901234567890');
+
+        $this->setDummyData('Result/transactionPaid');
+
+        $transaction = Paynl\Transaction::get('12456789');
+
+        $this->setDummyData('Result/decline');
+        $this->setExpectedException('\Paynl\Error\Error');
+        $transaction->decline();
+    }
+    public function testApproveWithoutTransactionId(){
+        \Paynl\Config::setApiToken('123456789012345678901234567890');
+
+        $this->setExpectedException('\Paynl\Error\Required');
+
+        \Paynl\Transaction::approve('');
+    }
+    public function testDeclineWithoutTransactionId(){
+        \Paynl\Config::setApiToken('123456789012345678901234567890');
+
+        $this->setExpectedException('\Paynl\Error\Required');
+
+        \Paynl\Transaction::decline('');
     }
 }

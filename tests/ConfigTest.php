@@ -39,6 +39,12 @@ class ConfigTest extends PHPUnit_Framework_TestCase
             'https://rest-api.pay.nl/v4/transaction/json',
             \Paynl\Config::getApiUrl('transaction')
         );
+        \Paynl\Config::setApiBase('https://alternative-api.com');
+
+        $this->assertEquals(
+            'https://alternative-api.com/v4/transaction/json',
+            \Paynl\Config::getApiUrl('transaction')
+        );
     }
     public function testGetCurlDefault(){
         $this->assertInstanceOf('\Curl\Curl', \Paynl\Config::getCurl());

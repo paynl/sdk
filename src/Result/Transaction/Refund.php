@@ -27,5 +27,11 @@ use Paynl\Result\Result;
  */
 class Refund extends Result
 {
-    //put your code here
+    /**
+     * @return string The refundId
+     */
+    public function getRefundId()
+    {
+        return $this->data['refundId'];
+    }
 }

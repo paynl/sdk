@@ -190,8 +190,9 @@ class Transaction extends Result
 
     public function approve(){
         if($this->isBeingVerified()){
-            \Paynl\Transaction::approve($this->getId());
+            $result = \Paynl\Transaction::approve($this->getId());
             $this->_reload(); //status is changed, so refresh the object
+            return $result;
         } else {
             throw new Error("Cannot approve transaction because it does not have the status 'verify'");
         }
@@ -199,8 +200,9 @@ class Transaction extends Result
 
     public function decline(){
         if($this->isBeingVerified()){
-            \Paynl\Transaction::decline($this->getId());
+            $result = \Paynl\Transaction::decline($this->getId());
             $this->_reload();//status is changed, so refresh the object
+            return $result;
         } else {
             throw new Error("Cannot decline transaction because it does not have the status 'verify'");
         }

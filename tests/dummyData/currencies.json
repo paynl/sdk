@@ -1,0 +1,177 @@
+[
+  {
+    "id": "24",
+    "description": "Australian dollar",
+    "abbreviation": "AUD"
+  },
+  {
+    "id": "4",
+    "description": "Bulgarian lev",
+    "abbreviation": "BGN"
+  },
+  {
+    "id": "25",
+    "description": "Canadian dollar",
+    "abbreviation": "CAD"
+  },
+  {
+    "id": "18",
+    "description": "Swiss franc",
+    "abbreviation": "CHF"
+  },
+  {
+    "id": "26",
+    "description": "Chinese yuan renminbi",
+    "abbreviation": "CNY"
+  },
+  {
+    "id": "6",
+    "description": "Czech koruna",
+    "abbreviation": "CZK"
+  },
+  {
+    "id": "7",
+    "description": "Danish krone",
+    "abbreviation": "DKK"
+  },
+  {
+    "id": "8",
+    "description": "Estonian kroon",
+    "abbreviation": "EEK"
+  },
+  {
+    "id": "1",
+    "description": "Euro",
+    "abbreviation": "EUR"
+  },
+  {
+    "id": "9",
+    "description": "Pound sterling",
+    "abbreviation": "GBP"
+  },
+  {
+    "id": "27",
+    "description": "Hong Kong dollar",
+    "abbreviation": "HKD"
+  },
+  {
+    "id": "21",
+    "description": "Croatian kuna",
+    "abbreviation": "HRK"
+  },
+  {
+    "id": "10",
+    "description": "Hungarian forint",
+    "abbreviation": "HUF"
+  },
+  {
+    "id": "28",
+    "description": "Indonesian rupiah",
+    "abbreviation": "IDR"
+  },
+  {
+    "id": "37",
+    "description": "Indian rupee",
+    "abbreviation": "INR"
+  },
+  {
+    "id": "19",
+    "description": "Icelandic krona",
+    "abbreviation": "ISK"
+  },
+  {
+    "id": "3",
+    "description": "Japanese yen",
+    "abbreviation": "JPY"
+  },
+  {
+    "id": "29",
+    "description": "South Korean won",
+    "abbreviation": "KRW"
+  },
+  {
+    "id": "11",
+    "description": "Lithuanian litas",
+    "abbreviation": "LTL"
+  },
+  {
+    "id": "12",
+    "description": "Latvian lats",
+    "abbreviation": "LVL"
+  },
+  {
+    "id": "40",
+    "description": "Mexican peso",
+    "abbreviation": "MXN"
+  },
+  {
+    "id": "30",
+    "description": "Malaysian ringgit",
+    "abbreviation": "MYR"
+  },
+  {
+    "id": "20",
+    "description": "Norwegian krone",
+    "abbreviation": "NOK"
+  },
+  {
+    "id": "31",
+    "description": "New Zealand dollar",
+    "abbreviation": "NZD"
+  },
+  {
+    "id": "32",
+    "description": "Philippine peso",
+    "abbreviation": "PHP"
+  },
+  {
+    "id": "14",
+    "description": "Polish zloty",
+    "abbreviation": "PLN"
+  },
+  {
+    "id": "15",
+    "description": "New Romanian leu",
+    "abbreviation": "RON"
+  },
+  {
+    "id": "22",
+    "description": "Russian rouble",
+    "abbreviation": "RUB"
+  },
+  {
+    "id": "16",
+    "description": "Swedish krona",
+    "abbreviation": "SEK"
+  },
+  {
+    "id": "33",
+    "description": "Singapore dollar",
+    "abbreviation": "SGD"
+  },
+  {
+    "id": "17",
+    "description": "Slovak koruna",
+    "abbreviation": "SKK"
+  },
+  {
+    "id": "34",
+    "description": "Thai baht",
+    "abbreviation": "THB"
+  },
+  {
+    "id": "23",
+    "description": "New Turkish lira",
+    "abbreviation": "TRY"
+  },
+  {
+    "id": "2",
+    "description": "US dollar",
+    "abbreviation": "USD"
+  },
+  {
+    "id": "35",
+    "description": "South African rand",
+    "abbreviation": "ZAR"
+  }
+]

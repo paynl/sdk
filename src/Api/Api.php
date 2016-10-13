@@ -18,7 +18,6 @@
 
 namespace Paynl\Api;
 
-use Curl\Curl;
 use Paynl\Config;
 use Paynl\Error;
 use Paynl\Helper;

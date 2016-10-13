@@ -233,6 +233,7 @@ class TransactionTest extends PHPUnit_Framework_TestCase
         $refund = \Paynl\Transaction::refund('645958819Xdd3ea1', 5);
 
         $this->assertInstanceOf('Paynl\Result\Transaction\Refund', $refund);
+        $this->assertStringStartsWith('RF-', $refund->getRefundId());
     }
 
     public function testRefundError()

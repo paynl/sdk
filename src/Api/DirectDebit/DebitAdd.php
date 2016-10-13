@@ -19,7 +19,6 @@
 namespace Paynl\Api\DirectDebit;
 
 use Paynl\Error\Required;
-use Symfony\Component\Config\Definition\Exception\Exception;
 
 /**
  * @author Andy Pieters <andy@pay.nl>
@@ -296,6 +295,9 @@ class DebitAdd extends DirectDebit
         if (!empty($this->_currency)) {
             $this->data['currency'] = $this->_currency;
         }
+        if (!empty($this->_exchangeUrl)) {
+            $this->data['exchangeUrl'] = $this->_exchangeUrl;
+        }
 
         return parent::getData();
     }
@@ -305,7 +307,7 @@ class DebitAdd extends DirectDebit
      * @param int|null $version
      * @return array The result
      */
-    public function doRequest($endpoint= 'DirectDebit/debitAdd', $version = null)
+    public function doRequest($endpoint = 'DirectDebit/debitAdd', $version = null)
     {
         if (is_null($version)) {
             $version = $this->version;

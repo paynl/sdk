@@ -68,25 +68,6 @@ class Voucher
 
     }
 
-//    public static function activate($options = []){
-//        $api = new Api\Activate();
-//
-//        if(isset($options['pincode'])){
-//            $api->setPincode($options['pincode']);
-//        }
-//        if(isset($options['cardNumber'])){
-//            $api->setCardNumber($options['cardNumber']);
-//        }
-//        if(isset($options['amount'])){
-//            $api->setAmount(round($options['amount'] * 100));
-//        }
-//        if(isset($options['posId'])){
-//            $api->setPosId($options['posId']);
-//        }
-//
-//        $result = $api->doRequest();
-//        return $result['request']['result'] == 1;
-//    }
 
 
 }

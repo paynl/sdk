@@ -6,8 +6,6 @@ use Paynl\Result\Result;
 
 class Voucher extends Result
 {
-
-
     /**
      * Returns the balance for the voucher
      * @return float the current balance of the voucher
@@ -48,6 +46,4 @@ class Voucher extends Result
         $this->_reload();
         return $state;
     }
-
-
 }

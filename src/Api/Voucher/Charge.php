@@ -49,29 +49,28 @@ class Charge extends Voucher
      */
     public function setAmount($amount)
     {
-        if(is_numeric($amount)){
+        if (is_numeric($amount)) {
             $this->_amount = $amount;
-        }else{
+        } else {
             throw new Error('Amount is niet numeriek', 1);
         }
     }
 
     protected function getData()
     {
-        if(empty($this->_pincode)){
-            throw new ErrorRequired('pincode is niet geset', 1);
-        }else{
-            $data['pincode'] = $this->_pincode;
-        }
-        if(empty($this->_cardNumber)){
+        if (empty($this->_cardNumber)) {
             throw new ErrorRequired('cardNumber is niet geset', 1);
-        }else{
+        } else {
             $data['cardNumber'] = $this->_cardNumber;
         }
 
-        if(empty($this->_amount)){
+        if (!empty($this->_pincode)) {
+            $data['pincode'] = $this->_pincode;
+        }
+
+        if (empty($this->_amount)) {
             throw new ErrorRequired('Amount is niet geset', 1);
-        }else{
+        } else {
             $data['amount'] = $this->_amount;
         }
 

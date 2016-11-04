@@ -31,7 +31,6 @@ class Voucher
      */
     public static function balance($options = [])
     {
-
         $api = new Api\Balance();
 
         if(isset($options['cardNumber'])){
@@ -67,7 +66,4 @@ class Voucher
         return $result['request']['result'] == 1;
 
     }
-
-
-
 }

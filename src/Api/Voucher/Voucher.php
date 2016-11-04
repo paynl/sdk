@@ -20,7 +20,7 @@ class Voucher extends Api
      */
     public function doRequest($endpoint, $version = null)
     {
-        if(is_null($version)){
+        if (is_null($version)) {
             $version = $this->version;
         }
 

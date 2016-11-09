@@ -22,7 +22,6 @@ use Paynl\Helper;
 use Paynl\Config;
 use Paynl\Error\Required as ErrorRequired;
 use Paynl\Error\Error as Error;
-
 /**
  * Api class to start a new transaction
  *
@@ -214,17 +213,17 @@ class Start extends Transaction
      * @param string $description
      * @param int $price
      * @param int $quantity
-     * @param int $vatPercentage
+     * @param int $vatCode
      * @throws Error
      */
-    public function addProduct($id, $description, $price, $quantity,
-                               $vatPercentage)
+    public function addProduct($id, $description, $productType , $price, $quantity,
+                               $vatCode, $vatPercentage)
     {
         if (!is_numeric($price)) {
-            throw new Error('Price moet numeriek zijn', 1);
+            throw new Error('Price must be numeric', 1);
         }
         if (!is_numeric($quantity)) {
-            throw new Error('Quantity moet numeriek zijn', 1);
+            throw new Error('Quantity must be numeric', 1);
         }
 
         $quantity = $quantity * 1;
@@ -234,10 +233,12 @@ class Start extends Transaction
 
         $arrProduct = array(
             'productId' => $id,
+            'productType' => $productType,
             'description' => $description,
             'price' => $price,
             'quantity' => $quantity,
-            'vatCode' => $vatPercentage,
+            'vatCode' => $vatCode,
+            'vatPercentage' => $vatPercentage
         );
         $this->_products[] = $arrProduct;
     }

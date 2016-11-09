@@ -22,7 +22,7 @@ require_once '../config.php';
 try {
     $result = \Paynl\Transaction::start(array(
         // required
-        'amount' => 0.1,
+        'amount' => 12.5,
         'returnUrl' => dirname(Paynl\Helper::getBaseUrl()) . '/return.php',
 
         // optional
@@ -44,16 +44,42 @@ try {
                 'id' => 1,
                 'name' => 'een product',
                 'price' => 5,
-                'tax' => 0.87,
+                'vatPercentage' => 21,
                 'qty' => 1,
+                'type' => \Paynl\Transaction::PRODUCT_TYPE_ARTICLE
             ),
             array(
                 'id' => 2,
-                'name' => 'ander product',
+                'name' => 'ander product 15 %',
                 'price' => 5,
-                'tax' => 0.87,
+                'vatPercentage' => 15,
                 'qty' => 1,
-            )
+                'type' => \Paynl\Transaction::PRODUCT_TYPE_ARTICLE
+            ),
+            array(
+                'id' => 'shipping',
+                'name' => 'verzendkosten',
+                'price' => 5,
+                'vatPercentage' => 21,
+                'qty' => 1,
+                'type' => \Paynl\Transaction::PRODUCT_TYPE_SHIPPING
+            ),
+            array(
+                'id' => 'fee',
+                'name' => 'Handling fee',
+                'price' => 1,
+                'vatPercentage' => 21,
+                'qty' => 1,
+                'type' => \Paynl\Transaction::PRODUCT_TYPE_HANDLING
+            ),
+            array(
+                'id' => '5543',
+                'name' => 'Coupon 3,50 korting',
+                'price' => -3.5,
+                'vatPercentage' => 21,
+                'qty' => 1,
+                'type' => \Paynl\Transaction::PRODUCT_TYPE_DISCOUNT
+            ),
         ),
         'language' => 'EN',
         'enduser' => array(

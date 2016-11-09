@@ -131,6 +131,9 @@ class Transaction
             if (isset($options['address']['houseNumber'])) {
                 $address['streetNumber'] = $options['address']['houseNumber'];
             }
+            if (isset($options['address']['houseNumberExtension'])) {
+                $address['streetNumberExtension'] = $options['address']['houseNumberExtension'];
+            }
             if (isset($options['address']['zipCode'])) {
                 $address['zipCode'] = $options['address']['zipCode'];
             }
@@ -156,6 +159,9 @@ class Transaction
             }
             if (isset($options['invoiceAddress']['houseNumber'])) {
                 $invoiceAddress['streetNumber'] = $options['invoiceAddress']['houseNumber'];
+            }
+            if (isset($options['invoiceAddress']['houseNumberExtension'])) {
+                $invoiceAddress['streetNumberExtension'] = $options['invoiceAddress']['houseNumberExtension'];
             }
             if (isset($options['invoiceAddress']['zipCode'])) {
                 $invoiceAddress['zipCode'] = $options['invoiceAddress']['zipCode'];

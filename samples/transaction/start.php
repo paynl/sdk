@@ -36,7 +36,7 @@ try {
         'extra1' => 'ext1',
         'extra2' => 'ext2',
         'extra3' => 'ext3',
-        'ipaddress' => \Paynl\Helper::getIp(),
+        'ipaddress' => '10.0.0.1',
         'invoiceDate' => new DateTime('now'),
         'deliveryDate' => new DateTime('2016-06-06'), // in case of tickets for an event, use the event date here
         'products' => array(
@@ -67,6 +67,7 @@ try {
         'address' => array(
             'streetName' => 'Test',
             'houseNumber' => '10',
+            'houseNumberExtension' => 'A',
             'zipCode' => '1234AB',
             'city' => 'Test',
             'country' => 'NL',
@@ -76,6 +77,7 @@ try {
             'lastName' => 'ITEST',
             'streetName' => 'Istreet',
             'houseNumber' => '70',
+            'houseNumberExtension' => 'A',
             'zipCode' => '5678CD',
             'city' => 'ITest',
             'country' => 'NL',

@@ -29,6 +29,10 @@ use Paynl\Api\Transaction as Api;
  */
 class Transaction
 {
+    const PRODUCT_TYPE_ARTICLE = 'ARTICLE';
+    const PRODUCT_TYPE_SHIPPING = 'SHIPPING';
+    const PRODUCT_TYPE_HANDLING = 'HANDLING';
+    const PRODUCT_TYPE_DISCOUNT = 'DISCOUNT';
 
     /**
      * Start a new transaction
@@ -47,8 +51,8 @@ class Transaction
         if (isset($options['currency'])) {
             $api->setCurrency($options['currency']);
         }
-        if(isset($options['expireDate'])){
-            if(is_string($options['expireDate'])){
+        if (isset($options['expireDate'])) {
+            if (is_string($options['expireDate'])) {
                 $options['expireDate'] = new \DateTime($options['expireDate']);
             }
             $api->setExpireDate($options['expireDate']);
@@ -91,15 +95,15 @@ class Transaction
             $api->setIpAddress($options['ipaddress']);
         }
 
-        if(isset($options['invoiceDate'])){
-            if(is_string($options['invoiceDate'])){
+        if (isset($options['invoiceDate'])) {
+            if (is_string($options['invoiceDate'])) {
                 $options['invoiceDate'] = new \DateTime($options['invoiceDate']);
             }
             $api->setInvoiceDate($options['invoiceDate']);
         }
 
-        if(isset($options['deliveryDate'])){
-            if(is_string($options['deliveryDate'])){
+        if (isset($options['deliveryDate'])) {
+            if (is_string($options['deliveryDate'])) {
                 $options['deliveryDate'] = new \DateTime($options['deliveryDate']);
             }
             $api->setDeliveryDate($options['deliveryDate']);
@@ -107,15 +111,27 @@ class Transaction
 
         if (isset($options['products'])) {
             foreach ($options['products'] as $product) {
-                $taxClass = Helper::calculateTaxClass($product['price'],
-                    $product['tax']);
-                $api->addProduct($product['id'], $product['name'],
-                    round($product['price'] * 100), $product['qty'], $taxClass);
+                $taxClass = Helper::calculateTaxClass($product['price'], $product['tax']);
+
+                $taxPercentage = null;
+                if (isset($product['vatPercentage']) && is_numeric($product['vatPercentage'])) {
+                    $taxPercentage = round($product['vatPercentage'], 2);
+                    $taxClass = Helper::calculateTaxClass(100 + $taxPercentage, $taxPercentage);
+                } else {
+                    $taxPercentage = round(Helper::calculateTaxPercentage($product['price'], $product['tax']));
+                }
+
+                if (!isset($product['type'])) {
+                    $product['type'] = self::PRODUCT_TYPE_ARTICLE;
+                }
+
+                $api->addProduct($product['id'], $product['name'], $product['type'], round($product['price'] * 100),
+                    $product['qty'], $taxClass, $taxPercentage);
             }
         }
         $enduser = array();
         if (isset($options['enduser'])) {
-            if(isset($options['enduser']['birthDate'])){
+            if (isset($options['enduser']['birthDate'])) {
                 $options['enduser']['birthDate'] = new \DateTime($options['enduser']['birthDate']);
             }
             $enduser = $options['enduser'];
@@ -182,11 +198,11 @@ class Transaction
             $api->setEnduser($enduser);
         }
 
-        if(isset($options['transferType'])){
+        if (isset($options['transferType'])) {
             $api->setTransferType($options['transferType']);
         }
 
-        if(isset($options['transferValue'])){
+        if (isset($options['transferValue'])) {
             $api->setTransferValue($options['transferValue']);
         }
 
@@ -272,14 +288,17 @@ class Transaction
 
         return new Result\Refund($result);
     }
-    public static function approve($transactionId){
+
+    public static function approve($transactionId)
+    {
         $api = new Api\Approve();
         $api->setTransactionId($transactionId);
         $result = $api->doRequest();
         return $result['request']['result'] == 1;
     }
 
-    public static function decline($transactionId){
+    public static function decline($transactionId)
+    {
         $api = new Api\Decline();
         $api->setTransactionId($transactionId);
         $result = $api->doRequest();

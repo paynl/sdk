@@ -135,6 +135,16 @@ class Helper
         }
     }
 
+    public static function calculateTaxPercentage($amountInclTax, $taxAmount){
+        // return 0 if amount or tax is 0
+        if ($taxAmount == 0 || $amountInclTax == 0) {
+            return 0;
+        }
+        $amountExclTax = $amountInclTax - $taxAmount;
+        $taxRate = ($taxAmount / $amountExclTax) * 100;
+
+        return $taxRate;
+    }
     /**
      * Determine the tax class to send to Pay.nl
      *
@@ -144,19 +154,14 @@ class Helper
      */
     public static function calculateTaxClass($amountInclTax, $taxAmount)
     {
-
         $taxClasses = array(
             0 => 'N',
             6 => 'L',
             21 => 'H'
         );
 
-        // return 0 if amount or tax is 0
-        if ($taxAmount == 0 || $amountInclTax == 0) {
-            return $taxClasses[0];
-        }
-        $amountExclTax = $amountInclTax - $taxAmount;
-        $taxRate = ($taxAmount / $amountExclTax) * 100;
+        $taxRate = self::calculateTaxPercentage($amountInclTax, $taxAmount);
+
         $nearestTaxRate = self::nearest($taxRate, array_keys($taxClasses));
         return ($taxClasses[$nearestTaxRate]);
     }

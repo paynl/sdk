@@ -89,6 +89,8 @@ try {
             'birthDate' => '14-05-1999',
             'phoneNumber' => '0612345678',
             'emailAddress' => 'test@test.nl',
+            'customerReference' => '456789',//your customer id
+            'customerTrust' => 5, // -10 - 10 how much do you trust this customer? -10 untrustable 10 trusted
         ),
         'address' => array(
             'streetName' => 'Test',

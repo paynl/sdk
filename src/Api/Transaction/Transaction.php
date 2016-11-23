@@ -30,7 +30,7 @@ class Transaction extends Api
     /**
      * @var int the version of the api
      */
-    protected $version = 5;
+    protected $version = 6;
 
     /**
      * @param string $endpoint

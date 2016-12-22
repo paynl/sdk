@@ -111,7 +111,9 @@ class Transaction
 
         if (isset($options['products'])) {
             foreach ($options['products'] as $product) {
-                $taxClass = Helper::calculateTaxClass($product['price'], $product['tax']);
+                if(isset($product['tax'])) {
+                    $taxClass = Helper::calculateTaxClass($product['price'], $product['tax']);
+                }
 
                 $taxPercentage = null;
                 if (isset($product['vatPercentage']) && is_numeric($product['vatPercentage'])) {

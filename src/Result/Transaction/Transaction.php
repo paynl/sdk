@@ -136,6 +136,14 @@ class Transaction extends Result
     }
 
     /**
+     * @return string The name of the payment method
+     */
+    public function getPaymentMethodName()
+    {
+        return $this->data['paymentDetails']['paymentProfileName'];
+    }
+
+    /**
      * @return string The account number, or masked creditcard number
      */
     public function getAccountNumber()

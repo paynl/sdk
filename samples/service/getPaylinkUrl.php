@@ -33,7 +33,7 @@ try {
         'amountMin' => 0,
 
         'countryCode' => 'nl',
-        'language' => 'en',
+        'language' => 'nl',
 
         'extra1' => [
             'name' => 'Customer Id',

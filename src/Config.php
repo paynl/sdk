@@ -46,14 +46,34 @@ class Config
     private static $CAInfoLocation = null;
 
     /**
+     * @var bool Disable this if you have certificate errors that you don't know how to fix
+     */
+    private static $verifyPeer = true;
+
+    /**
+     * @return bool
+     */
+    public static function getVerifyPeer()
+    {
+        return self::$verifyPeer;
+    }
+
+    /**
+     * @param bool $verifyPeer
+     */
+    public static function setVerifyPeer($verifyPeer)
+    {
+        self::$verifyPeer = (boolean)$verifyPeer;
+    }
+
+
+    /**
      * @param string $apiBase
      */
     public static function setApiBase($apiBase)
     {
         self::$apiBase = $apiBase;
     }
-
-
 
     /**
      * @return string

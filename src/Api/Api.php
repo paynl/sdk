@@ -99,6 +99,9 @@ class Api
             $curl->setOpt(CURLOPT_CAINFO, Config::getCAInfoLocation());
         }
 
+        $verifyPeer = Config::getVerifyPeer();
+        $curl->setOpt(CURLOPT_SSL_VERIFYPEER, $verifyPeer);
+
         $result = $curl->post($uri, $data);
 
         if($curl->error){

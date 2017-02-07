@@ -4,3 +4,5 @@
 
 //optional: you can download it on https://curl.haxx.se/ca/cacert.pem
 //\Paynl\Config::setCAInfoLocation('path/to/cacert.pem'); 
+// Or you can skip verifyPeer
+//\Paynl\Config::setVerifyPeer(false);

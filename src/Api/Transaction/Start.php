@@ -18,10 +18,11 @@
 
 namespace Paynl\Api\Transaction;
 
-use Paynl\Helper;
 use Paynl\Config;
-use Paynl\Error\Required as ErrorRequired;
 use Paynl\Error\Error as Error;
+use Paynl\Error\Required as ErrorRequired;
+use Paynl\Helper;
+
 /**
  * Api class to start a new transaction
  *
@@ -196,11 +197,13 @@ class Start extends Transaction
         $this->_transferData = $transferData;
     }
 
-    public function setTransferType($transferType){
+    public function setTransferType($transferType)
+    {
         $this->_transferType = $transferType;
     }
 
-    public function setTransferValue($transferValue){
+    public function setTransferValue($transferValue)
+    {
         $this->_transferValue = $transferValue;
     }
 
@@ -216,7 +219,7 @@ class Start extends Transaction
      * @param int $vatCode
      * @throws Error
      */
-    public function addProduct($id, $description, $productType , $price, $quantity,
+    public function addProduct($id, $description, $productType, $price, $quantity,
                                $vatCode, $vatPercentage)
     {
         if (!is_numeric($price)) {
@@ -371,9 +374,14 @@ class Start extends Transaction
         $this->_description = $description;
     }
 
+    public function doRequest($endpoint = null, $version = null)
+    {
+        return parent::doRequest('transaction/start');
+    }
+
     protected function getData()
     {
-        // Checken of alle verplichte velden geset zijn      
+        // Checken of alle verplichte velden geset zijn
         Helper::requireServiceId();
 
         $data['serviceId'] = Config::getServiceId();
@@ -410,7 +418,7 @@ class Start extends Transaction
             $data['transaction']['currency'] = $this->_currency;
         }
 
-        if(isset($this->_expireDate)){
+        if (isset($this->_expireDate)) {
             $data['transaction']['expireDate'] = $this->_expireDate->format('d-m-Y H:i:s');
         }
 
@@ -428,14 +436,18 @@ class Start extends Transaction
         if (!empty($this->_products)) {
             $data['saleData']['orderData'] = $this->_products;
         }
-        if(!empty($this->_deliveryDate)){
+        if (!empty($this->_deliveryDate)) {
             $data['saleData']['deliveryDate'] = $this->_deliveryDate->format('d-m-Y');
         }
-        if(!empty($this->_invoiceDate)){
+        if (!empty($this->_invoiceDate)) {
             $data['saleData']['invoiceDate'] = $this->_invoiceDate->format('d-m-Y');
         }
 
         if (!empty($this->_enduser)) {
+            if ($this->_enduser['birthDate']) {
+                $this->_enduser['dob'] = $this->_enduser['birthDate']->format('d-m-Y');
+                unset($this->_enduser['birthDate']);
+            }
             $data['enduser'] = $this->_enduser;
         }
 
@@ -467,20 +479,15 @@ class Start extends Transaction
             $data['statsData']['transferData'] = $this->_transferData;
         }
 
-        if(!empty($this->_transferType)){
+        if (!empty($this->_transferType)) {
             $data['transferType'] = $this->_transferType;
         }
-        if(!empty($this->_transferValue)){
+        if (!empty($this->_transferValue)) {
             $data['transferValue'] = $this->_transferValue;
         }
 
         $this->data = array_merge($data, $this->data);
 
         return parent::getData();
-    }
-
-    public function doRequest($endpoint = null, $version = null)
-    {
-        return parent::doRequest('transaction/start');
     }
 }

@@ -113,6 +113,8 @@ class Transaction
             foreach ($options['products'] as $product) {
                 if(isset($product['tax'])) {
                     $taxClass = Helper::calculateTaxClass($product['price'], $product['tax']);
+                } else {
+                    $taxClass = Helper::calculateTaxClass($product['price'], 0);
                 }
 
                 $taxPercentage = null;
@@ -133,7 +135,7 @@ class Transaction
         }
         $enduser = array();
         if (isset($options['enduser'])) {
-            if (isset($options['enduser']['birthDate'])) {
+            if (isset($options['enduser']['birthDate']) && is_string($options['enduser']['birthDate'])) {
                 $options['enduser']['birthDate'] = new \DateTime($options['enduser']['birthDate']);
             }
             $enduser = $options['enduser'];

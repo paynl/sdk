@@ -114,7 +114,7 @@ class Transaction
                 if(isset($product['tax'])) {
                     $taxClass = Helper::calculateTaxClass($product['price'], $product['tax']);
                 } else {
-                    $taxClass = Helper::calculateTaxClass($product['price'], 0);
+                    $taxClass = 'N';
                 }
 
                 $taxPercentage = null;

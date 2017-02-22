@@ -444,7 +444,7 @@ class Start extends Transaction
         }
 
         if (!empty($this->_enduser)) {
-            if ($this->_enduser['birthDate']) {
+            if (isset($this->_enduser['birthDate'])) {
                 $this->_enduser['dob'] = $this->_enduser['birthDate']->format('d-m-Y');
                 unset($this->_enduser['birthDate']);
             }

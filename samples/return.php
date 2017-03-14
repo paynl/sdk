@@ -34,6 +34,10 @@ try {
     } elseif ($transaction->isCanceled()) {
         // redirect back to checkout
         echo "Payment canceled <br /><a href='transaction/start.php'>Try again</a>";
+    } elseif ($transaction->isAuthorized()) {
+        echo "Payment authorized<br />";
+        echo "<a href='transaction/capture.php?transactionId=" . $transaction->getId() . "'>capture</a><br />";
+        echo "<a href='transaction/void.php?transactionId=" . $transaction->getId() . "'>void</a>";
     }
 } catch (\Paynl\Error\Error $e) {
     echo "Fout: " . $e->getMessage();

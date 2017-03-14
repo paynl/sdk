@@ -308,4 +308,18 @@ class Transaction
         $result = $api->doRequest();
         return $result['request']['result'] == 1;
     }
+
+    public static function capture($transactionId){
+        $api = new Api\Capture();
+        $api->setTransactionId($transactionId);
+        $result = $api->doRequest();
+        return $result['request']['result'] == 1;
+    }
+
+    public static function void($transactionId){
+        $api = new Api\Void();
+        $api->setTransactionId($transactionId);
+        $result = $api->doRequest();
+        return $result['request']['result'] == 1;
+    }
 }

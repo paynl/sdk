@@ -18,8 +18,9 @@
 
 namespace Paynl\Result\Transaction;
 
-use Paynl\Result\Result;
 use Paynl\Error\Error;
+use Paynl\Result\Result;
+
 /**
  * Description of Transaction
  *
@@ -27,14 +28,6 @@ use Paynl\Error\Error;
  */
 class Transaction extends Result
 {
-    /**
-     * @return string The transaction id
-     */
-    public function getId()
-    {
-        return $this->data['transactionId'];
-    }
-
     /**
      * @return bool Transaction is paid
      */
@@ -69,6 +62,24 @@ class Transaction extends Result
         return $this->data['paymentDetails']['state'] < 0;
     }
 
+    public function isAuthorized()
+    {
+        return $this->data['paymentDetails']['state'] == 95;
+    }
+
+    public function void(){
+        if(!$this->isAuthorized()){
+            throw new Error('Cannod void transaction, status is not authorized');
+        }
+        return \Paynl\Transaction::void($this->getId());
+    }
+    public function capture(){
+        if(!$this->isAuthorized()){
+            throw new Error('Cannod capture transaction, status is not authorized');
+        }
+        return \Paynl\Transaction::capture($this->getId());
+    }
+
     /**
      * @param bool|true $allowPartialRefunds
      *
@@ -93,14 +104,6 @@ class Transaction extends Result
     public function isPartiallyRefunded()
     {
         return $this->data['paymentDetails']['stateName'] == 'PARTIAL_REFUND';
-    }
-
-    /**
-     * @return bool
-     */
-    public function isBeingVerified()
-    {
-        return $this->data['paymentDetails']['stateName'] == 'VERIFY';
     }
 
     /**
@@ -191,13 +194,9 @@ class Transaction extends Result
         return $this->data['statsDetails']['extra3'];
     }
 
-    private function _reload(){
-        $result = \Paynl\Transaction::get($this->getId());
-        $this->data = $result->getData();
-    }
-
-    public function approve(){
-        if($this->isBeingVerified()){
+    public function approve()
+    {
+        if ($this->isBeingVerified()) {
             $result = \Paynl\Transaction::approve($this->getId());
             $this->_reload(); //status is changed, so refresh the object
             return $result;
@@ -206,8 +205,31 @@ class Transaction extends Result
         }
     }
 
-    public function decline(){
-        if($this->isBeingVerified()){
+    /**
+     * @return bool
+     */
+    public function isBeingVerified()
+    {
+        return $this->data['paymentDetails']['stateName'] == 'VERIFY';
+    }
+
+    /**
+     * @return string The transaction id
+     */
+    public function getId()
+    {
+        return $this->data['transactionId'];
+    }
+
+    private function _reload()
+    {
+        $result = \Paynl\Transaction::get($this->getId());
+        $this->data = $result->getData();
+    }
+
+    public function decline()
+    {
+        if ($this->isBeingVerified()) {
             $result = \Paynl\Transaction::decline($this->getId());
             $this->_reload();//status is changed, so refresh the object
             return $result;

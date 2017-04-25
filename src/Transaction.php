@@ -18,9 +18,8 @@
 
 namespace Paynl;
 
-use Paynl\Result\Transaction as Result;
-
 use Paynl\Api\Transaction as Api;
+use Paynl\Result\Transaction as Result;
 
 /**
  * Description of Transaction
@@ -111,7 +110,7 @@ class Transaction
 
         if (isset($options['products'])) {
             foreach ($options['products'] as $product) {
-                if(isset($product['tax'])) {
+                if (isset($product['tax'])) {
                     $taxClass = Helper::calculateTaxClass($product['price'], $product['tax']);
                 } else {
                     $taxClass = 'N';
@@ -216,6 +215,18 @@ class Transaction
     }
 
     /**
+     * Get the transaction in a return script.
+     * This will automatically load orderId from the get string to fetch the transaction
+     *
+     * @return \Paynl\Result\Transaction\Transaction
+     */
+    public static function getForReturn()
+    {
+        $transactionId = $_GET['orderId'];
+        return self::get($transactionId);
+    }
+
+    /**
      * Get the transaction
      *
      * @param string $transactionId
@@ -228,18 +239,6 @@ class Transaction
         $result = $api->doRequest();
         $result['transactionId'] = $transactionId;
         return new Result\Transaction($result);
-    }
-
-    /**
-     * Get the transaction in a return script.
-     * This will automatically load orderId from the get string to fetch the transaction
-     *
-     * @return \Paynl\Result\Transaction\Transaction
-     */
-    public static function getForReturn()
-    {
-        $transactionId = $_GET['orderId'];
-        return self::get($transactionId);
     }
 
     /**
@@ -309,17 +308,55 @@ class Transaction
         return $result['request']['result'] == 1;
     }
 
-    public static function capture($transactionId){
+    public static function capture($transactionId)
+    {
         $api = new Api\Capture();
         $api->setTransactionId($transactionId);
         $result = $api->doRequest();
         return $result['request']['result'] == 1;
     }
 
-    public static function void($transactionId){
+    public static function void($transactionId)
+    {
         $api = new Api\Void();
         $api->setTransactionId($transactionId);
         $result = $api->doRequest();
         return $result['request']['result'] == 1;
+    }
+
+    /**
+     * Create a recurring transaction from an existing transaction
+     * This is currently only suitable for VISA and MasterCard Ask Pay.nl to activate this option for you.
+     *
+     * @param array $options An array that contains the following elements: transactionId (required), amount, description, extra1, extra2, extra3
+     * @return Result\AddRecurring
+     */
+    public static function addRecurring($options = array())
+    {
+        $api = new Api\AddRecurring();
+
+        if (isset($options['transactionId'])) {
+            $api->setTransactionId($options['transactionId']);
+        }
+        if (isset($options['amount'])) {
+            $amount = round($options['amount'] * 100);
+            $api->setAmount(round($amount));
+        }
+        if (isset($options['description'])) {
+            $api->setDescription($options['description']);
+        }
+        if (isset($options['extra1'])) {
+            $api->setExtra1($options['extra1']);
+        }
+        if (isset($options['extra2'])) {
+            $api->setExtra2($options['extra2']);
+        }
+        if (isset($options['extra3'])) {
+            $api->setExtra3($options['extra3']);
+        }
+
+        $result = $api->doRequest();
+
+        return new Result\AddRecurring($result);
     }
 }

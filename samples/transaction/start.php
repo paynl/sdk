@@ -100,6 +100,12 @@ try {
             'city' => 'Test',
             'country' => 'NL',
         ),
+        'company' => array(
+            'name' => 'CompanyName',
+            'cocNumber' => '12345678',
+            'vatNumber' => 'NL0123456789',
+            'countryCode' => 'NL'
+        ),
         'invoiceAddress' => array(
             'initials' => 'IT',
             'lastName' => 'ITEST',

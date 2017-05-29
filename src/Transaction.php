@@ -139,6 +139,9 @@ class Transaction
             }
             $enduser = $options['enduser'];
         }
+        if(isset($options['company'])){
+            $enduser['company'] = $options['company'];
+        }
         if (isset($options['language'])) {
             $enduser['language'] = $options['language'];
         }

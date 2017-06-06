@@ -31,7 +31,7 @@ class Instore extends Api
     /**
      * @var int the version of the api
      */
-    protected $version = 1;
+    protected $version = 2;
 
     /**
      * @param string $endpoint

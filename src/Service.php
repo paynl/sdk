@@ -17,6 +17,7 @@
  */
 
 namespace Paynl;
+use Paynl\Api\Service\GetAll;
 use Paynl\Api\Service\GetPayLinkUrl;
 
 
@@ -69,5 +70,10 @@ class Service
         }
         $result = $api->doRequest();
         return $result['url'];
+    }
+    public static function getAll(){
+        $api = new GetAll();
+        $result = $api->doRequest();
+        return $result['services'];
     }
 }

@@ -3,7 +3,6 @@ namespace Paynl\Api\Service;
 
 class GetAll extends Service
 {
-    protected $serviceIdRequired = true;
 
     /**
      * @param null $endpoint

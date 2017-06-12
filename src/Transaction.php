@@ -204,6 +204,22 @@ class Transaction
             $api->setEnduser($enduser);
         }
 
+        if (!empty($options['object'])) {
+            $api->setObject($options['object']);
+        }
+        if (!empty($options['tool'])) {
+            $api->setTool($options['tool']);
+        }
+        if (!empty($options['info'])) {
+            $api->setInfo($options['info']);
+        }
+
+        if (!empty($options['promotorId'])) {
+            $api->setPromotorId($options['promotorId']);
+        }
+
+
+
         if (isset($options['transferType'])) {
             $api->setTransferType($options['transferType']);
         }

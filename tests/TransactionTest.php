@@ -251,7 +251,7 @@ class TransactionTest extends PHPUnit_Framework_TestCase
         \Paynl\Config::setApiToken('123456789012345678901234567890');
 
         $this->setDummyData('Result/transactionVerify');
-s
+
         $transaction = Paynl\Transaction::get('12456789');
 
         $this->setDummyData('Result/approve');

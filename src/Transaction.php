@@ -290,11 +290,12 @@ class Transaction
      * @param string $transactionId
      * @param int|float|null $amount
      * @param string|null $description
+     * @param \DateTime $processDate
      *
      * @return Result\Refund
      */
     public static function refund($transactionId, $amount = null,
-                                  $description = null)
+                                  $description = null, \DateTime $processDate = null)
     {
         $api = new Api\Refund();
         $api->setTransactionId($transactionId);
@@ -305,6 +306,10 @@ class Transaction
 
         if (!is_null($description)) {
             $api->setDescription($description);
+        }
+
+        if (!is_null($processDate)) {
+            $api->setProcessDate($processDate);
         }
         $result = $api->doRequest();
 

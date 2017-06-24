@@ -245,13 +245,13 @@ class TransactionTest extends PHPUnit_Framework_TestCase
         $this->setExpectedException('\Paynl\Error\Api');
 
         $this->setDummyData('Result/refundError');
-        \Paynl\Transaction::refund('645958819Xdd3ea1', 5, 'Description');
+        \Paynl\Transaction::refund('645958819Xdd3ea1', 5, 'Description', new DateTime());
     }
     public function testApprove(){
         \Paynl\Config::setApiToken('123456789012345678901234567890');
 
         $this->setDummyData('Result/transactionVerify');
-
+s
         $transaction = Paynl\Transaction::get('12456789');
 
         $this->setDummyData('Result/approve');

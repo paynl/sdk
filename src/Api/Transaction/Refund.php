@@ -43,6 +43,10 @@ class Refund extends Transaction
      * @var string the description for this refund
      */
     private $description;
+    /**
+     * @var \DateTime the date the refund should take place
+     */
+    private $processDate;
 
     /**
      * Get data to send to the api
@@ -59,6 +63,10 @@ class Refund extends Transaction
 
         if (!empty($this->amount)) {
             $this->data['amount'] = $this->amount;
+        }
+
+        if (!empty($this->processDate)) {
+            $this->data['processDate'] = $this->processDate->format('d-m-Y');
         }
 
         return parent::getData();
@@ -86,6 +94,14 @@ class Refund extends Transaction
     public function setDescription($description)
     {
         $this->description = $description;
+    }
+
+    /**
+     * @param \DateTime $processDate
+     */
+    public function setProcessDate(\DateTime $processDate)
+    {
+        $this->processDate = $processDate;
     }
 
     /**

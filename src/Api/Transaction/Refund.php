@@ -65,6 +65,10 @@ class Refund extends Transaction
             $this->data['amount'] = $this->amount;
         }
 
+	    if (!empty($this->description)) {
+		    $this->data['description'] = $this->description;
+	    }
+
         if (!empty($this->processDate)) {
             $this->data['processDate'] = $this->processDate->format('d-m-Y');
         }

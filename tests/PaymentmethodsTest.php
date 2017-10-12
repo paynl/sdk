@@ -1,18 +1,11 @@
 <?php
 
-/**
- * Created by PhpStorm.
- * User: andy
- * Date: 15-4-2016
- * Time: 16:22
- */
 class PaymentmethodsTest extends PHPUnit_Framework_TestCase
 {
     private $testApiResult;
 
-
     private function setDummyData(){
-        $this->testApiResult = file_get_contents(dirname(__FILE__).'/dummyData/getService.json');
+        $this->testApiResult = file_get_contents(__DIR__.'/dummyData/getService.json');
 
         $curl = new \Paynl\Curl\Dummy();
         $curl->setResult($this->testApiResult);
@@ -23,17 +16,19 @@ class PaymentmethodsTest extends PHPUnit_Framework_TestCase
         $this->setDummyData();
         \Paynl\Config::setApiToken('123456789012345678901234567890');
         \Paynl\Config::setServiceId('');
-        $this->setExpectedException('\Paynl\Error\Required\ServiceId');
+        $this->setExpectedException(\Paynl\Error\Required\ServiceId::class);
         \Paynl\Paymentmethods::getList();
 
     }
+
     public function testGetPaymentMethodsNoToken(){
         $this->setDummyData();
         \Paynl\Config::setApiToken('');
         \Paynl\Config::setServiceId('SL-1234-5678');
-        $this->setExpectedException('\Paynl\Error\Required\Apitoken');
+        $this->setExpectedException(\Paynl\Error\Required\ApiToken::class);
         \Paynl\Paymentmethods::getList();
     }
+
     public function testGetPaymentMethods(){
         $this->setDummyData();
 
@@ -50,13 +45,14 @@ class PaymentmethodsTest extends PHPUnit_Framework_TestCase
             $this->assertArrayHasKey('visibleName', $paymentMethod);
         }
     }
+
     public function testGetPaymentMethodsCountry(){
         $this->setDummyData();
 
         \Paynl\Config::setServiceId('SL-1234-5678');
         \Paynl\Config::setApiToken('123456789012345678901234567890');
 
-        $list = \Paynl\Paymentmethods::getList(array('country' => 'NL'));
+        $list = \Paynl\Paymentmethods::getList(['country' => 'NL']);
 
         $this->assertInternalType('array',$list);
 
@@ -64,14 +60,14 @@ class PaymentmethodsTest extends PHPUnit_Framework_TestCase
             $this->assertArrayHasKey('id', $paymentMethod);
             $this->assertArrayHasKey('name', $paymentMethod);
             $this->assertArrayHasKey('visibleName', $paymentMethod);
-            $this->assertTrue(in_array('ALL',$paymentMethod['countries']) ||
-                              in_array('NL',$paymentMethod['countries']),
+            $this->assertTrue(in_array('ALL', $paymentMethod['countries'], true) ||
+                              in_array('NL', $paymentMethod['countries'], true),
                 'Returned paymentMethod invalid for this country');
         }
     }
 
     public function testGetBanksNoToken(){
-        $this->setExpectedException('\Paynl\Error\Required\Apitoken');
+        $this->setExpectedException(\Paynl\Error\Required\ApiToken::class);
         $this->setDummyData();
 
         \Paynl\Config::setServiceId('SL-1234-5678');
@@ -81,7 +77,7 @@ class PaymentmethodsTest extends PHPUnit_Framework_TestCase
     }
 
     public function testGetBanksNoServiceId(){
-        $this->setExpectedException('\Paynl\Error\Required\ServiceId');
+        $this->setExpectedException(\Paynl\Error\Required\ServiceId::class);
         $this->setDummyData();
 
         \Paynl\Config::setServiceId('');
@@ -106,6 +102,7 @@ class PaymentmethodsTest extends PHPUnit_Framework_TestCase
             $this->assertArrayHasKey('visibleName', $bank);
         }
     }
+
     public function testGetBanksInvalidPaymentMethod(){
         $this->setDummyData();
 

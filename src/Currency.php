@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: andy
- * Date: 6-7-16
- * Time: 17:59
- */
 
 namespace Paynl;
-
 
 use Paynl\Api\Currency as Api;
 use Paynl\Error\NotFound;
@@ -40,7 +33,7 @@ class Currency
         $allCurrencies = self::getAll();
 
         foreach($allCurrencies as $currency){
-            if(strtoupper($currency['abbreviation']) == strtoupper($isoCode)){
+            if(strcasecmp($currency['abbreviation'], $isoCode) === 0){
                 return $currency['id'];
             }
         }

@@ -239,27 +239,32 @@ class DebitAdd extends DirectDebit
         $this->_exchangeUrl = $exchangeUrl;
     }
 
+    /**
+     * @inheritdoc
+     * @throws Required amount is required
+     * @throws Required bankaccountHolder is required
+     * @throws Required bankaccountnumber is required
+     */
     public function getData()
     {
         if (empty($this->_amount)) {
-            throw new Required('amount');
-        } else {
-            $this->data['amount'] = $this->_amount;
+            throw new Required('amount is required');
         }
         if (empty($this->_bankaccountHolder)) {
-            throw new Required('bankaccountHolder');
-        } else {
-            $this->data['bankaccountHolder'] = $this->_bankaccountHolder;
+            throw new Required('bankaccountHolder is required');
         }
         if (empty($this->_bankaccountNumber)) {
-            throw new Required('bankaccountnumber');
-        } else {
-            $this->data['bankaccountnumber'] = $this->_bankaccountNumber;
+            throw new Required('bankaccountnumber is required');
         }
+
+        $this->data['amount'] = $this->_amount;
+        $this->data['bankaccountHolder'] = $this->_bankaccountHolder;
+        $this->data['bankaccountnumber'] = $this->_bankaccountNumber;
+
         if (!empty($this->_bankaccountBic)) {
             $this->data['bankaccountBic'] = $this->_bankaccountBic;
         }
-        if (!empty($this->_processDate)) {
+        if ($this->_processDate instanceof \DateTime) {
             $this->data['processDate'] = $this->_processDate->format('d-m-Y');
         }
         if (!empty($this->_description)) {
@@ -309,7 +314,7 @@ class DebitAdd extends DirectDebit
      */
     public function doRequest($endpoint = 'DirectDebit/debitAdd', $version = null)
     {
-        if (is_null($version)) {
+        if ($version === null) {
             $version = $this->version;
         }
         return parent::doRequest($endpoint, $version);

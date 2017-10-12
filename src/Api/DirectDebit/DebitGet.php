@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: andy
- * Date: 7-7-16
- * Time: 15:51
- */
 
 namespace Paynl\Api\DirectDebit;
-
 
 use Paynl\Error\Required;
 
@@ -28,6 +21,10 @@ class DebitGet extends DirectDebit
         $this->_mandateId = $mandateId;
     }
 
+    /**
+     * @inheritdoc
+     * @throws Required mandateId is required
+     */
     public function getData()
     {
         if(empty($this->_mandateId)){
@@ -39,6 +36,9 @@ class DebitGet extends DirectDebit
         return parent::getData();
     }
 
+    /**
+     * @inheritdoc
+     */
     public function doRequest($endpoint = null, $version = null)
     {
         return parent::doRequest('DirectDebit/debitGet');

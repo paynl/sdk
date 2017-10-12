@@ -19,7 +19,6 @@
 namespace Paynl\Api\Instore;
 
 use Paynl\Api\Api;
-use Paynl\Error;
 
 /**
  * Description of Instore
@@ -29,20 +28,7 @@ use Paynl\Error;
 class Instore extends Api
 {
     /**
-     * @var int the version of the api
+     * @inheritdoc
      */
     protected $version = 2;
-
-    /**
-     * @param string $endpoint
-     * @param int|null $version
-     * @return array The result
-     */
-    public function doRequest($endpoint, $version = null)
-    {
-        if (is_null($version)) {
-            $version = $this->version;
-        }
-        return parent::doRequest($endpoint, $version);
-    }
 }

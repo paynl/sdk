@@ -28,21 +28,36 @@ use Paynl\Error;
 class AddRecurring extends Transaction
 {
     protected $apiTokenRequired = true;
-    protected $serviceIdRequired = false;
 
     /**
      * @var string
      */
     private $transactionId;
 
+    /**
+     * @var int the amount in cents
+     */
     private $amount;
+    /**
+     * @var string the description for this refund
+     */
     private $description;
+    /**
+     * @var string additional data extra1
+     */
     private $extra1;
+    /**
+     * @var string additional data extra2
+     */
     private $extra2;
+    /**
+     * @var string additional data extra3
+     */
     private $extra3;
 
     /**
      * @param mixed $amount
+     * @throws Error\Error
      */
     public function setAmount($amount)
     {
@@ -95,34 +110,20 @@ class AddRecurring extends Transaction
     }
 
     /**
-     * Do the request
-     *
-     * @param null $endpoint
-     * @param null $version
-     * @return array the result
-     */
-    public function doRequest($endpoint = null, $version = null)
-    {
-        return parent::doRequest('transaction/addRecurring');
-    }
-
-    /**
-     * Get data to send to the api
-     *
-     * @return array
-     * @throws Error\Required
+     * @inheritdoc
+     * @throws Error\Required TransactionId is niet geset
      */
     protected function getData()
     {
         if (empty($this->transactionId)) {
-            throw new Error\Required('TransactionId is niet geset');
+            throw new Error\Required('TransactionId is required');
         }
+
         $this->data['transactionId'] = $this->transactionId;
 
         if (isset($this->amount)) {
             $this->data['amount'] = $this->amount;
         }
-
         if (isset($this->description)) {
             $this->data['description'] = $this->description;
         }
@@ -137,5 +138,13 @@ class AddRecurring extends Transaction
         }
 
         return parent::getData();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function doRequest($endpoint = null, $version = null)
+    {
+        return parent::doRequest('transaction/addRecurring');
     }
 }

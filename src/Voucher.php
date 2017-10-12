@@ -7,39 +7,37 @@ use Paynl\Result\Voucher as Result;
 
 class Voucher
 {
-
-
     /**
      * Return the voucher
      *
      * @param string $cardNumber
-     * @return \Paynl\Result\Voucher\Voucher
+     * @return Result\Voucher
      */
     public static function get($cardNumber)
     {
         $api = new Api\Balance();
         $api->setCardNumber($cardNumber);
         $result = $api->doRequest();
+
         return new Result\Voucher($result);
     }
 
     /**
      * Return the voucher
      *
-     * @param string $cardNumber
+     * @param array $options
      * @return float the current balance
      */
-    public static function balance($options = [])
+    public static function balance(array $options = [])
     {
         $api = new Api\Balance();
 
         if(isset($options['cardNumber'])){
             $api->setCardNumber($options['cardNumber']);
         }
-
         $result = $api->doRequest();
-        return $result['balance'] / 100;
 
+        return $result['balance'] / 100;
     }
 
     /**
@@ -47,7 +45,7 @@ class Voucher
      * @param array $options
      * @return bool if the charge was done succefully
      */
-    public static function charge($options = [])
+    public static function charge(array $options = [])
     {
         $api = new Api\Charge();
 
@@ -60,14 +58,17 @@ class Voucher
         if(isset($options['amount'])){
             $api->setAmount(round($options['amount'] * 100));
         }
-
         $result = $api->doRequest();
 
         return $result['request']['result'] == 1;
 
     }
 
-    public static function activate($options = []){
+    /**
+     * @param array $options
+     * @return bool
+     */
+    public static function activate(array $options = []){
         $api = new Api\Activate();
 
         if(isset($options['pincode'])){
@@ -86,6 +87,5 @@ class Voucher
 
         return $result['request']['result'] == 1;
     }
-
 
 }

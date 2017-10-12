@@ -24,12 +24,11 @@ $emailAddress = @$_GET['emailAddress'];
 $languageId = @$_GET['languageId'];
 
 try {
-    $result = \Paynl\Instore::confirmPayment(array(
+    $result = \Paynl\Instore::confirmPayment([
         'hash' => $hash,
         'emailAddress' => $emailAddress,
         'languageId' => $languageId
-    ));
-
+    ]);
     var_dump($result->getData());
 } catch (\Paynl\Error\Error $e) {
     echo "Fout: " . $e->getMessage();

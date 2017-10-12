@@ -1,5 +1,4 @@
 <?php
-
 /*
  * Copyright (C) 2015 Andy Pieters <andy@andypieters.nl>
  *
@@ -35,13 +34,11 @@ class GetService extends Transaction
     /**
      * @var array cached result
      */
-    private static $cache = array();
+    private static $cache = [];
 
     /**
-     * Get data to send to the api
-     *
-     * @return array
-     * @throws \Paynl\Error\Required\ServiceId
+     * @inheritdoc
+     * @throws \Paynl\Error\Required\ServiceId serviceId is required
      */
     protected function getData()
     {
@@ -53,11 +50,7 @@ class GetService extends Transaction
     }
 
     /**
-     * Do the request
-     *
-     * @param null $endpoint
-     * @param null $version
-     * @return array The result
+     * @inheritdoc
      */
     public function doRequest($endpoint = null, $version = null)
     {
@@ -65,12 +58,10 @@ class GetService extends Transaction
             Helper::requireApiToken();
             Helper::requireServiceId();
             return self::$cache[Config::getServiceId()];
-        } else {
-            $result = parent::doRequest('transaction/getService');
-            self::$cache[Config::getServiceId()] = $result;
-            return $result;
         }
+
+        $result = parent::doRequest('transaction/getService');
+        self::$cache[Config::getServiceId()] = $result;
+        return $result;
     }
-
-
 }

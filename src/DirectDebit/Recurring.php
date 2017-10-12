@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: andy
- * Date: 7-7-16
- * Time: 12:02
- */
 
 namespace Paynl\DirectDebit;
 
@@ -23,23 +17,21 @@ class Recurring
 
     public static function add($options)
     {
-        $api = new Api\RecurringAdd();
-
         if (empty($options['amount'])) {
             throw new Required('amount');
-        } else {
-            $api->setAmount(round($options['amount'] * 100));
         }
         if (empty($options['bankaccountHolder'])) {
             throw new Required('bankaccountHolder');
-        } else {
-            $api->setBankaccountHolder($options['bankaccountHolder']);
         }
         if (empty($options['bankaccountNumber'])) {
             throw new Required('bankaccountNumber');
-        } else {
-            $api->setBankaccountNumber($options['bankaccountNumber']);
         }
+
+        $api = new Api\RecurringAdd();
+        $api->setAmount(round($options['amount'] * 100));
+        $api->setBankaccountHolder($options['bankaccountHolder']);
+        $api->setBankaccountNumber($options['bankaccountNumber']);
+
         if (!empty($options['bankaccountBic'])) {
             $api->setBankaccountBic($options['bankaccountBic']);
         }
@@ -94,8 +86,8 @@ class Recurring
         if (!empty($options['intervalPeriod'])) {
             $api->setIntervalPeriod((int)$options['intervalPeriod']);
         }
-
         $result = $api->doRequest();
+
         return new Result\Add($result);
     }
 

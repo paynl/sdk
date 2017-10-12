@@ -1,19 +1,13 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: andy
- * Date: 7-7-16
- * Time: 15:58
- */
 
 namespace Paynl\Api\DirectDebit;
-
 
 use Paynl\Error\Required;
 
 class MandateDebit extends DirectDebit
 {
     protected $apiTokenRequired = true;
+
     /**
      * @var string The mandateId (IO-xxxx-xxxx-xxxx)
      */
@@ -75,26 +69,34 @@ class MandateDebit extends DirectDebit
         $this->_last = $last;
     }
 
+    /**
+     * @inheritdoc
+     * @throws Required mandateId is required
+     */
     protected function getData()
     {
         if (empty($this->_mandateId)) {
             throw new Required('mandateId');
-        } else {
-            $this->data['mandateId'] = $this->_mandateId;
         }
+
+        $this->data['mandateId'] = $this->_mandateId;
+
         if (!empty($this->_amount)) {
-            $this->data['amount'] = (int)$this->_amount;
+            $this->data['amount'] = $this->_amount;
         }
         if (!empty($this->_description)) {
             $this->data['description'] = $this->_description;
         }
-        if (!empty($this->_processDate)) {
+        if ($this->_processDate instanceof \DateTime) {
             $this->data['processDate'] = $this->_processDate->format('d-m-Y');
         }
 
         return parent::getData();
     }
 
+    /**
+     * @inheritdoc
+     */
     public function doRequest($endpoint = null, $version = null)
     {
         return parent::doRequest('DirectDebit/mandateDebit');

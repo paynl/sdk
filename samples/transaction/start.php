@@ -20,7 +20,7 @@ require_once '../../vendor/autoload.php';
 require_once '../config.php';
 
 try {
-    $result = \Paynl\Transaction::start(array(
+    $result = \Paynl\Transaction::start([
         // required
         'amount' => 12.5,
         'returnUrl' => dirname(Paynl\Helper::getBaseUrl()) . '/return.php',
@@ -39,50 +39,50 @@ try {
         'ipaddress' => '10.0.0.1',
         'invoiceDate' => new DateTime('now'),
         'deliveryDate' => new DateTime('2016-06-06'), // in case of tickets for an event, use the event date here
-        'products' => array(
-            array(
+        'products' => [
+            [
                 'id' => 1,
                 'name' => 'een product',
                 'price' => 5,
                 'vatPercentage' => 21,
                 'qty' => 1,
                 'type' => \Paynl\Transaction::PRODUCT_TYPE_ARTICLE
-            ),
-            array(
+            ],
+            [
                 'id' => 2,
                 'name' => 'ander product 15 %',
                 'price' => 5,
                 'vatPercentage' => 15,
                 'qty' => 1,
                 'type' => \Paynl\Transaction::PRODUCT_TYPE_ARTICLE
-            ),
-            array(
+            ],
+            [
                 'id' => 'shipping',
                 'name' => 'verzendkosten',
                 'price' => 5,
                 'vatPercentage' => 21,
                 'qty' => 1,
                 'type' => \Paynl\Transaction::PRODUCT_TYPE_SHIPPING
-            ),
-            array(
+            ],
+            [
                 'id' => 'fee',
                 'name' => 'Handling fee',
                 'price' => 1,
                 'vatPercentage' => 21,
                 'qty' => 1,
                 'type' => \Paynl\Transaction::PRODUCT_TYPE_HANDLING
-            ),
-            array(
+            ],
+            [
                 'id' => '5543',
                 'name' => 'Coupon 3,50 korting',
                 'price' => -3.5,
                 'vatPercentage' => 21,
                 'qty' => 1,
                 'type' => \Paynl\Transaction::PRODUCT_TYPE_DISCOUNT
-            ),
-        ),
+            ],
+        ],
         'language' => 'EN',
-        'enduser' => array(
+        'enduser' => [
             'initials' => 'T',
             'lastName' => 'Test',
             'gender' => 'M',
@@ -91,22 +91,22 @@ try {
             'emailAddress' => 'test@test.nl',
             'customerReference' => '456789',//your customer id
             'customerTrust' => 0, // -10 - 10 how much do you trust this customer? -10 untrustable 10 trusted
-        ),
-        'address' => array(
+        ],
+        'address' => [
             'streetName' => 'Test',
             'houseNumber' => '10',
             'houseNumberExtension' => 'A',
             'zipCode' => '1234AB',
             'city' => 'Test',
             'country' => 'NL',
-        ),
-        'company' => array(
+        ],
+        'company' => [
             'name' => 'CompanyName',
             'cocNumber' => '12345678',
             'vatNumber' => 'NL0123456789',
             'countryCode' => 'NL'
-        ),
-        'invoiceAddress' => array(
+        ],
+        'invoiceAddress' => [
             'initials' => 'IT',
             'lastName' => 'ITEST',
             'streetName' => 'Istreet',
@@ -115,7 +115,7 @@ try {
             'zipCode' => '5678CD',
             'city' => 'ITest',
             'country' => 'NL',
-        ),
+        ],
 
         // Only use this if you are told to
 //        'transferType' => 'merchant',
@@ -123,7 +123,7 @@ try {
 //
 //        'transferType' => 'transaction',
 //        'transferValue' => '12345678X260bc5', // The transactionId
-    ));
+    ]);
 
 // Save this transactionid and link it to your order
     $transactionId = $result->getTransactionId();

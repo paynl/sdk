@@ -1,24 +1,16 @@
 <?php
 
-/**
- * Created by PhpStorm.
- * User: andy
- * Date: 13-10-16
- * Time: 12:34
- */
 class CurrencyTest extends PHPUnit_Framework_TestCase
 {
     private $testApiResult;
 
-
     private function setDummyData(){
-        $this->testApiResult = file_get_contents(dirname(__FILE__).'/dummyData/currencies.json');
+        $this->testApiResult = file_get_contents(__DIR__.'/dummyData/currencies.json');
 
         $curl = new \Paynl\Curl\Dummy();
         $curl->setResult($this->testApiResult);
         \Paynl\Config::setCurl($curl);
     }
-
 
     public function testGetCurrencies(){
         \Paynl\Config::setApiToken('1234567894561234567');
@@ -28,6 +20,7 @@ class CurrencyTest extends PHPUnit_Framework_TestCase
 
         $this->assertInternalType('array', $currencies);
     }
+
     public function testGetCurrencyId(){
         \Paynl\Config::setApiToken('1234567894561234567');
         $this->setDummyData();
@@ -40,7 +33,7 @@ class CurrencyTest extends PHPUnit_Framework_TestCase
         \Paynl\Config::setApiToken('1234567894561234567');
         $this->setDummyData();
 
-        $this->setExpectedException('\Paynl\Error\NotFound');
+        $this->setExpectedException(\Paynl\Error\NotFound::class);
 
         \Paynl\Currency::getCurrencyId('ZZZ');
     }

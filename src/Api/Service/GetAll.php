@@ -3,11 +3,8 @@ namespace Paynl\Api\Service;
 
 class GetAll extends Service
 {
-
     /**
-     * @param null $endpoint
-     * @param null $version
-     * @return array
+     * @inheritdoc
      */
     public function doRequest($endpoint = null, $version = null)
     {

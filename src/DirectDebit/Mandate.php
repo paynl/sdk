@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: andy
- * Date: 7-7-16
- * Time: 11:37
- */
 
 namespace Paynl\DirectDebit;
 
@@ -15,23 +9,21 @@ use Paynl\Result\DirectDebit\Mandate as Result;
 class Mandate
 {
     public static function add($options){
-        $api = new Api\MandateAdd();
-
         if (empty($options['amount'])) {
             throw new Required('amount');
-        } else {
-            $api->setAmount(round($options['amount'] * 100));
         }
         if (empty($options['bankaccountHolder'])) {
             throw new Required('bankaccountHolder');
-        } else {
-            $api->setBankaccountHolder($options['bankaccountHolder']);
         }
         if (empty($options['bankaccountNumber'])) {
             throw new Required('bankaccountNumber');
-        } else {
-            $api->setBankaccountNumber($options['bankaccountNumber']);
         }
+
+        $api = new Api\MandateAdd();
+        $api->setAmount(round($options['amount'] * 100));
+        $api->setBankaccountHolder($options['bankaccountHolder']);
+        $api->setBankaccountNumber($options['bankaccountNumber']);
+
         if (!empty($options['bankaccountBic'])) {
             $api->setBankaccountBic($options['bankaccountBic']);
         }
@@ -80,19 +72,18 @@ class Mandate
         if(!empty($options['intervalQuantity'])){
             $api->setIntervalQuantity((int)$options['intervalQuantity']);
         }
-
         $result = $api->doRequest();
+
         return new Result\Add($result);
     }
 
     public static function addTransaction($options){
-        $api = new Api\MandateDebit();
-
         if(empty($options['mandateId'])){
             throw new Required('mandateId');
-        } else {
-            $api->setMandateId($options['mandateId']);
         }
+
+        $api = new Api\MandateDebit();
+        $api->setMandateId($options['mandateId']);
 
         if(!empty($options['amount'])){
             $api->setAmount($options['amount']);
@@ -107,6 +98,7 @@ class Mandate
             $api->setProcessDate($options['processDate']);
         }
         $result = $api->doRequest();
+
         return new Result\AddTransaction($result);
 
     }

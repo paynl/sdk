@@ -19,6 +19,7 @@
 namespace Paynl\Api\Transaction;
 
 use Paynl\Error;
+
 /**
  * Description of Approve
  *
@@ -27,26 +28,11 @@ use Paynl\Error;
 class Decline extends Transaction
 {
     protected $apiTokenRequired = true;
-    protected $serviceIdRequired = false;
 
     /**
      * @var string
      */
     private $transactionId;
-
-    /**
-     * Get data to send to the api
-     *
-     * @return array
-     * @throws Error\Required
-     */
-    protected function getData() {
-        if(empty($this->transactionId)){
-            throw new Error\Required('TransactionId is niet geset');
-        }
-        $this->data['orderId'] = $this->transactionId;
-        return parent::getData();
-    }
 
     /**
      * Set the transactionId
@@ -58,11 +44,21 @@ class Decline extends Transaction
     }
 
     /**
-     * Do the request
-     *
-     * @param null $endpoint
-     * @param null $version
-     * @return array the result
+     * @inheritdoc
+     * @throws Error\Required TransactionId is required
+     */
+    protected function getData() {
+        if(empty($this->transactionId)){
+            throw new Error\Required('TransactionId is niet geset');
+        }
+
+        $this->data['orderId'] = $this->transactionId;
+
+        return parent::getData();
+    }
+
+    /**
+     * @inheritdoc
      */
     public function doRequest($endpoint = null, $version = null) {
         return parent::doRequest('transaction/decline');

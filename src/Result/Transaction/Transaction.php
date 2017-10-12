@@ -33,7 +33,7 @@ class Transaction extends Result
      */
     public function isPaid()
     {
-        return $this->data['paymentDetails']['stateName'] == 'PAID';
+        return $this->data['paymentDetails']['stateName'] === 'PAID';
     }
 
     /**
@@ -41,7 +41,7 @@ class Transaction extends Result
      */
     public function isPending()
     {
-        return $this->data['paymentDetails']['stateName'] == 'PENDING' || $this->data['paymentDetails']['stateName'] == 'VERIFY';
+        return $this->data['paymentDetails']['stateName'] === 'PENDING' || $this->data['paymentDetails']['stateName'] === 'VERIFY';
     }
 
     /**
@@ -71,12 +71,14 @@ class Transaction extends Result
         if(!$this->isAuthorized()){
             throw new Error('Cannod void transaction, status is not authorized');
         }
+
         return \Paynl\Transaction::void($this->getId());
     }
     public function capture(){
         if(!$this->isAuthorized()){
             throw new Error('Cannod capture transaction, status is not authorized');
         }
+
         return \Paynl\Transaction::capture($this->getId());
     }
 
@@ -87,11 +89,11 @@ class Transaction extends Result
      */
     public function isRefunded($allowPartialRefunds = true)
     {
-        if ($this->data['paymentDetails']['stateName'] == 'REFUND') {
+        if ($this->data['paymentDetails']['stateName'] === 'REFUND') {
             return true;
         }
 
-        if ($allowPartialRefunds && $this->data['paymentDetails']['stateName'] == 'PARTIAL_REFUND') {
+        if ($allowPartialRefunds && $this->data['paymentDetails']['stateName'] === 'PARTIAL_REFUND') {
             return true;
         }
 
@@ -103,7 +105,7 @@ class Transaction extends Result
      */
     public function isPartiallyRefunded()
     {
-        return $this->data['paymentDetails']['stateName'] == 'PARTIAL_REFUND';
+        return $this->data['paymentDetails']['stateName'] === 'PARTIAL_REFUND';
     }
 
     /**
@@ -196,13 +198,13 @@ class Transaction extends Result
 
     public function approve()
     {
-        if ($this->isBeingVerified()) {
-            $result = \Paynl\Transaction::approve($this->getId());
-            $this->_reload(); //status is changed, so refresh the object
-            return $result;
-        } else {
+        if (!$this->isBeingVerified()) {
             throw new Error("Cannot approve transaction because it does not have the status 'verify'");
         }
+
+        $result = \Paynl\Transaction::approve($this->getId());
+        $this->_reload(); //status is changed, so refresh the object
+        return $result;
     }
 
     /**
@@ -210,7 +212,7 @@ class Transaction extends Result
      */
     public function isBeingVerified()
     {
-        return $this->data['paymentDetails']['stateName'] == 'VERIFY';
+        return $this->data['paymentDetails']['stateName'] === 'VERIFY';
     }
 
     /**
@@ -229,13 +231,13 @@ class Transaction extends Result
 
     public function decline()
     {
-        if ($this->isBeingVerified()) {
-            $result = \Paynl\Transaction::decline($this->getId());
-            $this->_reload();//status is changed, so refresh the object
-            return $result;
-        } else {
+        if (!$this->isBeingVerified()) {
             throw new Error("Cannot decline transaction because it does not have the status 'verify'");
         }
+
+        $result = \Paynl\Transaction::decline($this->getId());
+        $this->_reload();//status is changed, so refresh the object
+        return $result;
     }
 
 }

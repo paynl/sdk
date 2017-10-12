@@ -20,7 +20,7 @@ require_once '../../vendor/autoload.php';
 require_once '../config.php';
 
 try {
-    $result = \Paynl\Transaction::start(array(
+    $result = \Paynl\Transaction::start([
     	// Required
         'amount' => 12.5,
         'returnUrl' => dirname(Paynl\Helper::getBaseUrl()) . '/return.php',
@@ -30,7 +30,7 @@ try {
         'exchangeUrl' => dirname(Paynl\Helper::getBaseUrl()) . '/exchange.php',
         'paymentMethod' => 10,// iDEAL use \Paynl\PaymentMethods::getList() to get all available paymentmethods
         'description' => '123456', // the transaction description, usually the orderId
-    ));
+    ]);
 
 	// Save this transactionId and link it to your order
     $transactionId = $result->getTransactionId();

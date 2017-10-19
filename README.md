@@ -110,7 +110,7 @@ $result = \Paynl\Transaction::start(array(
             'initials' => 'T',
             'lastName' => 'Test',
             'gender' => 'M',
-            'dob' => '14-05-1999',
+            'birthDate' => new DateTime('1990-01-10'),
             'phoneNumber' => '0612345678',
             'emailAddress' => 'test@test.nl',
         ),

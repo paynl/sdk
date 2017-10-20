@@ -86,7 +86,7 @@ try {
             'initials' => 'T',
             'lastName' => 'Test',
             'gender' => 'M',
-            'birthDate' => '14-05-1999',
+            'birthDate' => new DateTime('1999-02-15'),
             'phoneNumber' => '0612345678',
             'emailAddress' => 'test@test.nl',
             'customerReference' => '456789',//your customer id

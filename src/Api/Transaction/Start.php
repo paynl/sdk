@@ -19,8 +19,8 @@
 namespace Paynl\Api\Transaction;
 
 use Paynl\Config;
-use Paynl\Error\Error as Error;
-use Paynl\Error\Required as ErrorRequired;
+use Paynl\Error\Error;
+use Paynl\Error\Required;
 use Paynl\Helper;
 
 /**
@@ -130,7 +130,7 @@ class Start extends Transaction
     /**
      * @var array the products for the order
      */
-    private $_products = array();
+    private $_products = [];
 
     /**
      * @var \DateTime
@@ -144,7 +144,6 @@ class Start extends Transaction
     {
         $this->_expireDate = $expireDate;
     }
-
 
     /**
      * @param \DateTime $invoiceDate
@@ -207,16 +206,17 @@ class Start extends Transaction
         $this->_transferValue = $transferValue;
     }
 
-
     /**
      * Add a product to an order
-     * Attention! This is purely an adminstrative option, the amount of the order is not modified.
+     * Attention! This is purely an administrative option, the amount of the order is not modified.
      *
      * @param string $id
      * @param string $description
+     * @param string $productType
      * @param int $price
      * @param int $quantity
      * @param int $vatCode
+     * @param string $vatPercentage
      * @throws Error
      */
     public function addProduct($id, $description, $productType, $price, $quantity,
@@ -229,27 +229,22 @@ class Start extends Transaction
             throw new Error('Quantity must be numeric', 1);
         }
 
-        $quantity = $quantity * 1;
-
-        //description mag maar 45 chars lang zijn
-        $description = substr($description, 0, 45);
-
-        $arrProduct = array(
-            'productId' => $id,
-            'productType' => $productType,
-            'description' => $description,
-            'price' => $price,
-            'quantity' => $quantity,
-            'vatCode' => $vatCode,
-            'vatPercentage' => $vatPercentage
-        );
-        $this->_products[] = $arrProduct;
+        $this->_products[] = [
+          'productId' => $id,
+          'productType' => $productType,
+            //description mag maar 45 chars lang zijn
+          'description' => substr($description, 0, 45),
+          'price' => $price,
+          'quantity' => $quantity * 1,
+          'vatCode' => $vatCode,
+          'vatPercentage' => $vatPercentage
+        ];
     }
 
     /**
      * Set the enduser data in the following format
      *
-     * array(
+     * [
      *  initials
      *  lastName
      *  language
@@ -263,14 +258,14 @@ class Start extends Transaction
      *  bic
      *  sendConfirmMail
      *  confirmMailTemplate
-     *  address => array(
+     *  address => [
      *      streetName
      *      streetNumber
      *      zipCode
      *      city
      *      countryCode
-     *  )
-     *  invoiceAddress => array(
+     *  ]
+     *  invoiceAddress => [
      *      initials
      *      lastname
      *      streetName
@@ -278,8 +273,8 @@ class Start extends Transaction
      *      zipCode
      *      city
      *      countryCode
-     *  )
-     * )
+     *  ]
+     * ]
      * @param array $enduser
      */
     public function setEnduser($enduser)
@@ -295,29 +290,26 @@ class Start extends Transaction
      */
     public function setAmount($amount)
     {
-        if (is_numeric($amount)) {
-            $this->_amount = $amount;
-        } else {
+        if (!is_numeric($amount)) {
             throw new Error('Amount is niet numeriek', 1);
         }
+        $this->_amount = $amount;
     }
 
     public function setPaymentOptionId($paymentOptionId)
     {
-        if (is_numeric($paymentOptionId)) {
-            $this->_paymentOptionId = $paymentOptionId;
-        } else {
+        if (!is_numeric($paymentOptionId)) {
             throw new Error('PaymentOptionId is niet numeriek', 1);
         }
+        $this->_paymentOptionId = $paymentOptionId;
     }
 
     public function setPaymentOptionSubId($paymentOptionSubId)
     {
-        if (is_numeric($paymentOptionSubId)) {
-            $this->_paymentOptionSubId = $paymentOptionSubId;
-        } else {
+        if (!is_numeric($paymentOptionSubId)) {
             throw new Error('PaymentOptionSubId is niet numeriek', 1);
         }
+        $this->_paymentOptionSubId = $paymentOptionSubId;
     }
 
     /**
@@ -374,72 +366,56 @@ class Start extends Transaction
         $this->_description = $description;
     }
 
-    public function doRequest($endpoint = null, $version = null)
-    {
-        return parent::doRequest('transaction/start');
-    }
-
+    /**
+     * @inheritdoc
+     * @throws Required Amount is required
+     * @throws Required FinishUrl is required
+     */
     protected function getData()
     {
         // Checken of alle verplichte velden geset zijn
         Helper::requireServiceId();
+        if (empty($this->_amount)) {
+            throw new Required('Amount is required', 1);
+        }
+        if (empty($this->_finishUrl)) {
+            throw new Required('FinishUrl is required', 1);
+        }
 
         $data['serviceId'] = Config::getServiceId();
-
-        if ($this->_testMode === true) {
-            $data['testMode'] = '1';
-        } else {
-            $data['testMode'] = '0';
-        }
-
-        if (empty($this->_amount)) {
-            throw new ErrorRequired('Amount is niet geset', 1);
-        } else {
-            $data['amount'] = $this->_amount;
-        }
+        $data['testMode'] = (int) ($this->_testMode === true);
+        $data['amount'] = $this->_amount;
+        $data['finishUrl'] = $this->_finishUrl;
 
 
         if (!empty($this->_paymentOptionId)) {
             $data['paymentOptionId'] = $this->_paymentOptionId;
         }
-        if (empty($this->_finishUrl)) {
-            throw new ErrorRequired('FinishUrl is niet geset', 1);
-        } else {
-            $data['finishUrl'] = $this->_finishUrl;
-        }
         if (!empty($this->_exchangeUrl)) {
             $data['transaction']['orderExchangeUrl'] = $this->_exchangeUrl;
         }
-
         if (!empty($this->_description)) {
             $data['transaction']['description'] = $this->_description;
         }
         if (isset($this->_currency)) {
             $data['transaction']['currency'] = $this->_currency;
         }
-
         if (isset($this->_expireDate)) {
             $data['transaction']['expireDate'] = $this->_expireDate->format('d-m-Y H:i:s');
         }
-
         if (!empty($this->_paymentOptionSubId)) {
             $data['paymentOptionSubId'] = $this->_paymentOptionSubId;
         }
 
-
-        if (isset($this->_ipaddress)) {
-            $data['ipAddress'] = $this->_ipaddress;
-        } else {
-            $data['ipAddress'] = Helper::getIp();
-        }
+        $data['ipAddress'] = isset($this->_ipaddress) ? $this->_ipaddress : Helper::getIp();
 
         if (!empty($this->_products)) {
             $data['saleData']['orderData'] = $this->_products;
         }
-        if (!empty($this->_deliveryDate)) {
+        if ($this->_deliveryDate instanceof \DateTime) {
             $data['saleData']['deliveryDate'] = $this->_deliveryDate->format('d-m-Y');
         }
-        if (!empty($this->_invoiceDate)) {
+        if ($this->_invoiceDate instanceof \DateTime) {
             $data['saleData']['invoiceDate'] = $this->_invoiceDate->format('d-m-Y');
         }
 
@@ -478,7 +454,6 @@ class Start extends Transaction
         if (!empty($this->_transferData)) {
             $data['statsData']['transferData'] = $this->_transferData;
         }
-
         if (!empty($this->_transferType)) {
             $data['transferType'] = $this->_transferType;
         }
@@ -489,5 +464,13 @@ class Start extends Transaction
         $this->data = array_merge($data, $this->data);
 
         return parent::getData();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function doRequest($endpoint = null, $version = null)
+    {
+        return parent::doRequest('transaction/start');
     }
 }

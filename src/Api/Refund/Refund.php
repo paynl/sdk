@@ -28,20 +28,7 @@ use Paynl\Api\Api;
 class Refund extends Api
 {
     /**
-     * @var int the version of the api
+     * @inheritdoc
      */
-    protected $_version = 2;
-
-    /**
-     * @param string $endpoint
-     * @param int|null $version
-     * @return array The result
-     */
-    public function doRequest($endpoint, $version = null)
-    {
-        if (is_null($version)) {
-            $version = $this->_version;
-        }
-        return parent::doRequest($endpoint, $version);
-    }
+    protected $version = 2;
 }

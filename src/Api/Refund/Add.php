@@ -20,7 +20,7 @@ namespace Paynl\Api\Refund;
 
 use Paynl\Helper;
 use Paynl\Config;
-use Paynl\Error\Required as ErrorRequired;
+use Paynl\Error\Required;
 
 /**
  * Api class to refund a transaction
@@ -89,35 +89,155 @@ class Add extends Refund
      */
     private $_currency;
     /**
-     * @var string the currency
+     * @var \Datetime the currency
      */
     private $_processDate;
+
+    /**
+     * @param int $amount
+     */
+    public function setAmount($amount)
+    {
+        $this->_amount = (int)$amount;
+    }
+
+    /**
+     * @param string $bankAccountHolder
+     */
+    public function setBankAccountHolder($bankAccountHolder)
+    {
+        $this->_bankAccountHolder = $bankAccountHolder;
+    }
+
+    /**
+     * @param string $bankAccountNumber
+     */
+    public function setBankAccountNumber($bankAccountNumber)
+    {
+        $this->_bankAccountNumber = $bankAccountNumber;
+    }
+
+    /**
+     * @param string $bankAccountBic
+     */
+    public function setBankAccountBic($bankAccountBic)
+    {
+        $this->_bankAccountBic = $bankAccountBic;
+    }
+
+    /**
+     * @param string $description
+     */
+    public function setDescription($description)
+    {
+        $this->_description = $description;
+    }
+
+    /**
+     * @param $promotorId
+     */
+    public function setPromotorId($promotorId)
+    {
+        $this->_promotorId = $promotorId;
+    }
+
+    /**
+     * @param $tool
+     */
+    public function setTool($tool)
+    {
+        $this->_tool = $tool;
+    }
+
+    /**
+     * @param $info
+     */
+    public function setInfo($info)
+    {
+        $this->_info = $info;
+    }
+
+    /**
+     * @param $object
+     */
+    public function setObject($object)
+    {
+        $this->_object = $object;
+    }
+
+    /**
+     * @param $extra1
+     */
+    public function setExtra1($extra1)
+    {
+        $this->_extra1 = $extra1;
+    }
+
+    /**
+     * @param $extra2
+     */
+    public function setExtra2($extra2)
+    {
+        $this->_extra2 = $extra2;
+    }
+
+    /**
+     * @param $extra3
+     */
+    public function setExtra3($extra3)
+    {
+        $this->_extra3 = $extra3;
+    }
+
+    /**
+     * @param $orderId
+     */
+    public function setOrderId($orderId)
+    {
+        $this->_orderId = $orderId;
+    }
+
+    /**
+     * @param $currency
+     */
+    public function setCurrency($currency)
+    {
+        $this->_currency = $currency;
+    }
+
+    /**
+     * @param \DateTime $processDate
+     */
+    public function setProcessDate(\DateTime $processDate)
+    {
+        $this->_processDate = $processDate;
+    }
 
     /**
      * Get data to send to the api
      *
      * @return array
-     * @throws ErrorRequired
+     * @throws Required serviceId via config
+     * @throws Required _amount Amount is not set
+     * @throws Required _bankAccountHolder bankAccountHolder is not set
+     * @throws Required _bankAccountNumber bankAccountNumber is not set
      */
     protected function getData()
     {
         Helper::requireServiceId();
+        if (empty($this->_amount)) {
+            throw new Required('Amount is not set', 1);
+        }
+        if (empty($this->_bankAccountHolder)) {
+            throw new Required('bankAccountHolder is not set', 1);
+        }
+        if (empty($this->_bankAccountNumber)) {
+            throw new Required('bankAccountNumber is not set', 1);
+        }
 
         $this->data['serviceId'] = Config::getServiceId();
-
-        if (empty($this->_amount)) {
-            throw new ErrorRequired('Amount is not set', 1);
-        }
         $this->data['amount'] = $this->_amount;
-
-        if (empty($this->_bankAccountHolder)) {
-            throw new ErrorRequired('bankAccountHolder is not set', 1);
-        }
         $this->data['bankAccountHolder'] = $this->_bankAccountHolder;
-
-        if (empty($this->_bankAccountNumber)) {
-            throw new ErrorRequired('bankAccountNumber is not set', 1);
-        }
         $this->data['bankAccountNumber'] = $this->_bankAccountNumber;
 
         if (!empty($this->_bankAccountBic)) {
@@ -153,7 +273,7 @@ class Add extends Refund
         if (isset($this->_currency)) {
             $this->data['currency'] = $this->_currency;
         }
-        if(!empty($this->_processDate)){
+        if($this->_processDate instanceof \Datetime){
             $this->data['processDate'] = $this->_processDate->format('d-m-Y');
         }
 
@@ -161,99 +281,7 @@ class Add extends Refund
     }
 
     /**
-     * @param int $amount
-     */
-    public function setAmount($amount)
-    {
-        $this->_amount = (int)$amount;
-    }
-
-    /**
-     * @param string $bankAccountHolder
-     */
-    public function setBankAccountHolder($bankAccountHolder)
-    {
-        $this->_bankAccountHolder = $bankAccountHolder;
-    }
-
-    /**
-     * @param string $bankAccountHolder
-     */
-    public function setBankAccountNumber($bankAccountNumber)
-    {
-        $this->_bankAccountNumber = $bankAccountNumber;
-    }
-
-    /**
-     * @param string $bankAccountHolder
-     */
-    public function setBankAccountBic($bankAccountBic)
-    {
-        $this->_bankAccountBic = $bankAccountBic;
-    }
-
-    /**
-     * @param string $description
-     */
-    public function setDescription($description)
-    {
-        $this->_description = $description;
-    }
-
-    public function setPromotorId($promotorId)
-    {
-        $this->_promotorId = $promotorId;
-    }
-
-    public function setTool($tool)
-    {
-        $this->_tool = $tool;
-    }
-
-    public function setInfo($info)
-    {
-        $this->_info = $info;
-    }
-
-    public function setObject($object)
-    {
-        $this->_object = $object;
-    }
-
-    public function setExtra1($extra1)
-    {
-        $this->_extra1 = $extra1;
-    }
-
-    public function setExtra2($extra2)
-    {
-        $this->_extra2 = $extra2;
-    }
-
-    public function setExtra3($extra3)
-    {
-        $this->_extra3 = $extra3;
-    }
-
-    public function setOrderId($orderId)
-    {
-        $this->_orderId = $orderId;
-    }
-
-    public function setCurrency($currency)
-    {
-        $this->_currency = $currency;
-    }
-
-    public function setProcessDate(\DateTime $processDate)
-    {
-        $this->_processDate = $processDate;
-    }
-
-    /**
-     * @param null $endpoint
-     * @param null $version
-     * @return array
+     * @inheritdoc
      */
     public function doRequest($endpoint = null, $version = null)
     {

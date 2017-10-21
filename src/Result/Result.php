@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 namespace Paynl\Result;
 
 /**
@@ -26,7 +25,7 @@ namespace Paynl\Result;
  */
 class Result
 {
-    protected $data = array();
+    protected $data = [];
 
     public function __construct($data)
     {

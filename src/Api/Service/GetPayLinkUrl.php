@@ -6,15 +6,15 @@ class GetPayLinkUrl extends Service
     protected $serviceIdRequired = true;
 
     /**
-     * @var integer
+     * @var int
      */
     private $securityMode;
     /**
-     * @var integer
+     * @var int
      */
     private $amount;
     /**
-     * @var integer
+     * @var int
      */
     private $amountMin;
     /**
@@ -51,7 +51,7 @@ class GetPayLinkUrl extends Service
      */
     public function setSecurityMode($securityMode)
     {
-        $this->securityMode = $securityMode;
+        $this->securityMode = (int)$securityMode;
     }
 
     /**
@@ -126,6 +126,9 @@ class GetPayLinkUrl extends Service
         $this->info = $info;
     }
 
+    /**
+     * @inheritdoc
+     */
     protected function getData()
     {
         $data = parent::getData();
@@ -133,20 +136,28 @@ class GetPayLinkUrl extends Service
         $data['securityMode'] = $this->securityMode;
         $data['amount'] = $this->amount;
         $data['amountMin'] = $this->amountMin;
-        if (isset($this->countryCode))
+
+        if (isset($this->countryCode)) {
             $data['countryCode'] = $this->countryCode;
-        if (isset($this->language))
+        }
+        if (isset($this->language)) {
             $data['language'] = $this->language;
-        if (isset($this->extra1))
+        }
+        if (isset($this->extra1)) {
             $data['extra1'] = $this->extra1;
-        if (isset($this->extra2))
+        }
+        if (isset($this->extra2)) {
             $data['extra2'] = $this->extra2;
-        if (isset($this->extra3))
+        }
+        if (isset($this->extra3)) {
             $data['extra3'] = $this->extra3;
-        if (isset($this->tool))
+        }
+        if (isset($this->tool)) {
             $data['tool'] = $this->tool;
-        if (isset($this->info))
+        }
+        if (isset($this->info)) {
             $data['info'] = $this->info;
+        }
 
         return $data;
     }

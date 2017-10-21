@@ -23,10 +23,10 @@ $transactionId = $_GET['transactionId']; // The transactionId you get from trans
 $terminalId = $_GET['terminalId']; // the terminalId you get from getAllTerminals
 
 try {
-    $result = \Paynl\Instore::payment(array(
+    $result = \Paynl\Instore::payment([
         'transactionId' => $transactionId,
         'terminalId' => $terminalId
-    ));
+    ]);
 
     $hash = $result->getHash();
 

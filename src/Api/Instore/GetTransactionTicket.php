@@ -27,26 +27,10 @@ use Paynl\Error;
  */
 class GetTransactionTicket extends Instore
 {
-    protected $apiTokenRequired = false;
-    protected $serviceIdRequired = false;
-
     /**
      * @var string The hash of the instore transaction
      */
     private $hash;
-
-    /**
-     * @return array the data
-     * @throws Error\Required
-     */
-    protected function getData()
-    {
-        if (empty($this->hash)) {
-            throw new Error\Required('Hash is niet geset');
-        }
-        $this->data['hash'] = $this->hash;
-        return parent::getData();
-    }
 
     /**
      * @param string $hash the hash of the instore transaction
@@ -57,9 +41,22 @@ class GetTransactionTicket extends Instore
     }
 
     /**
-     * @param null $endpoint
-     * @param null $version
-     * @return array the result
+     * @inheritdoc
+     * @throws Error\Required Hash is required
+     */
+    protected function getData()
+    {
+        if (empty($this->hash)) {
+            throw new Error\Required('Hash is required');
+        }
+
+        $this->data['hash'] = $this->hash;
+
+        return parent::getData();
+    }
+
+    /**
+     * @inheritdoc
      */
     public function doRequest($endpoint = null, $version = null)
     {

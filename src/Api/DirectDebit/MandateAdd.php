@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: andy
- * Date: 6-7-16
- * Time: 16:06
- */
 
 namespace Paynl\Api\DirectDebit;
-
 
 class MandateAdd extends DebitAdd
 {
@@ -24,6 +17,9 @@ class MandateAdd extends DebitAdd
         $this->_intervalQuantity = $intervalQuantity;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getData()
     {
         if(!empty($this->_intervalQuantity)){
@@ -32,6 +28,9 @@ class MandateAdd extends DebitAdd
         return parent::getData();
     }
 
+    /**
+     * @inheritdoc
+     */
     public function doRequest($endpoint = 'DirectDebit/mandateAdd', $version = null)
     {
         return parent::doRequest($endpoint, $version);

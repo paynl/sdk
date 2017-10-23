@@ -65,6 +65,7 @@ class HelperTest extends PHPUnit_Framework_TestCase
         }
 
     }
+
     public function testObjectToArray()
     {
         $object = (object)array('a' => '1', 'b' => '2', 'c' => '3', 'd' => '4');

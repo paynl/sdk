@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: andy
- * Date: 7-7-16
- * Time: 15:56
- */
 
 namespace Paynl\Api\DirectDebit;
-
 
 class MandateGet extends DirectDebit
 {
@@ -26,6 +19,9 @@ class MandateGet extends DirectDebit
         $this->_mandateId = $mandateId;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getData()
     {
         $this->data['mandateId'] = $this->_mandateId;
@@ -33,6 +29,9 @@ class MandateGet extends DirectDebit
         return parent::getData();
     }
 
+    /**
+     * @inheritdoc
+     */
     public function doRequest($endpoint = null, $version = null)
     {
         return parent::doRequest('DirectDebit/mandateGet');

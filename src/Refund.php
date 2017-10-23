@@ -33,34 +33,29 @@ class Refund
     /**
      * Start a new transaction
      *
-     * @param array|null $options
+     * @param array $options
      * @return Result\Add
      * @throws Error\Error
      */
-    public static function add($options = array())
+    public static function add(array $options = array())
     {
         $api = new Api\Add();
 
         if (isset($options['amount'])) {
             $api->setAmount(round($options['amount'] * 100));
         }
-
         if (isset($options['bankAccountHolder']) && !empty($options['bankAccountHolder'])) {
             $api->setBankAccountHolder($options['bankAccountHolder']);
         }
-
         if (isset($options['bankAccountNumber']) && !empty($options['bankAccountNumber'])) {
             $api->setBankAccountNumber($options['bankAccountNumber']);
         }
-
         if (isset($options['bankAccountBic']) && !empty($options['bankAccountBic'])) {
             $api->setBankAccountBic($options['bankAccountBic']);
         }
-
         if (isset($options['description']) && !empty($options['description'])) {
             $api->setDescription($options['description']);
         }
-
         if (isset($options['promotorId'])) {
             $api->setPromotorId($options['promotorId']);
         }

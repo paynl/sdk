@@ -36,7 +36,7 @@ class Transaction
     /**
      * Start a new transaction
      *
-     * @param array|null $options
+     * @param array $options
      * @return Result\Start
      * @throws Error\Error
      */
@@ -60,26 +60,21 @@ class Transaction
         if (isset($options['returnUrl'])) {
             $api->setFinishUrl($options['returnUrl']);
         }
-
         if (isset($options['exchangeUrl'])) {
             $api->setExchangeUrl($options['exchangeUrl']);
         }
-
         if (isset($options['paymentMethod']) && !empty($options['paymentMethod'])) {
             $api->setPaymentOptionId($options['paymentMethod']);
         }
         if (isset($options['bank']) && !empty($options['bank'])) {
             $api->setPaymentOptionSubId($options['bank']);
         }
-
         if (isset($options['description']) && !empty($options['description'])) {
             $api->setDescription($options['description']);
         }
-
         if (isset($options['testmode']) && $options['testmode'] == 1) {
             $api->setTestMode(true);
         }
-
         if (isset($options['extra1'])) {
             $api->setExtra1($options['extra1']);
         }
@@ -89,18 +84,15 @@ class Transaction
         if (isset($options['extra3'])) {
             $api->setExtra3($options['extra3']);
         }
-
         if (isset($options['ipaddress'])) {
             $api->setIpAddress($options['ipaddress']);
         }
-
         if (isset($options['invoiceDate'])) {
             if (is_string($options['invoiceDate'])) {
                 $options['invoiceDate'] = new \DateTime($options['invoiceDate']);
             }
             $api->setInvoiceDate($options['invoiceDate']);
         }
-
         if (isset($options['deliveryDate'])) {
             if (is_string($options['deliveryDate'])) {
                 $options['deliveryDate'] = new \DateTime($options['deliveryDate']);
@@ -109,19 +101,16 @@ class Transaction
         }
 
         if (isset($options['products'])) {
-            foreach ($options['products'] as $product) {
+            foreach ((array)$options['products'] as $product) {
+                $taxClass = 'N';
                 if (isset($product['tax'])) {
                     $taxClass = Helper::calculateTaxClass($product['price'], $product['tax']);
-                } else {
-                    $taxClass = 'N';
                 }
 
-                $taxPercentage = null;
+                $taxPercentage = round(Helper::calculateTaxPercentage($product['price'], $product['tax']));
                 if (isset($product['vatPercentage']) && is_numeric($product['vatPercentage'])) {
                     $taxPercentage = round($product['vatPercentage'], 2);
                     $taxClass = Helper::calculateTaxClass(100 + $taxPercentage, $taxPercentage);
-                } else {
-                    $taxPercentage = round(Helper::calculateTaxPercentage($product['price'], $product['tax']));
                 }
 
                 if (!isset($product['type'])) {
@@ -217,13 +206,9 @@ class Transaction
         if (!empty($options['promotorId'])) {
             $api->setPromotorId($options['promotorId']);
         }
-
-
-
         if (isset($options['transferType'])) {
             $api->setTransferType($options['transferType']);
         }
-
         if (isset($options['transferValue'])) {
             $api->setTransferValue($options['transferValue']);
         }
@@ -237,25 +222,25 @@ class Transaction
      * Get the transaction in a return script.
      * This will automatically load orderId from the get string to fetch the transaction
      *
-     * @return \Paynl\Result\Transaction\Transaction
+     * @return Result\Transaction
      */
     public static function getForReturn()
     {
-        $transactionId = $_GET['orderId'];
-        return self::get($transactionId);
+        return self::get($_GET['orderId']);
     }
 
     /**
      * Get the transaction
      *
      * @param string $transactionId
-     * @return \Paynl\Result\Transaction\Transaction
+     * @return Result\Transaction
      */
     public static function get($transactionId)
     {
         $api = new Api\Info();
         $api->setTransactionId($transactionId);
         $result = $api->doRequest();
+
         $result['transactionId'] = $transactionId;
         return new Result\Transaction($result);
     }
@@ -264,23 +249,20 @@ class Transaction
      * Get the transaction in an exchange script.
      * This will work for all kinds of exchange calls (GET, POST AND POST_XML)
      *
-     * @return \Paynl\Result\Transaction\Transaction
+     * @return Result\Transaction
      */
     public static function getForExchange()
     {
         if (isset($_GET['order_id'])) {
-            $transactionId = $_GET['order_id'];
-        } elseif (isset($_POST['order_id'])) {
-            $transactionId = $_POST['order_id'];
-        } else {
-            // maybe its xml
-            $input = file_get_contents('php://input');
-            $xml = simplexml_load_string($input);
-
-            $transactionId = $xml->order_id;
+            return self::get($_GET['order_id']);
         }
-
-        return self::get($transactionId);
+        if (isset($_POST['order_id'])) {
+            return self::get($_POST['order_id']);
+        }
+        // maybe its xml
+        $input = file_get_contents('php://input');
+        $xml = simplexml_load_string($input);
+        return self::get($xml->order_id);
     }
 
     /**
@@ -299,16 +281,14 @@ class Transaction
     {
         $api = new Api\Refund();
         $api->setTransactionId($transactionId);
-        if (!is_null($amount)) {
+        if ($amount !== null) {
             $amount = round($amount * 100);
             $api->setAmount($amount);
         }
-
-        if (!is_null($description)) {
+        if ($description !== null) {
             $api->setDescription($description);
         }
-
-        if (!is_null($processDate)) {
+        if ($processDate !== null) {
             $api->setProcessDate($processDate);
         }
         $result = $api->doRequest();
@@ -321,6 +301,7 @@ class Transaction
         $api = new Api\Approve();
         $api->setTransactionId($transactionId);
         $result = $api->doRequest();
+
         return $result['request']['result'] == 1;
     }
 
@@ -329,6 +310,7 @@ class Transaction
         $api = new Api\Decline();
         $api->setTransactionId($transactionId);
         $result = $api->doRequest();
+
         return $result['request']['result'] == 1;
     }
 
@@ -337,6 +319,7 @@ class Transaction
         $api = new Api\Capture();
         $api->setTransactionId($transactionId);
         $result = $api->doRequest();
+
         return $result['request']['result'] == 1;
     }
 
@@ -345,6 +328,7 @@ class Transaction
         $api = new Api\Void();
         $api->setTransactionId($transactionId);
         $result = $api->doRequest();
+
         return $result['request']['result'] == 1;
     }
 
@@ -378,7 +362,6 @@ class Transaction
         if (isset($options['extra3'])) {
             $api->setExtra3($options['extra3']);
         }
-
         $result = $api->doRequest();
 
         return new Result\AddRecurring($result);

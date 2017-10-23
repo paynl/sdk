@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 namespace Paynl;
 
 use Curl\Curl;
@@ -43,7 +42,7 @@ class Config
     /**
      * @var string path tho CAInfo location
      */
-    private static $CAInfoLocation = null;
+    private static $CAInfoLocation;
 
     /**
      * @var bool Disable this if you have certificate errors that you don't know how to fix
@@ -140,29 +139,29 @@ class Config
      */
     public static function setApiVersion($apiVersion)
     {
-        self::$apiVersion = $apiVersion;
+        self::$apiVersion = (int) $apiVersion;
     }
 
     /**
      * @param string $endpoint The endpoint of the API, for example Transaction/Start
-     * @param string|null $version
+     * @param int|null $version
      *
      * @return string The url to the api
      */
     public static function getApiUrl($endpoint, $version = null)
     {
-        if (is_null($version)) {
+        if ($version === null) {
             $version = self::$apiVersion;
         }
         return self::$apiBase . '/v' . $version . '/' . $endpoint . '/json';
     }
 
     /**
-     * @return object
+     * @return \Paynl\Curl\CurlInterface
      */
     public static function getCurl()
     {
-        if (null === self::$curl) {
+        if (self::$curl === null) {
             self::$curl = new Curl();
         }
 

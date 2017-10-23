@@ -3,11 +3,10 @@
 namespace Paynl\Api\Voucher;
 
 use Paynl\Error\Error;
-use Paynl\Error\Required as ErrorRequired;
+use Paynl\Error\Required;
 
 class Activate extends Voucher
 {
-
     protected $apiTokenRequired = true;
     protected $serviceIdRequired = true;
 
@@ -61,42 +60,46 @@ class Activate extends Voucher
      */
     public function setAmount($amount)
     {
-        if(is_numeric($amount)){
-            $this->_amount = $amount;
-        }else{
+        if(!is_numeric($amount)) {
             throw new Error('Amount is niet numeriek', 1);
         }
+        $this->_amount = $amount;
     }
 
+    /**
+     * @inheritdoc
+     * @throws Required cardNumber is required
+     * @throws Required amount is required
+     * @throws Required posId is required
+     */
     protected function getData()
     {
+        if(empty($this->_cardNumber)){
+            throw new Required('cardNumber is required', 1);
+        }
+        if(empty($this->_amount)){
+            throw new Required('Amount is required', 1);
+        }
+        if(empty($this->_posId)){
+            throw new Required('posId is required', 1);
+        }
+
+        $data['cardNumber'] = $this->_cardNumber;
+        $data['amount'] = $this->_amount;
+        $data['posId'] = $this->_posId;
+
         if(!empty($this->_pincode)){
             $data['pincode'] = $this->_pincode;
         }
-        if(empty($this->_cardNumber)){
-            throw new ErrorRequired('cardNumber is niet geset', 1);
-        }else{
-            $data['cardNumber'] = $this->_cardNumber;
-        }
-
-        if(empty($this->_amount)){
-            throw new ErrorRequired('Amount is niet geset', 1);
-        }else{
-            $data['amount'] = $this->_amount;
-        }
-
-        if(empty($this->_posId)){
-            throw new ErrorRequired('posId is niet geset', 1);
-        }else{
-            $data['posId'] = $this->_posId;
-        }
-
 
         $this->data = array_merge($data, $this->data);
 
         return parent::getData();
     }
 
+    /**
+     * @inheritdoc
+     */
     public function doRequest($endpoint = null, $version = null)
     {
         return parent::doRequest('voucher/activate');

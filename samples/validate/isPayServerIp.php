@@ -20,10 +20,10 @@ require_once '../../vendor/autoload.php';
 require_once '../config.php';
 
 try {
-    $results = array();
-
-    $results[] = \Paynl\Validate::isPayServerIp('12.34.56.78'); // not a pay server ip
-    $results[] = \Paynl\Validate::isPayServerIp('37.46.137.135'); // pay server ip
+    $results = array(
+      \Paynl\Validate::isPayServerIp('12.34.56.78'), // not a pay server ip
+      \Paynl\Validate::isPayServerIp('37.46.137.135'), // pay server ip
+    );
 
     var_dump($results);
 } catch (\Paynl\Error\Error $e) {

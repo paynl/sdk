@@ -46,13 +46,16 @@ class ConfigTest extends PHPUnit_Framework_TestCase
             \Paynl\Config::getApiUrl('transaction')
         );
     }
+
     public function testGetCurlDefault(){
         $this->assertInstanceOf('\Curl\Curl', \Paynl\Config::getCurl());
     }
+
     public function testGetCurlCustom(){
         \Paynl\Config::setCurl(new \Paynl\Curl\Dummy());
         $this->assertInstanceOf('\Paynl\Curl\Dummy', \Paynl\Config::getCurl());
     }
+
     public function testGetCurlCustomString(){
         \Paynl\Config::setCurl('\Paynl\Curl\Dummy');
         $this->assertInstanceOf('\Paynl\Curl\Dummy', \Paynl\Config::getCurl());

@@ -101,7 +101,7 @@ class Helper
         $output = FALSE;
         $number = (int) $number;
         if (is_array($numbers) && count($numbers) >= 1) {
-            $NDat = [];
+            $NDat = array();
             foreach ($numbers as $n) {
                 $NDat[abs($number - $n)] = $n;
             }
@@ -115,7 +115,7 @@ class Helper
     /**
      * Convert a stdClass object to an array
      *
-     * @param \stdClass|array $d
+     * @param \stdClass $d
      * @return array
      */
     public static function objectToArray($d)
@@ -126,7 +126,7 @@ class Helper
         if (!is_array($d)) {
             return $d;
         }
-        return array_map([__CLASS__, __FUNCTION__], $d); // recursive
+        return array_map(array(__CLASS__, __FUNCTION__), $d); // recursive
     }
 
     /**
@@ -152,11 +152,11 @@ class Helper
      */
     public static function calculateTaxClass($amountInclTax, $taxAmount)
     {
-        $taxClasses = [
+        $taxClasses = array(
             0 => 'N',
             6 => 'L',
             21 => 'H'
-        ];
+        );
 
         $taxRate = self::calculateTaxPercentage($amountInclTax, $taxAmount);
 
@@ -188,7 +188,7 @@ class Helper
             $strStreetName = implode('', $a);
         }
 
-        return [$strStreetName, $strStreetNumber];
+        return array($strStreetName, $strStreetNumber);
     }
 
     /**

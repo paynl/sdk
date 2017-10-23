@@ -20,7 +20,7 @@ require_once '../../vendor/autoload.php';
 require_once '../config.php';
 
 try {
-    $url = \Paynl\Service::getPayLinkUrl([
+    $url = \Paynl\Service::getPayLinkUrl(array(
         /**
          * securityMode:
          * 0: no checks (only minimum amount)
@@ -35,24 +35,24 @@ try {
         'countryCode' => 'nl',
         'language' => 'nl',
 
-        'extra1' => [
+        'extra1' => array(
             'name' => 'Customer Id',
             'value' => '12345678'
-        ],
-        'extra2' => [
+        ),
+        'extra2' => array(
             'name' => 'Email',
             'value' => '' //if you leave the value empty, the customer can fill in the value
-        ],
-        'extra3' => [
+        ),
+        'extra3' => array(
             'name' => 'Phone',
             'value' => '0612345678'
-        ],
+        ),
         /**
          * Extra stats data
          */
         'tool' => 'tool',
         'info' => 'info'
-    ]);
+    ));
 
     echo $url;
 } catch (\Paynl\Error\Error $e) {

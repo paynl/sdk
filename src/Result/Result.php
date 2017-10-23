@@ -25,7 +25,7 @@ namespace Paynl\Result;
  */
 class Result
 {
-    protected $data = [];
+    protected $data = array();
 
     public function __construct($data)
     {

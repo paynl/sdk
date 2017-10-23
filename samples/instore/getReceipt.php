@@ -22,7 +22,7 @@ require_once '../config.php';
 $hash = $_GET['hash']; //The hash you get from instore/payment
 
 try {
-    $result = \Paynl\Instore::getReceipt(['hash' => $hash]);
+    $result = \Paynl\Instore::getReceipt(array('hash' => $hash));
     echo nl2br($result->getReceipt());
 } catch (\Paynl\Error\Error $e) {
     echo "Fout: " . $e->getMessage();

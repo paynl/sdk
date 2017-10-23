@@ -41,11 +41,11 @@ class Voucher extends Result
      */
     public function charge($amount, $pin)
     {
-        $state = \Paynl\Voucher::charge([
+        $state = \Paynl\Voucher::charge(array(
           'cardNumber' => $this->getCardNumber(),
           'amount' => $amount,
           'pincode' => $pin
-        ]);
+        ));
         $this->_reload();
         return $state;
     }

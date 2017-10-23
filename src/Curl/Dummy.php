@@ -34,12 +34,12 @@ class Dummy implements CurlInterface
      */
     public function __call($name, $arguments)
     {
-        if(in_array($name, [
+        if(in_array($name, array(
             'delete',
             'get',
             'patch',
             'put',
-        ], true)){
+        ), true)){
             return json_decode($this->_result);
         }
         return true;
@@ -51,7 +51,7 @@ class Dummy implements CurlInterface
      * @see Dummy::setResult()
      * @inheritdoc
      */
-    public function post($url, array $data = [], $follow_303_with_post = false)
+    public function post($url, array $data = array(), $follow_303_with_post = false)
     {
         return json_decode($this->_result);
     }

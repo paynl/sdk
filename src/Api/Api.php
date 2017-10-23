@@ -37,7 +37,7 @@ class Api
     /**
      * @var array
      */
-    protected $data = [];
+    protected $data = array();
 
     /**
      * @var bool Is the ApiToken required for this API

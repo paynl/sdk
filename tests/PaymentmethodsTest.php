@@ -16,7 +16,7 @@ class PaymentmethodsTest extends PHPUnit_Framework_TestCase
         $this->setDummyData();
         \Paynl\Config::setApiToken('123456789012345678901234567890');
         \Paynl\Config::setServiceId('');
-        $this->setExpectedException(\Paynl\Error\Required\ServiceId::class);
+        $this->setExpectedException('\Paynl\Error\Required\ServiceId');
         \Paynl\Paymentmethods::getList();
 
     }
@@ -25,7 +25,7 @@ class PaymentmethodsTest extends PHPUnit_Framework_TestCase
         $this->setDummyData();
         \Paynl\Config::setApiToken('');
         \Paynl\Config::setServiceId('SL-1234-5678');
-        $this->setExpectedException(\Paynl\Error\Required\ApiToken::class);
+        $this->setExpectedException('\Paynl\Error\Required\ApiToken');
         \Paynl\Paymentmethods::getList();
     }
 
@@ -52,7 +52,7 @@ class PaymentmethodsTest extends PHPUnit_Framework_TestCase
         \Paynl\Config::setServiceId('SL-1234-5678');
         \Paynl\Config::setApiToken('123456789012345678901234567890');
 
-        $list = \Paynl\Paymentmethods::getList(['country' => 'NL']);
+        $list = \Paynl\Paymentmethods::getList(array('country' => 'NL'));
 
         $this->assertInternalType('array',$list);
 
@@ -67,7 +67,7 @@ class PaymentmethodsTest extends PHPUnit_Framework_TestCase
     }
 
     public function testGetBanksNoToken(){
-        $this->setExpectedException(\Paynl\Error\Required\ApiToken::class);
+        $this->setExpectedException('\Paynl\Error\Required\ApiToken');
         $this->setDummyData();
 
         \Paynl\Config::setServiceId('SL-1234-5678');
@@ -77,7 +77,7 @@ class PaymentmethodsTest extends PHPUnit_Framework_TestCase
     }
 
     public function testGetBanksNoServiceId(){
-        $this->setExpectedException(\Paynl\Error\Required\ServiceId::class);
+        $this->setExpectedException('\Paynl\Error\Required\ServiceId');
         $this->setDummyData();
 
         \Paynl\Config::setServiceId('');

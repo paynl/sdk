@@ -40,36 +40,35 @@ class Paymentmethods
 
         $basePath = $input['service']['basePath'];
 
-        foreach ($input['countryOptionList'] as $country) {
-            foreach ($country['paymentOptionList'] as $paymentOption) {
+        foreach ((array)$input['countryOptionList'] as $country) {
+            foreach ((array)$country['paymentOptionList'] as $paymentOption) {
                 if (isset($paymentMethods[$paymentOption['id']])) {
                     $paymentMethods[$paymentOption['id']]['countries'][] = $country['id'];
-                } else {
-                    $banks = array();
-                    if (!empty($paymentOption['paymentOptionSubList'])) {
-                        foreach ($paymentOption['paymentOptionSubList'] as $optionSub) {
-                            $image = "";
-                            if($paymentOption['id'] == 10){// only add images for ideal, because the rest will not have images
-                                $image = $basePath.$optionSub['path'].$optionSub['img'];
-                            }
-                            $bank = array();
-                            $bank['id'] = $optionSub['id'];
-                            $bank['name'] = $optionSub['name'];
-                            $bank['visibleName'] = $optionSub['visibleName'];
-                            $bank['image'] = $image;
-                            $banks[] = $bank;
-                        }
-                    }
-
-                    $paymentMethod = array(
-                        'id' => $paymentOption['id'],
-                        'name' => $paymentOption['name'],
-                        'visibleName' => $paymentOption['visibleName'],
-                        'countries' => array($country['id']),
-                        'banks' => $banks,
-                    );
-                    $paymentMethods[$paymentOption['id']] = $paymentMethod;
+                    continue;
                 }
+
+                $banks = array();
+                if (!empty($paymentOption['paymentOptionSubList'])) {
+                    foreach ((array)$paymentOption['paymentOptionSubList'] as $optionSub) {
+                        $image = '';
+                        if($paymentOption['id'] == 10){// only add images for ideal, because the rest will not have images
+                            $image = $basePath.$optionSub['path'].$optionSub['img'];
+                        }
+                        $banks[] = array(
+                          'id' => $optionSub['id'],
+                          'name' => $optionSub['name'],
+                          'visibleName' => $optionSub['visibleName'],
+                          'image' => $image,
+                        );
+                    }
+                }
+                $paymentMethods[$paymentOption['id']] = array(
+                  'id' => $paymentOption['id'],
+                  'name' => $paymentOption['name'],
+                  'visibleName' => $paymentOption['visibleName'],
+                  'countries' => array($country['id']),
+                  'banks' => $banks,
+                );
             }
         }
 
@@ -87,8 +86,8 @@ class Paymentmethods
     {
         $output = array();
         foreach ($paymentMethods as $paymentMethod) {
-            if (in_array($country, $paymentMethod['countries']) || in_array('ALL',
-                    $paymentMethod['countries'])
+            if (in_array($country, $paymentMethod['countries'], true)
+              || in_array('ALL', $paymentMethod['countries'], true)
             ) {
                 $output[] = $paymentMethod;
             }
@@ -99,18 +98,17 @@ class Paymentmethods
     /**
      * Get a list of available payment methods
      *
-     * @param array|null $options
+     * @param array $options
      * @return array
      */
-    public static function getList($options = array())
+    public static function getList(array $options = array())
     {
         $api = new Api\GetService();
         $result = $api->doRequest();
         $paymentMethods = self::reorderOutput($result);
 
         if (isset($options['country'])) {
-            $paymentMethods = self::filterCountry($paymentMethods,
-                $options['country']);
+            $paymentMethods = self::filterCountry($paymentMethods, $options['country']);
         }
 
         return $paymentMethods;

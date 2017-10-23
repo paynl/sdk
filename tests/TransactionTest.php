@@ -1,18 +1,12 @@
 <?php
 
-/**
- * Created by PhpStorm.
- * User: andy
- * Date: 20-4-2016
- * Time: 14:06
- */
 class TransactionTest extends PHPUnit_Framework_TestCase
 {
     private $testApiResult;
 
     private function setDummyData($name)
     {
-        $this->testApiResult = file_get_contents(dirname(__FILE__) . '/dummyData/Transaction/' . $name . '.json');
+        $this->testApiResult = file_get_contents(__DIR__ . '/dummyData/Transaction/' . $name . '.json');
         $curl = new \Paynl\Curl\Dummy();
         $curl->setResult($this->testApiResult);
         \Paynl\Config::setCurl($curl);
@@ -247,6 +241,7 @@ class TransactionTest extends PHPUnit_Framework_TestCase
         $this->setDummyData('Result/refundError');
         \Paynl\Transaction::refund('645958819Xdd3ea1', 5, 'Description', new DateTime());
     }
+
     public function testApprove(){
         \Paynl\Config::setApiToken('123456789012345678901234567890');
 
@@ -259,6 +254,7 @@ class TransactionTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(true, $result);
     }
+
     public function testApprovePaidTransaction(){
         \Paynl\Config::setApiToken('123456789012345678901234567890');
 
@@ -270,6 +266,7 @@ class TransactionTest extends PHPUnit_Framework_TestCase
         $this->setExpectedException('\Paynl\Error\Error');
         $transaction->approve();
     }
+
     public function testDecline(){
         \Paynl\Config::setApiToken('123456789012345678901234567890');
 
@@ -282,6 +279,7 @@ class TransactionTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(true, $result);
     }
+
     public function testDeclinePaidTransaction(){
         \Paynl\Config::setApiToken('123456789012345678901234567890');
 
@@ -293,6 +291,7 @@ class TransactionTest extends PHPUnit_Framework_TestCase
         $this->setExpectedException('\Paynl\Error\Error');
         $transaction->decline();
     }
+
     public function testApproveWithoutTransactionId(){
         \Paynl\Config::setApiToken('123456789012345678901234567890');
 
@@ -300,6 +299,7 @@ class TransactionTest extends PHPUnit_Framework_TestCase
 
         \Paynl\Transaction::approve('');
     }
+
     public function testDeclineWithoutTransactionId(){
         \Paynl\Config::setApiToken('123456789012345678901234567890');
 

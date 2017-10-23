@@ -28,7 +28,6 @@ use Paynl\Error;
 class Payment extends Instore
 {
     protected $apiTokenRequired = true;
-    protected $serviceIdRequired = false;
 
     /**
      * @var string the TransactionId
@@ -39,24 +38,6 @@ class Payment extends Instore
      * @var string the terminalId
      */
     private $terminalId;
-
-    /**
-     * @return array The data
-     * @throws Error\Required
-     */
-    protected function getData()
-    {
-        if (empty($this->transactionId)) {
-            throw new Error\Required('transactionId is niet geset');
-        }
-        $this->data['transactionId'] = $this->transactionId;
-
-        if (!empty($this->terminalId)) {
-            $this->data['terminalId'] = $this->terminalId;
-        }
-
-        return parent::getData();
-    }
 
     /**
      * @param string $transactionId
@@ -75,9 +56,26 @@ class Payment extends Instore
     }
 
     /**
-     * @param null $endpoint
-     * @param null $version
-     * @return array The result
+     * @inheritdoc
+     * @throws Error\Required transactionId is required
+     */
+    protected function getData()
+    {
+        if (empty($this->transactionId)) {
+            throw new Error\Required('transactionId is required');
+        }
+
+        $this->data['transactionId'] = $this->transactionId;
+
+        if (!empty($this->terminalId)) {
+            $this->data['terminalId'] = $this->terminalId;
+        }
+
+        return parent::getData();
+    }
+
+    /**
+     * @inheritdoc
      */
     public function doRequest($endpoint = null, $version = null)
     {

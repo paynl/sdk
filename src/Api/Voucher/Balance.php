@@ -2,13 +2,11 @@
 
 namespace Paynl\Api\Voucher;
 
-use Paynl\Error\Required as ErrorRequired;
+use Paynl\Error\Required;
 
 class Balance extends Voucher
 {
-
     protected $apiTokenRequired = true;
-    protected $serviceIdRequired = false;
 
     /**
      * @var string The voucher card number
@@ -35,15 +33,20 @@ class Balance extends Voucher
         $this->_pincode = $pincode;
     }
 
+    /**
+     * @inheritdoc
+     * @throws Required cardNumber is required
+     */
     protected function getData()
     {
+        if(empty($this->_cardNumber)){
+            throw new Required('cardNumber is required', 1);
+        }
+
+        $data['cardNumber'] = $this->_cardNumber;
+
         if(!empty($this->_pincode)){
             $data['pincode'] = $this->_pincode;
-        }
-        if(empty($this->_cardNumber)){
-            throw new ErrorRequired('cardNumber is niet geset', 1);
-        }else{
-            $data['cardNumber'] = $this->_cardNumber;
         }
 
         $this->data = array_merge($data, $this->data);
@@ -51,6 +54,9 @@ class Balance extends Voucher
         return parent::getData();
     }
 
+    /**
+     * @inheritdoc
+     */
     public function doRequest($endpoint = null, $version = null)
     {
         return parent::doRequest('voucher/balance');

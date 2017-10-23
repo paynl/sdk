@@ -1,22 +1,17 @@
 <?php
 
-/**
- * Created by PhpStorm.
- * User: andy
- * Date: 12-10-16
- * Time: 18:07
- */
 class RefundTest extends PHPUnit_Framework_TestCase
 {
     private $testApiResult;
 
     private function setDummyData($name)
     {
-        $this->testApiResult = file_get_contents(dirname(__FILE__) . '/dummyData/Refund/' . $name . '.json');
+        $this->testApiResult = file_get_contents(__DIR__ . '/dummyData/Refund/' . $name . '.json');
         $curl = new \Paynl\Curl\Dummy();
         $curl->setResult($this->testApiResult);
         \Paynl\Config::setCurl($curl);
     }
+
     private function refundAddFull(){
         return \Paynl\Refund::add(array(
             'amount' => 1,
@@ -36,6 +31,7 @@ class RefundTest extends PHPUnit_Framework_TestCase
             'processDate' => '12-12-2017',
         ));
     }
+
     public function testRefundAddNoServiceId(){
         $this->setDummyData('refund');
         $this->setExpectedException('\Paynl\Error\Required\ServiceId');
@@ -45,6 +41,7 @@ class RefundTest extends PHPUnit_Framework_TestCase
 
         $this->refundAddFull();
     }
+
     public function testRefundAddNoToken(){
         $this->setDummyData('refund');
         $this->setExpectedException('\Paynl\Error\Required\ApiToken');
@@ -54,6 +51,7 @@ class RefundTest extends PHPUnit_Framework_TestCase
 
         $this->refundAddFull();
     }
+
     public function testRefundAdd(){
         $this->setDummyData('refund');
         \Paynl\Config::setApiToken('123456789012345678901234567890');

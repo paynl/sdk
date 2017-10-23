@@ -18,7 +18,6 @@
 
 namespace Paynl;
 
-
 use Paynl\Error;
 
 /**
@@ -62,26 +61,22 @@ class Helper
      */
     public static function getIp()
     {
-        //Just get the headers if we can or else use the SERVER global
+        // Use $_SERVER or get the headers if we can
+        $headers = $_SERVER;
         if (function_exists('apache_request_headers')) {
             $headers = apache_request_headers();
-        } else {
-            $headers = $_SERVER;
         }
-        //Get the forwarded IP if it exists
+
+        // Get the forwarded IP if it exists
+        $the_ip = $_SERVER['REMOTE_ADDR'];
         if (array_key_exists('X-Forwarded-For', $headers)) {
             $the_ip = $headers['X-Forwarded-For'];
         } elseif (array_key_exists('HTTP_X_FORWARDED_FOR', $headers)) {
             $the_ip = $headers['HTTP_X_FORWARDED_FOR'];
-        } else {
-            $the_ip = $_SERVER['REMOTE_ADDR'];
         }
         $arrIp = explode(',', $the_ip);
-        $the_ip = $arrIp[0];
 
-        $the_ip = filter_var(trim($the_ip), FILTER_VALIDATE_IP);
-
-        return $the_ip;
+        return filter_var(trim($arrIp[0]), FILTER_VALIDATE_IP);
     }
 
     /**
@@ -104,7 +99,7 @@ class Helper
     private static function nearest($number, $numbers)
     {
         $output = FALSE;
-        $number = intval($number);
+        $number = (int) $number;
         if (is_array($numbers) && count($numbers) >= 1) {
             $NDat = array();
             foreach ($numbers as $n) {
@@ -128,22 +123,25 @@ class Helper
         if (is_object($d)) {
             $d = get_object_vars($d);
         }
-        if (is_array($d)) {
-            return array_map(array(__CLASS__, __FUNCTION__), $d); // recursive
-        } else {
+        if (!is_array($d)) {
             return $d;
         }
+        return array_map(array(__CLASS__, __FUNCTION__), $d); // recursive
     }
 
+    /**
+     * @param int|float $amountInclTax
+     * @param int|float $taxAmount
+     * @return float|int
+     */
     public static function calculateTaxPercentage($amountInclTax, $taxAmount){
         // return 0 if amount or tax is 0
         if ($taxAmount == 0 || $amountInclTax == 0) {
             return 0;
         }
         $amountExclTax = $amountInclTax - $taxAmount;
-        $taxRate = ($taxAmount / $amountExclTax) * 100;
 
-        return $taxRate;
+        return ($taxAmount / $amountExclTax) * 100;
     }
     /**
      * Determine the tax class to send to Pay.nl
@@ -163,7 +161,7 @@ class Helper
         $taxRate = self::calculateTaxPercentage($amountInclTax, $taxAmount);
 
         $nearestTaxRate = self::nearest($taxRate, array_keys($taxClasses));
-        return ($taxClasses[$nearestTaxRate]);
+        return $taxClasses[$nearestTaxRate];
     }
 
     /**
@@ -177,7 +175,7 @@ class Helper
     {
         $strAddress = trim($strAddress);
 
-        $a = preg_split('/(\\s+)([0-9]+)/', $strAddress, 2,
+        $a = preg_split('/(\\s+)(\d+)/', $strAddress, 2,
             PREG_SPLIT_DELIM_CAPTURE);
         $strStreetName = trim(array_shift($a));
         $strStreetNumber = trim(implode('', $a));
@@ -201,13 +199,10 @@ class Helper
      */
     public static function getBaseUrl()
     {
-        $protocol = isset($_SERVER["HTTPS"]) ? 'https' : 'http';
+        $protocol = isset($_SERVER['HTTPS']) ? 'https' : 'http';
         $url = $protocol . '://' . $_SERVER['SERVER_NAME'] .':'.$_SERVER['SERVER_PORT']. $_SERVER['REQUEST_URI'];
 
-
-        // op de laatste / afknippen (index.php willen we niet zien)
-        $baseUrl = substr($url, 0, strrpos($url, '/'));
-
-        return $baseUrl;
+        // cut at last '/' (we dont want to see index.php)
+        return substr($url, 0, strrpos($url, '/'));
     }
 }

@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: andy
- * Date: 13-7-16
- * Time: 14:04
- */
 
 namespace Paynl\Api\DirectDebit;
-
 
 use Paynl\Error\Required;
 
@@ -36,7 +29,7 @@ class Update extends DirectDebit
      */
     private $_bankaccountBic;
     /**
-     * @var string Date on which the directdebit needs to be processed.
+     * @var \Datetime Date on which the directdebit needs to be processed.
      */
     private $_processDate;
     /**
@@ -137,7 +130,7 @@ class Update extends DirectDebit
      */
     public function setProcessDate(\DateTime $processDate)
     {
-        $this->_processDate = $processDate->format('d-m-Y');
+        $this->_processDate = $processDate;
     }
 
     /**
@@ -244,13 +237,18 @@ class Update extends DirectDebit
         $this->_extra3 = $extra3;
     }
 
+    /**
+     * @inheritdoc
+     * @throws Required mandateId is required
+     */
     protected function getData()
     {
         if(empty($this->_mandateId)){
             throw new Required('mandateId');
-        } else {
-            $this->data['mandateId'];
         }
+
+        $this->data['mandateId'];
+
         if(!empty($this->_amount)){
             $this->data['amount'] = $this->_amount;
         }
@@ -263,8 +261,8 @@ class Update extends DirectDebit
         if(!empty($this->_bankaccountBic)){
             $this->data['bankaccountBic'] = $this->_bankaccountBic;
         }
-        if(!empty($this->_processDate)){
-            $this->data['processDate'] = $this->_processDate;
+        if ($this->_processDate instanceof \DateTime) {
+            $this->data['processDate'] = $this->_processDate->format('d-m-Y');
         }
         if(!empty($this->_intervalValue)){
             $this->data['intervalValue'] = $this->_intervalValue;
@@ -308,6 +306,10 @@ class Update extends DirectDebit
 
         return parent::getData();
     }
+
+    /**
+     * @inheritdoc
+     */
     public function doRequest($endpoint = '', $version = null)
     {
         return parent::doRequest('DirectDebit/update');

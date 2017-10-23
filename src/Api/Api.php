@@ -29,8 +29,14 @@ use Paynl\Helper;
  */
 class Api
 {
+    /**
+     * @var int the version of the api
+     */
     protected $version = 1;
 
+    /**
+     * @var array
+     */
     protected $data = array();
 
     /**
@@ -42,31 +48,45 @@ class Api
      */
     protected $serviceIdRequired = false;
 
+    /**
+     * @return bool
+     */
     public function isApiTokenRequired()
     {
         return $this->apiTokenRequired;
     }
 
+    /**
+     * @return bool
+     */
     public function isServiceIdRequired()
     {
         return $this->serviceIdRequired;
     }
 
+    /**
+     * @return array
+     * @throws Error\Required\ApiToken
+     * @throws Error\Required\ServiceId
+     */
     protected function getData()
     {
         if($this->isApiTokenRequired()) {
             Helper::requireApiToken();
-
             $this->data['token'] = Config::getApiToken();
         }
         if($this->isServiceIdRequired()){
             Helper::requireServiceId();
-
             $this->data['serviceId'] = Config::getServiceId();
         }
         return $this->data;
     }
 
+    /**
+     * @param object|array $result
+     * @return array
+     * @throws Error\Api
+     */
     protected function processResult($result)
     {
         $output = Helper::objectToArray($result);
@@ -75,22 +95,29 @@ class Api
             throw new Error\Api($output);
         }
 
-        if ($output['request']['result'] != 1 && $output['request']['result'] != 'TRUE') {
+        if ($output['request']['result'] != 1 && $output['request']['result'] !== 'TRUE') {
             throw new Error\Api($output['request']['errorId'] . ' - ' . $output['request']['errorMessage']);
         }
         return $output;
     }
 
+    /**
+     * @param $endpoint
+     * @param null|int $version
+     * @return array
+     *
+     * @throws Error\Api
+     * @throws Error\Error
+     */
     public function doRequest($endpoint, $version = null)
     {
-        if(is_null($version)){
+        if($version === null){
             $version = $this->version;
         }
 
         $data = $this->getData();
 
-
-        $uri = Config::getApiUrl($endpoint, $version);
+        $uri = Config::getApiUrl($endpoint, (int) $version);
 
         $curl = Config::getCurl();
 
@@ -99,22 +126,19 @@ class Api
             $curl->setOpt(CURLOPT_CAINFO, Config::getCAInfoLocation());
         }
 
-        $verifyPeer = Config::getVerifyPeer();
-        $curl->setOpt(CURLOPT_SSL_VERIFYPEER, $verifyPeer);
+        $curl->setOpt(CURLOPT_SSL_VERIFYPEER, Config::getVerifyPeer());
 
         $result = $curl->post($uri, $data);
 
         if($curl->error){
             if(!empty($result)) {
-                if ($result->status == "FALSE") {
+                if ($result->status === 'FALSE') {
                     throw new Error\Api($result->error);
                 }
             }
             throw new Error\Error($curl->errorMessage);
         }
 
-        $output = static::processResult($result);
-
-        return $output;
+        return $this->processResult($result);
     }
 }

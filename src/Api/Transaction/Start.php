@@ -130,7 +130,7 @@ class Start extends Transaction
     /**
      * @var array the products for the order
      */
-    private $_products = [];
+    private $_products = array();
 
     /**
      * @var \DateTime
@@ -229,7 +229,7 @@ class Start extends Transaction
             throw new Error('Quantity must be numeric', 1);
         }
 
-        $this->_products[] = [
+        $this->_products[] = array(
           'productId' => $id,
           'productType' => $productType,
             //description mag maar 45 chars lang zijn
@@ -238,7 +238,7 @@ class Start extends Transaction
           'quantity' => $quantity * 1,
           'vatCode' => $vatCode,
           'vatPercentage' => $vatPercentage
-        ];
+        );
     }
 
     /**
@@ -420,7 +420,7 @@ class Start extends Transaction
         }
 
         if (!empty($this->_enduser)) {
-            if (isset($this->_enduser['birthDate'])) {
+            if (isset($this->_enduser['birthDate']) && $this->_enduser['birthDate'] instanceof \DateTime) {
                 $this->_enduser['dob'] = $this->_enduser['birthDate']->format('d-m-Y');
                 unset($this->_enduser['birthDate']);
             }

@@ -36,7 +36,7 @@ class Paymentmethods
      */
     private static function reorderOutput($input)
     {
-        $paymentMethods = [];
+        $paymentMethods = array();
 
         $basePath = $input['service']['basePath'];
 
@@ -47,28 +47,28 @@ class Paymentmethods
                     continue;
                 }
 
-                $banks = [];
+                $banks = array();
                 if (!empty($paymentOption['paymentOptionSubList'])) {
                     foreach ((array)$paymentOption['paymentOptionSubList'] as $optionSub) {
                         $image = '';
                         if($paymentOption['id'] == 10){// only add images for ideal, because the rest will not have images
                             $image = $basePath.$optionSub['path'].$optionSub['img'];
                         }
-                        $banks[] = [
+                        $banks[] = array(
                           'id' => $optionSub['id'],
                           'name' => $optionSub['name'],
                           'visibleName' => $optionSub['visibleName'],
                           'image' => $image,
-                        ];
+                        );
                     }
                 }
-                $paymentMethods[$paymentOption['id']] = [
+                $paymentMethods[$paymentOption['id']] = array(
                   'id' => $paymentOption['id'],
                   'name' => $paymentOption['name'],
                   'visibleName' => $paymentOption['visibleName'],
-                  'countries' => [$country['id']],
+                  'countries' => array($country['id']),
                   'banks' => $banks,
-                ];
+                );
             }
         }
 
@@ -84,7 +84,7 @@ class Paymentmethods
      */
     private static function filterCountry($paymentMethods, $country)
     {
-        $output = [];
+        $output = array();
         foreach ($paymentMethods as $paymentMethod) {
             if (in_array($country, $paymentMethod['countries'], true)
               || in_array('ALL', $paymentMethod['countries'], true)
@@ -101,7 +101,7 @@ class Paymentmethods
      * @param array $options
      * @return array
      */
-    public static function getList(array $options = [])
+    public static function getList(array $options = array())
     {
         $api = new Api\GetService();
         $result = $api->doRequest();
@@ -126,6 +126,6 @@ class Paymentmethods
         if (isset($paymentMethods[$paymentMethodId])) {
             return $paymentMethods[$paymentMethodId]['banks'];
         }
-        return [];
+        return array();
     }
 }

@@ -4,7 +4,7 @@ class HelperTest extends PHPUnit_Framework_TestCase
 {
     public function testRequireApiTokenException()
     {
-        $this->setExpectedException(\Paynl\Error\Required\ApiToken::class);
+        $this->setExpectedException('\Paynl\Error\Required\ApiToken');
 
         \Paynl\Config::setApiToken('');
         \Paynl\Helper::requireApiToken();
@@ -12,7 +12,7 @@ class HelperTest extends PHPUnit_Framework_TestCase
 
     public function testRequireServiceIdException()
     {
-        $this->setExpectedException(\Paynl\Error\Required\ServiceId::class);
+        $this->setExpectedException('\Paynl\Error\Required\ServiceId');
 
         \Paynl\Config::setServiceId('');
         \Paynl\Helper::requireServiceId();
@@ -39,36 +39,36 @@ class HelperTest extends PHPUnit_Framework_TestCase
     public function testSplitAddress()
     {
         // @todo Straatnamen met een nummer er in bijvoorbeeld: Boulevard 1945
-        $addresses = [
-            ['Voorstraat 2', 'Voorstraat', '2'],
-            ['Kopersteden 10', 'Kopersteden', '10'],
-            ['Kopersteden 10A', 'Kopersteden', '10A'],
-            ['Kopersteden 10 A', 'Kopersteden', '10 A'],
-            ['Kopersteden 10-A', 'Kopersteden', '10-A'],
-            ['25 American street', 'American street', '25'],
-            ['1e Wereldoorlogweg 12', '1e Wereldoorlogweg', '12'],
-            ['Lang huisnummer 1234567890', 'Lang huisnummer', '1234567890'],
-            ['2e Bothofdwarsstraat 2-44', '2e Bothofdwarsstraat', '2-44'],
-            ['Straat 145-Boven', 'Straat', '145-Boven'],
-            ['Appartementenweg 12-786', 'Appartementenweg', '12-786'],
-            ['Appartementenweg 3 hoog achter', 'Appartementenweg', '3 hoog achter'],
-            ['driesplein 22/2', 'driesplein', '22/2'],
-        ];
+        $addresses = array(
+            array('Voorstraat 2', 'Voorstraat', '2'),
+            array('Kopersteden 10', 'Kopersteden', '10'),
+            array('Kopersteden 10A', 'Kopersteden', '10A'),
+            array('Kopersteden 10 A', 'Kopersteden', '10 A'),
+            array('Kopersteden 10-A', 'Kopersteden', '10-A'),
+            array('25 American street', 'American street', '25'),
+            array('1e Wereldoorlogweg 12', '1e Wereldoorlogweg', '12'),
+            array('Lang huisnummer 1234567890', 'Lang huisnummer', '1234567890'),
+            array('2e Bothofdwarsstraat 2-44', '2e Bothofdwarsstraat', '2-44'),
+            array('Straat 145-Boven', 'Straat', '145-Boven'),
+            array('Appartementenweg 12-786', 'Appartementenweg', '12-786'),
+            array('Appartementenweg 3 hoog achter', 'Appartementenweg', '3 hoog achter'),
+            array('driesplein 22/2', 'driesplein', '22/2'),
+        );
 
         foreach($addresses as $address){
             $arrAddress = \Paynl\Helper::splitAddress($address[0]);
 
-            $this->assertEquals([
+            $this->assertEquals(array(
                 $address[1],
                 $address[2]
-            ], $arrAddress);
+            ), $arrAddress);
         }
 
     }
 
     public function testObjectToArray()
     {
-        $object = (object)['a' => '1', 'b' => '2', 'c' => '3', 'd' => '4'];
+        $object = (object)array('a' => '1', 'b' => '2', 'c' => '3', 'd' => '4');
         $array = \Paynl\Helper::objectToArray($object);
 
         $this->assertInternalType('array', $array);

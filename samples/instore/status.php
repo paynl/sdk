@@ -22,7 +22,7 @@ require_once '../config.php';
 $hash = $_GET['hash']; //The hash you get from instore/payment
 
 try {
-    $result = \Paynl\Instore::status(['hash' => $hash]);
+    $result = \Paynl\Instore::status(array('hash' => $hash));
 
     var_dump($result->getData());
 } catch (\Paynl\Error\Error $e) {

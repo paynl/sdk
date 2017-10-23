@@ -37,7 +37,7 @@ class Refund
      * @return Result\Add
      * @throws Error\Error
      */
-    public static function add(array $options = [])
+    public static function add(array $options = array())
     {
         $api = new Api\Add();
 

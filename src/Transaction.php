@@ -40,7 +40,7 @@ class Transaction
      * @return Result\Start
      * @throws Error\Error
      */
-    public static function start(array $options = [])
+    public static function start($options = array())
     {
         $api = new Api\Start();
 
@@ -121,7 +121,7 @@ class Transaction
                     $product['qty'], $taxClass, $taxPercentage);
             }
         }
-        $enduser = [];
+        $enduser = array();
         if (isset($options['enduser'])) {
             if (isset($options['enduser']['birthDate']) && is_string($options['enduser']['birthDate'])) {
                 $options['enduser']['birthDate'] = new \DateTime($options['enduser']['birthDate']);
@@ -135,7 +135,7 @@ class Transaction
             $enduser['language'] = $options['language'];
         }
         if (isset($options['address'])) {
-            $address = [];
+            $address = array();
             if (isset($options['address']['streetName'])) {
                 $address['streetName'] = $options['address']['streetName'];
             }
@@ -157,7 +157,7 @@ class Transaction
             $enduser['address'] = $address;
         }
         if (isset($options['invoiceAddress'])) {
-            $invoiceAddress = [];
+            $invoiceAddress = array();
 
             if (isset($options['invoiceAddress']['initials'])) {
                 $invoiceAddress['initials'] = $options['invoiceAddress']['initials'];
@@ -339,7 +339,7 @@ class Transaction
      * @param array $options An array that contains the following elements: transactionId (required), amount, description, extra1, extra2, extra3
      * @return Result\AddRecurring
      */
-    public static function addRecurring(array $options = [])
+    public static function addRecurring($options = array())
     {
         $api = new Api\AddRecurring();
 

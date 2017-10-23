@@ -30,7 +30,7 @@ class Service
      * @throws \Paynl\Error\Required amount is required
      * @throws \Paynl\Error\Required amountMin is required
      */
-    public static function getPayLinkUrl(array $options = [])
+    public static function getPayLinkUrl(array $options = array())
     {
         if (!isset($options['securityMode'])){
            throw new Error\Required('securityMode');

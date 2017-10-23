@@ -16,7 +16,7 @@ class DirectDebit
      * @throws Required bankaccountHolder is required
      * @throws Required bankaccountNumber is required
      */
-    public static function add(array $options = [])
+    public static function add(array $options = array())
     {
         if (empty($options['amount'])) {
             throw new Required('amount');

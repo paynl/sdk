@@ -13,7 +13,7 @@ class RefundTest extends PHPUnit_Framework_TestCase
     }
 
     private function refundAddFull(){
-        return \Paynl\Refund::add([
+        return \Paynl\Refund::add(array(
             'amount' => 1,
             'bankAccountHolder' => 'N Klant',
             'bankAccountNumber' => '123456789',
@@ -29,12 +29,12 @@ class RefundTest extends PHPUnit_Framework_TestCase
             'orderId' => '1',
             'currency' => '1',
             'processDate' => '12-12-2017',
-        ]);
+        ));
     }
 
     public function testRefundAddNoServiceId(){
         $this->setDummyData('refund');
-        $this->setExpectedException(\Paynl\Error\Required\ServiceId::class);
+        $this->setExpectedException('\Paynl\Error\Required\ServiceId');
 
         \Paynl\Config::setApiToken('123456789012345678901234567890');
         \Paynl\Config::setServiceId('');
@@ -44,7 +44,7 @@ class RefundTest extends PHPUnit_Framework_TestCase
 
     public function testRefundAddNoToken(){
         $this->setDummyData('refund');
-        $this->setExpectedException(\Paynl\Error\Required\ApiToken::class);
+        $this->setExpectedException('\Paynl\Error\Required\ApiToken');
 
         \Paynl\Config::setApiToken('');
         \Paynl\Config::setServiceId('SL-1234-5678');
@@ -57,7 +57,7 @@ class RefundTest extends PHPUnit_Framework_TestCase
         \Paynl\Config::setApiToken('123456789012345678901234567890');
         \Paynl\Config::setServiceId('SL-1234-5678');
         $result = $this->refundAddFull();
-        $this->assertInstanceOf(\Paynl\Result\Refund\Add::class, $result);
+        $this->assertInstanceOf('\Paynl\Result\Refund\Add', $result);
         $this->assertStringStartsWith('RF-',$result->getRefundId());
     }
 }

@@ -33,7 +33,7 @@ class CurrencyTest extends PHPUnit_Framework_TestCase
         \Paynl\Config::setApiToken('1234567894561234567');
         $this->setDummyData();
 
-        $this->setExpectedException(\Paynl\Error\NotFound::class);
+        $this->setExpectedException('\Paynl\Error\NotFound');
 
         \Paynl\Currency::getCurrencyId('ZZZ');
     }

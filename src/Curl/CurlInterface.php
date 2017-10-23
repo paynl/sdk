@@ -38,7 +38,7 @@ interface CurlInterface
      * [2] https://github.com/php/php-src/pull/531
      * [3] http://php.net/ChangeLog-5.php#5.5.11
      */
-    public function post($url, array $data = [], $follow_303_with_post = false);
+    public function post($url, array $data = array(), $follow_303_with_post = false);
 
     /**
      * Set Opt

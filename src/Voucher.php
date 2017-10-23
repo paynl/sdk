@@ -28,7 +28,7 @@ class Voucher
      * @param array $options
      * @return float the current balance
      */
-    public static function balance(array $options = [])
+    public static function balance(array $options = array())
     {
         $api = new Api\Balance();
 
@@ -45,7 +45,7 @@ class Voucher
      * @param array $options
      * @return bool if the charge was done succefully
      */
-    public static function charge(array $options = [])
+    public static function charge(array $options = array())
     {
         $api = new Api\Charge();
 
@@ -68,7 +68,7 @@ class Voucher
      * @param array $options
      * @return bool
      */
-    public static function activate(array $options = []){
+    public static function activate(array $options = array()){
         $api = new Api\Activate();
 
         if(isset($options['pincode'])){

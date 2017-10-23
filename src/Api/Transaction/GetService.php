@@ -34,7 +34,7 @@ class GetService extends Transaction
     /**
      * @var array cached result
      */
-    private static $cache = [];
+    private static $cache = array();
 
     /**
      * @inheritdoc

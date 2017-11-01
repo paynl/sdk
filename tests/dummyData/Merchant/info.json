@@ -1,0 +1,58 @@
+{
+  "request": {
+    "result": "1",
+    "errorId": "",
+    "errorMessage": ""
+  },
+  "merchant": {
+    "merchantId": "M-0123-4567",
+    "name": "Demotour Pay.nl",
+    "publicName": "Classic Carparts",
+    "website": "http:\/\/www.demotour.pay.nl\/",
+    "type": "1",
+    "typeName": "BV (Besloten Vennootschap)",
+    "cocNumber": "012345678",
+    "vatNumber": "NL1234567B01",
+    "iban": "NL35RABO012345678",
+    "bic": "INGBNL2A",
+    "bankaccountHolder": "Demotour Pay.nl",
+    "postalAddress": {
+      "street": "Voorstraat",
+      "houseNumber": "2",
+      "zipCode": "3201BB",
+      "city": "Spijkenisse",
+      "countryCode": "NL",
+      "countryName": "Netherlands"
+    },
+    "visitAddress": {
+      "street": "Voorstraat",
+      "houseNumber": "2",
+      "zipCode": "3201BB",
+      "city": "Spijkenisse",
+      "countryCode": "NL",
+      "countryName": "Netherlands"
+    },
+    "tradeNames": [
+      {
+        "id": "TM-3255-6540",
+        "name": "Classic Carparts"
+      },
+      {
+        "id": "TM-6974-7140",
+        "name": "Demotour Pay.nl"
+      }
+    ],
+    "contactData": [
+      {
+        "type": "email",
+        "value": "info@webshop.nl",
+        "description": "klantenservice"
+      },
+      {
+        "type": "phone",
+        "value": "012345678",
+        "description": "algemeen"
+      }
+    ]
+  }
+}

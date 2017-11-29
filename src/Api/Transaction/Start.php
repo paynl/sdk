@@ -306,9 +306,6 @@ class Start extends Transaction
 
     public function setPaymentOptionSubId($paymentOptionSubId)
     {
-        if (!is_numeric($paymentOptionSubId)) {
-            throw new Error('PaymentOptionSubId is niet numeriek', 1);
-        }
         $this->_paymentOptionSubId = $paymentOptionSubId;
     }
 

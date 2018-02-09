@@ -35,6 +35,9 @@ class Voucher
         if(isset($options['cardNumber'])){
             $api->setCardNumber($options['cardNumber']);
         }
+        if(isset($options['pincode'])){
+            $api->setPincode($options['pincode']);
+        }
         $result = $api->doRequest();
 
         return $result['balance'] / 100;

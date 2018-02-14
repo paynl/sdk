@@ -103,11 +103,12 @@ class Transaction
         if (isset($options['products'])) {
             foreach ((array)$options['products'] as $product) {
                 $taxClass = 'N';
+                $taxPercentage = 0;
                 if (isset($product['tax'])) {
                     $taxClass = Helper::calculateTaxClass($product['price'], $product['tax']);
+                    $taxPercentage = round(Helper::calculateTaxPercentage($product['price'], $product['tax']));
                 }
 
-                $taxPercentage = round(Helper::calculateTaxPercentage($product['price'], $product['tax']));
                 if (isset($product['vatPercentage']) && is_numeric($product['vatPercentage'])) {
                     $taxPercentage = round($product['vatPercentage'], 2);
                     $taxClass = Helper::calculateTaxClass(100 + $taxPercentage, $taxPercentage);

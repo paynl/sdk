@@ -28,13 +28,29 @@ use Curl\Curl;
 class Config
 {
 
-    // @var string The Pay.nl  API token to be used for requests.
+    /**
+     * @var string The token code (AT-xxxx-xxxx)
+     */
+    private static $tokenCode = 'token';
+
+    /**
+     * @var string The Pay.nl  API token to be used for requests.
+     */
     private static $apiToken;
-    // @var string The service id (SL-xxxx-xxxx)
+
+    /**
+     * @var string The service id (SL-xxxx-xxxx)
+     */
     private static $serviceId;
-    // @var string The base URL for the Pay.nl API.
+
+    /**
+     * @var string The base URL for the Pay.nl API.
+     */
     private static $apiBase = 'https://rest-api.pay.nl';
-    // @var int The version of the Pay.nl API to use for requests.
+
+    /**
+     * @var int The version of the Pay.nl API to use for requests.
+     */
     private static $apiVersion = 5;
 
     private static $curl;
@@ -48,6 +64,21 @@ class Config
      * @var bool Disable this if you have certificate errors that you don't know how to fix
      */
     private static $verifyPeer = true;
+
+
+    /**
+     * @return string
+     */
+    public static function getTokenCode() {
+        return self::$tokenCode;
+    }
+
+    /**
+     * @param string $tokenCode
+     */
+    public static function setTokenCode( $tokenCode ) {
+        self::$tokenCode = $tokenCode;
+    }
 
     /**
      * @return bool

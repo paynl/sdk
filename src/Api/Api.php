@@ -18,6 +18,7 @@
 
 namespace Paynl\Api;
 
+use Curl\Curl;
 use Paynl\Config;
 use Paynl\Error;
 use Paynl\Helper;
@@ -61,10 +62,11 @@ class Api {
 			$version = $this->version;
 		}
 
+        $auth = $this->getAuth();
 		$data = $this->getData();
-
 		$uri = Config::getApiUrl( $endpoint, (int) $version );
 
+        /** @var Curl $curl */
 		$curl = Config::getCurl();
 
 		if ( Config::getCAInfoLocation() ) {
@@ -72,7 +74,12 @@ class Api {
 			$curl->setOpt( CURLOPT_CAINFO, Config::getCAInfoLocation() );
 		}
 
-		$curl->setOpt( CURLOPT_SSL_VERIFYPEER, Config::getVerifyPeer() );
+        if(!empty($auth)){
+            $curl->setBasicAuthentication($auth['username'], $auth['password']);
+        }
+
+
+        $curl->setOpt( CURLOPT_SSL_VERIFYPEER, Config::getVerifyPeer() );
 
 		$result = $curl->post( $uri, $data );
 
@@ -92,18 +99,31 @@ class Api {
 	 * @throws Error\Required\ApiToken
 	 * @throws Error\Required\ServiceId
 	 */
-	protected function getData() {
-		if ( $this->isApiTokenRequired() ) {
-			Helper::requireApiToken();
-			$this->data['token'] = Config::getApiToken();
-		}
-		if ( $this->isServiceIdRequired() ) {
-			Helper::requireServiceId();
-			$this->data['serviceId'] = Config::getServiceId();
-		}
+    protected function getData()
+    {
+        if($this->isServiceIdRequired()){
+            Helper::requireServiceId();
 
-		return $this->data;
-	}
+            $this->data['serviceId'] = Config::getServiceId();
+        }
+        return $this->data;
+    }
+
+    /**
+     * @return array|null
+     */
+    private function getAuth(){
+        if(!$this->isApiTokenRequired()) return null;
+
+        Helper::requireApiToken();
+        $tokenCode = Config::getTokenCode();
+        $apiToken = Config::getApiToken();
+        if(!$tokenCode){
+            $this->data['token'] = $apiToken;
+            return null;
+        }
+        return array('username' => $tokenCode, 'password' => $apiToken);
+    }
 
 	/**
 	 * @return bool

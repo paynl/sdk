@@ -36,6 +36,6 @@ try {
 
     echo "<br /><a href='".$result->getRedirectUrl()."'>Status - Paynl</a><br />";
 
-} catch (Paynl\Error\Error $e) {
+} catch (\Paynl\Error\Error $e) {
     echo 'Fout: ' . $e->getMessage();
 }

@@ -2,14 +2,14 @@
 require_once '../../../vendor/autoload.php';
 require_once '../../config.php';
 try {
-    $result = Paynl\DirectDebit\Mandate::add(array(
+    $result = \Paynl\DirectDebit\Mandate::add(array(
         'amount' => 0.1,
         'bankaccountHolder' => 'N. Klant',
         'bankaccountNumber' => 'NL00RABO0123456789',
 
         // optional
         'bankaccountBic' => 'RABONL2U',
-        'processDate' => new DateTime('tomorrow'),
+        'processDate' => new \DateTime('tomorrow'),
 //        'exchangeUrl' => 'http://path_to_your_exchange/file.php',
         'description' => 'De omschrijving',
         'ipAddress' => '192.168.20.123',

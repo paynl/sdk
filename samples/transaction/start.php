@@ -23,13 +23,13 @@ try {
     $result = \Paynl\Transaction::start(array(
         // required
         'amount' => 12.5,
-        'returnUrl' => dirname(Paynl\Helper::getBaseUrl()) . '/return.php',
+        'returnUrl' => dirname(\Paynl\Helper::getBaseUrl()) . '/return.php',
 
         // optional
-        'exchangeUrl' => dirname(Paynl\Helper::getBaseUrl()) . '/exchange.php',
+        'exchangeUrl' => dirname(\Paynl\Helper::getBaseUrl()) . '/exchange.php',
         'paymentMethod' => 10,
         'currency' => 'EUR',
-        'expireDate' => new DateTime('2016-04-01'),
+        'expireDate' => new \DateTime('2016-04-01'),
 //        'bank' => 1,
         'description' => '123456',
         'testmode' => 0,
@@ -37,8 +37,8 @@ try {
         'extra2' => 'ext2',
         'extra3' => 'ext3',
         'ipaddress' => '10.0.0.1',
-        'invoiceDate' => new DateTime('now'),
-        'deliveryDate' => new DateTime('2016-06-06'), // in case of tickets for an event, use the event date here
+        'invoiceDate' => new \DateTime('now'),
+        'deliveryDate' => new \DateTime('2016-06-06'), // in case of tickets for an event, use the event date here
         'products' => array(
             array(
                 'id' => 1,
@@ -86,7 +86,7 @@ try {
             'initials' => 'T',
             'lastName' => 'Test',
             'gender' => 'M',
-            'birthDate' => new DateTime('1999-02-15'),
+            'birthDate' => new \DateTime('1999-02-15'),
             'phoneNumber' => '0612345678',
             'emailAddress' => 'test@test.nl',
             'customerReference' => '456789',//your customer id

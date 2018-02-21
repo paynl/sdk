@@ -54,9 +54,13 @@ class Start extends Transaction
      */
     private $_currency;
     /**
-     * @var string the exchagne url
+     * @var string the exchange url
      */
     private $_exchangeUrl;
+    /**
+     * @var string Your order number
+     */
+    private $_orderNumber;
     /**
      * @var string the description
      */
@@ -171,6 +175,14 @@ class Start extends Transaction
         $this->_promotorId = $promotorId;
     }
 
+    /**
+     * @param string $orderNumber
+     */
+    public function setOrderNumber($orderNumber)
+    {
+        $this->_orderNumber = $orderNumber;
+    }
+
     public function setCurrency($currency)
     {
         $this->_currency = $currency;
@@ -217,27 +229,34 @@ class Start extends Transaction
      * @param int $quantity
      * @param int $vatCode
      * @param string $vatPercentage
+     *
      * @throws Error
      */
-    public function addProduct($id, $description, $productType, $price, $quantity,
-                               $vatCode, $vatPercentage)
-    {
-        if (!is_numeric($price)) {
+    public function addProduct(
+        $id,
+        $description,
+        $productType,
+        $price,
+        $quantity,
+        $vatCode,
+        $vatPercentage
+    ) {
+        if ( ! is_numeric($price)) {
             throw new Error('Price must be numeric', 1);
         }
-        if (!is_numeric($quantity)) {
+        if ( ! is_numeric($quantity)) {
             throw new Error('Quantity must be numeric', 1);
         }
 
         $this->_products[] = array(
-          'productId' => $id,
-          'productType' => $productType,
+            'productId'     => $id,
+            'productType'   => $productType,
             //description mag maar 45 chars lang zijn
-          'description' => substr($description, 0, 45),
-          'price' => $price,
-          'quantity' => $quantity * 1,
-          'vatCode' => $vatCode,
-          'vatPercentage' => $vatPercentage
+            'description'   => substr($description, 0, 45),
+            'price'         => $price,
+            'quantity'      => $quantity * 1,
+            'vatCode'       => $vatCode,
+            'vatPercentage' => $vatPercentage
         );
     }
 
@@ -275,6 +294,7 @@ class Start extends Transaction
      *      countryCode
      *  ]
      * ]
+     *
      * @param array $enduser
      */
     public function setEnduser($enduser)
@@ -286,11 +306,12 @@ class Start extends Transaction
      * Set the amount(in cents) of the transaction
      *
      * @param int $amount
+     *
      * @throws Error
      */
     public function setAmount($amount)
     {
-        if (!is_numeric($amount)) {
+        if ( ! is_numeric($amount)) {
             throw new Error('Amount is niet numeriek', 1);
         }
         $this->_amount = $amount;
@@ -298,7 +319,7 @@ class Start extends Transaction
 
     public function setPaymentOptionId($paymentOptionId)
     {
-        if (!is_numeric($paymentOptionId)) {
+        if ( ! is_numeric($paymentOptionId)) {
             throw new Error('PaymentOptionId is niet numeriek', 1);
         }
         $this->_paymentOptionId = $paymentOptionId;
@@ -356,11 +377,20 @@ class Start extends Transaction
 
     /**
      * Set the description for the transaction
+     *
      * @param string $description
      */
     public function setDescription($description)
     {
         $this->_description = $description;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function doRequest($endpoint = null, $version = null)
+    {
+        return parent::doRequest('transaction/start');
     }
 
     /**
@@ -380,18 +410,21 @@ class Start extends Transaction
         }
 
         $data['serviceId'] = Config::getServiceId();
-        $data['testMode'] = (int) ($this->_testMode === true);
-        $data['amount'] = $this->_amount;
+        $data['testMode']  = (int)($this->_testMode === true);
+        $data['amount']    = $this->_amount;
         $data['finishUrl'] = $this->_finishUrl;
 
 
-        if (!empty($this->_paymentOptionId)) {
+        if ( ! empty($this->_paymentOptionId)) {
             $data['paymentOptionId'] = $this->_paymentOptionId;
         }
-        if (!empty($this->_exchangeUrl)) {
+        if ( ! empty($this->_exchangeUrl)) {
             $data['transaction']['orderExchangeUrl'] = $this->_exchangeUrl;
         }
-        if (!empty($this->_description)) {
+        if ( ! empty($this->_orderNumber)) {
+            $data['transaction']['orderNumber'] = $this->_orderNumber;
+        }
+        if ( ! empty($this->_description)) {
             $data['transaction']['description'] = $this->_description;
         }
         if (isset($this->_currency)) {
@@ -400,13 +433,13 @@ class Start extends Transaction
         if (isset($this->_expireDate)) {
             $data['transaction']['expireDate'] = $this->_expireDate->format('d-m-Y H:i:s');
         }
-        if (!empty($this->_paymentOptionSubId)) {
+        if ( ! empty($this->_paymentOptionSubId)) {
             $data['paymentOptionSubId'] = $this->_paymentOptionSubId;
         }
 
         $data['ipAddress'] = isset($this->_ipaddress) ? $this->_ipaddress : Helper::getIp();
 
-        if (!empty($this->_products)) {
+        if ( ! empty($this->_products)) {
             $data['saleData']['orderData'] = $this->_products;
         }
         if ($this->_deliveryDate instanceof \DateTime) {
@@ -416,7 +449,7 @@ class Start extends Transaction
             $data['saleData']['invoiceDate'] = $this->_invoiceDate->format('d-m-Y');
         }
 
-        if (!empty($this->_enduser)) {
+        if ( ! empty($this->_enduser)) {
             if (isset($this->_enduser['birthDate']) && $this->_enduser['birthDate'] instanceof \DateTime) {
                 $this->_enduser['dob'] = $this->_enduser['birthDate']->format('d-m-Y');
                 unset($this->_enduser['birthDate']);
@@ -424,50 +457,42 @@ class Start extends Transaction
             $data['enduser'] = $this->_enduser;
         }
 
-        if (!empty($this->_extra1)) {
+        if ( ! empty($this->_extra1)) {
             $data['statsData']['extra1'] = $this->_extra1;
         }
-        if (!empty($this->_extra2)) {
+        if ( ! empty($this->_extra2)) {
             $data['statsData']['extra2'] = $this->_extra2;
         }
-        if (!empty($this->_extra3)) {
+        if ( ! empty($this->_extra3)) {
             $data['statsData']['extra3'] = $this->_extra3;
         }
-        if (!empty($this->_promotorId)) {
+        if ( ! empty($this->_promotorId)) {
             $data['statsData']['promotorId'] = $this->_promotorId;
         }
-        if (!empty($this->_info)) {
+        if ( ! empty($this->_info)) {
             $data['statsData']['info'] = $this->_info;
         }
-        if (!empty($this->_tool)) {
+        if ( ! empty($this->_tool)) {
             $data['statsData']['tool'] = $this->_tool;
         }
-        if (!empty($this->_object)) {
+        if ( ! empty($this->_object)) {
             $data['statsData']['object'] = $this->_object;
         }
-        if (!empty($this->_domainId)) {
+        if ( ! empty($this->_domainId)) {
             $data['statsData']['domain_id'] = $this->_domainId;
         }
-        if (!empty($this->_transferData)) {
+        if ( ! empty($this->_transferData)) {
             $data['statsData']['transferData'] = $this->_transferData;
         }
-        if (!empty($this->_transferType)) {
+        if ( ! empty($this->_transferType)) {
             $data['transferType'] = $this->_transferType;
         }
-        if (!empty($this->_transferValue)) {
+        if ( ! empty($this->_transferValue)) {
             $data['transferValue'] = $this->_transferValue;
         }
 
         $this->data = array_merge($data, $this->data);
 
         return parent::getData();
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function doRequest($endpoint = null, $version = null)
-    {
-        return parent::doRequest('transaction/start');
     }
 }

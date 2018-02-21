@@ -31,6 +31,7 @@ try {
         'currency' => 'EUR',
         'expireDate' => new \DateTime('2016-04-01'),
 //        'bank' => 1,
+        'orderNumber' => 'ABCDEFG',
         'description' => '123456',
         'testmode' => 0,
         'extra1' => 'ext1',

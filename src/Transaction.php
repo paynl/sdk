@@ -37,6 +37,7 @@ class Transaction
      * Start a new transaction
      *
      * @param array $options
+     *
      * @return Result\Start
      * @throws Error\Error
      */
@@ -63,13 +64,16 @@ class Transaction
         if (isset($options['exchangeUrl'])) {
             $api->setExchangeUrl($options['exchangeUrl']);
         }
-        if (isset($options['paymentMethod']) && !empty($options['paymentMethod'])) {
+        if (isset($options['paymentMethod']) && ! empty($options['paymentMethod'])) {
             $api->setPaymentOptionId($options['paymentMethod']);
         }
-        if (isset($options['bank']) && !empty($options['bank'])) {
+        if (isset($options['bank']) && ! empty($options['bank'])) {
             $api->setPaymentOptionSubId($options['bank']);
         }
-        if (isset($options['description']) && !empty($options['description'])) {
+        if (isset($options['orderNumber']) && ! empty($options['orderNumber'])) {
+            $api->setOrderNumber($options['orderNumber']);
+        }
+        if (isset($options['description']) && ! empty($options['description'])) {
             $api->setDescription($options['description']);
         }
         if (isset($options['testmode']) && $options['testmode'] == 1) {
@@ -102,19 +106,19 @@ class Transaction
 
         if (isset($options['products'])) {
             foreach ((array)$options['products'] as $product) {
-                $taxClass = 'N';
+                $taxClass      = 'N';
                 $taxPercentage = 0;
                 if (isset($product['tax'])) {
-                    $taxClass = Helper::calculateTaxClass($product['price'], $product['tax']);
+                    $taxClass      = Helper::calculateTaxClass($product['price'], $product['tax']);
                     $taxPercentage = round(Helper::calculateTaxPercentage($product['price'], $product['tax']));
                 }
 
                 if (isset($product['vatPercentage']) && is_numeric($product['vatPercentage'])) {
                     $taxPercentage = round($product['vatPercentage'], 2);
-                    $taxClass = Helper::calculateTaxClass(100 + $taxPercentage, $taxPercentage);
+                    $taxClass      = Helper::calculateTaxClass(100 + $taxPercentage, $taxPercentage);
                 }
 
-                if (!isset($product['type'])) {
+                if ( ! isset($product['type'])) {
                     $product['type'] = self::PRODUCT_TYPE_ARTICLE;
                 }
 
@@ -129,7 +133,7 @@ class Transaction
             }
             $enduser = $options['enduser'];
         }
-        if(isset($options['company'])){
+        if (isset($options['company'])) {
             $enduser['company'] = $options['company'];
         }
         if (isset($options['language'])) {
@@ -190,21 +194,21 @@ class Transaction
 
             $enduser['invoiceAddress'] = $invoiceAddress;
         }
-        if (!empty($enduser)) {
+        if ( ! empty($enduser)) {
             $api->setEnduser($enduser);
         }
 
-        if (!empty($options['object'])) {
+        if ( ! empty($options['object'])) {
             $api->setObject($options['object']);
         }
-        if (!empty($options['tool'])) {
+        if ( ! empty($options['tool'])) {
             $api->setTool($options['tool']);
         }
-        if (!empty($options['info'])) {
+        if ( ! empty($options['info'])) {
             $api->setInfo($options['info']);
         }
 
-        if (!empty($options['promotorId'])) {
+        if ( ! empty($options['promotorId'])) {
             $api->setPromotorId($options['promotorId']);
         }
         if (isset($options['transferType'])) {
@@ -234,6 +238,7 @@ class Transaction
      * Get the transaction
      *
      * @param string $transactionId
+     *
      * @return Result\Transaction
      */
     public static function get($transactionId)
@@ -243,6 +248,7 @@ class Transaction
         $result = $api->doRequest();
 
         $result['transactionId'] = $transactionId;
+
         return new Result\Transaction($result);
     }
 
@@ -262,7 +268,8 @@ class Transaction
         }
         // maybe its xml
         $input = file_get_contents('php://input');
-        $xml = simplexml_load_string($input);
+        $xml   = simplexml_load_string($input);
+
         return self::get($xml->order_id);
     }
 
@@ -277,9 +284,12 @@ class Transaction
      *
      * @return Result\Refund
      */
-    public static function refund($transactionId, $amount = null,
-                                  $description = null, \DateTime $processDate = null)
-    {
+    public static function refund(
+        $transactionId,
+        $amount = null,
+        $description = null,
+        \DateTime $processDate = null
+    ) {
         $api = new Api\Refund();
         $api->setTransactionId($transactionId);
         if ($amount !== null) {
@@ -338,6 +348,7 @@ class Transaction
      * This is currently only suitable for VISA and MasterCard Ask Pay.nl to activate this option for you.
      *
      * @param array $options An array that contains the following elements: transactionId (required), amount, description, extra1, extra2, extra3
+     *
      * @return Result\AddRecurring
      */
     public static function addRecurring($options = array())

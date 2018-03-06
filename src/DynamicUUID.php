@@ -73,11 +73,12 @@ class DynamicUUID
      *
      * @param string $uuid The UUID to decode
      * @param string|null $secret If supplied the uuid will be validated before decoding.
+     * @param string $padChar The reference will be padded with this character, default '0'
      *
      * @return array Array with serviceId and reference
      * @throws Error
      */
-    public static function decode($uuid, $secret = null)
+    public static function decode($uuid, $secret = null, $padChar = '0')
     {
         if ( isset($secret)) {
             self::validateSecret($secret);
@@ -93,6 +94,7 @@ class DynamicUUID
         $serviceId = "SL-" . substr($uuidData, 0, 4) . '-' . substr($uuidData, 4, 4);
         $reference = substr($uuidData, 8);
 
+        $reference = ltrim($reference, $padChar);
         return array(
             'serviceId' => $serviceId,
             'reference' => $reference

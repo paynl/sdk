@@ -8,7 +8,7 @@ use Paynl\Error\Error;
 
 class DynamicUUID
 {
-    public static function generate($serviceId, $secret, $reference, $padChar = '0'){
+    public static function encode($serviceId, $secret, $reference, $padChar = '0'){
         self::validateSecret($secret);
         self::validateServiceId($serviceId);
         self::validateReference($reference);

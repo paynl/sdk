@@ -8,6 +8,9 @@ use Paynl\Error\Error;
 
 class DynamicUUID
 {
+    const REFERENCE_TYPE_STRING = 1;
+    const REFERENCE_TYPE_HEX = 0;
+
     /**
      * Generate a UUID
      *
@@ -15,11 +18,15 @@ class DynamicUUID
      * @param string $secret
      * @param string $reference Your reference to the transaction
      * @param string $padChar The reference will be padded with this character, default '0'
+     * @param int $referenceType Define if you are using a string (8 chars) of hex (16 chars)
      *
      * @return string The UUID
      */
-    public static function encode($serviceId, $secret, $reference, $padChar = '0')
+    public static function encode($serviceId, $secret, $reference, $padChar = '0', $referenceType=self::REFERENCE_TYPE_STRING)
     {
+        if($referenceType === self::REFERENCE_TYPE_STRING){
+            $reference = implode(unpack("H*", $reference));
+        }
         self::validateSecret($secret);
         self::validateServiceId($serviceId);
         self::validateReference($reference);
@@ -30,7 +37,7 @@ class DynamicUUID
 
         $hash = hash_hmac('sha256', $UUIDData, $secret);
 
-        $UUID = "sl" . substr($hash, 0, 6) . $UUIDData;
+        $UUID = "b" . substr($hash, 0, 7) . $UUIDData;
 
         return sprintf('%08s-%04s-%04s-%04s-%12s',
             substr($UUID, 0, 8),
@@ -56,7 +63,7 @@ class DynamicUUID
 
     private static function validateReference($strReference)
     {
-        if ( ! preg_match('/^[a-z0-9]{0,16}$/i', $strReference)) {
+        if ( ! preg_match('/^[0-9a-f]{0,16}$/i', $strReference)) {
             throw new Error('Invalid reference: only alphanumeric chars are allowed, up to 16 chars long');
         }
     }
@@ -78,7 +85,7 @@ class DynamicUUID
      * @return array Array with serviceId and reference
      * @throws Error
      */
-    public static function decode($uuid, $secret = null, $padChar = '0')
+    public static function decode($uuid, $secret = null, $padChar = '0', $referenceType = self::REFERENCE_TYPE_STRING)
     {
         if ( isset($secret)) {
             self::validateSecret($secret);
@@ -95,6 +102,10 @@ class DynamicUUID
         $reference = substr($uuidData, 8);
 
         $reference = ltrim($reference, $padChar);
+
+        if($referenceType == self::REFERENCE_TYPE_STRING){
+            $reference = pack("H*", $reference);
+        }
         return array(
             'serviceId' => $serviceId,
             'reference' => $reference
@@ -115,7 +126,7 @@ class DynamicUUID
         $uuidData = substr($uuidData, 8);
 
         $hash     = hash_hmac('sha256', $uuidData, $secret);
-        $checksum = "sl" . substr($hash, 0, 6);
+        $checksum = "b" . substr($hash, 0, 7);
 
         return $checksum == substr($uuid, 0, 8);
     }

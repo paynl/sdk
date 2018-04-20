@@ -165,7 +165,7 @@ require __DIR__ . '/vendor/autoload.php';
 
 $transaction = \Paynl\Transaction::getForExchange();
 
-if($transaction->isPaid()){
+if($transaction->isPaid() || $transaction->isAuthorized()){
     // process the payment
 } elseif($transaction->isCanceled()){
     // payment canceled, restock items
@@ -176,7 +176,7 @@ echo "TRUE| ";
 
 // Optionally you can send a message after TRUE|, you can view these messages in the logs.
 // https://admin.pay.nl/logs/payment_state
-echo $transaction->isPaid()?'Paid':'Not paid';
+echo ($transaction->isPaid() || $transaction->isAuthorized())?'Paid':'Not paid';
 
 
 ```

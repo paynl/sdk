@@ -36,7 +36,7 @@ try {
         }
     }
 
-    if ($transaction->isPaid()) {
+    if ($transaction->isPaid() || $transaction->isAuthorized()) {
         // process the payment
     } elseif ($transaction->isCanceled()) {
         // payment canceled, restock items

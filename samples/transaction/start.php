@@ -117,6 +117,7 @@ try {
             'city' => 'ITest',
             'country' => 'NL',
         ),
+        'object' => 'Object', 
 
         // Only use this if you are told to
 //        'transferType' => 'merchant',

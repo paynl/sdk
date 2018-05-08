@@ -117,7 +117,7 @@ try {
             'city' => 'ITest',
             'country' => 'NL',
         ),
-        'object' => 'Object', 
+        'object' => 'Object', // 64 characters max
 
         // Only use this if you are told to
 //        'transferType' => 'merchant',

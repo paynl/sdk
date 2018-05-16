@@ -54,14 +54,23 @@ class GetService extends Transaction
      */
     public function doRequest($endpoint = null, $version = null)
     {
-        if (isset(self::$cache[Config::getServiceId()])) {
-            Helper::requireApiToken();
-            Helper::requireServiceId();
-            return self::$cache[Config::getServiceId()];
-        }
+        Helper::requireApiToken();
+        Helper::requireServiceId();
 
-        $result = parent::doRequest('transaction/getService');
-        self::$cache[Config::getServiceId()] = $result;
+        $cacheKey = Config::getTokenCode().'|'.Config::getApiToken() . '|' . Config::getServiceId();
+        if (isset(self::$cache[$cacheKey])) {
+            if (self::$cache[$cacheKey] instanceof \Exception) {
+                throw self::$cache[$cacheKey];
+            }
+            return self::$cache[$cacheKey];
+        }
+        try {
+            $result = parent::doRequest('transaction/getService');
+            self::$cache[$cacheKey] = $result;
+        } catch (\Exception $e) {
+            self::$cache[$cacheKey] = $e;
+            throw $e;
+        }
         return $result;
     }
 }

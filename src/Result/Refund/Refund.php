@@ -16,43 +16,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Paynl\Result;
+namespace Paynl\Result\Refund;
+
+use Paynl\Error\Error;
+use Paynl\Result\Result;
 
 /**
- * Base class for the results of the API
+ * Description of Transaction
  *
  * @author Andy Pieters <andy@pay.nl>
  */
-class Result
+class Refund extends Result
 {
-    protected $data = array();
-
-    public function __construct($data)
-    {
-        $this->data = $data;
-	}
-
-	public function isRefunded()
-	{
-		return $this->data['refund']['statusName'] == 'Verwerkt';
-	}
-
-	public function getRequest()
-	{
-		return $this->data['request'];
-	}
-
-	public function getRefund()
-	{
-		return $this->data['refund'];
-	}
-
     /**
-     * Get the complete result as an array
-     * @return array
+     * @return string The transaction id
      */
-    public function getData()
+    public function getId()
+    {
+        return $this->data['refundId'];
+    }
+
+    public function info()
     {
         return $this->data;
     }
+
 }

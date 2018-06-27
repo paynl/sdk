@@ -22,23 +22,17 @@ use Paynl\Error\Error;
 use Paynl\Result\Result;
 
 /**
- * Description of Transaction
+ * Description of Refund
  *
  * @author Andy Pieters <andy@pay.nl>
  */
 class Refund extends Result
 {
     /**
-     * @return string The transaction id
+     * @return string The Refund id
      */
     public function getId()
     {
         return $this->data['refundId'];
     }
-
-    public function info()
-    {
-        return $this->data;
-    }
-
 }

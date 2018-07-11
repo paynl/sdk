@@ -94,4 +94,22 @@ class Refund
 
         return new Result\Add($result);
     }
+
+	/**
+     * Get the refund
+     *
+     * @param string $refundId
+     *
+     * @return Result\Refund
+     */
+    public static function get($refundId)
+    {
+        $api = new Api\Info();
+        $api->setRefundId($refundId);
+        $result = $api->doRequest();
+
+        $result['refundId'] = $refundId;
+
+        return new Result\Refund($result);
+	}
 }

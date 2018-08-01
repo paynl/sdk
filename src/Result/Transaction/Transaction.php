@@ -28,6 +28,8 @@ use Paynl\Result\Result;
  */
 class Transaction extends Result
 {
+    private $_cachedStatusResult = null;
+
     /**
      * @return bool Transaction is paid
      */
@@ -64,7 +66,7 @@ class Transaction extends Result
 
     public function void()
     {
-        if ( ! $this->isAuthorized()) {
+        if (!$this->isAuthorized()) {
             throw new Error('Cannod void transaction, status is not authorized');
         }
 
@@ -86,7 +88,7 @@ class Transaction extends Result
 
     public function capture()
     {
-        if ( ! $this->isAuthorized()) {
+        if (!$this->isAuthorized()) {
             throw new Error('Cannod capture transaction, status is not authorized');
         }
 
@@ -223,9 +225,29 @@ class Transaction extends Result
         return $this->data['statsDetails']['extra3'];
     }
 
+    /**
+     * @return float|int The refunded amount in euro
+     * @throws Error
+     * @throws \Paynl\Error\Api
+     */
+    public function getRefundedAmount()
+    {
+        return $this->getStatus()->getRefundedAmount();
+    }
+
+    /**
+     * @return float|int The refunded amount in the used currency
+     * @throws Error
+     * @throws \Paynl\Error\Api
+     */
+    public function getRefundedCurrencyAmount()
+    {
+        return $this->getStatus()->getRefundedCurrencyAmount();
+    }
+
     public function approve()
     {
-        if ( ! $this->isBeingVerified()) {
+        if (!$this->isBeingVerified()) {
             throw new Error("Cannot approve transaction because it does not have the status 'verify'");
         }
 
@@ -233,6 +255,19 @@ class Transaction extends Result
         $this->_reload(); //status is changed, so refresh the object
 
         return $result;
+    }
+
+    /**
+     * @return Status
+     * @throws Error
+     * @throws \Paynl\Error\Api
+     */
+    public function getStatus()
+    {
+        if (is_null($this->_cachedStatusResult)) {
+            $this->_cachedStatusResult = \Paynl\Transaction::status($this->getId());
+        }
+        return $this->_cachedStatusResult;
     }
 
     /**
@@ -245,13 +280,14 @@ class Transaction extends Result
 
     private function _reload()
     {
-        $result     = \Paynl\Transaction::get($this->getId());
+        $this->_cachedStatusResult = null;
+        $result = \Paynl\Transaction::get($this->getId());
         $this->data = $result->getData();
     }
 
     public function decline()
     {
-        if ( ! $this->isBeingVerified()) {
+        if (!$this->isBeingVerified()) {
             throw new Error("Cannot decline transaction because it does not have the status 'verify'");
         }
 

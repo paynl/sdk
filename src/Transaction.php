@@ -253,6 +253,21 @@ class Transaction
     }
 
     /**
+     * @param $transactionId
+     * @return Result\Status
+     * @throws Error\Api
+     * @throws Error\Error
+     */
+    public static function status($transactionId)
+    {
+        $api = new Api\Status();
+        $api->setTransactionId($transactionId);
+        $result = $api->doRequest();
+
+        return new Result\Status($result);
+    }
+
+    /**
      * Get the transaction in an exchange script.
      * This will work for all kinds of exchange calls (GET, POST AND POST_XML)
      *

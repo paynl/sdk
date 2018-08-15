@@ -358,7 +358,7 @@ class Transaction
 
     public static function void($transactionId)
     {
-        $api = new Api\Void();
+        $api = new Api\VoidTransaction();
         $api->setTransactionId($transactionId);
         $result = $api->doRequest();
 

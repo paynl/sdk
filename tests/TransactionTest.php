@@ -180,7 +180,6 @@ class TransactionTest extends PHPUnit_Framework_TestCase
         $transaction = Paynl\Transaction::get('645958819Xdd3ea1');
 
         $this->assertInstanceOf('\Paynl\Result\Transaction\Transaction', $transaction);
-
     }
 
     public function testGetForReturn()
@@ -242,7 +241,8 @@ class TransactionTest extends PHPUnit_Framework_TestCase
         \Paynl\Transaction::refund('645958819Xdd3ea1', 5, 'Description', new DateTime());
     }
 
-    public function testApprove(){
+    public function testApprove()
+    {
         \Paynl\Config::setApiToken('123456789012345678901234567890');
 
         $this->setDummyData('Result/transactionVerify');
@@ -255,7 +255,8 @@ class TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(true, $result);
     }
 
-    public function testApprovePaidTransaction(){
+    public function testApprovePaidTransaction()
+    {
         \Paynl\Config::setApiToken('123456789012345678901234567890');
 
         $this->setDummyData('Result/transactionPaid');
@@ -267,7 +268,8 @@ class TransactionTest extends PHPUnit_Framework_TestCase
         $transaction->approve();
     }
 
-    public function testDecline(){
+    public function testDecline()
+    {
         \Paynl\Config::setApiToken('123456789012345678901234567890');
 
         $this->setDummyData('Result/transactionVerify');
@@ -280,7 +282,8 @@ class TransactionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(true, $result);
     }
 
-    public function testDeclinePaidTransaction(){
+    public function testDeclinePaidTransaction()
+    {
         \Paynl\Config::setApiToken('123456789012345678901234567890');
 
         $this->setDummyData('Result/transactionPaid');
@@ -292,7 +295,8 @@ class TransactionTest extends PHPUnit_Framework_TestCase
         $transaction->decline();
     }
 
-    public function testApproveWithoutTransactionId(){
+    public function testApproveWithoutTransactionId()
+    {
         \Paynl\Config::setApiToken('123456789012345678901234567890');
 
         $this->setExpectedException('\Paynl\Error\Required');
@@ -300,11 +304,42 @@ class TransactionTest extends PHPUnit_Framework_TestCase
         \Paynl\Transaction::approve('');
     }
 
-    public function testDeclineWithoutTransactionId(){
+    public function testDeclineWithoutTransactionId()
+    {
         \Paynl\Config::setApiToken('123456789012345678901234567890');
 
         $this->setExpectedException('\Paynl\Error\Required');
 
         \Paynl\Transaction::decline('');
+    }
+    public function testVoidNoTransactionId()
+    {
+        \Paynl\Config::setApiToken('123456789012345678901234567890');
+
+        $this->setExpectedException('\Paynl\Error\Required');
+        \Paynl\Transaction::void('');
+    }
+    public function testVoid()
+    {
+        \Paynl\Config::setApiToken('123456789012345678901234567890');
+        $this->setDummyData('Result/void');
+
+        $result = \Paynl\Transaction::void('123456789');
+        $this->assertEquals(true, $result);
+    }
+    public function testCaptureNoTransactionId()
+    {
+        \Paynl\Config::setApiToken('123456789012345678901234567890');
+
+        $this->setExpectedException('\Paynl\Error\Required');
+        \Paynl\Transaction::capture('');
+    }
+    public function testCapture()
+    {
+        \Paynl\Config::setApiToken('123456789012345678901234567890');
+        $this->setDummyData('Result/capture');
+
+        $result = \Paynl\Transaction::capture('123456789');
+        $this->assertEquals(true, $result);
     }
 }

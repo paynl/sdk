@@ -12,8 +12,9 @@ class Currency
     /**
      * @return array All supported currencies
      */
-    public static function getAll(){
-        if(empty(self::$_allCurrencies)){
+    public static function getAll()
+    {
+        if (empty(self::$_allCurrencies)) {
             $api = new Api\GetAll();
 
             self::$_allCurrencies = $api->doRequest();
@@ -29,11 +30,12 @@ class Currency
      * @return int
      * @throws NotFound
      */
-    public static function getCurrencyId($isoCode){
+    public static function getCurrencyId($isoCode)
+    {
         $allCurrencies = self::getAll();
 
-        foreach($allCurrencies as $currency){
-            if(strcasecmp($currency['abbreviation'], $isoCode) === 0){
+        foreach ($allCurrencies as $currency) {
+            if (strcasecmp($currency['abbreviation'], $isoCode) === 0) {
                 return $currency['id'];
             }
         }

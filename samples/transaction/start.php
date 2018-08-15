@@ -127,12 +127,11 @@ try {
 //        'transferValue' => '12345678X260bc5', // The transactionId
     ));
 
-// Save this transactionid and link it to your order
+    // Save this transactionid and link it to your order
     $transactionId = $result->getTransactionId();
 
     echo '<a href="' . $result->getRedirectUrl() . '">' . $result->getRedirectUrl() . '</a>';
     echo "<br />" . $transactionId;
-
 } catch (\Paynl\Error\Error $e) {
     echo "Fout: " . $e->getMessage();
 }

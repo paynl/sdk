@@ -118,12 +118,19 @@ class Transaction
                     $taxClass      = Helper::calculateTaxClass(100 + $taxPercentage, $taxPercentage);
                 }
 
-                if ( ! isset($product['type'])) {
+                if (! isset($product['type'])) {
                     $product['type'] = self::PRODUCT_TYPE_ARTICLE;
                 }
 
-                $api->addProduct($product['id'], $product['name'], $product['type'], round($product['price'] * 100),
-                    $product['qty'], $taxClass, $taxPercentage);
+                $api->addProduct(
+                    $product['id'],
+                    $product['name'],
+                    $product['type'],
+                    round($product['price'] * 100),
+                    $product['qty'],
+                    $taxClass,
+                    $taxPercentage
+                );
             }
         }
         $enduser = array();
@@ -194,21 +201,21 @@ class Transaction
 
             $enduser['invoiceAddress'] = $invoiceAddress;
         }
-        if ( ! empty($enduser)) {
+        if (! empty($enduser)) {
             $api->setEnduser($enduser);
         }
 
-        if ( ! empty($options['object'])) {
+        if (! empty($options['object'])) {
             $api->setObject($options['object']);
         }
-        if ( ! empty($options['tool'])) {
+        if (! empty($options['tool'])) {
             $api->setTool($options['tool']);
         }
-        if ( ! empty($options['info'])) {
+        if (! empty($options['info'])) {
             $api->setInfo($options['info']);
         }
 
-        if ( ! empty($options['promotorId'])) {
+        if (! empty($options['promotorId'])) {
             $api->setPromotorId($options['promotorId']);
         }
         if (isset($options['transferType'])) {
@@ -351,7 +358,7 @@ class Transaction
 
     public static function void($transactionId)
     {
-        $api = new Api\Void();
+        $api = new Api\VoidTransaction();
         $api->setTransactionId($transactionId);
         $result = $api->doRequest();
 

@@ -296,5 +296,4 @@ class Transaction extends Result
 
         return $result;
     }
-
 }

@@ -7,6 +7,6 @@ $secret = 'abcdef1234567890abcdef1234567890abcdef12';
 try {
     $decoded = \Paynl\DynamicUUID::decode($uuid, $secret);
     var_dump($decoded);
-} catch (\Paynl\Error\Error $e){
+} catch (\Paynl\Error\Error $e) {
     echo "Error: ".$e->getMessage();
 }

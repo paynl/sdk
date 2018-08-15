@@ -98,7 +98,7 @@ class Helper
      */
     private static function nearest($number, $numbers)
     {
-        $output = FALSE;
+        $output = false;
         $number = (int) $number;
         if (is_array($numbers) && count($numbers) >= 1) {
             $NDat = array();
@@ -134,7 +134,8 @@ class Helper
      * @param int|float $taxAmount
      * @return float|int
      */
-    public static function calculateTaxPercentage($amountInclTax, $taxAmount){
+    public static function calculateTaxPercentage($amountInclTax, $taxAmount)
+    {
         // return 0 if amount or tax is 0
         if ($taxAmount == 0 || $amountInclTax == 0) {
             return 0;
@@ -175,14 +176,22 @@ class Helper
     {
         $strAddress = trim($strAddress);
 
-        $a = preg_split('/(\\s+)(\d+)/', $strAddress, 2,
-            PREG_SPLIT_DELIM_CAPTURE);
+        $a = preg_split(
+            '/(\\s+)(\d+)/',
+            $strAddress,
+            2,
+            PREG_SPLIT_DELIM_CAPTURE
+        );
         $strStreetName = trim(array_shift($a));
         $strStreetNumber = trim(implode('', $a));
 
         if (empty($strStreetName) || empty($strStreetNumber)) { // American address notation
-            $a = preg_split('/([a-zA-Z]{2,})/', $strAddress, 2,
-                PREG_SPLIT_DELIM_CAPTURE);
+            $a = preg_split(
+                '/([a-zA-Z]{2,})/',
+                $strAddress,
+                2,
+                PREG_SPLIT_DELIM_CAPTURE
+            );
 
             $strStreetNumber = trim(array_shift($a));
             $strStreetName = implode('', $a);

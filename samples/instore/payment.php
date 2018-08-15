@@ -1,5 +1,5 @@
 <?php
-/* 
+/*
  * Copyright (C) 2015 Andy Pieters <andy@pay.nl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -35,7 +35,6 @@ try {
     echo "<a href='status.php?hash=".$hash."'>Status</a><br />";
 
     echo "<br /><a href='".$result->getRedirectUrl()."'>Status - Paynl</a><br />";
-
 } catch (\Paynl\Error\Error $e) {
     echo 'Fout: ' . $e->getMessage();
 }

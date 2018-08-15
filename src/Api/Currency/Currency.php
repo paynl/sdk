@@ -18,7 +18,7 @@ class Currency extends Api
     {
         $output = Helper::objectToArray($result);
 
-        if(!is_array($output)){
+        if (!is_array($output)) {
             throw new Error\Api($output);
         }
 

@@ -11,6 +11,6 @@ try {
         'cardNumber' => '012345678912345678',
         'pincode'    => '1234' // Optional, only needed if the card type needs a pincode
     ));
-} catch (\Paynl\Error\Error $e){
+} catch (\Paynl\Error\Error $e) {
     echo "Error: ". $e->getMessage();
 }

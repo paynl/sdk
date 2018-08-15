@@ -22,7 +22,7 @@ class MandateAdd extends DebitAdd
      */
     public function getData()
     {
-        if(!empty($this->_intervalQuantity)){
+        if (!empty($this->_intervalQuantity)) {
             $this->data['intervalQuantity'] = $this->_intervalQuantity;
         }
         return parent::getData();

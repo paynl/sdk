@@ -243,64 +243,64 @@ class Update extends DirectDebit
      */
     protected function getData()
     {
-        if(empty($this->_mandateId)){
+        if (empty($this->_mandateId)) {
             throw new Required('mandateId');
         }
 
         $this->data['mandateId'];
 
-        if(!empty($this->_amount)){
+        if (!empty($this->_amount)) {
             $this->data['amount'] = $this->_amount;
         }
-        if(!empty($this->_bankaccountHolder)){
+        if (!empty($this->_bankaccountHolder)) {
             $this->data['bankaccountHolder'] = $this->_bankaccountHolder;
         }
-        if(!empty($this->_bankaccountNumber)){
+        if (!empty($this->_bankaccountNumber)) {
             $this->data['bankaccountNumber'] = $this->_bankaccountNumber;
         }
-        if(!empty($this->_bankaccountBic)){
+        if (!empty($this->_bankaccountBic)) {
             $this->data['bankaccountBic'] = $this->_bankaccountBic;
         }
         if ($this->_processDate instanceof \DateTime) {
             $this->data['processDate'] = $this->_processDate->format('d-m-Y');
         }
-        if(!empty($this->_intervalValue)){
+        if (!empty($this->_intervalValue)) {
             $this->data['intervalValue'] = $this->_intervalValue;
         }
-        if(!empty($this->_intervalPeriod)){
+        if (!empty($this->_intervalPeriod)) {
             $this->data['intervalPeriod'] = $this->_intervalPeriod;
         }
-        if(!empty($this->_intervalQuantity)){
+        if (!empty($this->_intervalQuantity)) {
             $this->data['intervalQuantity'] = $this->_intervalQuantity;
         }
-        if(!empty($this->_description)){
+        if (!empty($this->_description)) {
             $this->data['description'] = $this->_description;
         }
-        if(!empty($this->_ipAddress)){
+        if (!empty($this->_ipAddress)) {
             $this->data['ipAddress'] = $this->_ipAddress;
         }
-        if(!empty($this->_email)){
+        if (!empty($this->_email)) {
             $this->data['email'] = $this->_email;
         }
-        if(!empty($this->_promotorId)){
+        if (!empty($this->_promotorId)) {
             $this->data['promotorId'] = $this->_promotorId;
         }
-        if(!empty($this->_tool)){
+        if (!empty($this->_tool)) {
             $this->data['tool'] = $this->_tool;
         }
-        if(!empty($this->_info)){
+        if (!empty($this->_info)) {
             $this->data['info'] = $this->_info;
         }
-        if(!empty($this->_object)){
+        if (!empty($this->_object)) {
             $this->data['object'] = $this->_object;
         }
-        if(!empty($this->_extra1)){
+        if (!empty($this->_extra1)) {
             $this->data['extra1'] = $this->_extra1;
         }
-        if(!empty($this->_extra2)){
+        if (!empty($this->_extra2)) {
             $this->data['extra2'] = $this->_extra2;
         }
-        if(!empty($this->_extra3)){
+        if (!empty($this->_extra3)) {
             $this->data['extra3'] = $this->_extra3;
         }
 

@@ -51,7 +51,7 @@ class Paymentmethods
                 if (!empty($paymentOption['paymentOptionSubList'])) {
                     foreach ((array)$paymentOption['paymentOptionSubList'] as $optionSub) {
                         $image = '';
-                        if($paymentOption['id'] == 10){// only add images for ideal, because the rest will not have images
+                        if ($paymentOption['id'] == 10) {// only add images for ideal, because the rest will not have images
                             $image = $basePath.$optionSub['path'].$optionSub['img'];
                         }
                         $banks[] = array(

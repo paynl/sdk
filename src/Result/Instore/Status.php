@@ -1,5 +1,5 @@
 <?php
-/* 
+/*
  * Copyright (C) 2015 Andy Pieters <andy@pay.nl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -27,13 +27,16 @@ use Paynl\Result\Result;
  */
 class Status extends Result
 {
-    public function getTransactionState(){
+    public function getTransactionState()
+    {
         return $this->data['transaction']['state'];
     }
-    public function getTerminalState(){
+    public function getTerminalState()
+    {
         return $this->data['terminal']['state'];
     }
-    public function getProgressPercentage(){
+    public function getProgressPercentage()
+    {
         return $this->data['progress']['percentage'];
     }
 }

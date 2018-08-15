@@ -31,5 +31,4 @@ class ApiToken extends Required
     {
         parent::__construct('No APItoken is set, use \\Paynl\\Config::setApiToken() to set the API token');
     }
-
 }

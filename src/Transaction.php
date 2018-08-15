@@ -400,4 +400,36 @@ class Transaction
 
         return new Result\AddRecurring($result);
     }
+
+	/**
+	 * Create a external payment
+	 *
+	 * @param array $options An array that contains the following elements: transactionId (required), customerId (required), customerName, paymentType
+	 *
+	 * @return \Paynl\Result\Transaction\ConfirmExternalPayment
+	 */
+	public function confirmExternalPayment($options = array())
+	{
+		$api = new Api\ConfirmExternalPayment();
+
+        if (isset($options['transactionId'])) {
+            $api->setTransactionId($options['transactionId']);
+        }
+
+		if (isset($options['customerId'])) {
+            $api->setCustomerId($options['customerId']);
+        }
+
+		if (isset($options['customerName'])) {
+            $api->setCustomerName($options['customerName']);
+        }
+
+		if (isset($options['paymentType'])) {
+            $api->setPaymentType($options['paymentType']);
+        }
+
+		$result = $api->doRequest();
+
+		return new Result\ConfirmExternalPayment($result);
+	}
 }

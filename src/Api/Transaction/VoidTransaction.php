@@ -25,7 +25,7 @@ use Paynl\Error;
  *
  * @author Andy Pieters <andy@pay.nl>
  */
-class Void extends Transaction
+class VoidTransaction extends Transaction
 {
     protected $apiTokenRequired = true;
 

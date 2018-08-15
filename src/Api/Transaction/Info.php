@@ -38,7 +38,8 @@ class Info extends Transaction
      *
      * @param string $transactionId
      */
-    public function setTransactionId($transactionId){
+    public function setTransactionId($transactionId)
+    {
         $this->transactionId = $transactionId;
     }
 
@@ -46,8 +47,9 @@ class Info extends Transaction
      * @inheritdoc
      * @throws Error\Required TransactionId is required
      */
-    protected function getData() {
-        if(empty($this->transactionId)){
+    protected function getData()
+    {
+        if (empty($this->transactionId)) {
             throw new Error\Required('TransactionId required');
         }
 
@@ -59,7 +61,8 @@ class Info extends Transaction
     /**
      * @inheritdoc
      */
-    public function doRequest($endpoint = null, $version = null) {
+    public function doRequest($endpoint = null, $version = null)
+    {
         return parent::doRequest('transaction/info');
     }
 }

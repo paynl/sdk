@@ -32,13 +32,13 @@ class Service
      */
     public static function getPayLinkUrl(array $options = array())
     {
-        if (!isset($options['securityMode'])){
-           throw new Error\Required('securityMode');
+        if (!isset($options['securityMode'])) {
+            throw new Error\Required('securityMode');
         }
-        if(!isset($options['amount'])){
+        if (!isset($options['amount'])) {
             throw new Error\Required('amount');
         }
-        if(!isset($options['amountMin'])){
+        if (!isset($options['amountMin'])) {
             throw new Error\Required('amountMin');
         }
 
@@ -47,25 +47,25 @@ class Service
         $api->setAmount(round($options['amount']*100));
         $api->setAmountMin(round($options['amountMin']*100));
 
-        if(isset($options['countryCode'])){
+        if (isset($options['countryCode'])) {
             $api->setCountryCode($options['countryCode']);
         }
-        if(isset($options['language'])){
+        if (isset($options['language'])) {
             $api->setLanguage($options['language']);
         }
-        if(isset($options['extra1'])){
+        if (isset($options['extra1'])) {
             $api->setExtra1($options['extra1']);
         }
-        if(isset($options['extra2'])){
+        if (isset($options['extra2'])) {
             $api->setExtra2($options['extra2']);
         }
-        if(isset($options['extra3'])){
+        if (isset($options['extra3'])) {
             $api->setExtra3($options['extra3']);
         }
-        if(isset($options['tool'])){
+        if (isset($options['tool'])) {
             $api->setTool($options['tool']);
         }
-        if(isset($options['info'])){
+        if (isset($options['info'])) {
             $api->setInfo($options['info']);
         }
         $result = $api->doRequest();
@@ -76,7 +76,8 @@ class Service
     /**
      * @return array
      */
-    public static function getAll(){
+    public static function getAll()
+    {
         $api = new GetAll();
         $result = $api->doRequest();
         return $result['services'];

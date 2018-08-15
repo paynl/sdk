@@ -55,7 +55,7 @@ class HelperTest extends PHPUnit_Framework_TestCase
             array('driesplein 22/2', 'driesplein', '22/2'),
         );
 
-        foreach($addresses as $address){
+        foreach ($addresses as $address) {
             $arrAddress = \Paynl\Helper::splitAddress($address[0]);
 
             $this->assertEquals(array(
@@ -63,7 +63,6 @@ class HelperTest extends PHPUnit_Framework_TestCase
                 $address[2]
             ), $arrAddress);
         }
-
     }
 
     public function testObjectToArray()
@@ -73,6 +72,4 @@ class HelperTest extends PHPUnit_Framework_TestCase
 
         $this->assertInternalType('array', $array);
     }
-
-
 }

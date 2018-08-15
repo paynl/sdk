@@ -8,7 +8,8 @@ use Paynl\Result\DirectDebit\Mandate as Result;
 
 class Mandate
 {
-    public static function add($options){
+    public static function add($options)
+    {
         if (empty($options['amount'])) {
             throw new Required('amount');
         }
@@ -28,7 +29,7 @@ class Mandate
             $api->setBankaccountBic($options['bankaccountBic']);
         }
         if (!empty($options['processDate'])) {
-            if(is_string($options['processDate'])){
+            if (is_string($options['processDate'])) {
                 $options['processDate'] = new \DateTime($options['processDate']);
             }
             $api->setProcessDate($options['processDate']);
@@ -63,13 +64,13 @@ class Mandate
         if (!empty($options['extra3'])) {
             $api->setExtra3($options['extra3']);
         }
-        if(!empty($options['currency'])){
+        if (!empty($options['currency'])) {
             $api->setCurrency($options['currency']);
         }
         if (!empty($options['exchangeUrl'])) {
             $api->setExchangeUrl($options['exchangeUrl']);
         }
-        if(!empty($options['intervalQuantity'])){
+        if (!empty($options['intervalQuantity'])) {
             $api->setIntervalQuantity((int)$options['intervalQuantity']);
         }
         $result = $api->doRequest();
@@ -77,22 +78,23 @@ class Mandate
         return new Result\Add($result);
     }
 
-    public static function addTransaction($options){
-        if(empty($options['mandateId'])){
+    public static function addTransaction($options)
+    {
+        if (empty($options['mandateId'])) {
             throw new Required('mandateId');
         }
 
         $api = new Api\MandateDebit();
         $api->setMandateId($options['mandateId']);
 
-        if(!empty($options['amount'])){
+        if (!empty($options['amount'])) {
             $api->setAmount($options['amount']);
         }
         if (!empty($options['description'])) {
             $api->setDescription($options['description']);
         }
         if (!empty($options['processDate'])) {
-            if(is_string($options['processDate'])){
+            if (is_string($options['processDate'])) {
                 $options['processDate'] = new \DateTime($options['processDate']);
             }
             $api->setProcessDate($options['processDate']);
@@ -100,10 +102,10 @@ class Mandate
         $result = $api->doRequest();
 
         return new Result\AddTransaction($result);
-
     }
 
-    public static function get($mandateId){
+    public static function get($mandateId)
+    {
         $api = new Api\MandateGet();
         $api->setMandateId($mandateId);
 

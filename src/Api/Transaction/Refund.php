@@ -94,9 +94,9 @@ class Refund extends Transaction
         if (!empty($this->amount)) {
             $this->data['amount'] = $this->amount;
         }
-	    if (!empty($this->description)) {
-		    $this->data['description'] = $this->description;
-	    }
+        if (!empty($this->description)) {
+            $this->data['description'] = $this->description;
+        }
         if ($this->processDate instanceof \DateTime) {
             $this->data['processDate'] = $this->processDate->format('d-m-Y');
         }

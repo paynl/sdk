@@ -1,5 +1,5 @@
 <?php
-/* 
+/*
  * Copyright (C) 2015 Andy Pieters <andy@pay.nl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -27,5 +27,4 @@ use Paynl\Result\Result;
  */
 class ConfirmPayment extends Result
 {
-
 }

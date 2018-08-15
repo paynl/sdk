@@ -38,7 +38,8 @@ class Info extends Refund
      *
      * @param string $refundId
      */
-    public function setRefundId($refundId){
+    public function setRefundId($refundId)
+    {
         $this->refundId = $refundId;
     }
 
@@ -46,8 +47,9 @@ class Info extends Refund
      * @inheritdoc
      * @throws Error\Required RefundId is required
      */
-    protected function getData() {
-        if(empty($this->refundId)){
+    protected function getData()
+    {
+        if (empty($this->refundId)) {
             throw new Error\Required('RefundId required');
         }
 
@@ -59,7 +61,8 @@ class Info extends Refund
     /**
      * @inheritdoc
      */
-    public function doRequest($endpoint = null, $version = null) {
+    public function doRequest($endpoint = null, $version = null)
+    {
         return parent::doRequest('refund/info');
     }
 }

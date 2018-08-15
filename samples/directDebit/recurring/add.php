@@ -27,6 +27,6 @@ try {
         'currency' => 'EUR',
     ));
     echo $result->getMandateId();
-} catch (\Paynl\Error\Error $e){
+} catch (\Paynl\Error\Error $e) {
     echo "Error: ".$e->getMessage();
 }

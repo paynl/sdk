@@ -21,7 +21,8 @@ class Dummy implements CurlInterface
     /**
      * @param $result
      */
-    public function setResult($result){
+    public function setResult($result)
+    {
         $this->_result = $result;
     }
 
@@ -34,12 +35,12 @@ class Dummy implements CurlInterface
      */
     public function __call($name, $arguments)
     {
-        if(in_array($name, array(
+        if (in_array($name, array(
             'delete',
             'get',
             'patch',
             'put',
-        ), true)){
+        ), true)) {
             return json_decode($this->_result);
         }
         return true;
@@ -65,6 +66,4 @@ class Dummy implements CurlInterface
     {
         return true;
     }
-
-
 }

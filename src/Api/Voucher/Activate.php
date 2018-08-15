@@ -60,7 +60,7 @@ class Activate extends Voucher
      */
     public function setAmount($amount)
     {
-        if(!is_numeric($amount)) {
+        if (!is_numeric($amount)) {
             throw new Error('Amount is niet numeriek', 1);
         }
         $this->_amount = $amount;
@@ -74,13 +74,13 @@ class Activate extends Voucher
      */
     protected function getData()
     {
-        if(empty($this->_cardNumber)){
+        if (empty($this->_cardNumber)) {
             throw new Required('cardNumber is required', 1);
         }
-        if(empty($this->_amount)){
+        if (empty($this->_amount)) {
             throw new Required('Amount is required', 1);
         }
-        if(empty($this->_posId)){
+        if (empty($this->_posId)) {
             throw new Required('posId is required', 1);
         }
 
@@ -88,7 +88,7 @@ class Activate extends Voucher
         $data['amount'] = $this->_amount;
         $data['posId'] = $this->_posId;
 
-        if(!empty($this->_pincode)){
+        if (!empty($this->_pincode)) {
             $data['pincode'] = $this->_pincode;
         }
 

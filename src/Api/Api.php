@@ -28,80 +28,82 @@ use Paynl\Helper;
  *
  * @author Andy Pieters <andy@andypieters.nl>
  */
-class Api {
-	/**
-	 * @var int the version of the api
-	 */
-	protected $version = 1;
+class Api
+{
+    /**
+     * @var int the version of the api
+     */
+    protected $version = 1;
 
-	/**
-	 * @var array
-	 */
-	protected $data = array();
+    /**
+     * @var array
+     */
+    protected $data = array();
 
-	/**
-	 * @var bool Is the ApiToken required for this API
-	 */
-	protected $apiTokenRequired = false;
-	/**
-	 * @var bool Is the serviceId required for this API
-	 */
-	protected $serviceIdRequired = false;
+    /**
+     * @var bool Is the ApiToken required for this API
+     */
+    protected $apiTokenRequired = false;
+    /**
+     * @var bool Is the serviceId required for this API
+     */
+    protected $serviceIdRequired = false;
 
-	/**
-	 * @param $endpoint
-	 * @param null|int $version
-	 *
-	 * @return array
-	 *
-	 * @throws Error\Api
-	 * @throws Error\Error
-	 */
-	public function doRequest( $endpoint, $version = null ) {
-		if ( $version === null ) {
-			$version = $this->version;
-		}
+    /**
+     * @param $endpoint
+     * @param null|int $version
+     *
+     * @return array
+     *
+     * @throws Error\Api
+     * @throws Error\Error
+     */
+    public function doRequest($endpoint, $version = null)
+    {
+        if ($version === null) {
+            $version = $this->version;
+        }
 
         $auth = $this->getAuth();
-		$data = $this->getData();
-		$uri = Config::getApiUrl( $endpoint, (int) $version );
+        $data = $this->getData();
+        $uri = Config::getApiUrl($endpoint, (int) $version);
 
         /** @var Curl $curl */
-		$curl = Config::getCurl();
+        $curl = Config::getCurl();
 
-		if ( Config::getCAInfoLocation() ) {
-			// set a custom CAInfo file
-			$curl->setOpt( CURLOPT_CAINFO, Config::getCAInfoLocation() );
-		}
+        if (Config::getCAInfoLocation()) {
+            // set a custom CAInfo file
+            $curl->setOpt(CURLOPT_CAINFO, Config::getCAInfoLocation());
+        }
 
-        if(!empty($auth)){
+        if (!empty($auth)) {
             $curl->setBasicAuthentication($auth['username'], $auth['password']);
         }
 
 
-        $curl->setOpt( CURLOPT_SSL_VERIFYPEER, Config::getVerifyPeer() );
+        $curl->setOpt(CURLOPT_SSL_VERIFYPEER, Config::getVerifyPeer());
 
-		$result = $curl->post( $uri, $data );
+        $result = $curl->post($uri, $data);
 
-		if ( isset( $result->status ) && $result->status === 'FALSE' ) {
-			throw new Error\Api( $result->error );
-		}
+        if (isset($result->status) && $result->status === 'FALSE') {
+            throw new Error\Api($result->error);
+        }
 
-		if ( $curl->error ) {
-			throw new Error\Error( $curl->errorMessage );
-		}
+        if ($curl->error) {
+            throw new Error\Error($curl->errorMessage);
+        }
 
-		return $this->processResult( $result );
-	}
+        return $this->processResult($result);
+    }
 
-	/**
-	 * @return array
-	 * @throws Error\Required\ApiToken
-	 * @throws Error\Required\ServiceId
-	 */
+    /**
+     * @return array
+     * @throws Error\Required\ApiToken
+     * @throws Error\Required\ServiceId
+     */
     protected function getData()
     {
-        if($this->isServiceIdRequired()){
+        if ($this->isServiceIdRequired()) {
             Helper::requireServiceId();
 
             $this->data['serviceId'] = Config::getServiceId();
@@ -112,57 +114,63 @@ class Api {
     /**
      * @return array|null
      */
-    private function getAuth(){
-        if(!$this->isApiTokenRequired()) return null;
+    private function getAuth()
+    {
+        if (!$this->isApiTokenRequired()) {
+            return null;
+        }
 
         Helper::requireApiToken();
         $tokenCode = Config::getTokenCode();
         $apiToken = Config::getApiToken();
-        if(!$tokenCode){
+        if (!$tokenCode) {
             $this->data['token'] = $apiToken;
             return null;
         }
         return array('username' => $tokenCode, 'password' => $apiToken);
     }
 
-	/**
-	 * @return bool
-	 */
-	public function isApiTokenRequired() {
-		return $this->apiTokenRequired;
-	}
+    /**
+     * @return bool
+     */
+    public function isApiTokenRequired()
+    {
+        return $this->apiTokenRequired;
+    }
 
-	/**
-	 * @return bool
-	 */
-	public function isServiceIdRequired() {
-		return $this->serviceIdRequired;
-	}
+    /**
+     * @return bool
+     */
+    public function isServiceIdRequired()
+    {
+        return $this->serviceIdRequired;
+    }
 
-	/**
-	 * @param object|array $result
-	 *
-	 * @return array
-	 * @throws Error\Api
-	 */
-	protected function processResult( $result ) {
-		$output = Helper::objectToArray( $result );
+    /**
+     * @param object|array $result
+     *
+     * @return array
+     * @throws Error\Api
+     */
+    protected function processResult($result)
+    {
+        $output = Helper::objectToArray($result);
 
-		if ( ! is_array( $output ) ) {
-			throw new Error\Api( $output );
-		}
+        if (! is_array($output)) {
+            throw new Error\Api($output);
+        }
 
-		if ( isset( $output['result'] ) ) {
-			return $output;
-		}
+        if (isset($output['result'])) {
+            return $output;
+        }
 
-		if (
-			isset( $output['request'] ) &&
-			$output['request']['result'] != 1 &&
-			$output['request']['result'] !== 'TRUE' ) {
-			throw new Error\Api( $output['request']['errorId'] . ' - ' . $output['request']['errorMessage'] );
-		}
+        if (
+            isset($output['request']) &&
+            $output['request']['result'] != 1 &&
+            $output['request']['result'] !== 'TRUE') {
+            throw new Error\Api($output['request']['errorId'] . ' - ' . $output['request']['errorMessage']);
+        }
 
-		return $output;
-	}
+        return $output;
+    }
 }

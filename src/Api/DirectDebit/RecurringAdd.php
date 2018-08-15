@@ -39,10 +39,10 @@ class RecurringAdd extends MandateAdd
      */
     public function getData()
     {
-        if(empty($this->_intervalValue)){
+        if (empty($this->_intervalValue)) {
             throw new Required('intervalValue');
         }
-        if(empty($this->_intervalPeriod)){
+        if (empty($this->_intervalPeriod)) {
             throw new Required('intervalPeriod');
         }
 

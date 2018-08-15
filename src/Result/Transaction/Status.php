@@ -8,7 +8,6 @@
 
 namespace Paynl\Result\Transaction;
 
-
 use Paynl\Result\Result;
 
 class Status extends Result
@@ -108,6 +107,4 @@ class Status extends Result
     {
         return $this->data['paymentDetails']['refundCurrenyAmount'] / 100;
     }
-
-
 }

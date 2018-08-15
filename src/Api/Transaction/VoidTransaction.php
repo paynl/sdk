@@ -25,7 +25,7 @@ use Paynl\Error;
  *
  * @author Andy Pieters <andy@pay.nl>
  */
-class Void extends Transaction
+class VoidTransaction extends Transaction
 {
     protected $apiTokenRequired = true;
 
@@ -39,7 +39,8 @@ class Void extends Transaction
      *
      * @param string $transactionId
      */
-    public function setTransactionId($transactionId){
+    public function setTransactionId($transactionId)
+    {
         $this->transactionId = $transactionId;
     }
 
@@ -47,8 +48,9 @@ class Void extends Transaction
      * @inheritdoc
      * @throws Error\Required TransactionId is required
      */
-    protected function getData() {
-        if(empty($this->transactionId)){
+    protected function getData()
+    {
+        if (empty($this->transactionId)) {
             throw new Error\Required('TransactionId is required');
         }
         $this->data['transactionId'] = $this->transactionId;
@@ -58,7 +60,8 @@ class Void extends Transaction
     /**
      * @inheritdoc
      */
-    public function doRequest($endpoint = null, $version = null) {
+    public function doRequest($endpoint = null, $version = null)
+    {
         return parent::doRequest('transaction/voidAuthorization');
     }
 }

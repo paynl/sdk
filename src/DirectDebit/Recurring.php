@@ -36,7 +36,7 @@ class Recurring
             $api->setBankaccountBic($options['bankaccountBic']);
         }
         if (!empty($options['processDate'])) {
-            if(is_string($options['processDate'])){
+            if (is_string($options['processDate'])) {
                 $options['processDate'] = new \DateTime($options['processDate']);
             }
             $api->setProcessDate($options['processDate']);
@@ -91,12 +91,12 @@ class Recurring
         return new Result\Add($result);
     }
 
-    public static function get($mandateId){
+    public static function get($mandateId)
+    {
         $api = new Api\RecurringGet();
         $api->setMandateId($mandateId);
 
         $result = $api->doRequest();
         return new Result\Get($result);
     }
-
 }

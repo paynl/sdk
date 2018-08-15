@@ -31,5 +31,4 @@ class ServiceId extends Required
     {
         parent::__construct('No Service id is set, use \\Paynl\\Config::setServiceId() to set the Service id');
     }
-
 }

@@ -9,6 +9,6 @@ try {
         'processDate' => new \DateTime('tomorrow'),
     ));
     var_dump($result->getData());
-} catch (\Paynl\Error\Error $e){
+} catch (\Paynl\Error\Error $e) {
     echo "Error: ".$e->getMessage();
 }

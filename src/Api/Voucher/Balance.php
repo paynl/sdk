@@ -39,13 +39,13 @@ class Balance extends Voucher
      */
     protected function getData()
     {
-        if(empty($this->_cardNumber)){
+        if (empty($this->_cardNumber)) {
             throw new Required('cardNumber is required', 1);
         }
 
         $data['cardNumber'] = $this->_cardNumber;
 
-        if(!empty($this->_pincode)){
+        if (!empty($this->_pincode)) {
             $data['pincode'] = $this->_pincode;
         }
 

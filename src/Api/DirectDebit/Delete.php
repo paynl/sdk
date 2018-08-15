@@ -25,7 +25,7 @@ class Delete extends DirectDebit
      */
     protected function getData()
     {
-        if(empty($this->_mandateId)){
+        if (empty($this->_mandateId)) {
             throw new Required('mandateId');
         }
 

@@ -27,7 +27,7 @@ class RecurringGet extends DirectDebit
      */
     public function getData()
     {
-        if(empty($this->_mandateId)){
+        if (empty($this->_mandateId)) {
             throw new Required('mandateId');
         }
 

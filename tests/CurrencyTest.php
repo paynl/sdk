@@ -4,7 +4,8 @@ class CurrencyTest extends PHPUnit_Framework_TestCase
 {
     private $testApiResult;
 
-    private function setDummyData(){
+    private function setDummyData()
+    {
         $this->testApiResult = file_get_contents(__DIR__.'/dummyData/currencies.json');
 
         $curl = new \Paynl\Curl\Dummy();
@@ -12,7 +13,8 @@ class CurrencyTest extends PHPUnit_Framework_TestCase
         \Paynl\Config::setCurl($curl);
     }
 
-    public function testGetCurrencies(){
+    public function testGetCurrencies()
+    {
         \Paynl\Config::setApiToken('1234567894561234567');
         $this->setDummyData();
 
@@ -21,7 +23,8 @@ class CurrencyTest extends PHPUnit_Framework_TestCase
         $this->assertInternalType('array', $currencies);
     }
 
-    public function testGetCurrencyId(){
+    public function testGetCurrencyId()
+    {
         \Paynl\Config::setApiToken('1234567894561234567');
         $this->setDummyData();
         $currencyId = \Paynl\Currency::getCurrencyId('EUR');
@@ -29,7 +32,8 @@ class CurrencyTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(1, $currencyId);
     }
 
-    public function testNotFound(){
+    public function testNotFound()
+    {
         \Paynl\Config::setApiToken('1234567894561234567');
         $this->setDummyData();
 

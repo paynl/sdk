@@ -273,7 +273,7 @@ class Add extends Refund
         if (isset($this->_currency)) {
             $this->data['currency'] = $this->_currency;
         }
-        if($this->_processDate instanceof \Datetime){
+        if ($this->_processDate instanceof \Datetime) {
             $this->data['processDate'] = $this->_processDate->format('d-m-Y');
         }
 

@@ -1,5 +1,5 @@
 <?php
-/* 
+/*
  * Copyright (C) 2015 Andy Pieters <andy@pay.nl>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,16 +21,16 @@ require_once 'config.php';
 
 try {
     $transaction = \Paynl\Transaction::getForExchange();
-    if($transaction->isBeingVerified()){
+    if ($transaction->isBeingVerified()) {
         // here you can do your own checks and approve or decline the order yourself
         // the script is stopped after approving or declining, after which a new exchange call will follow.
         // the status of this new exchange call will be paid (approved) or canceled (declined)
         $approved = false; // use your own function to determine if this should be true or false.
         $declined = false; // use your own function to determine if this should be true or false.
-        if($approved){
+        if ($approved) {
             $transaction->approve();
             die("TRUE| Transaction approved");
-        } elseif($declined) {
+        } elseif ($declined) {
             $transaction->decline();
             die("TRUE| Transaction declined");
         }
@@ -42,9 +42,9 @@ try {
         // payment canceled, restock items
     }
 
-// always start your response with TRUE|
+    // always start your response with TRUE|
     echo "TRUE| ";
-// Optionally you can send a message after TRUE|, you can view these messages in the logs. https://admin.pay.nl/logs/payment_state
+    // Optionally you can send a message after TRUE|, you can view these messages in the logs. https://admin.pay.nl/logs/payment_state
     echo $transaction->isPaid() ? 'Paid' : 'Not paid';
 } catch (\Paynl\Error\Error $e) {
     echo "Fout: " . $e->getMessage();

@@ -69,14 +69,16 @@ class Config
     /**
      * @return string
      */
-    public static function getTokenCode() {
+    public static function getTokenCode()
+    {
         return self::$tokenCode;
     }
 
     /**
      * @param string $tokenCode
      */
-    public static function setTokenCode( $tokenCode ) {
+    public static function setTokenCode($tokenCode)
+    {
         self::$tokenCode = $tokenCode;
     }
 

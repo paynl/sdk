@@ -6,8 +6,10 @@ class ConfigTest extends PHPUnit_Framework_TestCase
     {
         \Paynl\Config::setCAInfoLocation('test/location');
 
-        $this->assertEquals('test/location',
-            \Paynl\Config::getCAInfoLocation());
+        $this->assertEquals(
+            'test/location',
+            \Paynl\Config::getCAInfoLocation()
+        );
     }
 
     public function testApiToken()
@@ -47,16 +49,19 @@ class ConfigTest extends PHPUnit_Framework_TestCase
         );
     }
 
-    public function testGetCurlDefault(){
+    public function testGetCurlDefault()
+    {
         $this->assertInstanceOf('\Curl\Curl', \Paynl\Config::getCurl());
     }
 
-    public function testGetCurlCustom(){
+    public function testGetCurlCustom()
+    {
         \Paynl\Config::setCurl(new \Paynl\Curl\Dummy());
         $this->assertInstanceOf('\Paynl\Curl\Dummy', \Paynl\Config::getCurl());
     }
 
-    public function testGetCurlCustomString(){
+    public function testGetCurlCustomString()
+    {
         \Paynl\Config::setCurl('\Paynl\Curl\Dummy');
         $this->assertInstanceOf('\Paynl\Curl\Dummy', \Paynl\Config::getCurl());
     }

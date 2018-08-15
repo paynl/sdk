@@ -135,7 +135,8 @@ class Instore
      * @param array $options (see above)
      * @return Result\Receipt
      */
-    public static function getReceipt($options){
+    public static function getReceipt($options)
+    {
         $api = new Api\GetTransactionTicket();
         if (isset($options['hash'])) {
             $api->setHash($options['hash']);

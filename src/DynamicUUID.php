@@ -3,7 +3,6 @@
 
 namespace Paynl;
 
-
 use Paynl\Error\Error;
 
 class DynamicUUID
@@ -24,7 +23,7 @@ class DynamicUUID
      */
     public static function encode($serviceId, $secret, $reference, $padChar = '0', $referenceType=self::REFERENCE_TYPE_STRING)
     {
-        if($referenceType === self::REFERENCE_TYPE_STRING){
+        if ($referenceType === self::REFERENCE_TYPE_STRING) {
             $reference = implode(unpack("H*", $reference));
         }
         self::validateSecret($secret);
@@ -39,38 +38,40 @@ class DynamicUUID
 
         $UUID = "b" . substr($hash, 0, 7) . $UUIDData;
 
-        return sprintf('%08s-%04s-%04s-%04s-%12s',
+        return sprintf(
+            '%08s-%04s-%04s-%04s-%12s',
             substr($UUID, 0, 8),
             substr($UUID, 8, 4),
             substr($UUID, 12, 4),
             substr($UUID, 16, 4),
-            substr($UUID, 20, 12));
+            substr($UUID, 20, 12)
+        );
     }
 
     private static function validateSecret($strSecret)
     {
-        if ( ! preg_match('/^[a-z0-9]+$/i', $strSecret)) {
+        if (! preg_match('/^[a-z0-9]+$/i', $strSecret)) {
             throw new Error('Invalid secret');
         }
     }
 
     private static function validateServiceId($strServiceId)
     {
-        if ( ! preg_match('/^SL-[0-9]{4}-[0-9]{4}$/', $strServiceId)) {
+        if (! preg_match('/^SL-[0-9]{4}-[0-9]{4}$/', $strServiceId)) {
             throw new Error('Invalid service ID');
         }
     }
 
     private static function validateReference($strReference)
     {
-        if ( ! preg_match('/^[0-9a-f]{0,16}$/i', $strReference)) {
+        if (! preg_match('/^[0-9a-f]{0,16}$/i', $strReference)) {
             throw new Error('Invalid reference: only alphanumeric chars are allowed, up to 16 chars long');
         }
     }
 
     private static function validatePadChar($strPadChar)
     {
-        if ( ! preg_match('/^[a-z0-9]{1}$/i', $strPadChar)) {
+        if (! preg_match('/^[a-z0-9]{1}$/i', $strPadChar)) {
             throw new Error('Invalid pad char');
         }
     }
@@ -87,10 +88,10 @@ class DynamicUUID
      */
     public static function decode($uuid, $secret = null, $padChar = '0', $referenceType = self::REFERENCE_TYPE_STRING)
     {
-        if ( isset($secret)) {
+        if (isset($secret)) {
             self::validateSecret($secret);
             $isValid = self::validate($uuid, $secret);
-            if ( ! $isValid) {
+            if (! $isValid) {
                 throw new Error('Incorrect signature');
             }
         }
@@ -103,7 +104,7 @@ class DynamicUUID
 
         $reference = ltrim($reference, $padChar);
 
-        if($referenceType == self::REFERENCE_TYPE_STRING){
+        if ($referenceType == self::REFERENCE_TYPE_STRING) {
             $reference = pack("H*", $reference);
         }
         return array(

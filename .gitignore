@@ -2,3 +2,4 @@ nbproject/*
 samples/config.php
 .idea/*
 vendor/
+composer.lock

@@ -15,7 +15,7 @@ try {
         'amount' => 12.5,
         'returnUrl' => dirname(\Paynl\Helper::getBaseUrl()) . '/return.php',
         'ipaddress' => \Paynl\Helper::getIp(),
-        'paymentMethod' => 1927,// iDEAL use \Paynl\PaymentMethods::getList() to get all available paymentmethods
+        'paymentMethod' => 1927,
         'bank' => 'TH-9750-0060', // you can supply the terminalId as a bank, you can get all terminals from \Paynl\Instore::getAllTerminals()
 
         // Optional

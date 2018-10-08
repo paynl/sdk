@@ -8,12 +8,11 @@ try {
         'scanData' => '123456789123456789',
         'amount' => 0.01,
         'description' => 'QR payment test',
-        'consumerIp' => '10.0.0.5', // Use the ip of your POS here
 
         'currency' => 'EUR'
     ));
 } catch (\Paynl\Error\Error $e) {
-    die ($e->getMessage());
+    die ('Error: '.$e->getMessage());
 }
 
 echo "isPaid: " . ($result->isPaid() ? 'TRUE' : 'FALSE') . "\n";

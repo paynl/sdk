@@ -23,10 +23,7 @@ class QRPayment extends Transaction
      * @var string Description for the transaction. Max length of the description is 128 characters.
      */
     private $_description;
-    /**
-     * @var string The IP of the consumer.
-     */
-    private $_consumerIp;
+
     /**
      * @var string The currency of the transaction. If omitted, EUR is used. A list with available currency names and id's can be obtained at: API_Currency_v2::getAll()
      */
@@ -89,22 +86,6 @@ class QRPayment extends Transaction
     /**
      * @return string|null
      */
-    public function getConsumerIp()
-    {
-        return $this->_consumerIp;
-    }
-
-    /**
-     * @param string $consumerIp
-     */
-    public function setConsumerIp($consumerIp)
-    {
-        $this->_consumerIp = $consumerIp;
-    }
-
-    /**
-     * @return string|null
-     */
     public function getCurrency()
     {
         return $this->_currency;
@@ -142,13 +123,10 @@ class QRPayment extends Transaction
         if (empty($this->getScanData())) throw new Required('scanData');
         if (empty($this->getAmount())) throw new Required('amount');
         if (empty($this->getDescription())) throw new Required('description');
-        if (empty($this->getConsumerIp())) throw new Required('consumerIp');
 
         $this->data['scanData'] = $this->getScanData();
         $this->data['amount'] = $this->getAmount();
         $this->data['description'] = $this->getDescription();
-        $this->data['consumerIp'] = $this->getConsumerIp();
-
         if($this->getCurrency() != null){
             $this->data['currency'] = $this->getCurrency();
         }

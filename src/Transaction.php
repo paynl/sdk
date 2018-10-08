@@ -468,9 +468,6 @@ class Transaction
         if (isset($options['description'])) {
             $api->setDescription($options['description']);
         }
-        if (isset($options['consumerIp'])) {
-            $api->setConsumerIp($options['consumerIp']);
-        }
         if (isset($options['currency'])) {
             $api->setCurrency($options['currency']);
         }

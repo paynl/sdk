@@ -18,7 +18,6 @@
 
 namespace Paynl\Result\Refund;
 
-use Paynl\Error\Error;
 use Paynl\Result\Result;
 
 /**
@@ -34,5 +33,15 @@ class Refund extends Result
     public function getId()
     {
         return $this->data['refundId'];
+    }
+
+    public function isRefunded()
+    {
+        return $this->data['refund']['statusName'] == 'Verwerkt';
+    }
+
+    public function getRefund()
+    {
+        return $this->data['refund'];
     }
 }

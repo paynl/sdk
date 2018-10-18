@@ -12,6 +12,9 @@ class RefundTest extends PHPUnit_Framework_TestCase
         \Paynl\Config::setCurl($curl);
     }
 
+    /**
+     * @return \Paynl\Result\Refund\Add
+     */
     private function refundAddFull()
     {
         return \Paynl\Refund::add(array(
@@ -63,5 +66,18 @@ class RefundTest extends PHPUnit_Framework_TestCase
         $result = $this->refundAddFull();
         $this->assertInstanceOf('\Paynl\Result\Refund\Add', $result);
         $this->assertStringStartsWith('RF-', $result->getRefundId());
+    }
+
+    public function testRefundGet(){
+        $this->setDummyData('info');
+
+        \Paynl\Config::setApiToken('123456789012345678901234567890');
+
+        $result = \Paynl\Refund::get('RF-1234-1234-1234');
+
+        $this->assertInstanceOf('\Paynl\Result\Refund\Refund', $result);
+        $this->assertTrue($result->isRefunded());
+        $this->assertInternalType('array', $result->getRefund());
+        $this->assertStringStartsWith('RF-', $result->getId());
     }
 }

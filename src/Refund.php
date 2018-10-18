@@ -18,6 +18,7 @@
 
 namespace Paynl;
 
+use Paynl\Error\Error;
 use Paynl\Result\Refund as Result;
 
 use Paynl\Api\Refund as Api;
@@ -35,7 +36,7 @@ class Refund
      *
      * @param array $options
      * @return Result\Add
-     * @throws Error\Error
+     * @throws Error
      */
     public static function add(array $options = array())
     {
@@ -101,6 +102,7 @@ class Refund
      * @param string $refundId
      *
      * @return Result\Refund
+     * @throws Error
      */
     public static function get($refundId)
     {

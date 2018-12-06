@@ -52,7 +52,7 @@ class DynamicUUID
 
     private static function validateSecret($strSecret)
     {
-        if (! preg_match('//i', $strSecret)) {
+        if (! preg_match('/^[0-9a-f]{40}$/i', $strSecret)) {
             throw new Error('Invalid secret');
         }
     }

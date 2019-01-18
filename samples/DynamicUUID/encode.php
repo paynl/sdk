@@ -7,4 +7,19 @@ $UUID = \Paynl\DynamicUUID::encode(
     'INV001'
 );
 
-echo $UUID;
+$ideal = \Paynl\DynamicUUID::ideal($UUID, true);
+// load qr image from url
+echo "<img src='".$ideal['QRUrl']."'>";
+// load qr image from base64
+echo "<img src='data:image/png;base64,".$ideal['QRBase64']."'>";
+// the url the qr-code points to
+echo "<br /><a href='".$ideal['url']."'>".$ideal['url']."</a><br />";
+
+
+$bancontact = \Paynl\DynamicUUID::bancontact($UUID, true);
+// load qr image from url
+echo "<img src='".$bancontact['QRUrl']."'>";
+// load qr image from base64
+echo "<img src='data:image/png;base64,".$bancontact['QRBase64']."'>";
+// the url the qr-code points to
+echo "<br /><a href='".$bancontact['url']."'>".$bancontact['url']."</a><br />";

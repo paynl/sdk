@@ -10,6 +10,7 @@ class StaticUUID
 {
     const REFERENCE_TYPE_STRING = 1;
     const REFERENCE_TYPE_HEX = 0;
+    const HASH_METHOD = 'sha256';
 
     /**
      * Generate a UUID
@@ -154,7 +155,7 @@ class StaticUUID
 
         $serviceId = substr($uuidData, 8, 8);
         $strChecksumUUID = substr($uuidData, ($amountLength+1), (7-$amountLength));
-        $hash = hash_hmac('sha256', $amountLength . $amount . $serviceId, $secret);
+        $hash = hash_hmac(self::HASH_METHOD, $amountLength . $amount . $serviceId, $secret);
 
         return substr($hash, 0, strlen($strChecksumUUID)) == $strChecksumUUID;
     }

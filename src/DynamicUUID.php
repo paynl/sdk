@@ -9,6 +9,8 @@ class DynamicUUID
 {
     const REFERENCE_TYPE_STRING = 1;
     const REFERENCE_TYPE_HEX = 0;
+    const HASH_METHOD = 'sha256';
+
 
     /**
      * Generate a UUID
@@ -186,7 +188,7 @@ class DynamicUUID
         $uuidData = preg_replace('/[^0-9a-z]/i', '', $uuid);
         $uuidData = substr($uuidData, 8);
 
-        $hash = hash_hmac('sha256', $uuidData, $secret);
+        $hash = hash_hmac(self::HASH_METHOD, $uuidData, $secret);
         $checksum = "b" . substr($hash, 0, 7);
 
         return $checksum == substr($uuid, 0, 8);

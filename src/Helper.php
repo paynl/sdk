@@ -76,7 +76,7 @@ class Helper
         }
         $arrIp = explode(',', $the_ip);
 
-        return filter_var(trim($arrIp[0]), FILTER_VALIDATE_IP);
+        return filter_var(trim(trim($arrIp[0]),'[]'), FILTER_VALIDATE_IP);
     }
 
     /**

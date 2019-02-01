@@ -76,7 +76,7 @@ class Helper
         }
         $arrIp = explode(',', $the_ip);
 
-        return filter_var(trim(trim($arrIp[0]),'[]'), FILTER_VALIDATE_IP);
+        return filter_var(trim(trim($arrIp[0]), '[]'), FILTER_VALIDATE_IP);
     }
 
     /**
@@ -99,7 +99,7 @@ class Helper
     private static function nearest($number, $numbers)
     {
         $output = false;
-        $number = (int) $number;
+        $number = (int)$number;
         if (is_array($numbers) && count($numbers) >= 1) {
             $NDat = array();
             foreach ($numbers as $n) {
@@ -144,6 +144,7 @@ class Helper
 
         return ($taxAmount / $amountExclTax) * 100;
     }
+
     /**
      * Determine the tax class to send to Pay.nl
      *
@@ -197,7 +198,7 @@ class Helper
             $strStreetName = implode('', $a);
         }
 
-        return array($strStreetName, $strStreetNumber);
+        return array($strStreetName, substr($strStreetNumber, 0, 45));
     }
 
     /**
@@ -209,7 +210,7 @@ class Helper
     public static function getBaseUrl()
     {
         $protocol = isset($_SERVER['HTTPS']) ? 'https' : 'http';
-        $url = $protocol . '://' . $_SERVER['SERVER_NAME'] .':'.$_SERVER['SERVER_PORT']. $_SERVER['REQUEST_URI'];
+        $url = $protocol . '://' . $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'] . $_SERVER['REQUEST_URI'];
 
         // cut at last '/' (we dont want to see index.php)
         return substr($url, 0, strrpos($url, '/'));

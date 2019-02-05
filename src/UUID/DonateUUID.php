@@ -1,16 +1,14 @@
 <?php
 
 
-namespace Paynl;
+namespace Paynl\UUID;
 
 
 use Paynl\Error\Error;
 
-class StaticUUID
+class DonateUUID extends UUID
 {
-    const REFERENCE_TYPE_STRING = 1;
-    const REFERENCE_TYPE_HEX = 0;
-    const HASH_METHOD = 'sha256';
+    private static $prefix = 'd';
 
     /**
      * Generate a UUID
@@ -38,67 +36,22 @@ class StaticUUID
         self::validatePadChar($padChar);
 
         $amount = round($amount);
-        $serviceId = preg_replace('/\D/', '', $serviceId);
-        $prefix = strlen($amount);
-        $UUIDData = $prefix . $amount . $serviceId;
-        $reference = str_pad(strtolower($reference), 16, $padChar, STR_PAD_LEFT);
+        $serviceId =  preg_replace('/\D/', '', $serviceId);
 
+        $amountLength = strlen($amount);
+        $UUIDData = self::$prefix . $amountLength . $amount . $serviceId;
         $hash = hash_hmac(self::HASH_METHOD, $UUIDData, $secret);
 
-        $UUIDData = str_pad($prefix . $amount, 8, $hash, STR_PAD_RIGHT);
-        $UUIDData .= $serviceId . $reference;
+        $reference = str_pad(strtolower($reference), 16, $padChar, STR_PAD_LEFT);
+        $UUIDData =   self::$prefix . str_pad($amountLength . $amount, 7, $hash, STR_PAD_RIGHT);
 
+        $UUIDData .= $serviceId . $reference;
         return sprintf('%08s-%04s-%04s-%04s-%12s',
             substr($UUIDData, 0, 8),
             substr($UUIDData, 8, 4),
             substr($UUIDData, 12, 4),
             substr($UUIDData, 16, 4),
             substr($UUIDData, 20, 12));
-    }
-
-    private static function asciiToHex($ascii) {
-        $hex = '';
-        for ($i = 0; $i < strlen($ascii); $i++) {
-            $byte = strtoupper(dechex(ord($ascii{$i})));
-            $byte = str_repeat('0', 2 - strlen($byte)).$byte;
-            $hex.=$byte."";
-        }
-        return $hex;
-    }
-    
-    private static function validateSecret($strSecret)
-    {
-        if(preg_match('/^[0-9a-f]{40}$/i', $strSecret) != 1){
-            throw new Error("Service secret invalid; service secret should be an alpha numeric string of 40 chars.");
-        }
-    }
-
-    private static function validateServiceId($strServiceId)
-    {
-        if ( ! preg_match('/^SL-[0-9]{4}-[0-9]{4}$/', $strServiceId)) {
-            throw new Error('Invalid service ID');
-        }
-    }
-
-    private static function validateReferenceString($strReference)
-    {
-        if ( ! preg_match('/^[0-9a-zA-Z]{0,8}$/i', $strReference)) {
-            throw new Error('Invalid reference: only alphanumeric chars are allowed, up to 8 chars long');
-        }
-    }
-
-    private static function validateReferenceHex($strReference)
-    {
-        if ( ! preg_match('/^[0-9a-f]{0,16}$/i', $strReference)) {
-            throw new Error('Invalid reference: only alphanumeric chars are allowed, up to 16 chars long');
-        }
-    }
-
-    private static function validatePadChar($strPadChar)
-    {
-        if ( ! preg_match('/^[a-z0-9]{1}$/i', $strPadChar)) {
-            throw new Error('Invalid pad char');
-        }
     }
 
     /**
@@ -123,13 +76,17 @@ class StaticUUID
 
         $uuidData = preg_replace('/[^0-9a-z]/i', '', $uuid);
 
-        $amountLength = substr($uuidData, 0, 1);
-        $amount = substr($uuid,1, $amountLength);
+        $amountLength = substr($uuidData, 1, 1);
+        $amount = substr($uuidData, 2, $amountLength);
 
         $serviceId = substr($uuidData, 8,8);
         $serviceId = "SL-" . substr($serviceId, 0, 4) . '-' . substr($serviceId, 4, 4);
 
         $reference = substr($uuidData, 16);
+
+        if ($referenceType == self::REFERENCE_TYPE_STRING) {
+            $reference = self::hexToString($reference);
+        }
 
         return array(
             'amount' => $amount,
@@ -150,12 +107,12 @@ class StaticUUID
     {
         $uuidData = preg_replace('/[^0-9a-f]/i', '', $uuid);
 
-        $amountLength = substr($uuidData, 0, 1);
-        $amount = substr($uuidData, 1, $amountLength);
-
+        $amountLength = substr($uuidData, 1, 1);
+        $amount = substr($uuidData, 2, $amountLength);
         $serviceId = substr($uuidData, 8, 8);
-        $strChecksumUUID = substr($uuidData, ($amountLength+1), (7-$amountLength));
-        $hash = hash_hmac(self::HASH_METHOD, $amountLength . $amount . $serviceId, $secret);
+
+        $strChecksumUUID = substr($uuidData, ($amountLength+2), (6-$amountLength));
+        $hash = hash_hmac('sha256', self::$prefix . $amountLength . $amount . $serviceId, $secret);
 
         return substr($hash, 0, strlen($strChecksumUUID)) == $strChecksumUUID;
     }

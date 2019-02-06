@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Paynl\UUID;
+namespace Paynl;
 
 use Paynl\Error\Error;
 

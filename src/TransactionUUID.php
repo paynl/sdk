@@ -54,7 +54,7 @@ class TransactionUUID extends UUID
      *
      * @param string $uuid The UUID to decode
      *
-     * @return string orderId
+     * @return array Array with string orderId
      * @throws Error
      */
     public static function decode($uuid)
@@ -67,7 +67,7 @@ class TransactionUUID extends UUID
         $uuidData = preg_replace('/[^0-9a-z]/i', '', $uuid);
         $orderId =  str_replace('a', 'X', substr($uuidData, -16));
         self::validateOrderId($orderId);
-        return $orderId;
+        return array('orderId' => $orderId);
     }
 
     /**

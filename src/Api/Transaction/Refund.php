@@ -19,6 +19,7 @@
 namespace Paynl\Api\Transaction;
 
 use Paynl\Error;
+use Paynl\Helper;
 
 /**
  * Api class to refund a transaction
@@ -104,6 +105,29 @@ class Refund extends Transaction
         return parent::getData();
     }
 
+    /**
+     * @param object|array $result
+     *
+     * @return array
+     * @throws Error\Api
+     */
+    protected function processResult($result)
+    {
+        $output = Helper::objectToArray($result);
+
+        if (!is_array($output)) {
+            throw new Error\Api($output);
+        }
+
+        if (
+            isset($output['request']) &&
+            $output['request']['result'] != 1 &&
+            $output['request']['result'] !== 'TRUE') {
+            throw new Error\Api($output['request']['errorId'] . ' - ' . $output['request']['errorMessage']. ' '. $output['description']);
+        }
+
+        return parent::processResult($result);
+    }
     /**
      * @inheritdoc
      */

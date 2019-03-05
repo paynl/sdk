@@ -2,7 +2,8 @@
   "request": {
     "result": "0",
     "errorId": "1",
-    "errorMessage": "You do not have enough credit to refund this amount."
+    "errorMessage": "Refund was not complete"
   },
-  "refundId": ""
+  "refundId": "",
+  "description": "This is the reason for the refund not succeeding"
 }

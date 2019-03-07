@@ -13,46 +13,57 @@ class Get extends Result
 
     public function getMandateId()
     {
-        return ($this->getOrder())['mandateId'];
+        $order = $this->getOrder();
+        return  $order['mandateId'];
     }
     public function getBankaccountNumber()
     {
-        return ($this->getOrder())['bankaccountNumber'];
+        $order = $this->getOrder();
+        return $order['bankaccountNumber'];
     }
     public function getBankaccountOwner()
     {
-        return ($this->getOrder())['bankaccounOwner'];
+        $order = $this->getOrder();
+        return $order['bankaccounOwner'];
     }
     public function getBankaccountBic()
     {
-        return ($this->getOrder())['bankaccounBic'];
+        $order = $this->getOrder();
+        return $order['bankaccounBic'];
     }
     public function getAmount()
     {
-        return ($this->getOrder())['amount']/100;
+        $order = $this->getOrder();
+        return $order['amount']/100;
     }
     public function getDescription()
     {
-        return ($this->getOrder())['description'];
+        $order = $this->getOrder();
+        return $order['description'];
     }
     public function getIpAddress()
     {
-        return ($this->getOrder())['ipAddress'];
+        $order = $this->getOrder();
+        return $order['ipAddress'];
     }
     public function getEmail()
     {
-        return ($this->getOrder())['email'];
+        $order = $this->getOrder();
+        return $order['email'];
     }
     public function getExtra1()
     {
-        return ($this->getOrder())['extra1'];
+        $order = $this->getOrder();
+        return $order['extra1'];
     }
     public function getExtra2()
     {
-        return isset(($this->getOrder())['extra2'])?($this->getOrder())['extra2']:'';
+        $order = $this->getOrder();
+        return isset($order['extra2'])?$order['extra2']:'';
     }
     public function getExtra3()
     {
-        return isset(($this->getOrder())['extra3'])?($this->getOrder())['extra3']:'';
+        $order = $this->getOrder();
+        return isset($order['extra3'])?$order['extra3']:'';
     }
 }

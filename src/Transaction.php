@@ -28,9 +28,37 @@ use Paynl\Result\Transaction as Result;
  */
 class Transaction
 {
+    /** @var string Arikel / product */
     const PRODUCT_TYPE_ARTICLE = 'ARTICLE';
-    const PRODUCT_TYPE_SHIPPING = 'SHIPPING';
+    /** @var string Hoog risico product (mobiele telefoon, laptop) */
+    const PRODUCT_TYPE_ARTICLE_H = 'ARTICLE_H';
+    /** @var string Gratis artikel, welke een waarde vertegenwoordigd */
+    const PRODUCT_TYPE_VOUCHER = 'VOUCHER';
+    /** @var string Kaart welke eenmalig is in te wisselen (gemiddeld fraude risico) */
+    const PRODUCT_TYPE_GIFTCARD = 'GIFTCARD';
+    /** @var string Hoger risico digitaal geld (steam/paysafecard etc.) */
+    const PRODUCT_TYPE_EMONEY = 'EMONEY';
+    /** @var string Opwaarding van een bestaand account/wallet */
+    const PRODUCT_TYPE_TOPUP = 'TOPUP';
+    /** @var string Digitale waarde, zoals een BitCoin, Litecoin of andere altcoin */
+    const PRODUCT_TYPE_CRYPTO = 'CRYPTO';
+    /** @var string Betaling ter bevestiging van een extern accounts */
+    const PRODUCT_TYPE_IDENTITY = 'IDENTITY';
+    /** @var string Betaling van een factuur */
+    const PRODUCT_TYPE_INVOICE = 'INVOICE';
+    /** @var string Digitale overdracht van een bestand */
+    const PRODUCT_TYPE_DOWNLOAD = 'DOWNLOAD';
+    /** @var string Digitaal product welke bewaard op de server van de ondernemer (bijvoorbeeld: asset binnen een game) */
+    const PRODUCT_TYPE_VIRTUAL = 'VIRTUAL';
+    /** @var string Creditfactuur of product (van een eerdere order) */
+    const PRODUCT_TYPE_CREDIT = 'CREDIT';
+    /** @var string Administratie- of handelingskosten */
     const PRODUCT_TYPE_HANDLING = 'HANDLING';
+    /** @var string    Betalingskosten */
+    const PRODUCT_TYPE_PAYMENT = 'PAYMENT';
+    /** @var string Verzendkosten */
+    const PRODUCT_TYPE_SHIPPING = 'SHIPPING';
+    /** @var string Algemene korting */
     const PRODUCT_TYPE_DISCOUNT = 'DISCOUNT';
 
     /**

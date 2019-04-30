@@ -47,7 +47,7 @@ try {
                 'price' => 5,
                 'vatPercentage' => 21,
                 'qty' => 1,
-                'type' => \Paynl\Transaction::PRODUCT_TYPE_ARTICLE
+                'type' => \Paynl\Transaction::PRODUCT_TYPE_DISCOUNT
             ),
             array(
                 'id' => 2,

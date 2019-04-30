@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: andy
- * Date: 1-8-18
- * Time: 15:56
- */
 
 namespace Paynl\Result\Transaction;
 

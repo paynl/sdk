@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Paynl;
 
 use Paynl\Error\Error;

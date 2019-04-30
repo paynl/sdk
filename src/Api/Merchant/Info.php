@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Paynl\Api\Merchant;
 
 class Info extends Merchant

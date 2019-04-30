@@ -1,22 +1,23 @@
 {
-    "name": "paynl/sdk",
-    "require": {
-        "php-curl-class/php-curl-class": "^8.3",
-        "ext-json": "*"
-    },
-    "require-dev": {
-        "phpunit/phpunit": "^4.8",
-        "satooshi/php-coveralls": "~1.0"
-    },
-    "authors": [
-        {
-            "name": "Andy Pieters",
-            "email": "andy@pay.nl"
-        }
-    ],
-    "autoload":{
-        "psr-4": {
-            "Paynl\\": "src/"
-        }
+  "name": "paynl/sdk",
+  "require": {
+    "php-curl-class/php-curl-class": "^8.3",
+    "ext-json": "*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^4.8",
+    "satooshi/php-coveralls": "~1.0"
+  },
+  "authors": [
+    {
+      "name": "Andy Pieters",
+      "email": "andy@pay.nl"
     }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Paynl\\": "src/"
+    }
+  },
+  "license": "MIT"
 }

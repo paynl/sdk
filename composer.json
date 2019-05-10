@@ -1,7 +1,7 @@
 {
   "name": "paynl/sdk",
   "require": {
-    "php": "^7.0",
+    "php": "^7.1",
     "ext-json": "*",
     "guzzlehttp/guzzle": "^6.3"
   },

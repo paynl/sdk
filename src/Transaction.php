@@ -5,6 +5,7 @@ namespace Paynl\SDK;
 
 
 use GuzzleHttp\Client;
+use Paynl\SDK\Result\Result;
 
 class Transaction
 {
@@ -23,26 +24,35 @@ class Transaction
      * Get a single transaction
      *
      * @param string $id
-     * @return Result\Transaction
+     * @return Model\Transaction
+     * @throws Exceptions\BadRequestException
      * @throws Exceptions\NotFoundException
      */
-    public function get(string $id): Result\Transaction
+    public function get(string $id): Model\Transaction
     {
         $response = $this->client->get("transactions/$id");
 
-        return new Result\Transaction($response);
+        $result = new Result($response);
+
+        return Model\Transaction::fromArray($result->getData());
     }
 
     /**
      * Create a new transaction
      *
-     * @param array $transaction
-     * @return Result\Transaction
+     * @param Model\Transaction $transaction
+     * @return Model\Transaction
+     * @throws Exceptions\BadRequestException
      * @throws Exceptions\NotFoundException
      */
-    public function post(array $transaction){
+    public function post($transaction): Model\Transaction
+    {
+        $transaction = ($transaction instanceof Model\Transaction) ? $transaction->asArray() : $transaction;
+
         $response = $this->client->post('transactions', ['json' => $transaction]);
 
-        return new Result\Transaction($response);
+        $result = new Result($response);
+
+        return Model\Transaction::fromArray($result->getData());
     }
 }

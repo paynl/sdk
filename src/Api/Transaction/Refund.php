@@ -14,6 +14,8 @@ class Refund extends Transaction
 {
     protected $apiTokenRequired = true;
 
+    protected $version = 11;
+
     /**
      * @var string the transactionId
      */

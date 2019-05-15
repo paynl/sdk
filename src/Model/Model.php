@@ -3,7 +3,12 @@
 
 namespace Paynl\SDK\Model;
 
+use DateTime;
 
+/**
+ * Class Model
+ * @package Paynl\SDK\Model
+ */
 class Model
 {
     /**
@@ -42,17 +47,27 @@ class Model
      */
     public function asArray()
     {
-        return array_map(function ($value) {
+        $data = $this->_data;
+
+        array_walk($data, function (&$value, $key) {
             if (is_array($value)) {
-                return array_map(function ($sub) {
+                $value = array_map(function ($sub) {
                     if ($sub instanceof Model) return $sub->asArray();
                     return $sub;
                 }, $value);
             } elseif ($value instanceof Model) {
-                return $value->asArray();
+                $value = $value->asArray();
+            } elseif ($value instanceof DateTime) {
+                $value = $value->format($this->getDateFormat($key));
             }
-            return $value;
-        }, $this->_data);
+        });
+
+        return $data;
+    }
+
+    protected function getDateFormat(string $field): string
+    {
+        return DateTime::ISO8601;
     }
 
     public function __get($name)

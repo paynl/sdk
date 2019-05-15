@@ -25,8 +25,8 @@ class Transaction
      *
      * @param string $id
      * @return Model\Transaction
-     * @throws Exceptions\BadRequestException
-     * @throws Exceptions\NotFoundException
+     * @throws Exception\BadRequestException
+     * @throws Exception\NotFoundException
      */
     public function get(string $id): Model\Transaction
     {
@@ -42,14 +42,14 @@ class Transaction
      *
      * @param Model\Transaction $transaction
      * @return Model\Transaction
-     * @throws Exceptions\BadRequestException
-     * @throws Exceptions\NotFoundException
+     * @throws Exception\BadRequestException
+     * @throws Exception\NotFoundException
      */
-    public function post($transaction): Model\Transaction
+    public function post(Model\Transaction $transaction): Model\Transaction
     {
-        $transaction = ($transaction instanceof Model\Transaction) ? $transaction->asArray() : $transaction;
+        $arrTransaction = ($transaction instanceof Model\Transaction) ? $transaction->asArray() : $transaction;
 
-        $response = $this->client->post('transactions', ['json' => $transaction]);
+        $response = $this->client->post('transactions', ['json' => $arrTransaction]);
 
         $result = new Result($response);
 

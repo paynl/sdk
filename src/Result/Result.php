@@ -4,8 +4,8 @@
 namespace Paynl\SDK\Result;
 
 
-use Paynl\SDK\Exceptions\BadRequestException;
-use Paynl\SDK\Exceptions\NotFoundException;
+use Paynl\SDK\Exception\BadRequestException;
+use Paynl\SDK\Exception\NotFoundException;
 use Psr\Http\Message\ResponseInterface;
 
 class Result

@@ -19,9 +19,4 @@ namespace Paynl\SDK\Model;
  */
 class Address extends Model
 {
-    public function __construct()
-    {
-        // todo: Remove when api is fixed
-        $this->streetNumberExtension = 'A';
-    }
 }

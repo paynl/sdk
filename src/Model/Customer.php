@@ -16,7 +16,7 @@ use DateTime;
  * @property string $phone
  * @property string $email
  * @property integer $trustLevel Indicates whether you trust the customer, scale -10 -> 10 (10 Reliable, -10 Unreliable).
- * @property string $iban todo Why not use a bankaccount model?
+ * @property string $iban todo Why not use a bankAccount model?
  * @property string $bic
  * @property string $reference Merchants reference (id) to the customer
  * @property string $language The language code consisting of 2 uppercase letters.

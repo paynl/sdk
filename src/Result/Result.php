@@ -34,6 +34,8 @@ class Result
         return $this->response->getStatusCode();
     }
 
+    // TODO: Think about paginated responses
+
     public function getData(): array
     {
         $data = $this->response->getBody()->getContents();

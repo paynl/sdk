@@ -1,8 +1,9 @@
 <?php
 include "../gateway.php";
 
-$transaction = $gateway->transaction()->get('EX-1957-3226-7160');
+$transaction = $gateway->transactions()->get('EX-3867-3263-7160');
+
+$arrTransaction = $transaction->asArray();
 
 
-var_dump($transaction);
-
+var_dump($arrTransaction);

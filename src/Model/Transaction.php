@@ -27,27 +27,28 @@ use DateTime;
  * @property Address $address
  * @property Address $billingAddress
  * @property Customer $customer
- * @property-read Merchant $company
+ * @property-read Merchant $company // todo isn't only a link to the company sufficient?
  * @property Price $price
  * @property Product[] $products
- * @property-read Link[] $_links
+ * @property Statistics $statistics
  * @property-read DateTime $createdAt
  * @property-read DateTime $expiresAt
+ * @property-read Link[] $_links
  */
 class Transaction extends Model
 {
-    protected function getDateFormat(string $field): string
+    public function __construct()
     {
-        switch($field){
-            case 'deliveryDate':
-            case 'invoiceDate':
-//                return 'd-m-Y'; todo Documentation does not match actual format
-            case 'createdAt':
-            case 'expiresAt':
-                return DateTime::ISO8601;
-        }
-
-        return parent::getDateFormat($field);
+        parent::__construct();
+        $this->exchange = new Exchange();
+        $this->paymentMethod = new PaymentMethod();
+        $this->address = new Address();
+        $this->billingAddress = new Address();
+        $this->customer = new Customer();
+        $this->customer = new Merchant();
+        $this->price = new Price();
+        $this->products = [];
+        $this->statistics = new Statistics();
     }
 
     public function __set($name, $value): void
@@ -58,7 +59,7 @@ class Transaction extends Model
             case 'invoiceDate':
             case 'createdAt':
             case 'expiresAt':
-                if (is_string($value)) $value = DateTime::createFromFormat($this->getDateFormat($name), $value);
+                if (is_string($value)) $value = DateTime::createFromFormat(DateTime::ISO8601, $value);
                 break;
         }
         if (is_array($value)) {
@@ -90,6 +91,9 @@ class Transaction extends Model
                         return is_array($product) ? Product::fromArray($product) : $product;
                     }, $value);
                     return;
+                case 'statistics':
+                    $value = Statistics::fromArray($value);
+                    break;
                 case '_links':
                     $this->_data[$name] = array_map(function ($link) {
                         return is_array($link) ? Link::fromArray($link) : $link;

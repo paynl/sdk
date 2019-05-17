@@ -4,15 +4,7 @@ include "../gateway.php";
 use Paynl\SDK\Model\Transaction;
 use Paynl\SDK\Model\Address;
 
-$address = Address::fromArray([
-    'initials' => 'AM',
-    'lastName' => 'Pieters',
-    'streetName' => "Kopersteden",
-    'streetNumber' => "10",
-    'streetNumberExtension' => "A", // todo: The api marks this as mandatory
-    'city' => 'Enschede',
-    'zipCode' => '7547 TK',
-]);
+$address = Address::fromArray([]);
 
 $transaction = Transaction::fromArray([
     'description' => 'Test transactie',
@@ -28,14 +20,14 @@ $transaction = Transaction::fromArray([
     'address' => $address,
     'billingAddress' => $address
 ]);
+$transaction->address->streetNumberExtension = 'x';
 
-// todo these dates are not picked up by the api
+
 $transaction->invoiceDate = new DateTime('now');
 $transaction->deliveryDate = new DateTime('+3 days');
 
-
-
-$transaction = $gateway->transaction()->post($transaction);
+$transaction = $gateway->transactions()->post($transaction);
+// todo Still no finish url (issuerUrl)
 echo $transaction->id;
 
 echo PHP_EOL;

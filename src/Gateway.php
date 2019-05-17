@@ -4,9 +4,14 @@
 namespace Paynl\SDK;
 
 
+use function GuzzleHttp\choose_handler;
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
+use Paynl\SDK\Api\Currencies;
+use Paynl\SDK\Api\Services;
+use Paynl\SDK\Api\Terminals;
+use Paynl\SDK\Api\Transactions;
 use Psr\Http\Message\RequestInterface;
 
 class Gateway
@@ -20,8 +25,24 @@ class Gateway
         $this->setDefaults($config);
     }
 
-    public function transaction(): Transaction{
-        return new Transaction($this->getHttpClient());
+    public function transactions(): Transactions
+    {
+        return new Transactions($this->getHttpClient());
+    }
+
+    public function currencies(): Currencies
+    {
+        return new Currencies($this->getHttpClient());
+    }
+
+    public function services(): Services
+    {
+        return new Services($this->getHttpClient());
+    }
+
+    public function terminals(): Terminals
+    {
+        return new Terminals($this->getHttpClient());
     }
 
     private function setDefaults(array $config)
@@ -50,7 +71,7 @@ class Gateway
 
     private function addHeaderMiddleware($header, $content)
     {
-        return Middleware::mapRequest(function(RequestInterface $r) use ($header, $content){
+        return Middleware::mapRequest(function (RequestInterface $r) use ($header, $content) {
             return $r->withHeader($header, $content);
         });
     }
@@ -58,15 +79,15 @@ class Gateway
     private function getHttpClient(): Client
     {
         $stack = new HandlerStack();
-        $stack->setHandler(\GuzzleHttp\choose_handler());
+        $stack->setHandler(choose_handler());
 
         $stack->push($this->addHeaderMiddleware('Accept', 'application/json'));
 
         $authHeader = $this->getAuthHeader();
-        if(!is_null($authHeader)){
+        if (!is_null($authHeader)) {
             $stack->push($this->addHeaderMiddleware('Authorization', $authHeader));
         }
-        
+
         $client = new Client(['base_uri' => $this->baseUrl, 'handler' => $stack]);
 
         return $client;

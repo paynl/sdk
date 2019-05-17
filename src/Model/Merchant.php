@@ -23,6 +23,17 @@ use DateTime;
  */
 class Merchant extends Model
 {
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->bankAccount = new BankAccount();
+        $this->postalAddress = new Address();
+        $this->visitAddress = new Address();
+        $this->tradeNames = [];
+        $this->contactMethods = [];
+    }
+
     public function __set($name, $value)
     {
         switch ($name) {

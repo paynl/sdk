@@ -16,6 +16,11 @@ class Model
      */
     protected $_data;
 
+    public function __construct()
+    {
+        $this->_data = [];
+    }
+
     /**
      * Create an instance from an array
      *
@@ -32,13 +37,18 @@ class Model
         return $instance;
     }
 
+    public function asJson()
+    {
+        return json_encode($this->asArray());
+    }
+
     /**
      * Converts the model to a json string
      * @return false|string
      */
     public function __toString()
     {
-        return json_encode($this->asArray());
+        return $this->asJson();
     }
 
     /**
@@ -47,27 +57,19 @@ class Model
      */
     public function asArray()
     {
-        $data = $this->_data;
-
-        array_walk($data, function (&$value, $key) {
+        return array_map(function ($value) {
             if (is_array($value)) {
-                $value = array_map(function ($sub) {
+                return array_map(function ($sub) {
                     if ($sub instanceof Model) return $sub->asArray();
                     return $sub;
                 }, $value);
             } elseif ($value instanceof Model) {
-                $value = $value->asArray();
+                return $value->asArray();
             } elseif ($value instanceof DateTime) {
-                $value = $value->format($this->getDateFormat($key));
+                return $value->format(DateTime::ISO8601);
             }
-        });
-
-        return $data;
-    }
-
-    protected function getDateFormat(string $field): string
-    {
-        return DateTime::ISO8601;
+            return $value;
+        }, $this->_data);
     }
 
     public function __get($name)

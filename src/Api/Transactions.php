@@ -1,25 +1,14 @@
 <?php
 
 
-namespace Paynl\SDK;
+namespace Paynl\SDK\Api;
 
-
-use GuzzleHttp\Client;
+use Paynl\SDK\Model;
+use Paynl\SDK\Exception;
 use Paynl\SDK\Result\Result;
 
-class Transaction
+class Transactions extends Api
 {
-    /**
-     * @var Client
-     */
-    private $client;
-
-    public function __construct(Client $client)
-    {
-        $this->client = $client;
-    }
-
-
     /**
      * Get a single transaction
      *

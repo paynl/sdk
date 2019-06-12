@@ -125,6 +125,9 @@ class Helper
             return 0;
         }
         $amountExclTax = $amountInclTax - $taxAmount;
+        // if $amountInclTax - $taxAmount == 0 the whole amount is tax.
+        // That would mean an infinite tax percentage, which is not possible. so in this case we return 100
+        if($amountExclTax == 0) return 100;
 
         return ($taxAmount / $amountExclTax) * 100;
     }

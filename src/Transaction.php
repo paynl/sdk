@@ -300,12 +300,21 @@ class Transaction
      */
     public static function getForExchange()
     {
-        if (isset($_GET['order_id'])) {
+        if(isset($_GET['order_id']))
+        {
             return self::get($_GET['order_id']);
         }
-        if (isset($_POST['order_id'])) {
+        
+        if(isset($_POST['order_id']))
+        {
             return self::get($_POST['order_id']);
         }
+
+        if($_SERVER['REQUEST_METHOD'] === 'POST' && $_SERVER['CONTENT_TYPE'] === 'application/json')
+        {
+            return self::get(json_decode(file_get_contents('php://input'), true)['order_id']);
+        }
+        
         // maybe its xml
         $input = file_get_contents('php://input');
         $xml = simplexml_load_string($input);

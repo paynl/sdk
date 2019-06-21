@@ -41,6 +41,7 @@ class Api
      *
      * @throws Error\Api
      * @throws Error\Error
+     * @throws Error\Required\ApiToken
      */
     public function doRequest($endpoint, $version = null)
     {
@@ -82,8 +83,7 @@ class Api
 
     /**
      * @return array
-     * @throws Error\Required\ApiToken
-     * @throws Error\Required\ServiceId
+     * @throws Error\Required
      */
     protected function getData()
     {
@@ -97,6 +97,7 @@ class Api
 
     /**
      * @return array|null
+     * @throws Error\Required\ApiToken
      */
     private function getAuth()
     {

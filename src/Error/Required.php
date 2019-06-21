@@ -7,7 +7,7 @@ namespace Paynl\Error;
  *
  * @author Andy Pieters <andy@andypieters.nl>
  */
-class Required extends \Exception
+class Required extends Error
 {
     /***
      * @param string          $message

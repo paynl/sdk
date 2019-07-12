@@ -109,7 +109,7 @@ class Refund extends Transaction
             isset($output['request']) &&
             $output['request']['result'] != 1 &&
             $output['request']['result'] !== 'TRUE') {
-            throw new Error\Api($output['request']['errorId'] . ' - ' . $output['request']['errorMessage']. ' '. $output['description']);
+            throw new Error\Api($output['request']['errorId'] . ' - ' . $output['request']['errorMessage']. ' '. (isset($output['description']) ? $output['description'] : ''));
         }
 
         return parent::processResult($result);

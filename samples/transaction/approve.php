@@ -1,6 +1,6 @@
 <?php
 include "../gateway.php";
 
-$transaction = $gateway->transactions()->get('EX-1601-5255-5380');
+$transaction = $gateway->transactions()->approve('EX-8401-5255-5380');
 
 var_dump($transaction->status->name);

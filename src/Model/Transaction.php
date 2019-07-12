@@ -28,7 +28,8 @@ use DateTime;
  * @property Address $billingAddress
  * @property Customer $customer
  * @property-read Merchant $company // todo isn't only a link to the company sufficient?
- * @property Price $price
+ * @property Money $amount
+ * @property-read $issuerUrl
  * @property Product[] $products
  * @property Statistics $statistics
  * @property-read DateTime $createdAt
@@ -46,7 +47,7 @@ class Transaction extends Model
         $this->billingAddress = new Address();
         $this->customer = new Customer();
         $this->customer = new Merchant();
-        $this->price = new Price();
+        $this->amount = new Money();
         $this->products = [];
         $this->statistics = new Statistics();
     }
@@ -59,7 +60,9 @@ class Transaction extends Model
             case 'invoiceDate':
             case 'createdAt':
             case 'expiresAt':
-                if (is_string($value)) $value = DateTime::createFromFormat(DateTime::ISO8601, $value);
+                if (is_string($value)) {
+                    $value = DateTime::createFromFormat(DateTime::ISO8601, $value);
+                }
                 break;
         }
         if (is_array($value)) {
@@ -83,8 +86,8 @@ class Transaction extends Model
                 case 'company':
                     $value = Merchant::fromArray($value);
                     break;
-                case 'price':
-                    $value = Price::fromArray($value);
+                case 'amount':
+                    $value = Money::fromArray($value);
                     break;
                 case 'products':
                     $this->_data[$name] = array_map(function ($product) {

@@ -39,7 +39,7 @@ class Model
 
     public function asJson()
     {
-        return json_encode($this->asArray());
+        return json_encode($this->asArray(), JSON_PRETTY_PRINT);
     }
 
     /**

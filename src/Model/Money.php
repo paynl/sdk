@@ -10,7 +10,7 @@ namespace Paynl\SDK\Model;
  * @property integer $amount
  * @property string $currency
  */
-class Price extends Model
+class Money extends Model
 {
     public function __construct()
     {

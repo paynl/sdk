@@ -4,11 +4,21 @@ include "../gateway.php";
 use Paynl\SDK\Model\Transaction;
 use Paynl\SDK\Model\Address;
 
-$address = Address::fromArray([]);
+$address = new Address();
+$address->initials = 'AM';
+$address->lastName = 'Pieters';
+$address->streetName = "Kopersteden";
+$address->streetNumber = "10";
+$address->streetNumberExtension = "Z";
+$address->zipCode = "7547 TK";
+$address->city = "Enschede";
+$address->countryCode = "US";
+$address->regionCode = "US-AL";
+
 
 $transaction = Transaction::fromArray([
     'description' => 'Test transactie',
-    'price' => ['amount' => 1000],
+    'amount' => ['amount' => 1000],
     'serviceId' => 'SL-4241-3001',
     'exchange' => ['url' => 'https://my-exchange.url'],
     'returnUrl' => 'https://andypieters.nl',
@@ -20,16 +30,15 @@ $transaction = Transaction::fromArray([
     'address' => $address,
     'billingAddress' => $address
 ]);
-$transaction->address->streetNumberExtension = 'x';
-
-
+$transaction->testMode = true;
 $transaction->invoiceDate = new DateTime('now');
 $transaction->deliveryDate = new DateTime('+3 days');
 
 $transaction = $gateway->transactions()->post($transaction);
-// todo Still no finish url (issuerUrl)
-echo $transaction->id;
+
+echo $transaction->id . PHP_EOL;
+echo $transaction->issuerUrl . PHP_EOL;
 
 echo PHP_EOL;
 
-echo $transaction;
+echo $transaction->asJson();

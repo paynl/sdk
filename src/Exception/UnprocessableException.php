@@ -6,7 +6,7 @@ namespace Paynl\SDK\Exception;
 
 use Throwable;
 
-class BadRequestException extends Exception
+class UnprocessableException extends Exception
 {
     public function __construct($message = "", $code = 0, Throwable $previous = null)
     {

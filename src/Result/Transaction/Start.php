@@ -34,4 +34,12 @@ class Start extends Result
     {
         return $this->data['transaction']['paymentReference'];
     }
+    
+    /**
+     * @return mixed The terminal hash for this transaction, use this for Instore::Status
+     */
+    public function getHash()
+    {
+        return $this->data['terminal']['hash'];
+    }
 }

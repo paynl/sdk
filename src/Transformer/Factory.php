@@ -27,6 +27,7 @@ class Factory
                 $transformerClass = Transformer\Currency::class;
                 break;
             case Request\Transactions\GetAll::class:
+            case Request\Transactions\Get::class:
                 $transformerClass = Transformer\Transaction::class;
                 break;
             default:

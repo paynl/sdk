@@ -1,26 +1,110 @@
 <?php
+declare(strict_types=1);
 
-
-namespace Paynl\SDK\Model;
+namespace PayNL\Sdk\Model;
 
 use DateTime;
 
 /**
  * Class Status
- * @package Paynl\SDK\Model
  *
- * @property-read string $code
- * @property-read string $name
- * @property-read DateTime $date
- * @property-read string $reason
+ * @package PayNL\Sdk\Model
  */
-class Status extends Model
+class Status implements ModelInterface
 {
-    public function __set($name, $value)
+    /**
+     * @var string
+     */
+    protected $code;
+
+    /**
+     * @var string
+     */
+    protected $name;
+
+    /**
+     * @var DateTime
+     */
+    protected $date;
+
+    /**
+     * @var string
+     */
+    protected $reason = '';
+
+    /**
+     * @return string
+     */
+    public function getCode(): string
     {
-        if ($name === 'date' && is_string($value)) {
-            $value = DateTime::createFromFormat(DateTime::ISO8601, $value);
-        }
-        parent::__set($name, $value);
+        return $this->code;
+    }
+
+    /**
+     * @param string $code
+     *
+     * @return Status
+     */
+    public function setCode(string $code): Status
+    {
+        $this->code = $code;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return Status
+     */
+    public function setName(string $name): Status
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getDate(): DateTime
+    {
+        return $this->date;
+    }
+
+    /**
+     * @param DateTime $date
+     *
+     * @return Status
+     */
+    public function setDate(DateTime $date): Status
+    {
+        $this->date = $date;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getReason(): string
+    {
+        return $this->reason;
+    }
+
+    /**
+     * @param string $reason
+     *
+     * @return Status
+     */
+    public function setReason(string $reason): Status
+    {
+        $this->reason = $reason;
+        return $this;
     }
 }

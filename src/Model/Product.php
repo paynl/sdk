@@ -1,35 +1,132 @@
 <?php
+declare(strict_types=1);
 
-
-namespace Paynl\SDK\Model;
-
+namespace PayNL\Sdk\Model;
 
 /**
  * Class Product
- * @package Paynl\SDK\Model
  *
- * @property string $id
- * @property string $description
- * @property Money $price
- * @property integer $quantity todo: This is a float
- * // todo No VAT?
+ * @package PayNL\Sdk\Model
  */
-class Product extends Model
+class Product implements ModelInterface
 {
-    public function __construct()
+    /**
+     * @var string
+     */
+    protected $id;
+
+    /**
+     * @var string
+     */
+    protected $description;
+
+    /**
+     * @var Amount
+     */
+    protected $price;
+
+    /**
+     * @var string
+     */
+    protected $quantity;
+
+    /**
+     * @var string
+     */
+    protected $vat;
+
+    /**
+     * @return string
+     */
+    public function getId(): string
     {
-        parent::__construct();
-        $this->price = new Money();
+        return $this->id;
     }
 
-    public function __set($name, $value)
+    /**
+     * @param string $id
+     *
+     * @return Product
+     */
+    public function setId(string $id): Product
     {
-        switch ($name){
-            case 'price':
-                if(is_numeric($value)) $value = Money::fromArray(['amount' => $value]);
-                elseif (is_array($value)) $value = Money::fromArray($value);
-                break;
-        }
-        parent::__set($name, $value);
+        $this->id = $id;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     *
+     * @return Product
+     */
+    public function setDescription(string $description): Product
+    {
+        $this->description = $description;
+        return $this;
+    }
+
+    /**
+     * @return Amount
+     */
+    public function getPrice(): Amount
+    {
+        return $this->price;
+    }
+
+    /**
+     * @param Amount $price
+     *
+     * @return Product
+     */
+    public function setPrice(Amount $price): Product
+    {
+        $this->price = $price;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getQuantity(): string
+    {
+        return $this->quantity;
+    }
+
+    /**
+     * @param string $quantity
+     *
+     * @return Product
+     */
+    public function setQuantity(string $quantity): Product
+    {
+        $this->quantity = $quantity;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getVat(): string
+    {
+        return $this->vat;
+    }
+
+    /**
+     * @param string $vat
+     *
+     * @return Product
+     */
+    public function setVat(string $vat): Product
+    {
+        $this->vat = $vat;
+        return $this;
     }
 }

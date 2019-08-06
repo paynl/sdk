@@ -30,6 +30,9 @@ class Factory
             case Request\Transactions\Get::class:
                 $transformerClass = Transformer\Transaction::class;
                 break;
+            case Request\Transactions\GetReceipt::class:
+                $transformerClass = Transformer\TransactionReceipt::class;
+                break;
             default:
                 throw new Exception\DomainException(
                     sprintf(
@@ -40,7 +43,12 @@ class Factory
         }
 
         if (false === class_exists($transformerClass)) {
-            // TODO: Exception!
+            throw new Exception\LogicException(
+                sprintf(
+                    'Missing transformer "%s"',
+                    $transformerClass
+                )
+            );
         }
 
         return new $transformerClass();

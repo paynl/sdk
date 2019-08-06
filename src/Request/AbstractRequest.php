@@ -205,11 +205,11 @@ abstract class AbstractRequest implements RequestInterface
 
         // create a Guzzle PSR 7 Request
         $guzzleRequest = new Request($this->getMethod(), $uri, $this->getHeaders());
-//dump((string)$guzzleRequest->getUri());
+dump((string)$guzzleRequest->getUri());
         $guzzleResponse = $this->getClient()->send($guzzleRequest);
 
         $body = $guzzleResponse->getBody()->getContents();
-//dump($body);
+dump($body);
         // initiate transformer (... more than meets the eye ;-) )
         if (static::FORMAT_OBJECTS === $this->getFormat()) {
             $transformer = Factory::factory(static::class);

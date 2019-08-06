@@ -41,6 +41,9 @@ declare(strict_types=1);
             <div>
                 <a href="transactions/getAll.php" target="_blank">Get Transactions</a>
             </div>
+            <div>
+                <a href="transactions/get.php" target="_blank">Get a Transaction</a>
+            </div>
         </div>
     </body>
 </html>

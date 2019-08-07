@@ -4,10 +4,13 @@ declare(strict_types=1);
 namespace PayNL\Sdk;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Exception\{GuzzleException, RequestException as GuzzleRequestException};
+use GuzzleHttp\Psr7\Response as GuzzleResponse;
 use PayNL\Sdk\AuthAdapter\{AdapterInterface, Basic};
 use PayNL\Sdk\Exception\InvalidArgumentException;
 use PayNL\Sdk\Request\{AbstractRequest, RequestInterface};
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Encoder\XmlEncoder;
 
 /**
  * Class Api
@@ -87,11 +90,19 @@ class Api
      */
     public function handleCall(AbstractRequest $request, array $headers = []): Response
     {
+        $format = $request->getFormat();
+
         $client = $this->getClient();
+
+        // initiate "default" response
+        $response = (new Response())
+            ->setStatusCode(500)
+            ->setBody('No request handled')
+        ;
 
         try {
             $acceptHeader = 'application/json';
-            if (RequestInterface::FORMAT_XML === $request->getFormat()) {
+            if (RequestInterface::FORMAT_XML === $format) {
                 $acceptHeader = 'application/xml';
             }
 
@@ -106,12 +117,42 @@ class Api
                 }
             }
 
-            $response = $request->execute();
+            $request->execute($response);
 
-        } catch (GuzzleException $clientException) {
-            $response = new Response();
-            $response->setStatusCode($clientException->getCode())
-                ->setBody($clientException->getMessage())
+        } catch (GuzzleException $guzzleException) {
+            $errorMessages = '';
+            /**
+             * @var GuzzleRequestException $guzzleException
+             * @var GuzzleResponse $guzzleResponse
+             */
+            if (true === method_exists($guzzleException, 'getResponse')) { // TODO: refactor this (read stream + convert to messages)
+                $guzzleResponse = $guzzleException->getResponse();
+                if (null !== $guzzleResponse) {
+                    $rawResponseBody = $guzzleResponse->getBody();
+
+                    if (true === $rawResponseBody->isSeekable() && 0 < ($size = $rawResponseBody->getSize())) {
+                        $content = $rawResponseBody->read($size);
+                        $rawResponseBody->rewind();
+
+                        // TODO: loop through errors and fill $content with correct messages
+                        $errorMessages = $content;
+//                        $encoder = new JsonEncoder();
+//                        if (RequestInterface::FORMAT_XML === $format) {
+//                            $encoder = new XmlEncoder();
+//                        }
+//                        $errors = $encoder->decode($content, $format)['errors'];
+
+                    }
+                }
+            }
+
+            $response->setStatusCode($guzzleException->getCode())
+                ->setRawBody($errorMessages)
+                ->setBody($guzzleResponse->getReasonPhrase())
+            ;
+        } catch (Exception\ExceptionInterface $exception) {
+            $response->setStatusCode($exception->getCode()) // TODO add Raw body?
+                ->setBody($exception->getMessage())
             ;
         }
 

@@ -16,6 +16,11 @@ class Response
     protected $statusCode;
 
     /**
+     * @var string
+     */
+    protected $rawBody;
+
+    /**
      * @var mixed
      */
     protected $body;
@@ -36,6 +41,25 @@ class Response
     public function setStatusCode(int $statusCode): Response
     {
         $this->statusCode = $statusCode;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRawBody(): string
+    {
+        return $this->rawBody;
+    }
+
+    /**
+     * @param string $rawBody
+     *
+     * @return Response
+     */
+    public function setRawBody(string $rawBody): Response
+    {
+        $this->rawBody = $rawBody;
         return $this;
     }
 

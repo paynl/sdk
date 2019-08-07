@@ -12,10 +12,16 @@ use PayNL\Sdk\Response;
  */
 interface RequestInterface
 {
+    /*
+     * Format constants declaration
+     */
     public const FORMAT_JSON   = 'json';
     public const FORMAT_XML    = 'xml';
     public const FORMAT_OBJECTS = 'object';
 
+    /*
+     * Request method constants declaration
+     */
     public const METHOD_OPTIONS  = 'OPTIONS';
     public const METHOD_GET      = 'GET';
     public const METHOD_HEAD     = 'HEAD';
@@ -32,7 +38,15 @@ interface RequestInterface
      */
     public function getUri(): string;
 
+    /**
+     * @return string
+     */
     public function getMethod(): string;
 
-    public function execute(): Response;
+    /**
+     * @param Response $response
+     *
+     * @return void
+     */
+    public function execute(Response $response): void;
 }

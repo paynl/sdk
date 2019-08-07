@@ -6,6 +6,7 @@ namespace PayNL\Sdk\Transformer;
 use PayNL\Sdk\Exception\{InvalidArgumentException, UnexpectedValueException};
 use PayNL\Sdk\Model\Transaction as TransactionModel;
 use PayNL\Sdk\Hydrator\Transaction as TransactionHydrator;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
 
 /**
  * Class Transaction
@@ -30,7 +31,10 @@ class Transaction implements TransformerInterface
         }
 
         // always expect a JSON-encoded string
-        $inputToTransform = json_decode($inputToTransform, true);
+        $inputToTransform = (new JsonEncoder())->decode(
+            $inputToTransform,
+            'whyDoIHaveToGiveThisParameterBecauseItIsNotUsedInternally'
+        );
         if (null === $inputToTransform) {
             throw new UnexpectedValueException('Cannot transform');
         }

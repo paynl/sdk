@@ -21,12 +21,17 @@ abstract class AbstractRequest implements RequestInterface
     /**
      * @var string
      */
-    protected $format = self::FORMAT_JSON;
+    protected $format = self::FORMAT_OBJECTS;
 
     /**
      * @var array
      */
     protected $headers = [];
+
+    /**
+     * @var string
+     */
+    protected $body;
 
     /**
      * @var Client
@@ -112,6 +117,25 @@ abstract class AbstractRequest implements RequestInterface
     }
 
     /**
+     * @return string
+     */
+    public function getBody(): string
+    {
+        return $this->body;
+    }
+
+    /**
+     * @param string $body
+     *
+     * @return AbstractRequest
+     */
+    public function setBody(string $body): self
+    {
+        $this->body = $body;
+        return $this;
+    }
+
+    /**
      * @param Client $client
      *
      * @return AbstractRequest
@@ -188,9 +212,11 @@ abstract class AbstractRequest implements RequestInterface
     /**
      * @throws GuzzleException
      *
-     * @return Response
+     * @param Response $response
+     *
+     * @return void
      */
-    public function execute(): Response
+    public function execute(Response $response): void
     {
         $uri = $this->getUri();
         $filters = $this->getFilters();
@@ -202,22 +228,22 @@ abstract class AbstractRequest implements RequestInterface
             }
             $uri = rtrim($uri, '&');
         }
-
+//dump($this->getBody());die;
         // create a Guzzle PSR 7 Request
-        $guzzleRequest = new Request($this->getMethod(), $uri, $this->getHeaders());
-dump((string)$guzzleRequest->getUri());
+        $guzzleRequest = new Request($this->getMethod(), $uri, $this->getHeaders(), $this->getBody());
         $guzzleResponse = $this->getClient()->send($guzzleRequest);
 
-        $body = $guzzleResponse->getBody()->getContents();
-dump($body);
+        $rawBody = $guzzleResponse->getBody()->getContents();
+        $body = $rawBody;
         // initiate transformer (... more than meets the eye ;-) )
         if (static::FORMAT_OBJECTS === $this->getFormat()) {
             $transformer = Factory::factory(static::class);
-            $body = $transformer->transform($body);
+            $body = $transformer->transform($rawBody);
         }
 
-        return (new Response())
-            ->setStatusCode($guzzleResponse->getStatusCode())
+        // TODO: is a hydrator necessary?
+        $response->setStatusCode($guzzleResponse->getStatusCode())
+            ->setRawBody($rawBody)
             ->setBody($body)
         ;
     }

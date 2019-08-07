@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Hydrator;
 
-use \DateTime;
+use PayNL\Sdk\DateTime;
 use PayNL\Sdk\Model\{
     Address,
     Amount,
@@ -78,7 +78,9 @@ class Transaction extends ClassMethods
             0 < sizeof($data['products'])
         ) {
             foreach ($data['products'] as $key => &$product) {
-                $product = (new ProductHydrator())->hydrate($product, new Product());
+                if (false === $product instanceof Product) {
+                    $product = (new ProductHydrator())->hydrate($product, new Product());
+                }
             }
             unset($product);
         }

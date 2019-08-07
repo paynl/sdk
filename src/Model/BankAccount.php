@@ -3,13 +3,17 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Model;
 
+use \JsonSerializable;
+
 /**
  * Class BankAccount
  *
  * @package PayNL\Sdk\Model
  */
-class BankAccount implements ModelInterface
+class BankAccount implements ModelInterface, JsonSerializable
 {
+    use JsonSerializeTrait;
+
     /**
      * @var string
      */

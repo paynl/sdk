@@ -4,14 +4,17 @@ declare(strict_types=1);
 namespace PayNL\Sdk\Model;
 
 use \DateTime;
+use \JsonSerializable;
 
 /**
  * Class Customer
  *
  * @package PayNL\Sdk\Model
  */
-class Customer implements ModelInterface
+class Customer implements ModelInterface, JsonSerializable
 {
+    use JsonSerializeTrait;
+
     /**
      * @var string
      */

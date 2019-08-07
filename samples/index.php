@@ -47,6 +47,9 @@ declare(strict_types=1);
             <div>
                 <a href="transactions/get-receipt.php" target="_blank">Get Transaction receipt</a>
             </div>
+            <div>
+                <a href="transactions/create.php" target="_blank">Create a Transaction</a>
+            </div>
         </div>
     </body>
 </html>

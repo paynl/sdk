@@ -3,13 +3,17 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Model;
 
+use \JsonSerializable;
+
 /**
  * Class Statistics
  *
  * @package PayNL\Sdk\Model
  */
-class Statistics implements ModelInterface
+class Statistics implements ModelInterface, JsonSerializable
 {
+    use JsonSerializeTrait;
+
     /**
      * @var string
      */

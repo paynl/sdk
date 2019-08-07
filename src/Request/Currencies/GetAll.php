@@ -20,8 +20,11 @@ class GetAll extends AbstractRequest
         return 'currencies';
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getMethod(): string
     {
-        return RequestInterface::METHOD_GET;
+        return static::METHOD_GET;
     }
 }

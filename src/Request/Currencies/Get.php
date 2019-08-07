@@ -12,9 +12,9 @@ use PayNL\Sdk\Request\{RequestInterface, AbstractRequest};
 class Get extends AbstractRequest
 {
     /**
-     * @var string|null
+     * @var string
      */
-    protected $abbreviation = null;
+    protected $abbreviation;
 
     public function __construct(string $abbreviation)
     {
@@ -22,7 +22,7 @@ class Get extends AbstractRequest
     }
 
     /**
-     * @return string|null
+     * @return string
      */
     public function getAbbreviation(): string
     {
@@ -49,8 +49,11 @@ class Get extends AbstractRequest
         return 'currencies/' . $abbreviation;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getMethod(): string
     {
-        return RequestInterface::METHOD_GET;
+        return static::METHOD_GET;
     }
 }

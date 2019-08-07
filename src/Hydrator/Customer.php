@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Hydrator;
 
-use \DateTime;
 use Zend\Hydrator\ClassMethods;
+use PayNL\Sdk\DateTime;
 use PayNL\Sdk\Model\{BankAccount, Customer as CustomerModel};
 use PayNL\Sdk\Hydrator\BankAccount as BankAccountHydrator;
 

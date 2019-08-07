@@ -28,6 +28,7 @@ class Factory
                 break;
             case Request\Transactions\GetAll::class:
             case Request\Transactions\Get::class:
+            case Request\Transactions\Create::class:
                 $transformerClass = Transformer\Transaction::class;
                 break;
             case Request\Transactions\GetReceipt::class:

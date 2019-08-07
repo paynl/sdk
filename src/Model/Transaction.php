@@ -4,14 +4,17 @@ declare(strict_types=1);
 namespace PayNL\Sdk\Model;
 
 use \DateTime;
+use \JsonSerializable;
 
 /**
  * Class Transaction
  *
  * @package PayNL\Sdk\Model
  */
-class Transaction implements ModelInterface
+class Transaction implements ModelInterface, JsonSerializable
 {
+    use JsonSerializeTrait;
+
     /**
      * @var string
      */
@@ -129,6 +132,43 @@ class Transaction implements ModelInterface
      * @var DateTime
      */
     protected $expiresAt;
+
+    /**
+     * @var int
+     *
+     * TODO @Mike, please remove paymentMethodId AND paymentMethodSubId from the request and work with paymentMethod object
+     */
+    protected $paymentMethodId;
+
+    /**
+     * @var string
+     */
+    protected $paymentMethodSubId;
+
+    /**
+     * @var int
+     */
+    protected $testMode = 0;
+
+    /**
+     * @var string
+     */
+    protected $transferType;
+
+    /**
+     * @var string
+     */
+    protected $transferValue;
+
+    /**
+     * @var string
+     */
+    protected $endUserId;
+
+    /**
+     * @var Company
+     */
+    protected $company;
 
     /**
      * @return string
@@ -564,6 +604,139 @@ class Transaction implements ModelInterface
     public function setExpiresAt(DateTime $expiresAt): Transaction
     {
         $this->expiresAt = $expiresAt;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPaymentMethodId(): int
+    {
+        return $this->paymentMethodId;
+    }
+
+    /**
+     * @param int $paymentMethodId
+     *
+     * @return Transaction
+     */
+    public function setPaymentMethodId(int $paymentMethodId): Transaction
+    {
+        $this->paymentMethodId = $paymentMethodId;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPaymentMethodSubId(): string
+    {
+        return $this->paymentMethodSubId;
+    }
+
+    /**
+     * @param string $paymentMethodSubId
+     *
+     * @return Transaction
+     */
+    public function setPaymentMethodSubId(string $paymentMethodSubId): Transaction
+    {
+        $this->paymentMethodSubId = $paymentMethodSubId;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTestMode(): int
+    {
+        return $this->testMode;
+    }
+
+    /**
+     * @param int $testMode
+     *
+     * @return Transaction
+     */
+    public function setTestMode(int $testMode): Transaction
+    {
+        $this->testMode = $testMode;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTransferType(): string
+    {
+        return $this->transferType;
+    }
+
+    /**
+     * @param string $transferType
+     *
+     * @return Transaction
+     */
+    public function setTransferType(string $transferType): Transaction
+    {
+        $this->transferType = $transferType;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTransferValue(): string
+    {
+        return $this->transferValue;
+    }
+
+    /**
+     * @param string $transferValue
+     *
+     * @return Transaction
+     */
+    public function setTransferValue(string $transferValue): Transaction
+    {
+        $this->transferValue = $transferValue;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEndUserId(): string
+    {
+        return $this->endUserId;
+    }
+
+    /**
+     * @param string $endUserId
+     *
+     * @return Transaction
+     */
+    public function setEndUserId(string $endUserId): Transaction
+    {
+        $this->endUserId = $endUserId;
+        return $this;
+    }
+
+    /**
+     * @return Company
+     */
+    public function getCompany(): Company
+    {
+        return $this->company;
+    }
+
+    /**
+     * @param Company $company
+     *
+     * @return Transaction
+     */
+    public function setCompany(Company $company): Transaction
+    {
+        $this->company = $company;
         return $this;
     }
 }

@@ -3,13 +3,17 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Model;
 
+use \JsonSerializable;
+
 /**
  * Class Amount
  *
  * @package PayNL\Sdk\Model
  */
-class Amount implements ModelInterface
+class Amount implements ModelInterface, JsonSerializable
 {
+    use JsonSerializeTrait;
+
     // TODO: adjust documentation should be an integer
     /**
      * Amount in cents

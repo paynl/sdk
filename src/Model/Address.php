@@ -3,13 +3,17 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Model;
 
+use \JsonSerializable;
+
 /**
  * Class Address
  *
  * @package PayNL\Sdk\Model
  */
-class Address implements ModelInterface
+class Address implements ModelInterface, JsonSerializable
 {
+    use JsonSerializeTrait;
+
     /**
      * @var string
      */

@@ -50,6 +50,9 @@ declare(strict_types=1);
             <div>
                 <a href="transactions/create.php" target="_blank">Create a Transaction</a>
             </div>
+            <div>
+                <a href="transactions/approve.php" target="_blank">Approve a Transaction</a>
+            </div>
         </div>
     </body>
 </html>

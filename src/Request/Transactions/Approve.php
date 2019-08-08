@@ -3,26 +3,23 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Request\Transactions;
 
-use PayNL\Sdk\Request\AbstractRequest;
-use PayNL\Sdk\Request\Parameter\TransactionIdTrait;
-
 /**
- * Class Get
+ * Class Approve
  *
  * @package PayNL\Sdk\Request\Transactions
  */
-class Get extends AbstractRequest
+class Approve extends StatusChange
 {
-    use TransactionIdTrait;
-
     /**
-     * Get constructor.
+     * Approve constructor.
      *
      * @param string $transactionId
+     *
      */
     public function __construct(string $transactionId)
     {
         $this->setTransactionId($transactionId);
+        $this->setStatus(static::STATUS_APPROVE);
     }
 
     /**
@@ -30,14 +27,7 @@ class Get extends AbstractRequest
      */
     public function getMethod(): string
     {
-        return static::METHOD_GET;
+        return static::METHOD_PATCH;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function getUri(): string
-    {
-        return 'transactions/' . $this->getTransactionId();
-    }
 }

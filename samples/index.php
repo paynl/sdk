@@ -53,6 +53,15 @@ declare(strict_types=1);
             <div>
                 <a href="transactions/approve.php" target="_blank">Approve a Transaction</a>
             </div>
+            <div>
+                <a href="transactions/capture.php" target="_blank">Capture a Transaction</a>
+            </div>
+            <div>
+                <a href="transactions/decline.php" target="_blank">Decline a Transaction</a>
+            </div>
+            <div>
+                <a href="transactions/void.php" target="_blank">Cancel a Transaction</a>
+            </div>
         </div>
     </body>
 </html>

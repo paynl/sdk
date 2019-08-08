@@ -31,7 +31,7 @@ abstract class AbstractRequest implements RequestInterface
     /**
      * @var string
      */
-    protected $body;
+    protected $body = '';
 
     /**
      * @var Client
@@ -231,6 +231,7 @@ abstract class AbstractRequest implements RequestInterface
 //dump($this->getBody());die;
         // create a Guzzle PSR 7 Request
         $guzzleRequest = new Request($this->getMethod(), $uri, $this->getHeaders(), $this->getBody());
+dump((string)$guzzleRequest->getUri());
         $guzzleResponse = $this->getClient()->send($guzzleRequest);
 
         $rawBody = $guzzleResponse->getBody()->getContents();
@@ -246,5 +247,6 @@ abstract class AbstractRequest implements RequestInterface
             ->setRawBody($rawBody)
             ->setBody($body)
         ;
+        dump($response);die;
     }
 }

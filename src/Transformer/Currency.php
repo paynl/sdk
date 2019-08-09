@@ -19,7 +19,7 @@ class Currency implements TransformerInterface
      */
     public function transform($inputToTransform)
     {
-        if (false === is_string($inputToTransform)) {
+        if (false === is_string($inputToTransform)) { // TODO create TypeValidator
             throw new InvalidArgumentException(
                 sprintf(
                     '%s expects argument given to be a string, %s given',
@@ -30,7 +30,7 @@ class Currency implements TransformerInterface
         }
 
         // always expect a JSON-encoded string
-        $inputToTransform = json_decode($inputToTransform, true);
+        $inputToTransform = json_decode($inputToTransform, true); // TODO use JsonEncode instance
         if (null === $inputToTransform) {
             throw new UnexpectedValueException('Cannot transform');
         }

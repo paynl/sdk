@@ -21,6 +21,11 @@ class PaymentMethod implements ModelInterface
     protected $name;
 
     /**
+     * @var array
+     */
+    protected $settings = [];
+
+    /**
      * @return int
      */
     public function getId(): int
@@ -33,7 +38,7 @@ class PaymentMethod implements ModelInterface
      *
      * @return PaymentMethod
      */
-    public function setId(int $id): PaymentMethod
+    public function setId(int $id): self
     {
         $this->id = $id;
         return $this;
@@ -52,9 +57,41 @@ class PaymentMethod implements ModelInterface
      *
      * @return PaymentMethod
      */
-    public function setName(string $name): PaymentMethod
+    public function setName(string $name): self
     {
         $this->name = $name;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getSettings(): array
+    {
+        return $this->settings;
+    }
+
+    /**
+     * @param array $settings
+     *
+     * @return PaymentMethod
+     */
+    public function setSettings(array $settings): self
+    {
+        foreach ($settings as $setting) {
+            $this->addSetting($setting);
+        }
+        return $this;
+    }
+
+    /**
+     * @param string $setting
+     *
+     * @return PaymentMethod
+     */
+    public function addSetting(string $setting): self
+    {
+        $this->settings[] = $setting;
         return $this;
     }
 }

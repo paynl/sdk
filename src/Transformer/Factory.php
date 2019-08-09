@@ -21,6 +21,7 @@ class Factory
      */
     public static function factory(string $requestClass): TransformerInterface
     {
+        // TODO create transformer interfaces to recognize the correct transformer instead its based on request class name?
         switch ($requestClass) {
             case Request\Currencies\GetAll::class:
             case Request\Currencies\Get::class:
@@ -29,13 +30,17 @@ class Factory
             case Request\Transactions\GetAll::class:
             case Request\Transactions\Get::class:
             case Request\Transactions\Create::class:
+            case Request\Transactions\Recurring::class:
                 $transformerClass = Transformer\Transaction::class;
                 break;
+            case Request\Transactions\Refund::class:
+                $transformerClass = Transformer\Refund::class;
+                break;
             case Request\Transactions\GetReceipt::class:
-                $transformerClass = Transformer\TransactionReceipt::class;
+                $transformerClass = Transformer\Receipt::class;
                 break;
             default:
-                throw new Exception\DomainException(
+                throw new Exception\DomainException( // TODO errors to separate class?
                     sprintf(
                         'No transformer found for "%s"',
                         $requestClass

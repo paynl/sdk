@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Hydrator;
 
+use \Exception;
+use PayNL\Sdk\Exception\InvalidArgumentException;
+use PayNL\Sdk\Validator\ObjectInstanceValidator;
 use Zend\Hydrator\ClassMethods;
 use PayNL\Sdk\DateTime;
 use PayNL\Sdk\Model\{BankAccount, Customer as CustomerModel};
@@ -18,10 +21,19 @@ class Customer extends ClassMethods
     /**
      * @inheritDoc
      *
+     * @throws Exception
+     *
      * @return CustomerModel
      */
     public function hydrate(array $data, $object): CustomerModel
     {
+        $instanceValidator = new ObjectInstanceValidator();
+        if (false === $instanceValidator->isValid($object, CustomerModel::class)) {
+            throw new InvalidArgumentException(
+                implode(PHP_EOL, $instanceValidator->getMessages())
+            );
+        }
+
         if (true === array_key_exists('bankAccount', $data) && true === is_array($data['bankAccount'])) {
             $data['bankAccount'] =  (new BankAccountHydrator())->hydrate($data['bankAccount'], new BankAccount());
         }

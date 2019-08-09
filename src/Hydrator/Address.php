@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Hydrator;
 
+use PayNL\Sdk\Exception\InvalidArgumentException;
+use PayNL\Sdk\Validator\ObjectInstanceValidator;
 use Zend\Hydrator\ClassMethods;
 use PayNL\Sdk\Model\Address as AddressModel;
 
@@ -20,7 +22,13 @@ class Address extends ClassMethods
      */
     public function hydrate(array $data, $object): AddressModel
     {
-        // TODO: ask Mike which keys are really optional
+        $instanceValidator = new ObjectInstanceValidator();
+        if (false === $instanceValidator->isValid($object, AddressModel::class)) {
+            throw new InvalidArgumentException(
+                implode(PHP_EOL, $instanceValidator->getMessages())
+            );
+        }
+
         foreach (['initials', 'lastName', 'streetName', 'streetNumber', 'streetNumberExtension', 'zipCode', 'city', 'regionCode', 'countryCode'] as $optionalKey) {
             if (false === array_key_exists($optionalKey, $data) || true === empty($data[$optionalKey])) {
                 $data[$optionalKey] = '';

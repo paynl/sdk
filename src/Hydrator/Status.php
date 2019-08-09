@@ -3,8 +3,9 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Hydrator;
 
+use PayNL\Sdk\Exception\InvalidArgumentException;
+use PayNL\Sdk\Validator\ObjectInstanceValidator;
 use Zend\Hydrator\ClassMethods;
-
 use \DateTime;
 use PayNL\Sdk\Model\Status as StatusModel;
 
@@ -22,6 +23,13 @@ class Status extends ClassMethods
      */
     public function hydrate(array $data, $object): StatusModel
     {
+        $instanceValidator = new ObjectInstanceValidator();
+        if (false === $instanceValidator->isValid($object, StatusModel::class)) {
+            throw new InvalidArgumentException(
+                implode(PHP_EOL, $instanceValidator->getMessages())
+            );
+        }
+
         if (true === array_key_exists('date', $data) && '' !== $data['date']) {
             $data['date'] = DateTime::createFromFormat(DateTime::ATOM, $data['date']);
         }

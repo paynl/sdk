@@ -8,5 +8,5 @@ actor_suffix: Tester
 extensions:
     enabled:
         - Codeception\Extension\RunFailed
-settings:
-    shuffle: true
+#settings:
+#    shuffle: true

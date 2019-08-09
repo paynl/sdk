@@ -13,7 +13,7 @@ class DateTime extends \DateTime implements \JsonSerializable
     /**
      * @param string $format
      * @param string $time
-     * @param null $timezone
+     * @param \DateTimeZone|null $timezone
      *
      * @throws \Exception
      *

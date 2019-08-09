@@ -122,7 +122,6 @@ class Api
         // initiate "default" response
         $response = (new Response())
             ->setStatusCode(500)
-            ->setBody('No request handled')
         ;
 
         try {

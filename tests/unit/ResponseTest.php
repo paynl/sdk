@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Tests\Unit\PayNL\Sdk;
 
 use Codeception\Test\Unit as UnitTest;
+use PayNL\Sdk\Exception\InvalidArgumentException;
 use PayNL\Sdk\Response;
 
 /**
@@ -32,6 +33,9 @@ class ResponseTest extends UnitTest
     public function testItCanSetAStatusCode(): void
     {
         expect($this->response->setStatusCode(503))->isInstanceOf(Response::class);
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->response->setStatusCode(600);
     }
 
     /**
@@ -51,7 +55,7 @@ class ResponseTest extends UnitTest
      */
     public function testItCanSetARawBody(): void
     {
-        expect($this->response->setRawBody('RAW: Service unavailable'))->isInstanceOf(Response::class);
+        expect($this->response->setRawBody('RAW: ' . Response::HTTP_STATUS_CODES[503]))->isInstanceOf(Response::class);
     }
 
     /**
@@ -61,9 +65,9 @@ class ResponseTest extends UnitTest
      */
     public function testItCanGetARawBody(): void
     {
-        $this->response->setRawBody('RAW: Service unavailable');
+        $this->response->setRawBody('RAW: ' . Response::HTTP_STATUS_CODES[503]);
         verify($this->response->getRawBody())->string();
-        verify($this->response->getRawBody())->equals('RAW: Service unavailable');
+        verify($this->response->getRawBody())->equals('RAW: Service Unavailable');
     }
 
     /**
@@ -71,7 +75,7 @@ class ResponseTest extends UnitTest
      */
     public function testItCanSetABody(): void
     {
-        expect($this->response->setBody('Service unavailable'))->isInstanceOf(Response::class);
+        expect($this->response->setBody(Response::HTTP_STATUS_CODES[503]))->isInstanceOf(Response::class);
     }
 
     /**
@@ -81,8 +85,8 @@ class ResponseTest extends UnitTest
      */
     public function testItCanGetABody(): void
     {
-        $this->response->setBody('Service unavailable');
+        $this->response->setBody(Response::HTTP_STATUS_CODES[503]);
         verify($this->response->getBody())->string();
-        verify($this->response->getBody())->equals('Service unavailable');
+        verify($this->response->getBody())->equals('Service Unavailable');
     }
 }

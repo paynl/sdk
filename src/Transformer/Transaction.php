@@ -3,41 +3,25 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Transformer;
 
-use PayNL\Sdk\Exception\{InvalidArgumentException, UnexpectedValueException};
+use \Exception;
 use PayNL\Sdk\Model\Transaction as TransactionModel;
 use PayNL\Sdk\Hydrator\Transaction as TransactionHydrator;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
 
 /**
  * Class Transaction
  *
  * @package PayNL\Sdk\Transformer
  */
-class Transaction implements TransformerInterface
+class Transaction extends AbstractTransformer
 {
     /**
      * @inheritDoc
+     *
+     * @throws Exception
      */
     public function transform($inputToTransform)
     {
-        if (false === is_string($inputToTransform)) {
-            throw new InvalidArgumentException(
-                sprintf(
-                    '%s expects argument given to be a string, %s given',
-                    __METHOD__,
-                    is_object($inputToTransform) ? get_class($inputToTransform) : gettype($inputToTransform)
-                )
-            );
-        }
-
-        // always expect a JSON-encoded string
-        $inputToTransform = (new JsonEncoder())->decode(
-            $inputToTransform,
-            'whyDoIHaveToGiveThisParameterBecauseItIsNotUsedInternally'
-        );
-        if (null === $inputToTransform) {
-            throw new UnexpectedValueException('Cannot transform');
-        }
+        $inputToTransform = $this->getDecodedInput($inputToTransform);
 
         $hydrator = new TransactionHydrator();
         if (false === array_key_exists('transactions', $inputToTransform)) {

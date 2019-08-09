@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Transformer;
 
-use PayNL\Sdk\Exception\{InvalidArgumentException, UnexpectedValueException};
 use PayNL\Sdk\Model\Currency as CurrencyModel;
 use Zend\Hydrator\ClassMethods;
 
@@ -12,28 +11,14 @@ use Zend\Hydrator\ClassMethods;
  *
  * @package PayNL\Sdk\Transformer
  */
-class Currency implements TransformerInterface
+class Currency extends AbstractTransformer
 {
     /**
      * @inheritDoc
      */
     public function transform($inputToTransform)
     {
-        if (false === is_string($inputToTransform)) { // TODO create TypeValidator
-            throw new InvalidArgumentException(
-                sprintf(
-                    '%s expects argument given to be a string, %s given',
-                    __METHOD__,
-                    is_object($inputToTransform) ? get_class($inputToTransform) : gettype($inputToTransform)
-                )
-            );
-        }
-
-        // always expect a JSON-encoded string
-        $inputToTransform = json_decode($inputToTransform, true); // TODO use JsonEncode instance
-        if (null === $inputToTransform) {
-            throw new UnexpectedValueException('Cannot transform');
-        }
+        $inputToTransform = $this->getDecodedInput($inputToTransform);
 
         $hydrator = new ClassMethods();
         if (false === array_key_exists('currencies', $inputToTransform)) {

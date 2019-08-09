@@ -5,10 +5,11 @@ namespace PayNL\Sdk\Hydrator;
 
 use \Exception;
 use Zend\Hydrator\ClassMethods;
-use PayNL\Sdk\Model\Refund as RefundModel;
+use PayNL\Sdk\Model\{Amount, Refund as RefundModel, Product};
 use PayNL\Sdk\DateTime;
 use PayNL\Sdk\Validator\ObjectInstanceValidator;
 use PayNL\Sdk\Exception\InvalidArgumentException;
+use PayNL\Sdk\Hydrator\Product as ProductHydrator;
 
 /**
  * Class Refund
@@ -33,6 +34,19 @@ class Refund extends ClassMethods
             throw new InvalidArgumentException(
                 implode(PHP_EOL, $instanceValidator->getMessages())
             );
+        }
+
+        if (true === array_key_exists('amount', $data) && true === is_array($data['amount'])) {
+            $data['amount'] = (new ClassMethods())->hydrate($data['amount'], new Amount());
+        }
+
+        if (true === array_key_exists('products', $data) && 0 < sizeof($data['products'])) {
+            $data['products'] = array_map(static function ($product) {
+                if (true === is_array($product)) {
+                    $product = (new ProductHydrator())->hydrate($product, new Product());
+                }
+                return $product;
+            }, $data['products']);
         }
 
         if (true === array_key_exists('processDate', $data) && false === empty($data['processDate'])) {

@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Hydrator;
 
+use PayNL\Sdk\Exception\InvalidArgumentException;
+use PayNL\Sdk\Validator\ObjectInstanceValidator;
 use Zend\Hydrator\ClassMethods;
 use PayNL\Sdk\Model\BankAccount as BankAccountModel;
 
@@ -20,7 +22,13 @@ class BankAccount extends ClassMethods
      */
     public function hydrate(array $data, $object): BankAccountModel
     {
-        // TODO: ask Mike which keys are really optional
+        $instanceValidator = new ObjectInstanceValidator();
+        if (false === $instanceValidator->isValid($object, BankAccountModel::class)) {
+            throw new InvalidArgumentException(
+                implode(PHP_EOL, $instanceValidator->getMessages())
+            );
+        }
+
         foreach (['iban', 'bic', 'owner'] as $optionalKey) {
             if (false === array_key_exists($optionalKey, $data) || true === empty($data[$optionalKey])) {
                 $data[$optionalKey] = '';

@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Hydrator;
 
+use PayNL\Sdk\Exception\InvalidArgumentException;
 use PayNL\Sdk\Model\Amount;
+use PayNL\Sdk\Validator\ObjectInstanceValidator;
 use Zend\Hydrator\ClassMethods;
 use PayNL\Sdk\Model\Product as ProductModel;
 
@@ -21,6 +23,13 @@ class Product extends ClassMethods
      */
     public function hydrate(array $data, $object): ProductModel
     {
+        $instanceValidator = new ObjectInstanceValidator();
+        if (false === $instanceValidator->isValid($object, ProductModel::class)) {
+            throw new InvalidArgumentException(
+                implode(PHP_EOL, $instanceValidator->getMessages())
+            );
+        }
+
         if (true === array_key_exists('price', $data) && true === is_array($data['price'])) {
             $data['price'] = (new ClassMethods())->hydrate($data['price'], new Amount());
         }

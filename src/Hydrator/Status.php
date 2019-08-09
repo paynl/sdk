@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace PayNL\Sdk\Hydrator;
 
 use PayNL\Sdk\Exception\InvalidArgumentException;
-use PayNL\Sdk\Validator\ObjectInstanceValidator;
+use PayNL\Sdk\Validator\ObjectInstance as ObjectInstanceValidator;
 use Zend\Hydrator\ClassMethods;
 use \DateTime;
 use PayNL\Sdk\Model\Status as StatusModel;

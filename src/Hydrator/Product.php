@@ -5,7 +5,7 @@ namespace PayNL\Sdk\Hydrator;
 
 use PayNL\Sdk\Exception\InvalidArgumentException;
 use PayNL\Sdk\Model\Amount;
-use PayNL\Sdk\Validator\ObjectInstanceValidator;
+use PayNL\Sdk\Validator\ObjectInstance as ObjectInstanceValidator;
 use Zend\Hydrator\ClassMethods;
 use PayNL\Sdk\Model\Product as ProductModel;
 

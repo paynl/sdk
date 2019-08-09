@@ -6,7 +6,7 @@ namespace PayNL\Sdk\Hydrator;
 use Zend\Hydrator\ClassMethods;
 use PayNL\Sdk\Exception\InvalidArgumentException;
 use PayNL\Sdk\Model\{RecurringTransaction as RecurringTransactionModel, Amount};
-use PayNL\Sdk\Validator\ObjectInstanceValidator;
+use PayNL\Sdk\Validator\ObjectInstance as ObjectInstanceValidator;
 
 /**
  * Class RecurringTransaction

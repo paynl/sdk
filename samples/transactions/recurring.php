@@ -27,6 +27,6 @@ $response = (new Api($authAdapter))
     ->handleCall($request)
 ;
 
-print '<pre>';
+print '<pre/>';
 print_r($response);
-print '</pre>' . PHP_EOL;
+exit(0);

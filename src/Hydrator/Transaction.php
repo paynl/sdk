@@ -8,6 +8,7 @@ use PayNL\Sdk\DateTime;
 use PayNL\Sdk\Model\{
     Address,
     Amount,
+    Company,
     Customer,
     Exchange,
     PaymentMethod,
@@ -70,6 +71,9 @@ class Transaction extends ClassMethods
         }
         if (true === array_key_exists('statistics', $data) && true === is_array($data['statistics'])) {
             $data['statistics'] = (new StatisticsHydrator())->hydrate($data['statistics'], new Statistics());
+        }
+        if (true === array_key_exists('company', $data) && true === is_array($data['company'])) {
+            $data['company'] = (new ClassMethods())->hydrate($data['company'], new Company());
         }
 
         $amountFields = [

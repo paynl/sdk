@@ -33,6 +33,13 @@ interface RequestInterface
     public const METHOD_PATCH    = 'PATCH';
     public const METHOD_PROPFIND = 'PROPFIND';
 
+    /*
+     * Request header constants declaration
+     */
+    public const HEADER_ACCEPT        = 'Accept';
+    public const HEADER_AUTHORIZATION = 'Authorization';
+    public const HEADER_CONTENT_TYPE  = 'Content-Type';
+
     /**
      * @return string
      */

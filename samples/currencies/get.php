@@ -12,8 +12,10 @@ $authAdapter = getAuthAdapter();
 $request = new CurrenciesRequest('EUR');
 $request->setFormat(RequestInterface::FORMAT_OBJECTS);
 
-$api = new Api($authAdapter);
-$response = $api->handleCall($request);
+$response = (new Api($authAdapter))
+//    ->setDebug(true)
+    ->handleCall($request)
+;
 
 print '<pre/>';
 print_r($response);

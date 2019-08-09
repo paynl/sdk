@@ -105,7 +105,6 @@ $authAdapter = getAuthAdapter();
 
 $request = (new CreateTransactionRequest($transaction))
     ->setFormat(RequestInterface::FORMAT_OBJECTS)
-    ->addHeader('Content-Type', 'application/json')
 ;
 
 $api = new Api($authAdapter);

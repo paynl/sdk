@@ -3,8 +3,10 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Hydrator;
 
+use PayNL\Sdk\Exception\InvalidArgumentException;
 use Zend\Hydrator\ClassMethods;
 use PayNL\Sdk\Model\{Card, PaymentMethod, Receipt as ReceiptModel};
+use PayNL\Sdk\Validator\ObjectInstance as ObjectInstanceValidator;
 
 /**
  * Class Receipt
@@ -20,6 +22,13 @@ class Receipt extends ClassMethods
      */
     public function hydrate(array $data, $object): ReceiptModel
     {
+        $validator = new ObjectInstanceValidator();
+        if (false === $validator->isValid($object, ReceiptModel::class)) {
+            throw new InvalidArgumentException(
+                implode(PHP_EOL, $validator->getMessages())
+            );
+        }
+
         if (true === array_key_exists('card', $data) && true === is_array($data['card'])) {
             $data['card'] = (new ClassMethods())->hydrate($data['card'], new Card());
         }

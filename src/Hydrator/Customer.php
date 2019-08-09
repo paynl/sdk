@@ -5,7 +5,7 @@ namespace PayNL\Sdk\Hydrator;
 
 use \Exception;
 use PayNL\Sdk\Exception\InvalidArgumentException;
-use PayNL\Sdk\Validator\ObjectInstanceValidator;
+use PayNL\Sdk\Validator\ObjectInstance as ObjectInstanceValidator;
 use Zend\Hydrator\ClassMethods;
 use PayNL\Sdk\DateTime;
 use PayNL\Sdk\Model\{BankAccount, Customer as CustomerModel};

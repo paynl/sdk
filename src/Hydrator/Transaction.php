@@ -26,7 +26,7 @@ use PayNL\Sdk\Hydrator\{
     Statistics as StatisticsHydrator
 };
 use PayNL\Sdk\Exception\InvalidArgumentException;
-use PayNL\Sdk\Validator\ObjectInstanceValidator;
+use PayNL\Sdk\Validator\ObjectInstance as ObjectInstanceValidator;
 use Zend\Hydrator\ClassMethods;
 
 /**

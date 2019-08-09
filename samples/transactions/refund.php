@@ -21,7 +21,12 @@ $refund = (new RefundHydrator())->hydrate([
             'id' => 'P-0000-0000',
             'description' => 'Test product',
             'quantity' => 1,
-        ], new Product())
+        ], new Product()),
+        [
+            'id' => 'P-0000-0001',
+            'description' => 'product as array',
+            'quantity' => 1,
+        ]
     ],
     'reason' => 'Product was broken',
     'processDate' => (new DateTime())->sub(new DateInterval('P2D'))->format(DateTime::ATOM),

@@ -62,6 +62,9 @@ declare(strict_types=1);
             <div>
                 <a href="transactions/void.php" target="_blank">Cancel a Transaction</a>
             </div>
+            <div>
+                <a href="transactions/refund.php" target="_blank">Refund a Transaction</a>
+            </div>
         </div>
     </body>
 </html>

@@ -39,6 +39,7 @@ class Transaction extends ClassMethods
     /**
      * @inheritDoc
      *
+     * @throws InvalidArgumentException
      * @throws Exception
      *
      * @return TransactionModel

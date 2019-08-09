@@ -11,7 +11,7 @@ use PayNL\Sdk\Exception\InvalidArgumentException;
 use PayNL\Sdk\Response;
 use PayNL\Sdk\Transformer\Factory;
 use PayNL\Sdk\Filter\FilterInterface;
-use PayNL\Sdk\Validator\ObjectInstanceValidator;
+use PayNL\Sdk\Validator\ObjectInstance;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 
@@ -195,7 +195,7 @@ abstract class AbstractRequest implements RequestInterface
      */
     public function setFilters(array $filters): self
     {
-        $validator = new ObjectInstanceValidator();
+        $validator = new ObjectInstance();
         foreach ($filters as $filter) {
             if (false === $validator->isValid($filter, FilterInterface::class)) {
                 throw new InvalidArgumentException(

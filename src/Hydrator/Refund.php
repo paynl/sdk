@@ -7,7 +7,7 @@ use \Exception;
 use Zend\Hydrator\ClassMethods;
 use PayNL\Sdk\Model\{Amount, Refund as RefundModel, Product};
 use PayNL\Sdk\DateTime;
-use PayNL\Sdk\Validator\ObjectInstanceValidator;
+use PayNL\Sdk\Validator\ObjectInstance as ObjectInstanceValidator;
 use PayNL\Sdk\Exception\InvalidArgumentException;
 use PayNL\Sdk\Hydrator\Product as ProductHydrator;
 

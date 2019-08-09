@@ -8,7 +8,7 @@ namespace PayNL\Sdk\Validator;
  *
  * @package PayNL\Sdk\Validator
  */
-class ObjectInstanceValidator extends AbstractValidator
+class ObjectInstance extends AbstractValidator
 {
     protected const MSG_NO_CLASS_NAME       = 'NoClassName';
     protected const MSG_VALUE_NOT_AN_OBJECT = 'ValueNotAnObject';

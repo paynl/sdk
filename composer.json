@@ -34,7 +34,10 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Tests\\Unit\\PayNL\\Sdk\\": "tests/"
+      "Tests\\PayNL\\Sdk\\": "tests",
+      "Tests\\Acceptance\\PayNL\\Sdk\\": "tests/acceptance",
+      "Tests\\Functional\\PayNL\\Sdk\\": "tests/functional",
+      "Tests\\Unit\\PayNL\\Sdk\\": "tests/unit"
     },
     "files": [
       "./samples/init.php"

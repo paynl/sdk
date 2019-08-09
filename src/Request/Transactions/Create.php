@@ -5,8 +5,6 @@ namespace PayNL\Sdk\Request\Transactions;
 
 use PayNL\Sdk\Model\Transaction;
 use PayNL\Sdk\Request\AbstractRequest;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Encoder\XmlEncoder;
 
 /**
  * Class Create
@@ -22,13 +20,7 @@ class Create extends AbstractRequest
      */
     public function __construct(Transaction $transaction)
     {
-        $encoder = new JsonEncoder();
-        if (static::FORMAT_XML === $this->getFormat()) {
-            $encoder = new XmlEncoder();
-            $encoder->setRootNodeName('request');
-        }
-
-        $this->setBody($encoder->encode($transaction, $this->getFormat()));
+        $this->setBody($transaction);
     }
 
     /**

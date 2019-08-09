@@ -65,6 +65,9 @@ declare(strict_types=1);
             <div>
                 <a href="transactions/refund.php" target="_blank">Refund a Transaction</a>
             </div>
+            <div>
+                <a href="transactions/recurring.php" target="_blank">Add a recurring Transaction</a>
+            </div>
         </div>
     </body>
 </html>

@@ -30,10 +30,11 @@ $refund = (new RefundHydrator())->hydrate([
 $transactionId = 'EX-6581-2257-2190';
 $request = new RefundTransactionRequest($transactionId, $refund);
 
-$api = new Api($authAdapter);
-$response = $api->handleCall($request);
+$response = (new Api($authAdapter))
+    ->setDebug(true)
+    ->handleCall($request)
+;
 
 print '<pre/>';
-print 'transaction ID: ' . $transactionId . PHP_EOL . PHP_EOL;
 print_r($response);
 exit(0);

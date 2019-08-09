@@ -6,10 +6,14 @@ namespace PayNL\Sdk\Request;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Exception\GuzzleException;
+use PayNL\Sdk\DebugTrait;
 use PayNL\Sdk\Exception\InvalidArgumentException;
 use PayNL\Sdk\Response;
 use PayNL\Sdk\Transformer\Factory;
 use PayNL\Sdk\Filter\FilterInterface;
+use PayNL\Sdk\Validator\ObjectInstanceValidator;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Encoder\XmlEncoder;
 
 /**
  * Class AbstractRequest
@@ -18,6 +22,8 @@ use PayNL\Sdk\Filter\FilterInterface;
  */
 abstract class AbstractRequest implements RequestInterface
 {
+    use DebugTrait;
+
     /**
      * @var string
      */
@@ -125,12 +131,19 @@ abstract class AbstractRequest implements RequestInterface
     }
 
     /**
-     * @param string $body
+     * Automatically converts the given body to a string based
+     * on the set format
+     *
+     * @param mixed $body
      *
      * @return AbstractRequest
      */
-    public function setBody(string $body): self
+    public function setBody($body): self
     {
+        if (false === is_string($body)) {
+            $body = $this->encodeBody($body);
+        }
+
         $this->body = $body;
         return $this;
     }
@@ -182,15 +195,11 @@ abstract class AbstractRequest implements RequestInterface
      */
     public function setFilters(array $filters): self
     {
-        // "validate" the filters
+        $validator = new ObjectInstanceValidator();
         foreach ($filters as $filter) {
-            if (false === ($filter instanceof FilterInterface)) {
+            if (false === $validator->isValid($filter, FilterInterface::class)) {
                 throw new InvalidArgumentException(
-                    sprintf(
-                        '%s is not an instance of %s',
-                        is_object($filter) ? get_class($filter) : gettype($filter),
-                        FilterInterface::class
-                    )
+                    implode(PHP_EOL, $validator->getMessages())
                 );
             }
             $this->addFilter($filter);
@@ -210,6 +219,26 @@ abstract class AbstractRequest implements RequestInterface
     }
 
     /**
+     * Automatically adds a Content-Type header
+     *
+     * @param mixed $body
+     *
+     * @return string
+     */
+    private function encodeBody($body): string
+    {
+        $encoder = new JsonEncoder();
+        $contentTypeHeader = 'application/json';
+        if (static::FORMAT_XML === $this->getFormat()) {
+            $encoder = new XmlEncoder();
+            $encoder->setRootNodeName('request');
+            $contentTypeHeader = 'application/xml';
+        }
+        $this->addHeader(static::HEADER_CONTENT_TYPE, $contentTypeHeader);
+        return $encoder->encode($body, $this->getFormat());
+    }
+
+    /**
      * @throws GuzzleException
      *
      * @param Response $response
@@ -218,6 +247,7 @@ abstract class AbstractRequest implements RequestInterface
      */
     public function execute(Response $response): void
     {
+        // TODO setup an URI object which can contain filters
         $uri = $this->getUri();
         $filters = $this->getFilters();
         if (0 < count($filters)) {
@@ -228,10 +258,16 @@ abstract class AbstractRequest implements RequestInterface
             }
             $uri = rtrim($uri, '&');
         }
-dump($this->getBody());
+
+        if (true === $this->isDebug()) {
+            $this->dumpDebugInfo('Body: ' . $this->getBody());
+        }
+
         // create a Guzzle PSR 7 Request
         $guzzleRequest = new Request($this->getMethod(), $uri, $this->getHeaders(), $this->getBody());
-dump((string)$guzzleRequest->getUri());
+        if (true === $this->isDebug()) {
+            $this->dumpDebugInfo('Requested URL: ' . $guzzleRequest->getUri());
+        }
         $guzzleResponse = $this->getClient()->send($guzzleRequest);
 
         $rawBody = $guzzleResponse->getBody()->getContents();
@@ -239,6 +275,9 @@ dump((string)$guzzleRequest->getUri());
         // initiate transformer (... more than meets the eye ;-) )
         if (static::FORMAT_OBJECTS === $this->getFormat()) {
             $transformer = Factory::factory(static::class);
+            if (true === $this->isDebug()) {
+                $this->dumpDebugInfo('Use transformer: ' . get_class($transformer));
+            }
             $body = $transformer->transform($rawBody);
         }
 

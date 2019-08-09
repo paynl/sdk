@@ -19,6 +19,8 @@ use Symfony\Component\Serializer\Encoder\XmlEncoder;
  */
 class Api
 {
+    use DebugTrait;
+
     /**
      * @var Client
      */
@@ -34,8 +36,9 @@ class Api
      *
      * @param $adapterOrUsername
      * @param string|null $password
+     * @param bool $debug
      */
-    public function __construct($adapterOrUsername, string $password = null)
+    public function __construct($adapterOrUsername, string $password = null, $debug = false)
     {
         if (true === is_string($adapterOrUsername)) {
             $adapterOrUsername = new Basic($adapterOrUsername, $password);
@@ -50,8 +53,9 @@ class Api
             );
         }
 
-        $this->authAdapter = $adapterOrUsername;
+        $this->setAuthAdapter($adapterOrUsername);
         $this->initClient();
+        $this->setDebug($debug);
     }
 
     /**
@@ -83,14 +87,35 @@ class Api
     }
 
     /**
+     * @param AdapterInterface $adapter
+     *
+     * @return void
+     */
+    protected function setAuthAdapter(AdapterInterface $adapter): void
+    {
+        $this->authAdapter = $adapter;
+    }
+
+    /**
      * @param AbstractRequest $request
-     * @param array $headers
+     * @param array $headers Additional request headers (Accept, Authorization and Content-Type are already set)
      *
      * @return Response
      */
     public function handleCall(AbstractRequest $request, array $headers = []): Response
     {
         $format = $request->getFormat();
+        if (true === $this->isDebug()) {
+            $request->setDebug($this->getDebug());
+            $this->dumpDebugInfo('Requested format: ' . $format);
+        }
+
+        // unset the headers which are set from the request
+        unset(
+            $headers[RequestInterface::HEADER_ACCEPT],
+            $headers[RequestInterface::HEADER_AUTHORIZATION],
+            $headers[RequestInterface::HEADER_CONTENT_TYPE]
+        );
 
         $client = $this->getClient();
 
@@ -107,8 +132,8 @@ class Api
             }
 
             $request->applyClient($client)
-                ->addHeader('Accept', $acceptHeader)
-                ->addHeader('Authorization', $this->getAuthAdapter()->getHeaderString())
+                ->addHeader(RequestInterface::HEADER_ACCEPT, $acceptHeader)
+                ->addHeader(RequestInterface::HEADER_AUTHORIZATION, $this->getAuthAdapter()->getHeaderString())
             ;
 
             if (0 < count($headers)) {

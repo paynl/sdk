@@ -6,8 +6,6 @@ namespace PayNL\Sdk\Request\Transactions;
 use PayNL\Sdk\Request\AbstractRequest;
 use PayNL\Sdk\Request\Parameter\TransactionIdTrait;
 use PayNL\Sdk\Model\Refund as RefundModel;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Encoder\XmlEncoder;
 
 /**
  * Class Refund
@@ -18,19 +16,16 @@ class Refund extends AbstractRequest
 {
     use TransactionIdTrait;
 
+    /**
+     * Refund constructor.
+     *
+     * @param string $transactionId
+     * @param RefundModel $refund
+     */
     public function __construct(string $transactionId, RefundModel $refund)
     {
-        $encoder = new JsonEncoder();
-        $contentTypeHeader = 'application/json';
-        if (static::FORMAT_XML === $this->getFormat()) {
-            $encoder = new XmlEncoder();
-            $encoder->setRootNodeName('request');
-            $contentTypeHeader = 'application/xml';
-        }
-
         $this->setTransactionId($transactionId)
-            ->addHeader('Content-Type', $contentTypeHeader)
-            ->setBody($encoder->encode($refund, $this->getFormat()))
+            ->setBody($refund)
         ;
     }
 

@@ -8,13 +8,14 @@ use PayNL\Sdk\Request\RequestInterface;
 use PayNL\Sdk\Request\Transactions\GetReceipt as GetTransactionReceiptRequest;
 
 $authAdapter = getAuthAdapter();
-// TODO fixen, was niet aanwezig, @Mike fixed een voorbeeld
-$request = (new GetTransactionReceiptRequest('EX-1736-0219-9960'))
+$request = (new GetTransactionReceiptRequest('EX-7436-1212-5160'))
     ->setFormat(RequestInterface::FORMAT_OBJECTS)
 ;
 
-$api = new Api($authAdapter);
-$response = $api->handleCall($request);
+$response = (new Api($authAdapter))
+    ->setDebug(true)
+    ->handleCall($request)
+;
 
 print '<pre/>';
 print_r($response);

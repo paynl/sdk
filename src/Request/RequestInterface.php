@@ -15,9 +15,9 @@ interface RequestInterface
     /*
      * Format constants declaration
      */
-    public const FORMAT_JSON   = 'json';
-    public const FORMAT_XML    = 'xml';
-    public const FORMAT_OBJECTS = 'object';
+    public const FORMAT_JSON    = 'json';
+    public const FORMAT_XML     = 'xml';
+    public const FORMAT_OBJECTS = 'objects';
 
     /*
      * Request method constants declaration

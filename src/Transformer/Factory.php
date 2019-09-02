@@ -27,6 +27,9 @@ class Factory
             case Request\Currencies\Get::class:
                 $transformerClass = Transformer\Currency::class;
                 break;
+            case Request\Terminals\Get::class:
+                $transformerClass = Transformer\Terminal::class;
+                break;
             case Request\Transactions\GetAll::class:
             case Request\Transactions\Get::class:
             case Request\Transactions\Create::class:
@@ -44,7 +47,8 @@ class Factory
                     sprintf(
                         'No transformer found for "%s"',
                         $requestClass
-                    )
+                    ),
+                    501
                 );
         }
 
@@ -53,7 +57,8 @@ class Factory
                 sprintf(
                     'Missing transformer "%s"',
                     $transformerClass
-                )
+                ),
+                501
             );
         }
 

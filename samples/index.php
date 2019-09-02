@@ -37,6 +37,9 @@ declare(strict_types=1);
             <h2>Services</h2>
             <h2>Statistics</h2>
             <h2>Terminals</h2>
+            <div>
+                <a href="terminals/get.php" target="_blank">Get Terminals</a>
+            </div>
             <h2>Transactions</h2>
             <div>
                 <a href="transactions/get-all.php" target="_blank">Get Transactions</a>

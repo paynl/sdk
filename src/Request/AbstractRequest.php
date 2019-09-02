@@ -268,9 +268,11 @@ abstract class AbstractRequest implements RequestInterface
         if (true === $this->isDebug()) {
             $this->dumpDebugInfo('Requested URL: ' . $guzzleRequest->getUri());
         }
+        dump($guzzleRequest->getUri()->__toString());
         $guzzleResponse = $this->getClient()->send($guzzleRequest);
 
         $rawBody = $guzzleResponse->getBody()->getContents();
+        dump($this->getFormat());
         $body = $rawBody;
         // initiate transformer (... more than meets the eye ;-) )
         if (static::FORMAT_OBJECTS === $this->getFormat()) {

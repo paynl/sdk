@@ -3,18 +3,24 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Transformer;
 
+use PayNL\Sdk\Model\Refund as RefundModel;
+use PayNL\Sdk\Hydrator\Refund as RefundHydrator;
+
 /**
  * Class Refund
  *
  * @package PayNL\Sdk\Transformer
  */
-class Refund implements TransformerInterface
+class Refund extends AbstractTransformer
 {
     /**
      * @inheritDoc
      */
     public function transform($inputToTransform)
     {
-        // TODO Refund transforming, need a successful case
+        $inputToTransform = $this->getDecodedInput($inputToTransform);
+
+        $hydrator = new RefundHydrator();
+        return $hydrator->hydrate($inputToTransform, new RefundModel());
     }
 }

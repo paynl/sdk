@@ -16,9 +16,29 @@ class Refund implements ModelInterface, JsonSerializable
     use JsonSerializeTrait;
 
     /**
+     * @var string
+     */
+    protected $paymentSessionId;
+
+    /**
      * @var Amount
      */
     protected $amount;
+
+    /**
+     * @var string
+     */
+    protected $description = '';
+
+    /**
+     * @var BankAccount
+     */
+    protected $bankAccount;
+
+    /**
+     * @var Status
+     */
+    protected $status;
 
     /**
      * @var array
@@ -36,6 +56,25 @@ class Refund implements ModelInterface, JsonSerializable
     protected $processDate;
 
     /**
+     * @return string
+     */
+    public function getPaymentSessionId(): string
+    {
+        return $this->paymentSessionId ?? '';
+    }
+
+    /**
+     * @param string $paymentSessionId
+     *
+     * @return Refund
+     */
+    public function setPaymentSessionId(string $paymentSessionId): self
+    {
+        $this->paymentSessionId = $paymentSessionId;
+        return $this;
+    }
+
+    /**
      * @return Amount
      */
     public function getAmount(): Amount
@@ -48,9 +87,66 @@ class Refund implements ModelInterface, JsonSerializable
      *
      * @return Refund
      */
-    public function setAmount(Amount $amount): Refund
+    public function setAmount(Amount $amount): self
     {
         $this->amount = $amount;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     *
+     * @return Refund
+     */
+    public function setDescription(string $description): self
+    {
+        $this->description = $description;
+        return $this;
+    }
+
+    /**
+     * @return BankAccount
+     */
+    public function getBankAccount(): BankAccount
+    {
+        return $this->bankAccount;
+    }
+
+    /**
+     * @param BankAccount $bankAccount
+     *
+     * @return Refund
+     */
+    public function setBankAccount(BankAccount $bankAccount): self
+    {
+        $this->bankAccount = $bankAccount;
+        return $this;
+    }
+
+    /**
+     * @return Status
+     */
+    public function getStatus(): Status
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param Status $status
+     *
+     * @return Refund
+     */
+    public function setStatus(Status $status): self
+    {
+        $this->status = $status;
         return $this;
     }
 
@@ -67,7 +163,7 @@ class Refund implements ModelInterface, JsonSerializable
      *
      * @return Refund
      */
-    public function setProducts(array $products): Refund
+    public function setProducts(array $products): self
     {
         $this->products = $products;
         return $this;
@@ -86,7 +182,7 @@ class Refund implements ModelInterface, JsonSerializable
      *
      * @return Refund
      */
-    public function setReason(string $reason): Refund
+    public function setReason(string $reason): self
     {
         $this->reason = $reason;
         return $this;
@@ -105,7 +201,7 @@ class Refund implements ModelInterface, JsonSerializable
      *
      * @return Refund
      */
-    public function setProcessDate(DateTime $processDate): Refund
+    public function setProcessDate(DateTime $processDate): self
     {
         $this->processDate = $processDate;
         return $this;

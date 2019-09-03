@@ -38,6 +38,9 @@ declare(strict_types=1);
             <div>
                 <a href="services/get-all.php" target="_blank">Get all services</a>
             </div>
+            <div>
+                <a href="services/get.php" target="_blank">Get a service</a>
+            </div>
             <h2>Statistics</h2>
             <div>
                 <a href="statistics/get.php" target="_blank">Get Statistics</a>

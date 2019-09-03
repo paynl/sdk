@@ -4,14 +4,17 @@ declare(strict_types=1);
 namespace PayNL\Sdk\Filter;
 
 /**
- * Class Page
+ * Class GroupBy
  *
  * @package PayNL\Sdk\Filter
  */
-class Page extends AbstractScalarFilter
+class GroupBy extends AbstractArrayFilter
 {
+    /**
+     * @inheritDoc
+     */
     public function getName(): string
     {
-        return 'page';
+        return 'groupBy';
     }
 }

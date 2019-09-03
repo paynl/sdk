@@ -4,14 +4,17 @@ declare(strict_types=1);
 namespace PayNL\Sdk\Filter;
 
 /**
- * Class Page
+ * Class StartDate
  *
  * @package PayNL\Sdk\Filter
  */
-class Page extends AbstractScalarFilter
+class StartDate extends AbstractDateFilter
 {
+    /**
+     * @inheritDoc
+     */
     public function getName(): string
     {
-        return 'page';
+        return 'startDate';
     }
 }

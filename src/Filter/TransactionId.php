@@ -8,28 +8,13 @@ namespace PayNL\Sdk\Filter;
  *
  * @package PayNL\Sdk\Filter
  */
-class TransactionId implements FilterInterface
+class TransactionId extends AbstractScalarFilter
 {
-    protected $value;
-
-    public function __construct(string $value)
-    {
-        $this->value = $value;
-    }
-
     /**
      * @inheritDoc
      */
     public function getName(): string
     {
         return 'transactionId';
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getValue(): string
-    {
-        return $this->value;
     }
 }

@@ -8,6 +8,7 @@ use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Exception\GuzzleException;
 use PayNL\Sdk\DebugTrait;
 use PayNL\Sdk\Exception\InvalidArgumentException;
+use PayNL\Sdk\Filter\AbstractArrayFilter;
 use PayNL\Sdk\Response;
 use PayNL\Sdk\Transformer\Factory;
 use PayNL\Sdk\Filter\FilterInterface;
@@ -247,28 +248,22 @@ abstract class AbstractRequest implements RequestInterface
      */
     public function execute(Response $response): void
     {
-        // TODO setup an URI object which can contain filters
         $uri = $this->getUri();
         $filters = $this->getFilters();
         if (0 < count($filters)) {
-            $uri .= '?';
-            foreach ($filters as $filter) {
-                // TODO @Mike: sanitizing filter name and value?
-                $uri .= $filter->getName() . '=' . $filter->getValue() . '&';
-            }
-            $uri = rtrim($uri, '&');
+            $uri .= '?' . implode('&', $filters);
         }
 
         if (true === $this->isDebug()) {
             $this->dumpDebugInfo('Body: ' . $this->getBody());
         }
 
+        dump($uri);
         // create a Guzzle PSR 7 Request
         $guzzleRequest = new Request($this->getMethod(), $uri, $this->getHeaders(), $this->getBody());
         if (true === $this->isDebug()) {
             $this->dumpDebugInfo('Requested URL: ' . $guzzleRequest->getUri());
         }
-        dump($guzzleRequest->getUri()->__toString());
         $guzzleResponse = $this->getClient()->send($guzzleRequest);
 
         $rawBody = $guzzleResponse->getBody()->getContents();

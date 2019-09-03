@@ -34,6 +34,9 @@ declare(strict_types=1);
 <!--            </div>-->
             <h2>Merchants</h2>
             <h2>Refunds</h2>
+            <div>
+                <a href="refunds/get.php" target="_blank">Get Refund</a>
+            </div>
             <h2>Services</h2>
             <div>
                 <a href="services/get-all.php" target="_blank">Get all services</a>

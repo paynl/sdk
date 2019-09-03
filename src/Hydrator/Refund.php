@@ -5,11 +5,15 @@ namespace PayNL\Sdk\Hydrator;
 
 use \Exception;
 use Zend\Hydrator\ClassMethods;
-use PayNL\Sdk\Model\{Amount, Refund as RefundModel, Product};
+use PayNL\Sdk\Model\{Amount, Refund as RefundModel, Product, BankAccount, Status};
 use PayNL\Sdk\DateTime;
 use PayNL\Sdk\Validator\ObjectInstance as ObjectInstanceValidator;
 use PayNL\Sdk\Exception\InvalidArgumentException;
-use PayNL\Sdk\Hydrator\Product as ProductHydrator;
+use PayNL\Sdk\Hydrator\{
+    BankAccount as BankAccountHydrator,
+    Product as ProductHydrator,
+    Status as StatusHydrator
+};
 
 /**
  * Class Refund
@@ -36,6 +40,20 @@ class Refund extends ClassMethods
             );
         }
 
+        $data['description'] = $data['description'] ?? '';
+
+        if (true === array_key_exists('bankAccount', $data) && true === is_array($data['bankAccount'])) {
+            if (true === array_key_exists('number', $data['bankAccount'])) {
+                $data['bankAccount']['iban'] = $data['bankAccount']['number'];
+                unset($data['bankAccount']['number']);
+            }
+            $data['bankAccount'] = (new BankAccountHydrator())->hydrate($data['bankAccount'], new BankAccount());
+        }
+
+        if (true === array_key_exists('status', $data) && true === is_array($data['status'])) {
+            $data['status'] = (new StatusHydrator())->hydrate($data['status'], new Status());
+        }
+
         if (true === array_key_exists('amount', $data) && true === is_array($data['amount'])) {
             $data['amount'] = (new ClassMethods())->hydrate($data['amount'], new Amount());
         }
@@ -47,6 +65,11 @@ class Refund extends ClassMethods
                 }
                 return $product;
             }, $data['products']);
+        }
+
+        if (true === array_key_exists('processedDate', $data)) {
+            $data['processDate'] = $data['processedDate'];
+            unset($data['processedDate']);
         }
 
         if (true === array_key_exists('processDate', $data) && false === empty($data['processDate'])) {

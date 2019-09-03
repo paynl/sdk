@@ -30,8 +30,10 @@ class Status extends ClassMethods
             );
         }
 
-        if (true === array_key_exists('date', $data) && '' !== $data['date']) {
+        if (true === array_key_exists('date', $data) && false === empty($data['date'])) {
             $data['date'] = DateTime::createFromFormat(DateTime::ATOM, $data['date']);
+        } else {
+            unset($data['date']);
         }
 
         if (false === array_key_exists('reason', $data) || true === empty($data['reason'])) {

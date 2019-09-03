@@ -27,6 +27,9 @@ class Factory
             case Request\Currencies\Get::class:
                 $transformerClass = Transformer\Currency::class;
                 break;
+            case Request\Refunds\Get::class:
+                $transformerClass = Transformer\Refund::class;
+                break;
             case Request\Services\GetAll::class:
             case Request\Services\Get::class:
             case Request\Services\DisablePaymentMethod::class:

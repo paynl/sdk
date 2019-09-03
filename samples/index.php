@@ -47,6 +47,9 @@ declare(strict_types=1);
             <div>
                 <a href="services/create.php" target="_blank">Create a new service</a>
             </div>
+            <div>
+                <a href="services/get-paymethods.php" target="_blank">Get service payment methods</a>
+            </div>
             <h2>Statistics</h2>
             <div>
                 <a href="statistics/get.php" target="_blank">Get Statistics</a>

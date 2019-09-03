@@ -33,6 +33,24 @@ declare(strict_types=1);
 <!--                <a href="invoices/index.php" target="_blank">Invoices</a>-->
 <!--            </div>-->
             <h2>Merchants</h2>
+            <div>
+                <a href="merchants/get-all.php" target="_blank">Get merchants</a>
+            </div>
+            <div>
+                <a href="merchants/get.php" target="_blank">Get a merchant</a>
+            </div>
+            <div>
+                <a href="merchants/create.php" target="_blank">Create a merchant</a>
+            </div>
+            <div>
+                <a href="merchants/add-bankaccount.php" target="_blank">Add a bank account to a merchant</a>
+            </div>
+            <div>
+                <a href="merchants/create-trademark.php" target="_blank">Create a trademark</a>
+            </div>
+            <div>
+                <a href="merchants/remove-trademark.php" target="_blank">Remove trademark</a>
+            </div>
             <h2>Refunds</h2>
             <div>
                 <a href="refunds/get.php" target="_blank">Get Refund</a>

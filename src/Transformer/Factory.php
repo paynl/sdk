@@ -29,6 +29,8 @@ class Factory
                 break;
             case Request\Services\GetAll::class:
             case Request\Services\Get::class:
+            case Request\Services\DisablePaymentMethod::class:
+            case Request\Services\EnablePaymentMethod::class:
                 $transformerClass = Transformer\Service::class;
                 break;
             case Request\Services\GetCategories::class:

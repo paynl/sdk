@@ -27,7 +27,11 @@ class Factory
             case Request\Currencies\Get::class:
                 $transformerClass = Transformer\Currency::class;
                 break;
+            case Request\Merchants\GetAll::class:
+                $transformerClass = Transformer\Merchant::class;
+                break;
             case Request\Refunds\Get::class:
+            case Request\Transactions\Refund::class:
                 $transformerClass = Transformer\Refund::class;
                 break;
             case Request\Services\GetAll::class:
@@ -50,9 +54,6 @@ class Factory
             case Request\Transactions\Create::class:
             case Request\Transactions\Recurring::class:
                 $transformerClass = Transformer\Transaction::class;
-                break;
-            case Request\Transactions\Refund::class:
-                $transformerClass = Transformer\Refund::class;
                 break;
             case Request\Transactions\GetReceipt::class:
                 $transformerClass = Transformer\Receipt::class;

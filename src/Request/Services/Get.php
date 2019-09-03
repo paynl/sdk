@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace PayNL\Sdk\Request\Services;
 
 use PayNL\Sdk\Request\AbstractRequest;
+use PayNL\Sdk\Request\Parameter\ServiceIdTrait;
 
 /**
  * Class Get
@@ -12,10 +13,7 @@ use PayNL\Sdk\Request\AbstractRequest;
  */
 class Get extends AbstractRequest
 {
-    /**
-     * @var string
-     */
-    protected $serviceId;
+    use ServiceIdTrait;
 
     /**
      * Get constructor.
@@ -25,25 +23,6 @@ class Get extends AbstractRequest
     public function __construct(string $serviceId)
     {
         $this->setServiceId($serviceId);
-    }
-
-    /**
-     * @return string
-     */
-    public function getServiceId(): string
-    {
-        return $this->serviceId;
-    }
-
-    /**
-     * @param string $serviceId
-     *
-     * @return Get
-     */
-    public function setServiceId(string $serviceId): Get
-    {
-        $this->serviceId = $serviceId;
-        return $this;
     }
 
     /**

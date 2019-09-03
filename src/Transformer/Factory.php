@@ -31,6 +31,9 @@ class Factory
             case Request\Services\Get::class:
                 $transformerClass = Transformer\Service::class;
                 break;
+            case Request\Services\GetCategories::class:
+                $transformerClass = Transformer\ServiceCategory::class;
+                break;
             case Request\Terminals\Get::class:
                 $transformerClass = Transformer\Terminal::class;
                 break;

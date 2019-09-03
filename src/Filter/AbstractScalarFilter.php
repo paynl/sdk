@@ -10,7 +10,7 @@ use PayNL\Sdk\Exception\InvalidArgumentException;
  *
  * @package PayNL\Sdk\Filter
  */
-abstract class AbstractFilter implements FilterInterface
+abstract class AbstractScalarFilter implements FilterInterface
 {
     /**
      * @var string
@@ -49,11 +49,19 @@ abstract class AbstractFilter implements FilterInterface
     /**
      * @param string $value
      *
-     * @return AbstractFilter
+     * @return AbstractScalarFilter
      */
     public function setValue(string $value): self
     {
         $this->value = $value;
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->getName() . '=' . $this->getValue();
     }
 }

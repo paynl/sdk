@@ -23,9 +23,9 @@ class ServiceCategory extends AbstractTransformer
         $hydrator = new ClassMethods();
 
         $categories = &$inputToTransform['categories'];
-        foreach ($categories as $key => $transactionArray) {
-            $transaction = $hydrator->hydrate($transactionArray, new ServiceCategoryModel());
-            $categories[$key] = $transaction;
+        foreach ($categories as $key => $categoryArray) {
+            $category = $hydrator->hydrate($categoryArray, new ServiceCategoryModel());
+            $categories[$key] = $category;
         }
 
         return $inputToTransform;

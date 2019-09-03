@@ -30,9 +30,9 @@ class Service extends AbstractTransformer
         }
 
         $services = &$inputToTransform['services'];
-        foreach ($services as $key => $transactionArray) {
-            $transaction = $hydrator->hydrate($transactionArray, new ServiceModel());
-            $services[$key] = $transaction;
+        foreach ($services as $key => $serviceArray) {
+            $service = $hydrator->hydrate($serviceArray, new ServiceModel());
+            $services[$key] = $service;
         }
 
         return $inputToTransform;

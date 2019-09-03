@@ -23,9 +23,9 @@ class Terminal extends AbstractTransformer
         $hydrator = new TerminalHydrator();
 
         $transactions = &$inputToTransform['terminals'];
-        foreach ($transactions as $key => $transactionArray) {
-            $transaction = $hydrator->hydrate($transactionArray, new TerminalModel());
-            $transactions[$key] = $transaction;
+        foreach ($transactions as $key => $terminalArray) {
+            $terminal = $hydrator->hydrate($terminalArray, new TerminalModel());
+            $transactions[$key] = $terminal;
         }
 
         return $inputToTransform;

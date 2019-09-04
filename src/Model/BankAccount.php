@@ -17,6 +17,11 @@ class BankAccount implements ModelInterface, JsonSerializable
     /**
      * @var string
      */
+    protected $bank;
+
+    /**
+     * @var string
+     */
     protected $iban;
 
     /**
@@ -28,6 +33,30 @@ class BankAccount implements ModelInterface, JsonSerializable
      * @var string
      */
     protected $owner;
+
+    /**
+     * @var string
+     */
+    protected $returnUrl = '';
+
+    /**
+     * @return string
+     */
+    public function getBank(): string
+    {
+        return $this->bank;
+    }
+
+    /**
+     * @param string $bank
+     *
+     * @return BankAccount
+     */
+    public function setBank(string $bank): BankAccount
+    {
+        $this->bank = $bank;
+        return $this;
+    }
 
     /**
      * @return string
@@ -83,6 +112,25 @@ class BankAccount implements ModelInterface, JsonSerializable
     public function setOwner(string $owner): BankAccount
     {
         $this->owner = $owner;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getReturnUrl(): string
+    {
+        return $this->returnUrl;
+    }
+
+    /**
+     * @param string $returnUrl
+     *
+     * @return BankAccount
+     */
+    public function setReturnUrl(string $returnUrl): BankAccount
+    {
+        $this->returnUrl = $returnUrl;
         return $this;
     }
 }

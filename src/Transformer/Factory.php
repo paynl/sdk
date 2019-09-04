@@ -28,6 +28,7 @@ class Factory
                 $transformerClass = Transformer\Currency::class;
                 break;
             case Request\Merchants\GetAll::class:
+            case Request\Merchants\Get::class:
                 $transformerClass = Transformer\Merchant::class;
                 break;
             case Request\Refunds\Get::class:

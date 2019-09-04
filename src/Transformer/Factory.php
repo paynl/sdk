@@ -29,6 +29,7 @@ class Factory
                 break;
             case Request\Merchants\GetAll::class:
             case Request\Merchants\Get::class:
+            case Request\Merchants\AddBankAccount::class:
                 $transformerClass = Transformer\Merchant::class;
                 break;
             case Request\Refunds\Get::class:

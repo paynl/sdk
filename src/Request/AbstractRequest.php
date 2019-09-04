@@ -259,6 +259,7 @@ abstract class AbstractRequest implements RequestInterface
         }
 
         dump($uri);
+        dump($this->getBody());
         // create a Guzzle PSR 7 Request
         $guzzleRequest = new Request($this->getMethod(), $uri, $this->getHeaders(), $this->getBody());
         if (true === $this->isDebug()) {

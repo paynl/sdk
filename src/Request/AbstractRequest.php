@@ -258,8 +258,6 @@ abstract class AbstractRequest implements RequestInterface
             $this->dumpDebugInfo('Body: ' . $this->getBody());
         }
 
-        dump($uri);
-        dump($this->getBody());
         // create a Guzzle PSR 7 Request
         $guzzleRequest = new Request($this->getMethod(), $uri, $this->getHeaders(), $this->getBody());
         if (true === $this->isDebug()) {
@@ -268,7 +266,7 @@ abstract class AbstractRequest implements RequestInterface
         $guzzleResponse = $this->getClient()->send($guzzleRequest);
 
         $rawBody = $guzzleResponse->getBody()->getContents();
-        dump($this->getFormat());
+
         $body = $rawBody;
         // initiate transformer (... more than meets the eye ;-) )
         if (static::FORMAT_OBJECTS === $this->getFormat()) {
@@ -287,3 +285,4 @@ abstract class AbstractRequest implements RequestInterface
         dump($response);die;
     }
 }
+https://idefix-rest-api-mike.ian.dev.pay.nl

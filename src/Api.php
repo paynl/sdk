@@ -64,7 +64,7 @@ class Api
     protected function initClient(): void
     {
         $config = [
-            'base_uri' => 'https://rest.idefix.mike.dev.pay.nl/v1/', // TODO set in config value
+            'base_uri' => Config::getInstance()->getApiUrl(),
         ];
 
         $this->client = new Client($config);

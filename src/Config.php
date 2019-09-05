@@ -10,6 +10,13 @@ namespace PayNL\Sdk;
  */
 class Config
 {
+    /*
+     * Configuration key constants definition
+     */
+    public const KEY_API_URL = 'api_url';
+    public const KEY_USERNAME = 'username';
+    public const KEY_PASSWORD = 'password';
+
     /**
      * @var Config
      */
@@ -59,16 +66,16 @@ class Config
 
     public function load(array $config): self
     {
-        if (true === array_key_exists('api_url', $config)) {
-            $this->setApiUrl($config['api_url']);
+        if (true === array_key_exists(self::KEY_API_URL, $config)) {
+            $this->setApiUrl($config[self::KEY_API_URL]);
         }
 
-        if (true === array_key_exists('username', $config)) {
-            $this->setUserName($config['username']);
+        if (true === array_key_exists(self::KEY_USERNAME, $config)) {
+            $this->setUserName($config[self::KEY_USERNAME]);
         }
 
-        if (true === array_key_exists('password', $config)) {
-            $this->setPassword($config['password']);
+        if (true === array_key_exists(self::KEY_PASSWORD, $config)) {
+            $this->setPassword($config[self::KEY_PASSWORD]);
         }
 
         return $this;

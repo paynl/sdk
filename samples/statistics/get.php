@@ -4,8 +4,12 @@ throw new Exception('TODO: fixen met Mike!!');
 require_once __DIR__ . '/../init.php';
 
 use PayNL\Sdk\Api;
+use PayNL\Sdk\Config;
 use PayNL\Sdk\Request\Statistics\Get as GetStatisticsRequest;
 use PayNL\Sdk\Filter;
+
+// overwrite for testing purposes
+Config::getInstance()->setPassword('d25895ff665de1a2afd67e264a136d16189b1d45');
 
 $authAdapter = getAuthAdapter();
 

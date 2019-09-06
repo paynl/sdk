@@ -34,14 +34,14 @@ class Api
     /**
      * Api constructor.
      *
-     * @param $adapterOrUsername
+     * @param AdapterInterface|string $adapterOrUsername
      * @param string|null $password
      * @param bool $debug
      */
     public function __construct($adapterOrUsername, string $password = null, $debug = false)
     {
         if (true === is_string($adapterOrUsername)) {
-            $adapterOrUsername = new Basic($adapterOrUsername, $password);
+            $adapterOrUsername = new Basic($adapterOrUsername, (string)$password);
         } elseif (false === ($adapterOrUsername instanceof AdapterInterface)) {
             throw new InvalidArgumentException(
                 sprintf(
@@ -170,9 +170,14 @@ class Api
                 }
             }
 
+            $body = $guzzleException->getMessage();
+            if (true === isset($guzzleResponse)) {
+                $body = $guzzleResponse->getReasonPhrase();
+            }
+
             $response->setStatusCode($guzzleException->getCode())
                 ->setRawBody($errorMessages)
-                ->setBody($guzzleResponse->getReasonPhrase())
+                ->setBody($body)
             ;
         } catch (Exception\ExceptionInterface $exception) {
             $response->setStatusCode($exception->getCode()) // TODO add Raw body?

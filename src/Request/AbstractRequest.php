@@ -8,7 +8,6 @@ use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Exception\GuzzleException;
 use PayNL\Sdk\DebugTrait;
 use PayNL\Sdk\Exception\InvalidArgumentException;
-use PayNL\Sdk\Filter\AbstractArrayFilter;
 use PayNL\Sdk\Response;
 use PayNL\Sdk\Transformer\Factory;
 use PayNL\Sdk\Filter\FilterInterface;
@@ -236,13 +235,13 @@ abstract class AbstractRequest implements RequestInterface
             $contentTypeHeader = 'application/xml';
         }
         $this->addHeader(static::HEADER_CONTENT_TYPE, $contentTypeHeader);
-        return $encoder->encode($body, $this->getFormat());
+        return (string)$encoder->encode($body, $this->getFormat());
     }
 
     /**
-     * @throws GuzzleException
-     *
      * @param Response $response
+     *
+     * @throws GuzzleException
      *
      * @return void
      */
@@ -285,4 +284,3 @@ abstract class AbstractRequest implements RequestInterface
         dump($response);die;
     }
 }
-https://idefix-rest-api-mike.ian.dev.pay.nl

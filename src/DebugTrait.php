@@ -45,7 +45,7 @@ trait DebugTrait
     /**
      * Dumps the given arguments
      *
-     * @param array $arguments
+     * @param mixed ...$arguments
      *
      * @return void
      */

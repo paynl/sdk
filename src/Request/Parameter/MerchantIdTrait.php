@@ -26,7 +26,7 @@ trait MerchantIdTrait
     /**
      * @param string $merchantId
      *
-     * @return MerchantIdTrait
+     * @return static
      */
     public function setMerchantId(string $merchantId): self
     {

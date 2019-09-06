@@ -69,7 +69,7 @@ abstract class AbstractValidator implements ValidatorInterface
 
     /**
      * @param string $message
-     * @param string|int $messageKey
+     * @param mixed $messageKey
      *
      * @return AbstractValidator
      */
@@ -92,7 +92,7 @@ abstract class AbstractValidator implements ValidatorInterface
      * Quickly add an error based on the given arguments
      *
      * @param string $messageKey
-     * @param array $arguments
+     * @param mixed ...$arguments
      *
      * @throws InvalidArgumentException
      *

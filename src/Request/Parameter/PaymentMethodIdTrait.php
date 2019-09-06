@@ -26,7 +26,7 @@ trait PaymentMethodIdTrait
     /**
      * @param int $paymentMethodId
      *
-     * @return PaymentMethodIdTrait
+     * @return static
      */
     public function setPaymentMethodId(int $paymentMethodId): self
     {

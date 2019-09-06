@@ -26,7 +26,7 @@ trait ServiceIdTrait
     /**
      * @param string $serviceId
      *
-     * @return PaymentMethodIdTrait
+     * @return static
      */
     public function setServiceId(string $serviceId): self
     {

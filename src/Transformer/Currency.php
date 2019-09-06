@@ -15,6 +15,8 @@ class Currency extends AbstractTransformer
 {
     /**
      * @inheritDoc
+     *
+     * @return array|CurrencyModel
      */
     public function transform($inputToTransform)
     {
@@ -23,7 +25,9 @@ class Currency extends AbstractTransformer
         $hydrator = new ClassMethods();
         if (false === array_key_exists('currencies', $inputToTransform)) {
             // get request
-            return $hydrator->hydrate($inputToTransform, new CurrencyModel());
+            /** @var CurrencyModel $currencyModel */
+            $currencyModel = $hydrator->hydrate($inputToTransform, new CurrencyModel());
+            return $currencyModel;
         }
 
         // get all request

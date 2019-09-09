@@ -30,6 +30,9 @@ class Refund extends ClassMethods
      * @throws Exception
      *
      * @return RefundModel
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function hydrate(array $data, $object): RefundModel
     {
@@ -58,10 +61,10 @@ class Refund extends ClassMethods
             $data['amount'] = (new ClassMethods())->hydrate($data['amount'], new Amount());
         }
 
-        if (true === array_key_exists('products', $data) && 0 < sizeof($data['products'])) {
+        if (true === array_key_exists('products', $data) && 0 < count($data['products'])) {
             $data['products'] = array_map(static function ($product) {
                 if (true === is_array($product)) {
-                    $product = (new ProductHydrator())->hydrate($product, new Product());
+                    return (new ProductHydrator())->hydrate($product, new Product());
                 }
                 return $product;
             }, $data['products']);

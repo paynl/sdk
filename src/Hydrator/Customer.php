@@ -53,10 +53,9 @@ class Customer extends ClassMethods
                 $data[$optionalKey] = '';
             }
         }
-        if (true === array_key_exists('birthDate', $data) && false === empty($data['birthDate'])) {
-            $data['birthDate'] = DateTime::createFromFormat(DateTime::ATOM, $data['birthDate']);
-        } else {
-            unset($data['birthDate']);
+
+        if (true === array_key_exists('birthDate', $data)) {
+            $data['birthDate'] = (false === empty($data['birthDate']) ? DateTime::createFromFormat(DateTime::ATOM, $data['birthDate']) : null);
         }
 
         /** @var CustomerModel $customer */

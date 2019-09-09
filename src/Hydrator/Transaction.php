@@ -33,6 +33,8 @@ use Zend\Hydrator\ClassMethods;
  * Class Transaction
  *
  * @package PayNL\Sdk\Hydrator
+ *
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class Transaction extends ClassMethods
 {
@@ -43,6 +45,9 @@ class Transaction extends ClassMethods
      * @throws Exception
      *
      * @return TransactionModel
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function hydrate(array $data, $object): TransactionModel
     {
@@ -94,7 +99,7 @@ class Transaction extends ClassMethods
             true === is_array($data['products']) &&
             0 < sizeof($data['products'])
         ) {
-            foreach ($data['products'] as $key => &$product) {
+            foreach ($data['products'] as &$product) {
                 if (false === $product instanceof Product) {
                     $product = (new ProductHydrator())->hydrate($product, new Product());
                 }
@@ -109,10 +114,8 @@ class Transaction extends ClassMethods
             'expiresAt',
         ];
         foreach($dateFields as $dateField) {
-            if (true === array_key_exists($dateField, $data) && '' !== $data[$dateField]) {
-                $data[$dateField] = DateTime::createFromFormat(DateTime::ATOM, $data[$dateField]);
-            } else {
-                unset($data[$dateField]);
+            if (true === array_key_exists($dateField, $data)) {
+                $data[$dateField] = false === empty($data[$dateField]) ? DateTime::createFromFormat(DateTime::ATOM, $data[$dateField]) : null;
             }
         }
 

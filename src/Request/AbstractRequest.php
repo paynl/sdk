@@ -19,6 +19,8 @@ use Symfony\Component\Serializer\Encoder\XmlEncoder;
  * Class AbstractRequest
  *
  * @package PayNL\Sdk\Request
+ *
+ * @SuppressWarnings(PHPMD.NumberOfChildren)
  */
 abstract class AbstractRequest implements RequestInterface
 {
@@ -281,6 +283,9 @@ abstract class AbstractRequest implements RequestInterface
             ->setRawBody($rawBody)
             ->setBody($body)
         ;
-        dump($response);die;
+
+        if (true === $this->isDebug()) {
+            $this->dumpDebugInfo('Response: ', $response);
+        }
     }
 }

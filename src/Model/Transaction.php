@@ -10,6 +10,9 @@ use \JsonSerializable;
  * Class Transaction
  *
  * @package PayNL\Sdk\Model
+ *
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 class Transaction implements ModelInterface, JsonSerializable
 {
@@ -183,7 +186,7 @@ class Transaction implements ModelInterface, JsonSerializable
      *
      * @return Transaction
      */
-    public function setId(string $id): Transaction
+    public function setId(string $id): self
     {
         $this->id = $id;
         return $this;
@@ -202,7 +205,7 @@ class Transaction implements ModelInterface, JsonSerializable
      *
      * @return Transaction
      */
-    public function setServiceId(string $serviceId): Transaction
+    public function setServiceId(string $serviceId): self
     {
         $this->serviceId = $serviceId;
         return $this;
@@ -221,7 +224,7 @@ class Transaction implements ModelInterface, JsonSerializable
      *
      * @return Transaction
      */
-    public function setStatus(Status $status): Transaction
+    public function setStatus(Status $status): self
     {
         $this->status = $status;
         return $this;
@@ -240,7 +243,7 @@ class Transaction implements ModelInterface, JsonSerializable
      *
      * @return Transaction
      */
-    public function setReturnUrl(string $returnUrl): Transaction
+    public function setReturnUrl(string $returnUrl): self
     {
         $this->returnUrl = $returnUrl;
         return $this;
@@ -259,7 +262,7 @@ class Transaction implements ModelInterface, JsonSerializable
      *
      * @return Transaction
      */
-    public function setExchange(Exchange $exchange): Transaction
+    public function setExchange(Exchange $exchange): self
     {
         $this->exchange = $exchange;
         return $this;
@@ -278,7 +281,7 @@ class Transaction implements ModelInterface, JsonSerializable
      *
      * @return Transaction
      */
-    public function setReference(string $reference): Transaction
+    public function setReference(string $reference): self
     {
         $this->reference = $reference;
         return $this;
@@ -297,7 +300,7 @@ class Transaction implements ModelInterface, JsonSerializable
      *
      * @return Transaction
      */
-    public function setPaymentMethod(PaymentMethod $paymentMethod): Transaction
+    public function setPaymentMethod(PaymentMethod $paymentMethod): self
     {
         $this->paymentMethod = $paymentMethod;
         return $this;
@@ -316,7 +319,7 @@ class Transaction implements ModelInterface, JsonSerializable
      *
      * @return Transaction
      */
-    public function setDescription(string $description): Transaction
+    public function setDescription(string $description): self
     {
         $this->description = $description;
         return $this;
@@ -335,7 +338,7 @@ class Transaction implements ModelInterface, JsonSerializable
      *
      * @return Transaction
      */
-    public function setIssuerUrl(string $issuerUrl): Transaction
+    public function setIssuerUrl(string $issuerUrl): self
     {
         $this->issuerUrl = $issuerUrl;
         return $this;
@@ -354,7 +357,7 @@ class Transaction implements ModelInterface, JsonSerializable
      *
      * @return Transaction
      */
-    public function setOrderNumber(string $orderNumber): Transaction
+    public function setOrderNumber(string $orderNumber): self
     {
         $this->orderNumber = $orderNumber;
         return $this;
@@ -373,7 +376,7 @@ class Transaction implements ModelInterface, JsonSerializable
      *
      * @return Transaction
      */
-    public function setInvoiceDate(DateTime $invoiceDate): Transaction
+    public function setInvoiceDate(DateTime $invoiceDate): self
     {
         $this->invoiceDate = $invoiceDate;
         return $this;
@@ -392,7 +395,7 @@ class Transaction implements ModelInterface, JsonSerializable
      *
      * @return Transaction
      */
-    public function setDeliveryDate(DateTime $deliveryDate): Transaction
+    public function setDeliveryDate(DateTime $deliveryDate): self
     {
         $this->deliveryDate = $deliveryDate;
         return $this;
@@ -411,7 +414,7 @@ class Transaction implements ModelInterface, JsonSerializable
      *
      * @return Transaction
      */
-    public function setAddress(Address $address): Transaction
+    public function setAddress(Address $address): self
     {
         $this->address = $address;
         return $this;
@@ -430,7 +433,7 @@ class Transaction implements ModelInterface, JsonSerializable
      *
      * @return Transaction
      */
-    public function setBillingAddress(Address $billingAddress): Transaction
+    public function setBillingAddress(Address $billingAddress): self
     {
         $this->billingAddress = $billingAddress;
         return $this;
@@ -449,7 +452,7 @@ class Transaction implements ModelInterface, JsonSerializable
      *
      * @return Transaction
      */
-    public function setCustomer(Customer $customer): Transaction
+    public function setCustomer(Customer $customer): self
     {
         $this->customer = $customer;
         return $this;
@@ -468,7 +471,7 @@ class Transaction implements ModelInterface, JsonSerializable
      *
      * @return Transaction
      */
-    public function setProducts(array $products): Transaction
+    public function setProducts(array $products): self
     {
         $this->products = $products;
         return $this;
@@ -487,7 +490,7 @@ class Transaction implements ModelInterface, JsonSerializable
      *
      * @return Transaction
      */
-    public function setAmount(Amount $amount): Transaction
+    public function setAmount(Amount $amount): self
     {
         $this->amount = $amount;
         return $this;
@@ -506,7 +509,7 @@ class Transaction implements ModelInterface, JsonSerializable
      *
      * @return Transaction
      */
-    public function setAmountConverted(Amount $amountConverted): Transaction
+    public function setAmountConverted(Amount $amountConverted): self
     {
         $this->amountConverted = $amountConverted;
         return $this;
@@ -525,7 +528,7 @@ class Transaction implements ModelInterface, JsonSerializable
      *
      * @return Transaction
      */
-    public function setAmountPaid(Amount $amountPaid): Transaction
+    public function setAmountPaid(Amount $amountPaid): self
     {
         $this->amountPaid = $amountPaid;
         return $this;
@@ -544,7 +547,7 @@ class Transaction implements ModelInterface, JsonSerializable
      *
      * @return Transaction
      */
-    public function setAmountRefunded(Amount $amountRefunded): Transaction
+    public function setAmountRefunded(Amount $amountRefunded): self
     {
         $this->amountRefunded = $amountRefunded;
         return $this;
@@ -563,7 +566,7 @@ class Transaction implements ModelInterface, JsonSerializable
      *
      * @return Transaction
      */
-    public function setStatistics(Statistics $statistics): Transaction
+    public function setStatistics(Statistics $statistics): self
     {
         $this->statistics = $statistics;
         return $this;
@@ -582,7 +585,7 @@ class Transaction implements ModelInterface, JsonSerializable
      *
      * @return Transaction
      */
-    public function setCreatedAt(DateTime $createdAt): Transaction
+    public function setCreatedAt(DateTime $createdAt): self
     {
         $this->createdAt = $createdAt;
         return $this;
@@ -601,7 +604,7 @@ class Transaction implements ModelInterface, JsonSerializable
      *
      * @return Transaction
      */
-    public function setExpiresAt(DateTime $expiresAt): Transaction
+    public function setExpiresAt(DateTime $expiresAt): self
     {
         $this->expiresAt = $expiresAt;
         return $this;
@@ -620,7 +623,7 @@ class Transaction implements ModelInterface, JsonSerializable
      *
      * @return Transaction
      */
-    public function setPaymentMethodId(int $paymentMethodId): Transaction
+    public function setPaymentMethodId(int $paymentMethodId): self
     {
         $this->paymentMethodId = $paymentMethodId;
         return $this;
@@ -639,7 +642,7 @@ class Transaction implements ModelInterface, JsonSerializable
      *
      * @return Transaction
      */
-    public function setPaymentMethodSubId(string $paymentMethodSubId): Transaction
+    public function setPaymentMethodSubId(string $paymentMethodSubId): self
     {
         $this->paymentMethodSubId = $paymentMethodSubId;
         return $this;
@@ -658,7 +661,7 @@ class Transaction implements ModelInterface, JsonSerializable
      *
      * @return Transaction
      */
-    public function setTestMode(int $testMode): Transaction
+    public function setTestMode(int $testMode): self
     {
         $this->testMode = $testMode;
         return $this;
@@ -677,7 +680,7 @@ class Transaction implements ModelInterface, JsonSerializable
      *
      * @return Transaction
      */
-    public function setTransferType(string $transferType): Transaction
+    public function setTransferType(string $transferType): self
     {
         $this->transferType = $transferType;
         return $this;
@@ -696,7 +699,7 @@ class Transaction implements ModelInterface, JsonSerializable
      *
      * @return Transaction
      */
-    public function setTransferValue(string $transferValue): Transaction
+    public function setTransferValue(string $transferValue): self
     {
         $this->transferValue = $transferValue;
         return $this;
@@ -715,7 +718,7 @@ class Transaction implements ModelInterface, JsonSerializable
      *
      * @return Transaction
      */
-    public function setEndUserId(string $endUserId): Transaction
+    public function setEndUserId(string $endUserId): self
     {
         $this->endUserId = $endUserId;
         return $this;
@@ -734,7 +737,7 @@ class Transaction implements ModelInterface, JsonSerializable
      *
      * @return Transaction
      */
-    public function setCompany(Company $company): Transaction
+    public function setCompany(Company $company): self
     {
         $this->company = $company;
         return $this;

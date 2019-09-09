@@ -36,9 +36,8 @@ class Api
      *
      * @param AdapterInterface|string $adapterOrUsername
      * @param string|null $password
-     * @param bool $debug
      */
-    public function __construct($adapterOrUsername, string $password = null, $debug = false)
+    public function __construct($adapterOrUsername, string $password = null)
     {
         if (true === is_string($adapterOrUsername)) {
             $adapterOrUsername = new Basic($adapterOrUsername, (string)$password);
@@ -55,7 +54,6 @@ class Api
 
         $this->setAuthAdapter($adapterOrUsername);
         $this->initClient();
-        $this->setDebug($debug);
     }
 
     /**
@@ -101,6 +99,8 @@ class Api
      * @param array $headers Additional request headers (Accept, Authorization and Content-Type are already set)
      *
      * @return Response
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function handleCall(AbstractRequest $request, array $headers = []): Response
     {
@@ -145,6 +145,8 @@ class Api
 
         } catch (GuzzleException $guzzleException) {
             $errorMessages = '';
+            $body = $guzzleException->getMessage();
+
             /**
              * @var GuzzleRequestException $guzzleException
              * @var GuzzleResponse $guzzleResponse
@@ -153,8 +155,9 @@ class Api
                 $guzzleResponse = $guzzleException->getResponse();
                 if (null !== $guzzleResponse) {
                     $rawResponseBody = $guzzleResponse->getBody();
+                    $size = true === $rawResponseBody->isSeekable() ? $rawResponseBody->getSize() : 0;
 
-                    if (true === $rawResponseBody->isSeekable() && 0 < ($size = $rawResponseBody->getSize())) {
+                    if (0 < $size) {
                         $content = $rawResponseBody->read($size);
                         $rawResponseBody->rewind();
 
@@ -170,7 +173,6 @@ class Api
                 }
             }
 
-            $body = $guzzleException->getMessage();
             if (true === isset($guzzleResponse)) {
                 $body = $guzzleResponse->getReasonPhrase();
             }

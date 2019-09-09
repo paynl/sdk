@@ -29,10 +29,8 @@ class Service extends ClassMethods
         $data['secret']      = $data['secret'] ?? '';
 
         $dateField = 'createdAt';
-        if (true === array_key_exists($dateField, $data) && true !== empty($data[$dateField])) {
-            $data[$dateField] = DateTime::createFromFormat(DateTime::ATOM, $data[$dateField]);
-        } else {
-            unset($data[$dateField]);
+        if (true === array_key_exists($dateField, $data)) {
+            $data[$dateField] = false === empty($data[$dateField]) ? DateTime::createFromFormat(DateTime::ATOM, $data[$dateField]): null;
         }
 
         /** @var ServiceModel $service */

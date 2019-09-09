@@ -25,7 +25,8 @@ $transaction = (new Hydrator\Transaction)->hydrate([
     'paymentMethodSubId' => 'Rabobank',
     'testMode' => 0,
     'transferType' => 'merchant',
-    'transferValue' => 'M-3421-2120', //TODO, delete for goto live - is production merchant ID!!
+    //TODO, delete for goto live - is production merchant ID!!
+    'transferValue' => 'M-3421-2120',
     'invoiceDate' => (new DateTime())->sub(new DateInterval('P3D'))->format(DateTime::ATOM),
     'deliveryDate' => (new DateTime())->format(DateTime::ATOM),
     'expiresAt' => (new DateTime())->add(new DateInterval('P7D'))->format(DateTime::ATOM),

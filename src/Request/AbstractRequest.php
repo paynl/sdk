@@ -193,6 +193,8 @@ abstract class AbstractRequest implements RequestInterface
     /**
      * @param array $filters
      *
+     * @throws InvalidArgumentException when the given filters contain an invalid filter
+     *
      * @return AbstractRequest
      */
     public function setFilters(array $filters): self

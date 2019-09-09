@@ -137,7 +137,7 @@ class Transaction implements ModelInterface, JsonSerializable
     protected $expiresAt;
 
     /**
-     * @var int
+     * @var integer
      *
      * TODO @Mike, please remove paymentMethodId AND paymentMethodSubId from the request and work with paymentMethod object
      */
@@ -149,7 +149,7 @@ class Transaction implements ModelInterface, JsonSerializable
     protected $paymentMethodSubId;
 
     /**
-     * @var int
+     * @var integer
      */
     protected $testMode = 0;
 
@@ -611,7 +611,7 @@ class Transaction implements ModelInterface, JsonSerializable
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getPaymentMethodId(): int
     {
@@ -619,7 +619,7 @@ class Transaction implements ModelInterface, JsonSerializable
     }
 
     /**
-     * @param int $paymentMethodId
+     * @param integer $paymentMethodId
      *
      * @return Transaction
      */
@@ -649,7 +649,7 @@ class Transaction implements ModelInterface, JsonSerializable
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getTestMode(): int
     {
@@ -657,7 +657,7 @@ class Transaction implements ModelInterface, JsonSerializable
     }
 
     /**
-     * @param int $testMode
+     * @param integer $testMode
      *
      * @return Transaction
      */

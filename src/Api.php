@@ -36,18 +36,20 @@ class Api
      *
      * @param AdapterInterface|string $adapterOrUsername
      * @param string|null $password
+     *
+     * @throws InvalidArgumentException when given $adapterOrUsername is not a string nor an AdapterInterface object
      */
     public function __construct($adapterOrUsername, string $password = null)
     {
         if (true === is_string($adapterOrUsername)) {
             $adapterOrUsername = new Basic($adapterOrUsername, (string)$password);
-        } elseif (!$adapterOrUsername instanceof AdapterInterface) {
+        } elseif (($adapterOrUsername instanceof AdapterInterface) === false) {
             throw new InvalidArgumentException(
                 sprintf(
                     '%s expect argument given to be %s or a string, %s given',
                     __CLASS__,
                     AdapterInterface::class,
-                    (is_object($adapterOrUsername) ? get_class($adapterOrUsername) : gettype($adapterOrUsername))
+                    (is_object($adapterOrUsername) === true ? get_class($adapterOrUsername) : gettype($adapterOrUsername))
                 )
             );
         }
@@ -142,7 +144,6 @@ class Api
             }
 
             $request->execute($response);
-
         } catch (GuzzleException $guzzleException) {
             $errorMessages = '';
             $body = $guzzleException->getMessage();
@@ -151,11 +152,12 @@ class Api
              * @var GuzzleRequestException $guzzleException
              * @var GuzzleResponse $guzzleResponse
              */
-            if (true === method_exists($guzzleException, 'getResponse')) { // TODO: refactor this (read stream + convert to messages)
+            if (true === method_exists($guzzleException, 'getResponse')) {
+                // TODO: refactor this (read stream + convert to messages)
                 $guzzleResponse = $guzzleException->getResponse();
                 if (null !== $guzzleResponse) {
                     $rawResponseBody = $guzzleResponse->getBody();
-                    $size = true === $rawResponseBody->isSeekable() ? $rawResponseBody->getSize() : 0;
+                    $size = $rawResponseBody->isSeekable() === true ? $rawResponseBody->getSize() : 0;
 
                     if (0 < $size) {
                         $content = $rawResponseBody->read($size);
@@ -168,7 +170,6 @@ class Api
 //                            $encoder = new XmlEncoder();
 //                        }
 //                        $errors = $encoder->decode($content, $format)['errors'];
-
                     }
                 }
             }
@@ -182,7 +183,8 @@ class Api
                 ->setBody($body)
             ;
         } catch (Exception\ExceptionInterface $exception) {
-            $response->setStatusCode($exception->getCode()) // TODO add Raw body?
+            $response->setStatusCode($exception->getCode())
+                ->setRawBody($exception->getMessage())
                 ->setBody($exception->getMessage())
             ;
         }

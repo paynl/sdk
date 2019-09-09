@@ -32,7 +32,8 @@
                 <value>
                     \PayNL\Sdk\Config,
                     \PayNL\Sdk\Transformer\Factory,
-                    \PayNL\Sdk\DateTime
+                    \PayNL\Sdk\DateTime,
+                    \DateTime
                 </value>
             </property>
         </properties>

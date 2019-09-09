@@ -143,7 +143,7 @@ class Details extends Result
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getIdentifierHash()
     {
@@ -175,7 +175,7 @@ class Details extends Result
     }
 
     /**
-     * @return integer
+     * @return array
      */
     public function getAmountOriginal()
     {
@@ -183,7 +183,7 @@ class Details extends Result
     }
 
     /**
-     * @return integer
+     * @return array
      */
     public function getAmountPaidOriginal()
     {
@@ -191,7 +191,7 @@ class Details extends Result
     }
 
     /**
-     * @return integer
+     * @return array
      */
     public function getAmountPaid()
     {
@@ -199,7 +199,7 @@ class Details extends Result
     }
 
     /**
-     * @return integer
+     * @return array
      */
     public function getAmountRefundOriginal()
     {
@@ -207,7 +207,7 @@ class Details extends Result
     }
 
     /**
-     * @return integer
+     * @return array
      */
     public function getAmountRefund()
     {

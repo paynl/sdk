@@ -9,12 +9,12 @@ class Details extends Transaction
     protected $apiTokenRequired = true;
 
     /**
-     * @var int
+     * @var string
      */
     private $transactionId;
 
     /**
-     * @var int
+     * @var string
      */
     private $entranceCode;
 

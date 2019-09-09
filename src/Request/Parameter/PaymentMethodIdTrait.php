@@ -11,12 +11,12 @@ namespace PayNL\Sdk\Request\Parameter;
 trait PaymentMethodIdTrait
 {
     /**
-     * @var int
+     * @var integer
      */
     protected $paymentMethodId;
 
     /**
-     * @return int
+     * @return integer
      */
     public function getPaymentMethodId(): int
     {
@@ -24,7 +24,7 @@ trait PaymentMethodIdTrait
     }
 
     /**
-     * @param int $paymentMethodId
+     * @param integer $paymentMethodId
      *
      * @return static
      */

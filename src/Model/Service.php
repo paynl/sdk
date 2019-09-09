@@ -28,7 +28,7 @@ class Service implements ModelInterface
     protected $description = '';
 
     /**
-     * @var int
+     * @var integer
      */
     protected $testMode = 0;
 
@@ -100,7 +100,7 @@ class Service implements ModelInterface
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getTestMode(): int
     {
@@ -108,7 +108,7 @@ class Service implements ModelInterface
     }
 
     /**
-     * @param int $testMode
+     * @param integer $testMode
      *
      * @return Service
      */

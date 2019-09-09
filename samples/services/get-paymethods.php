@@ -14,6 +14,6 @@ $request = new GetServicePaymentMethodsRequest('SL-1066-2020');
 $api = new Api($authAdapter);
 $response = $api->handleCall($request);
 
-print '<pre/>';
+echo '<pre/>';
 print_r($response);
 exit(0);

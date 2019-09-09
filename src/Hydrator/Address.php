@@ -18,6 +18,8 @@ class Address extends ClassMethods
     /**
      * @inheritDoc
      *
+     * @throws InvalidArgumentException when given object is not an Address model
+     *
      * @return AddressModel
      */
     public function hydrate(array $data, $object): AddressModel

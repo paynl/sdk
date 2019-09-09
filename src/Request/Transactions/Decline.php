@@ -29,5 +29,4 @@ class Decline extends StatusChange
     {
         return static::METHOD_PATCH;
     }
-
 }

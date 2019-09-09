@@ -18,6 +18,8 @@ class Statistics extends ClassMethods
     /**
      * @inheritDoc
      *
+     * @throws InvalidArgumentException when given object is not an instance of Statistics model
+     *
      * @return StatisticsModel
      */
     public function hydrate(array $data, $object): StatisticsModel

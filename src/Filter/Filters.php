@@ -8,7 +8,7 @@ namespace PayNL\Sdk\Filter;
  *
  * @package PayNL\Sdk\Filter
  */
-class Filters extends AbstractArrayFilter
+class Filters extends AbstractArray
 {
     /**
      * @inheritDoc

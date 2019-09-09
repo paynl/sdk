@@ -38,5 +38,4 @@ class Transaction extends AbstractTransformer
 
         return $inputToTransform;
     }
-
 }

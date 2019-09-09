@@ -71,6 +71,8 @@ abstract class AbstractValidator implements ValidatorInterface
      * @param string $message
      * @param mixed $messageKey
      *
+     * @throws InvalidArgumentException when message key given is not a string nor an integer
+     *
      * @return AbstractValidator
      */
     public function addMessage(string $message, $messageKey): self
@@ -79,7 +81,7 @@ abstract class AbstractValidator implements ValidatorInterface
             throw new InvalidArgumentException(
                 sprintf(
                     'Message key must be a string or an integer, %s given',
-                    is_object($messageKey) ? get_class($messageKey) : gettype($messageKey)
+                    is_object($messageKey) === true ? get_class($messageKey) : gettype($messageKey)
                 )
             );
         }

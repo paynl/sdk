@@ -8,7 +8,7 @@ namespace PayNL\Sdk\Filter;
  *
  * @package PayNL\Sdk\Filter
  */
-class EndDate extends AbstractDateFilter
+class EndDate extends AbstractDate
 {
     /**
      * @inheritDoc

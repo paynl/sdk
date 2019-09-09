@@ -29,5 +29,4 @@ class Capture extends StatusChange
     {
         return static::METHOD_PATCH;
     }
-
 }

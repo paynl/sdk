@@ -14,6 +14,6 @@ $request = new DisablePaymentMethodRequest('SL-1066-2020', 739);
 $api = new Api($authAdapter);
 $response = $api->handleCall($request);
 
-print '<pre/>';
+echo '<pre/>';
 print_r($response);
 exit(0);

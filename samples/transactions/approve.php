@@ -14,7 +14,7 @@ $request = new ApproveTransactionRequest($transactionId);
 $api = new Api($authAdapter);
 $response = $api->handleCall($request);
 
-print '<pre/>';
-print 'transaction ID: ' . $transactionId . PHP_EOL . PHP_EOL;
+echo '<pre/>';
+echo 'transaction ID: ' . $transactionId . PHP_EOL . PHP_EOL;
 print_r($response);
 exit(0);

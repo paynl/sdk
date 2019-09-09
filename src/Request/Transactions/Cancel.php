@@ -29,5 +29,4 @@ class Cancel extends StatusChange
     {
         return static::METHOD_PATCH;
     }
-
 }

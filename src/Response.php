@@ -81,7 +81,7 @@ class Response
     ];
 
     /**
-     * @var int
+     * @var integer
      */
     protected $statusCode;
 
@@ -96,7 +96,7 @@ class Response
     protected $body;
 
     /**
-     * @return int
+     * @return integer
      */
     public function getStatusCode(): int
     {
@@ -104,7 +104,9 @@ class Response
     }
 
     /**
-     * @param int $statusCode
+     * @param integer $statusCode
+     *
+     * @throws InvalidArgumentException when status code is not recognized
      *
      * @return Response
      */

@@ -576,4 +576,45 @@ class Transaction
 
         return new Result\QRPayment($result);
     }
+
+    /**
+     * @param array $options
+     * @return Result\Details
+     * @throws Error\Api
+     * @throws Error\Error
+     * @throws Error\Required\ApiToken
+     */
+    public static function details($options = array())
+    {
+        $api = new Api\Details();
+
+        if (isset($options['transactionId'])) {
+            $api->setTransactionId($options['transactionId']);
+        }
+        if (isset($options['entranceCode'])) {
+            $api->setEntranceCode($options['entranceCode']);
+        }
+
+        $result = $api->doRequest();
+
+        return new Result\Details($result);
+    }
+
+    /**
+     * @param $timestamp
+     * @return Result\ChangeStatusList
+     * @throws Error\Api
+     * @throws Error\Error
+     * @throws Error\Required\ApiToken
+     */
+    public static function changeStatusList($timestamp)
+    {
+        $api = new Api\ChangeStatusList();
+
+        $api->setTimestamp($timestamp);
+
+        $result = $api->doRequest();
+
+        return new Result\ChangeStatusList($result);
+    }
 }

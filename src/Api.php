@@ -106,7 +106,7 @@ class Api
     {
         $format = $request->getFormat();
         if (true === $this->isDebug()) {
-            $request->setDebug($this->getDebug());
+            $request->setDebug($this->isDebug());
             $this->dumpDebugInfo('Requested format: ' . $format);
         }
 

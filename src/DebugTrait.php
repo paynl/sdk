@@ -16,14 +16,6 @@ trait DebugTrait
     protected $debug = false;
 
     /**
-     * @return bool
-     */
-    public function getDebug(): bool
-    {
-        return $this->debug;
-    }
-
-    /**
      * @param bool $debug
      *
      * @return self
@@ -39,7 +31,7 @@ trait DebugTrait
      */
     public function isDebug(): bool
     {
-        return true === $this->getDebug();
+        return true === $this->debug;
     }
 
     /**

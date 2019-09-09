@@ -9,10 +9,8 @@ use PayNL\Sdk\Request\Merchants\Get as GetMerchantRequest;
 $authAdapter = getAuthAdapter();
 
 $request = new GetMerchantRequest('M-6328-7160');
-$request->setFormat('json');
 
 $api = new Api($authAdapter);
-$api->setDebug(true);
 $response = $api->handleCall($request);
 
 echo '<pre/>';

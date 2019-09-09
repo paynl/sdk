@@ -1,0 +1,7 @@
+.idea
+
+samples/gateway.php
+
+bin
+composer.phar
+vendor

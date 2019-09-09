@@ -4,35 +4,58 @@ declare(strict_types=1);
 namespace PayNL\Sdk\Filter;
 
 /**
- * Class AbstractArrayFilter
+ * Class AbstractArray
  *
  * @package PayNL\Sdk\Filter
  */
-abstract class AbstractArrayFilter implements FilterInterface
+abstract class AbstractArray implements FilterInterface
 {
+    /**
+     * @var array
+     */
     protected $values = [];
 
+    /**
+     * AbstractArray constructor.
+     *
+     * @param array $values
+     */
     public function __construct(array $values)
     {
         $this->setValues($values);
     }
 
+    /**
+     *
+     * @return array
+     */
     public function getValues(): array
     {
         return $this->values;
     }
 
+    /**
+     * @return string
+     */
     final public function getValue(): string
     {
         return implode($this->getValues());
     }
 
+    /**
+     * @param array $values
+     *
+     * @return AbstractArray
+     */
     public function setValues(array $values): self
     {
         $this->values = $values;
         return $this;
     }
 
+    /**
+     * @return string
+     */
     public function __toString(): string
     {
         $filterString = '';

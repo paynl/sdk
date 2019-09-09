@@ -13,6 +13,6 @@ $request = new GetTransactionRequest('EX-9681-2215-2190');
 $api = new Api($authAdapter);
 $response = $api->handleCall($request);
 
-print '<pre/>';
+echo '<pre/>';
 print_r($response);
 exit(0);

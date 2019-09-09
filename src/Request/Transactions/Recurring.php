@@ -44,5 +44,4 @@ class Recurring extends AbstractRequest
     {
         return static::METHOD_PATCH;
     }
-
 }

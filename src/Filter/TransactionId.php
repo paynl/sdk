@@ -8,7 +8,7 @@ namespace PayNL\Sdk\Filter;
  *
  * @package PayNL\Sdk\Filter
  */
-class TransactionId extends AbstractScalarFilter
+class TransactionId extends AbstractScalar
 {
     /**
      * @inheritDoc

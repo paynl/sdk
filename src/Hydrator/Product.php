@@ -19,6 +19,8 @@ class Product extends ClassMethods
     /**
      * @inheritDoc
      *
+     * @throws InvalidArgumentException when given object is not a Product model
+     *
      * @return ProductModel
      */
     public function hydrate(array $data, $object): ProductModel

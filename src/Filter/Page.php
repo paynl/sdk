@@ -8,7 +8,7 @@ namespace PayNL\Sdk\Filter;
  *
  * @package PayNL\Sdk\Filter
  */
-class Page extends AbstractScalarFilter
+class Page extends AbstractScalar
 {
     public function getName(): string
     {

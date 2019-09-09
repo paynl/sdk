@@ -26,8 +26,7 @@ class Refund extends ClassMethods
      * @param array $data
      * @param object $object
      *
-     * @throws InvalidArgumentException
-     * @throws Exception
+     * @throws InvalidArgumentException when given object is not an instance of Refund model
      *
      * @return RefundModel
      *

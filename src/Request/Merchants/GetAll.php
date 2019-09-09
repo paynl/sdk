@@ -27,5 +27,4 @@ class GetAll extends AbstractRequest
     {
         return static::METHOD_GET;
     }
-
 }

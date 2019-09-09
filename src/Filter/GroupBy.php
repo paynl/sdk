@@ -8,7 +8,7 @@ namespace PayNL\Sdk\Filter;
  *
  * @package PayNL\Sdk\Filter
  */
-class GroupBy extends AbstractArrayFilter
+class GroupBy extends AbstractArray
 {
     /**
      * @inheritDoc

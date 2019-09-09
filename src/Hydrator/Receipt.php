@@ -18,6 +18,8 @@ class Receipt extends ClassMethods
     /**
      * @inheritDoc
      *
+     * @throws InvalidArgumentException when given object is not an instance of Receipt model
+     *
      * @return ReceiptModel
      */
     public function hydrate(array $data, $object): ReceiptModel

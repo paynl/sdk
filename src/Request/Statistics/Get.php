@@ -28,6 +28,8 @@ class Get extends AbstractRequest
     }
 
     /**
+     * @throws UnexpectedValueException when type is prohibited
+     *
      * @return string
      */
     public function getType(): string

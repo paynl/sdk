@@ -23,7 +23,7 @@ trait JsonSerializeTrait
 
         $var = get_object_vars($this);
         foreach ($var as &$value) {
-            if (is_object($value) && method_exists($value, 'jsonSerialize')) {
+            if (is_object($value) === true && method_exists($value, 'jsonSerialize') === true) {
                 $value = $value->jsonSerialize();
             }
         }

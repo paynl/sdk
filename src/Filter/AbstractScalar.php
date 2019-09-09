@@ -10,7 +10,7 @@ use PayNL\Sdk\Exception\InvalidArgumentException;
  *
  * @package PayNL\Sdk\Filter
  */
-abstract class AbstractScalarFilter implements FilterInterface
+abstract class AbstractScalar implements FilterInterface
 {
     /**
      * @var string
@@ -21,6 +21,8 @@ abstract class AbstractScalarFilter implements FilterInterface
      * AbstractFilter constructor.
      *
      * @param mixed $value
+     *
+     * @throws InvalidArgumentException when given argument is not a string nor an integer
      */
     public function __construct($value)
     {
@@ -31,7 +33,7 @@ abstract class AbstractScalarFilter implements FilterInterface
                 sprintf(
                     '%s expects argument given to be a string or an integer, %s given',
                     __METHOD__,
-                    is_object($value) ? get_class($value) : gettype($value)
+                    is_object($value) === true ? get_class($value) : gettype($value)
                 )
             );
         }
@@ -49,7 +51,7 @@ abstract class AbstractScalarFilter implements FilterInterface
     /**
      * @param string $value
      *
-     * @return AbstractScalarFilter
+     * @return AbstractScalar
      */
     public function setValue(string $value): self
     {

@@ -18,6 +18,8 @@ class Terminal extends ClassMethods
     /**
      * @inheritDoc
      *
+     * @throws InvalidArgumentException when given object is not an instance of Terminal model
+     *
      * @return TerminalModel
      */
     public function hydrate(array $data, $object): TerminalModel

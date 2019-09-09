@@ -18,6 +18,8 @@ class RecurringTransaction extends ClassMethods
     /**
      * @inheritDoc
      *
+     * @throws InvalidArgumentException when given object is not an instance of RecurringTransaction model
+     *
      * @return RecurringTransactionModel
      */
     public function hydrate(array $data, $object): RecurringTransactionModel

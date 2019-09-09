@@ -18,6 +18,8 @@ class Exchange extends ClassMethods
     /**
      * @inheritDoc
      *
+     * @throws InvalidArgumentException when given argument is not an instance of Exchange model
+     *
      * @return ExchangeModel
      */
     public function hydrate(array $data, $object): ExchangeModel

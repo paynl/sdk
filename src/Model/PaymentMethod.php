@@ -11,7 +11,7 @@ namespace PayNL\Sdk\Model;
 class PaymentMethod implements ModelInterface
 {
     /**
-     * @var int
+     * @var integer
      */
     protected $id;
 
@@ -26,7 +26,7 @@ class PaymentMethod implements ModelInterface
     protected $settings = [];
 
     /**
-     * @return int
+     * @return integer
      */
     public function getId(): int
     {
@@ -34,7 +34,7 @@ class PaymentMethod implements ModelInterface
     }
 
     /**
-     * @param int $id
+     * @param integer $id
      *
      * @return PaymentMethod
      */

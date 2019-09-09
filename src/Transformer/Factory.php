@@ -19,11 +19,14 @@ class Factory
     /**
      * @param string $requestClass
      *
+     * @throws Exception\DomainException when no transformer can be found for given request class name
+     * @throws Exception\LogicException when the transformer is not implemented
+     *
      * @return TransformerInterface
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
-    public static function factory(string $requestClass): TransformerInterface
+    public static function getByRequestClassName(string $requestClass): TransformerInterface
     {
         // TODO create transformer interfaces to recognize the correct transformer instead its based on request class name?
         switch ($requestClass) {
@@ -33,7 +36,6 @@ class Factory
                 break;
             case Request\Merchants\GetAll::class:
             case Request\Merchants\Get::class:
-            case Request\Merchants\AddBankAccount::class:
                 $transformerClass = Transformer\Merchant::class;
                 break;
             case Request\Refunds\Get::class:
@@ -65,7 +67,7 @@ class Factory
                 $transformerClass = Transformer\Receipt::class;
                 break;
             default:
-                throw new Exception\DomainException( // TODO errors to separate class?
+                throw new Exception\DomainException(
                     sprintf(
                         'No transformer found for "%s"',
                         $requestClass

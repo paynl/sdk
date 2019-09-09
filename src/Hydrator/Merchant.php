@@ -26,8 +26,6 @@ class Merchant extends ClassMethods
     /**
      * @inheritDoc
      *
-     * @throws Exception
-     *
      * @return MerchantModel
      */
     public function hydrate(array $data, $object): MerchantModel

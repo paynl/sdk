@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace PayNL\Sdk\Hydrator;
 
 use PayNL\Sdk\Exception\InvalidArgumentException;
-use PayNL\Sdk\Validator\ObjectInstance as ObjectInstanceValidator;;
+use PayNL\Sdk\Validator\ObjectInstance as ObjectInstanceValidator;
 use Zend\Hydrator\ClassMethods;
 use PayNL\Sdk\Model\BankAccount as BankAccountModel;
 
@@ -17,6 +17,8 @@ class BankAccount extends ClassMethods
 {
     /**
      * @inheritDoc
+     *
+     * @throws InvalidArgumentException when given object is not an instance of BankAccount model
      *
      * @return BankAccountModel
      */

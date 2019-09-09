@@ -19,6 +19,8 @@ class Status extends ClassMethods
     /**
      * @inheritDoc
      *
+     * @throws InvalidArgumentException when given object is not an instance of Status model
+     *
      * @return StatusModel
      */
     public function hydrate(array $data, $object): StatusModel
@@ -31,7 +33,7 @@ class Status extends ClassMethods
         }
 
         if (true === array_key_exists('date', $data)) {
-            $data['date'] = false === empty($data['date']) ? DateTime::createFromFormat(DateTime::ATOM, $data['date']) : null;
+            $data['date'] = empty($data['date']) === true ? null : DateTime::createFromFormat(DateTime::ATOM, $data['date']);
         }
 
         if (false === array_key_exists('reason', $data) || true === empty($data['reason'])) {

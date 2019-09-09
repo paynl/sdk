@@ -44,6 +44,4 @@ class Refund extends AbstractRequest
     {
         return static::METHOD_PATCH;
     }
-
-
 }

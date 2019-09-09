@@ -271,7 +271,7 @@ abstract class AbstractRequest implements RequestInterface
         $body = $rawBody;
         // initiate transformer (... more than meets the eye ;-) )
         if (static::FORMAT_OBJECTS === $this->getFormat()) {
-            $transformer = Factory::factory(static::class);
+            $transformer = Factory::getByRequestClassName(static::class);
             if (true === $this->isDebug()) {
                 $this->dumpDebugInfo('Use transformer: ' . get_class($transformer));
             }

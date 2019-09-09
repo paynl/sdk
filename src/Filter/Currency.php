@@ -8,7 +8,7 @@ namespace PayNL\Sdk\Filter;
  *
  * @package PayNL\Sdk\Filter
  */
-class Currency extends AbstractScalarFilter
+class Currency extends AbstractScalar
 {
     /**
      * @inheritDoc

@@ -11,12 +11,12 @@ namespace PayNL\Sdk;
 trait DebugTrait
 {
     /**
-     * @var bool
+     * @var boolean
      */
     protected $debug = false;
 
     /**
-     * @param bool $debug
+     * @param boolean $debug
      *
      * @return self
      */
@@ -27,7 +27,7 @@ trait DebugTrait
     }
 
     /**
-     * @return bool
+     * @return boolean
      */
     public function isDebug(): bool
     {

@@ -14,6 +14,6 @@ $request = new GetRefundRequest('RF-7039-3062-3700');
 $api = new Api($authAdapter);
 $response = $api->handleCall($request);
 
-print '<pre/>';
+echo '<pre/>';
 print_r($response);
 exit(0);

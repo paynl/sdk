@@ -10,10 +10,16 @@ namespace PayNL\Sdk\Validator;
  */
 class InputType extends AbstractValidator
 {
+    /*
+     * Message type constant definitions
+     */
     protected const MSG_NO_TYPE            = 'NoType';
     protected const MSG_VALUE_IS_AN_OBJECT = 'ValueIsAnObject';
     protected const MSG_WRONG_TYPE         = 'WrongType';
 
+    /**
+     * @var array
+     */
     protected $messageTemplates = [
         self::MSG_NO_TYPE            => 'No type given to check upon',
         self::MSG_VALUE_IS_AN_OBJECT => 'Given value is an object',
@@ -22,6 +28,7 @@ class InputType extends AbstractValidator
 
     /**
      * @inheritDoc
+     * @param string|null $type
      */
     public function isValid($value, string $type = null): bool
     {

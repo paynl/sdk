@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk;
 
+use \Exception;
 use PayNL\Sdk\Exception\InvalidArgumentException;
 
 /**
@@ -17,7 +18,6 @@ class DateTime extends \DateTime implements \JsonSerializable
      * @param string $time
      * @param \DateTimeZone|null $timezone
      *
-     * @throws \Exception
      * @throws InvalidArgumentException
      *
      * @return bool|DateTime
@@ -26,15 +26,16 @@ class DateTime extends \DateTime implements \JsonSerializable
      */
     public static function createFromFormat($format, $time, $timezone = null)
     {
-        /** @var \DateTime $dateTime */
-        $dateTime = parent::createFromFormat($format, $time, $timezone);
-        if (!$dateTime instanceof \DateTime) {
+        try {
+            /** @var \DateTime $dateTime */
+            $dateTime = parent::createFromFormat($format, $time, $timezone);
+
+            return (new self())->setTimestamp($dateTime->getTimestamp());
+        } catch (Exception $e) {
             throw new InvalidArgumentException(
                 'Invalid time given'
             );
         }
-
-        return (new self())->setTimestamp($dateTime->getTimestamp());
     }
 
     /**

@@ -41,8 +41,7 @@ class Transaction extends ClassMethods
     /**
      * @inheritDoc
      *
-     * @throws InvalidArgumentException
-     * @throws Exception
+     * @throws InvalidArgumentException when given object is not an instance of Transaction model
      *
      * @return TransactionModel
      *
@@ -94,10 +93,9 @@ class Transaction extends ClassMethods
             }
         }
 
-        if (
-            true === array_key_exists('products', $data) &&
+        if (true === array_key_exists('products', $data) &&
             true === is_array($data['products']) &&
-            0 < sizeof($data['products'])
+            0 < count($data['products'])
         ) {
             foreach ($data['products'] as &$product) {
                 if (false === $product instanceof Product) {
@@ -113,9 +111,9 @@ class Transaction extends ClassMethods
             'createdAt',
             'expiresAt',
         ];
-        foreach($dateFields as $dateField) {
+        foreach ($dateFields as $dateField) {
             if (true === array_key_exists($dateField, $data)) {
-                $data[$dateField] = false === empty($data[$dateField]) ? DateTime::createFromFormat(DateTime::ATOM, $data[$dateField]) : null;
+                $data[$dateField] = empty($data[$dateField]) === true ? null : DateTime::createFromFormat(DateTime::ATOM, $data[$dateField]);
             }
         }
 

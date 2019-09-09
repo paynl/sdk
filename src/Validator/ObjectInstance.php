@@ -10,10 +10,16 @@ namespace PayNL\Sdk\Validator;
  */
 class ObjectInstance extends AbstractValidator
 {
+    /*
+     * Message type constant definitions
+     */
     protected const MSG_NO_CLASS_NAME       = 'NoClassName';
     protected const MSG_VALUE_NOT_AN_OBJECT = 'ValueNotAnObject';
     protected const MSG_WRONG_INSTANCE      = 'WrongInstance';
 
+    /**
+     * @var array
+     */
     protected $messageTemplates = [
         self::MSG_NO_CLASS_NAME       => 'No class name given to check upon',
         self::MSG_VALUE_NOT_AN_OBJECT => 'Given value is not an object',
@@ -22,7 +28,7 @@ class ObjectInstance extends AbstractValidator
 
     /**
      * @inheritDoc
-     * @param string $className
+     * @param string|null $className
      */
     public function isValid($value, string $className = null): bool
     {

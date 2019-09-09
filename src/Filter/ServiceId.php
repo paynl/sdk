@@ -8,7 +8,7 @@ namespace PayNL\Sdk\Filter;
  *
  * @package PayNL\Sdk\Filter
  */
-class ServiceId extends AbstractScalarFilter
+class ServiceId extends AbstractScalar
 {
     public function getName(): string
     {

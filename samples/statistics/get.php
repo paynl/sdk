@@ -20,21 +20,20 @@ $request = (new GetStatisticsRequest(GetStatisticsRequest::TYPE_SESSIONS))
 //    ->addFilter(new Filter\Staffels(1))
     ->addFilter(new Filter\GroupBy([ 'transactions' ]))
 //    ->addFilter(new Filter\Currency('EUR'))
+    // I know weird naming...
     ->addFilter(new Filter\Filters([
         [
             'type'     => 'created',
             'operator' => 'lt',
             'value'    => '2019-05-02'
         ]
-    ])) // I know weird naming...
+    ]))
 //    ->addFilter(new Filter\Page(2))
 ;
 
 $api = new Api($authAdapter);
 $response = $api->handleCall($request);
 
-print '<pre/>';
+echo '<pre/>';
 print_r($response);
 exit(0);
-
-

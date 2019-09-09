@@ -30,5 +30,4 @@ class PaymentMethod extends AbstractTransformer
 
         return $inputToTransform;
     }
-
 }

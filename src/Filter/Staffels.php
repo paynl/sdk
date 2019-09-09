@@ -8,7 +8,7 @@ namespace PayNL\Sdk\Filter;
  *
  * @package PayNL\Sdk\Filter
  */
-class Staffels extends AbstractScalarFilter
+class Staffels extends AbstractScalar
 {
     /**
      * @inheritDoc

@@ -56,5 +56,4 @@ class Get extends AbstractRequest
     {
         return static::METHOD_GET;
     }
-
 }

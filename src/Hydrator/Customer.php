@@ -21,7 +21,7 @@ class Customer extends ClassMethods
     /**
      * @inheritDoc
      *
-     * @throws Exception
+     * @throws InvalidArgumentException when given object is not an instance of Customer model
      *
      * @return CustomerModel
      */
@@ -55,7 +55,7 @@ class Customer extends ClassMethods
         }
 
         if (true === array_key_exists('birthDate', $data)) {
-            $data['birthDate'] = (false === empty($data['birthDate']) ? DateTime::createFromFormat(DateTime::ATOM, $data['birthDate']) : null);
+            $data['birthDate'] = (empty($data['birthDate']) === true ? null : DateTime::createFromFormat(DateTime::ATOM, $data['birthDate']));
         }
 
         /** @var CustomerModel $customer */

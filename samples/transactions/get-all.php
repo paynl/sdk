@@ -13,7 +13,8 @@ use PayNL\Sdk\Filter;
 
 //$serviceId = 'SL-3490-4320';
 $serviceId = 'SL-5350-2350';
-$paymentMethodId = 10; // iDeal
+// iDeal = 10
+$paymentMethodId = 10;
 $page = 2;
 
 $authAdapter = getAuthAdapter();
@@ -30,6 +31,6 @@ $request->setFormat(RequestInterface::FORMAT_OBJECTS)
 $api = new Api($authAdapter);
 $response = $api->handleCall($request);
 
-print '<pre/>';
+echo '<pre/>';
 print_r($response);
 exit(0);

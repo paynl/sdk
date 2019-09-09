@@ -29,5 +29,4 @@ class Approve extends StatusChange
     {
         return static::METHOD_PATCH;
     }
-
 }

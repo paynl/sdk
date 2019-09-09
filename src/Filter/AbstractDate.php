@@ -8,27 +8,37 @@ use \Exception;
 use PayNL\Sdk\Exception\InvalidArgumentException;
 
 /**
- * Class AbstractDateFilter
+ * Class AbstractDate
  *
  * @package PayNL\Sdk\Filter
  */
-abstract class AbstractDateFilter extends AbstractScalarFilter
+abstract class AbstractDate extends AbstractScalar
 {
     /**
      * @inheritDoc
      *
-     * @throws Exception
+     * @throws InvalidArgumentException when given argument is not a string nor a DateTime object
      */
     public function __construct($value)
     {
         if (true === is_string($value)) {
-            $value = new DateTime($value);
+            try {
+                $value = new DateTime($value);
+            } catch (Exception $e) {
+                throw new InvalidArgumentException(
+                    sprintf(
+                        'Can not convert "%s" to a %s object',
+                        $value,
+                        DateTime::class
+                    )
+                );
+            }
         } elseif (false === ($value instanceof DateTime)) {
             throw new InvalidArgumentException(
                 sprintf(
                     '%s expects argument given to be a string or DateTime object, %s given',
                     __METHOD__,
-                    true === is_object($value) ? get_class($value) : gettype($value)
+                    is_object($value) === true ? get_class($value) : gettype($value)
                 )
             );
         }

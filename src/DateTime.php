@@ -28,7 +28,7 @@ class DateTime extends \DateTime implements \JsonSerializable
     {
         /** @var \DateTime $dateTime */
         $dateTime = parent::createFromFormat($format, $time, $timezone);
-        if (false === $dateTime) {
+        if (!$dateTime instanceof \DateTime) {
             throw new InvalidArgumentException(
                 'Invalid time given'
             );

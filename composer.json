@@ -29,15 +29,15 @@
   "autoload":{
     "psr-4": {
       "PayNL\\Sdk\\": "src/"
-    },
-    "files": [
-      "./samples/init.php"
-    ]
+    }
   },
   "autoload-dev": {
     "psr-4": {
       "Tests\\Unit\\PayNL\\Sdk\\": "tests/"
-    }
+    },
+    "files": [
+      "./samples/init.php"
+    ]
   },
   "minimum-stability": "stable",
   "prefer-stable": true,

@@ -12,13 +12,44 @@
     </description>
 
     <rule ref="rulesets/unusedcode.xml" />
-    <rule ref="rulesets/cleancode.xml" />
+    <rule ref="rulesets/cleancode.xml">
+        <exclude name="StaticAccess" />
+    </rule>
     <rule ref="rulesets/design.xml">
-        <properties>
-            <property name="unwanted-functions" value="var_dump,print_r,debug_zval_dump,debug_print_backtrace,dump" description="Comma separated list of suspect function images." />
-        </properties>
+        <exclude name="DevelopmentCodeFragment" />
     </rule>
     <rule ref="rulesets/codesize.xml" />
-    <rule ref="rulesets/naming.xml" />
+    <rule ref="rulesets/naming.xml">
+        <exclude name="ShortVariable" />
+        <exclude name="LongVariable" />
+    </rule>
     <rule ref="rulesets/controversial.xml" />
+
+    <!-- overrides -->
+    <rule ref="rulesets/cleancode.xml/StaticAccess">
+        <properties>
+            <property name="exceptions">
+                <value>
+                    \PayNL\Sdk\Config,
+                    \PayNL\Sdk\Transformer\Factory,
+                    \PayNL\Sdk\DateTime
+                </value>
+            </property>
+        </properties>
+    </rule>
+    <rule ref="rulesets/design.xml/DevelopmentCodeFragment">
+        <properties>
+            <property name="unwanted-functions" value="var_dump,print_r,debug_zval_dump,debug_print_backtrace,dump" />
+        </properties>
+    </rule>
+    <rule ref="rulesets/naming.xml/ShortVariable">
+        <properties>
+            <property name="exceptions" value="id" />
+        </properties>
+    </rule>
+    <rule ref="rulesets/naming.xml/LongVariable">
+        <properties>
+            <property name="maximum" value="25" />
+        </properties>
+    </rule>
 </ruleset>

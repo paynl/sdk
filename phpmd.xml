@@ -18,7 +18,10 @@
     <rule ref="rulesets/design.xml">
         <exclude name="DevelopmentCodeFragment" />
     </rule>
-    <rule ref="rulesets/codesize.xml" />
+    <rule ref="rulesets/codesize.xml">
+        <exclude name="ExcessivePublicCount" />
+        <exclude name="TooManyFields" />
+    </rule>
     <rule ref="rulesets/naming.xml">
         <exclude name="ShortVariable" />
         <exclude name="LongVariable" />
@@ -51,6 +54,16 @@
     <rule ref="rulesets/naming.xml/LongVariable">
         <properties>
             <property name="maximum" value="25" />
+        </properties>
+    </rule>
+    <rule ref="rulesets/codesize.xml/ExcessivePublicCount">
+        <properties>
+            <property name="minimum" value="61" />
+        </properties>
+    </rule>
+    <rule ref="rulesets/codesize.xml/TooManyFields">
+        <properties>
+            <property name="maxfields" value="30" />
         </properties>
     </rule>
 </ruleset>

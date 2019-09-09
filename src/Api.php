@@ -42,13 +42,13 @@ class Api
     {
         if (true === is_string($adapterOrUsername)) {
             $adapterOrUsername = new Basic($adapterOrUsername, (string)$password);
-        } elseif (false === ($adapterOrUsername instanceof AdapterInterface)) {
+        } elseif (!$adapterOrUsername instanceof AdapterInterface) {
             throw new InvalidArgumentException(
                 sprintf(
                     '%s expect argument given to be %s or a string, %s given',
                     __CLASS__,
                     AdapterInterface::class,
-                    is_object($adapterOrUsername) ? get_class($adapterOrUsername) : gettype($adapterOrUsername)
+                    (is_object($adapterOrUsername) ? get_class($adapterOrUsername) : gettype($adapterOrUsername))
                 )
             );
         }

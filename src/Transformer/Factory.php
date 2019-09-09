@@ -11,6 +11,8 @@ use PayNL\Sdk\Exception;
  * Class Factory
  *
  * @package PayNL\Sdk\Transformer
+ *
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class Factory
 {
@@ -18,6 +20,8 @@ class Factory
      * @param string $requestClass
      *
      * @return TransformerInterface
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public static function factory(string $requestClass): TransformerInterface
     {

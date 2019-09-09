@@ -29,9 +29,9 @@ declare(strict_types=1);
                 <a href="currencies/get.php" target="_blank">Get currency</a>
             </div>
             <h2>Invoices</h2>
-            <div>
-                <a href="invoices/index.php" target="_blank">Invoices</a>
-            </div>
+<!--            <div>-->
+<!--                <a href="invoices/index.php" target="_blank">Invoices</a>-->
+<!--            </div>-->
             <h2>Merchants</h2>
             <h2>Refunds</h2>
             <h2>Services</h2>
@@ -39,7 +39,7 @@ declare(strict_types=1);
             <h2>Terminals</h2>
             <h2>Transactions</h2>
             <div>
-                <a href="transactions/get.php" target="_blank">Get Transactions</a>
+                <a href="transactions/getAll.php" target="_blank">Get Transactions</a>
             </div>
         </div>
     </body>

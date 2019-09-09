@@ -9,6 +9,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use PayNL\Sdk\Exception\InvalidArgumentException;
 use PayNL\Sdk\Response;
 use PayNL\Sdk\Transformer\Factory;
+use PayNL\Sdk\Filter\FilterInterface;
 
 /**
  * Class AbstractRequest
@@ -31,6 +32,11 @@ abstract class AbstractRequest implements RequestInterface
      * @var Client
      */
     protected $client;
+
+    /**
+     * @var array
+     */
+    protected $filters = [];
 
     /**
      * @return string
@@ -125,14 +131,81 @@ abstract class AbstractRequest implements RequestInterface
     }
 
     /**
+     * @return array
+     */
+    public function getFilters(): array
+    {
+        return $this->filters;
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return FilterInterface|null
+     */
+    public function getFilter(string $name): ?FilterInterface
+    {
+        if (false === array_key_exists($name, $this->filters)) {
+            return null;
+        }
+        return $this->filters[$name];
+    }
+
+    /**
+     * @param array $filters
+     *
+     * @return AbstractRequest
+     */
+    public function setFilters(array $filters): self
+    {
+        // "validate" the filters
+        foreach ($filters as $filter) {
+            if (false === ($filter instanceof FilterInterface)) {
+                throw new InvalidArgumentException(
+                    sprintf(
+                        '%s is not an instance of %s',
+                        is_object($filter) ? get_class($filter) : gettype($filter),
+                        FilterInterface::class
+                    )
+                );
+            }
+            $this->addFilter($filter);
+        }
+        return $this;
+    }
+
+    /**
+     * @param FilterInterface $filter
+     *
+     * @return AbstractRequest
+     */
+    public function addFilter(FilterInterface $filter): self
+    {
+        $this->filters[$filter->getName()] = $filter;
+        return $this;
+    }
+
+    /**
      * @throws GuzzleException
      *
      * @return Response
      */
     public function execute(): Response
     {
+        $uri = $this->getUri();
+        $filters = $this->getFilters();
+        if (0 < count($filters)) {
+            $uri .= '?';
+            foreach ($filters as $filter) {
+                // TODO @Mike: sanitizing filter name and value?
+                $uri .= $filter->getName() . '=' . $filter->getValue() . '&';
+            }
+            $uri = rtrim($uri, '&');
+        }
+
         // create a Guzzle PSR 7 Request
-        $guzzleRequest = new Request($this->getMethod(), $this->getUri(), $this->getHeaders());
+        $guzzleRequest = new Request($this->getMethod(), $uri, $this->getHeaders());
+//dump((string)$guzzleRequest->getUri());
         $guzzleResponse = $this->getClient()->send($guzzleRequest);
 
         $body = $guzzleResponse->getBody()->getContents();

@@ -40,7 +40,7 @@ abstract class AbstractArray implements FilterInterface
      */
     final public function getValue(): string
     {
-        return implode($this->getValues());
+        return implode(',', $this->getValues());
     }
 
     /**

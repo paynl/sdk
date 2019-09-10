@@ -31,7 +31,7 @@ class AbstractScalarTest extends UnitTest
      *
      * @return void
      */
-    public function _before()
+    public function _before(): void
     {
         $this->anonymousClassFromAbstract = new class(1) extends AbstractScalar {
             public function getName(): string

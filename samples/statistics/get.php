@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 throw new Exception('TODO: fixen met Mike!!');
 require_once __DIR__ . '/../init.php';

@@ -12,7 +12,7 @@ use PayNL\Sdk\Filter\FilterInterface;
 use UnitTester;
 
 /**
- * Class AbstractScalarTest
+ * Class AbstractDateTest
  *
  * @package Tests\Unit\PayNL\Sdk\Filter
  */

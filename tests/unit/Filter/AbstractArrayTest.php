@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace Tests\Unit\PayNL\Sdk\Filter;
 
 use Codeception\Test\Unit as UnitTest;
-use PayNL\Sdk\Exception\InvalidArgumentException;
 use PayNL\Sdk\Filter\AbstractArray;
 use PayNL\Sdk\Filter\FilterInterface;
 use UnitTester;
 
 /**
- * Class AbstractScalarTest
+ * Class AbstractArrayTest
  *
  * @package Tests\Unit\PayNL\Sdk\Filter
  */

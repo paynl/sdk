@@ -54,7 +54,7 @@ abstract class AbstractScalar implements FilterInterface
      *
      * @return AbstractScalar
      */
-    public function setValue(string $value): self
+    protected function setValue(string $value): self
     {
         $this->value = $value;
         return $this;

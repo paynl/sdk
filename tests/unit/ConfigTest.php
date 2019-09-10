@@ -8,6 +8,11 @@ use Codeception\Test\Unit as UnitTest;
 use PayNL\Sdk\Config;
 use UnitTester;
 
+/**
+ * Class ConfigTest
+ *
+ * @package Tests\Unit\PayNL\Sdk
+ */
 class ConfigTest extends UnitTest
 {
     /**
@@ -20,11 +25,17 @@ class ConfigTest extends UnitTest
      */
     protected $config;
 
+    /**
+     * @return void
+     */
     public function _before(): void
     {
         $this->config = Config::getInstance();
     }
 
+    /**
+     * @return void
+     */
     public function testItIsASingleton(): void
     {
         $config = Config::getInstance();
@@ -36,6 +47,9 @@ class ConfigTest extends UnitTest
         verify($this->tester->getMethodAccessibility($config, '__clone'))->equals('private');
     }
 
+    /**
+     * @return void
+     */
     public function testItCanLoadAConfigurationArray(): void
     {
         $this->config->load([

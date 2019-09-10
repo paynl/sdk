@@ -12,39 +12,41 @@ use Paynl\Result\Transaction as Result;
  */
 class Transaction
 {
-    /** @var string Arikel / product */
+    /** @var string Arikel / Normal retail article */
     const PRODUCT_TYPE_ARTICLE = 'ARTICLE';
-    /** @var string Hoog risico product (mobiele telefoon, laptop) */
+    /** @var string Retail product with high fraud risk, easy to resell (mobile phones, tablets, laptops) */
     const PRODUCT_TYPE_ARTICLE_H = 'ARTICLE_H';
-    /** @var string Gratis artikel, welke een waarde vertegenwoordigd */
+    /** @var string Voucher for a free article or discount for next order */
     const PRODUCT_TYPE_VOUCHER = 'VOUCHER';
-    /** @var string Kaart welke eenmalig is in te wisselen (gemiddeld fraude risico) */
+    /** @var string Card that obtains a value for a group of merchant (medium risk) */
     const PRODUCT_TYPE_GIFTCARD = 'GIFTCARD';
-    /** @var string Hoger risico digitaal geld (steam/paysafecard etc.) */
+    /** @var string High risk vouchers that can be used widely (iTunes/steam/paysafecard etc.) */
     const PRODUCT_TYPE_EMONEY = 'EMONEY';
-    /** @var string Opwaarding van een bestaand account/wallet */
+    /** @var string Add funds to an account (owned by a person or company) if you sell anonymore accounts or temp accounts use EMONEY */
     const PRODUCT_TYPE_TOPUP = 'TOPUP';
-    /** @var string Digitale waarde, zoals een BitCoin, Litecoin of andere altcoin */
+    /** @var string Ticket for events, festivals or theaters */
+    const PRODUCT_TYPE_TICKET = 'TICKET';
+    /** @var string Digital currency like BitCoin, Litecoin or other altcoin */
     const PRODUCT_TYPE_CRYPTO = 'CRYPTO';
-    /** @var string Betaling ter bevestiging van een extern accounts */
+    /** @var string Verification payment to check idententy or account/name verification. */
     const PRODUCT_TYPE_IDENTITY = 'IDENTITY';
-    /** @var string Betaling van een factuur */
+    /** @var string Payment for a invoice (products or service must allready be delivered) */
     const PRODUCT_TYPE_INVOICE = 'INVOICE';
-    /** @var string Digitale overdracht van een bestand */
+    /** @var string Digital transfer of a file (foto, video, data) */
     const PRODUCT_TYPE_DOWNLOAD = 'DOWNLOAD';
-    /** @var string Digitaal product welke bewaard op de server van de ondernemer (bijvoorbeeld: asset binnen een game) */
+    /** @var string Digital asset, stored on the server of the merchant (IN-GAME puchase) */
     const PRODUCT_TYPE_VIRTUAL = 'VIRTUAL';
-    /** @var string Creditfactuur of product (van een eerdere order) */
+    /** @var string Credit of a previous payment */
     const PRODUCT_TYPE_CREDIT = 'CREDIT';
-    /** @var string Administratie- of handelingskosten */
+    /** @var string Costs that are added for handling of the order */
     const PRODUCT_TYPE_HANDLING = 'HANDLING';
-    /** @var string Betalingskosten */
+    /** @var string Payment fees */
     const PRODUCT_TYPE_PAYMENT = 'PAYMENT';
-    /** @var string Verzendkosten */
+    /** @var string Costs for shipment */
     const PRODUCT_TYPE_SHIPPING = 'SHIPPING';
-    /** @var string Algemene korting */
+    /** @var string Discount for the total order */
     const PRODUCT_TYPE_DISCOUNT = 'DISCOUNT';
-
+    
     /**
      * Start a new transaction
      *

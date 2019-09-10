@@ -65,7 +65,7 @@ class Config
         // to prevent object copies - singleton pattern
     }
 
-    public function load(array $config): self
+    public function load(array $config): void
     {
         if (true === array_key_exists(self::KEY_API_URL, $config)) {
             $this->setApiUrl($config[self::KEY_API_URL]);
@@ -78,8 +78,6 @@ class Config
         if (true === array_key_exists(self::KEY_PASSWORD, $config)) {
             $this->setPassword($config[self::KEY_PASSWORD]);
         }
-
-        return $this;
     }
 
     /**

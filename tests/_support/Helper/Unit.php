@@ -6,6 +6,7 @@ namespace Helper;
 
 use \Exception;
 use \ReflectionClass;
+use \ReflectionException;
 use Codeception\Module;
 
 /**
@@ -34,5 +35,28 @@ class Unit extends Module
         $method->setAccessible(true);
 
         return $method->invokeArgs($object, $parameters);
+    }
+
+    /**
+     * @param $object
+     * @param string $methodName
+     *
+     * @throws ReflectionException
+     *
+     * @return string
+     */
+    public function getMethodAccessibility($object, string $methodName): string
+    {
+        $reflection = new ReflectionClass(get_class($object));
+        $method = $reflection->getMethod($methodName);
+        if (true === $method->isPrivate()) {
+            return 'private';
+        }
+
+        if (true === $method->isProtected()) {
+            return 'protected';
+        }
+
+        return 'public';
     }
 }

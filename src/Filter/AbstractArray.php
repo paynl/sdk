@@ -48,7 +48,7 @@ abstract class AbstractArray implements FilterInterface
      *
      * @return AbstractArray
      */
-    public function setValues(array $values): self
+    protected function setValues(array $values): self
     {
         $this->values = $values;
         return $this;

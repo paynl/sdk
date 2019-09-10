@@ -47,7 +47,7 @@ class Basic implements AdapterInterface
      *
      * @return Basic
      */
-    public function setUsername(string $username): self
+    protected function setUsername(string $username): self
     {
         $this->username = $username;
         return $this;
@@ -66,7 +66,7 @@ class Basic implements AdapterInterface
      *
      * @return Basic
      */
-    public function setPassword(string $password): self
+    protected function setPassword(string $password): self
     {
         $this->password = $password;
         return $this;

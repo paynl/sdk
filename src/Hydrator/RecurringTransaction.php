@@ -17,6 +17,18 @@ use PayNL\Sdk\Validator\ObjectInstance as ObjectInstanceValidator;
 class RecurringTransaction extends ClassMethods
 {
     /**
+     * Address constructor.
+     *
+     * @param bool $underscoreSeparatedKeys
+     * @param bool $methodExistsCheck
+     */
+    public function __construct($underscoreSeparatedKeys = true, $methodExistsCheck = false)
+    {
+        // override the given params
+        parent::__construct(false, true);
+    }
+
+    /**
      * @inheritDoc
      *
      * @throws InvalidArgumentException when given object is not an instance of RecurringTransaction model

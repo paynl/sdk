@@ -88,7 +88,11 @@ class Refund extends ClassMethods
         }
 
         if (true === array_key_exists('processDate', $data) && false === empty($data['processDate'])) {
-            $data['processDate'] = DateTime::createFromFormat(DateTime::ATOM, $data['processDate']);
+            $processDate = $data['processDate'];
+            if ($processDate instanceof DateTime) {
+                $processDate = $processDate->format(DateTime::ATOM);
+            }
+            $data['processDate'] = DateTime::createFromFormat(DateTime::ATOM, $processDate);
         }
 
         /** @var RefundModel $refund */

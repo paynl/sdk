@@ -45,7 +45,7 @@ class BankAccount implements ModelInterface, JsonSerializable
      */
     public function getBank(): string
     {
-        return $this->bank;
+        return (string)$this->bank;
     }
 
     /**
@@ -121,7 +121,7 @@ class BankAccount implements ModelInterface, JsonSerializable
      */
     public function getReturnUrl(): string
     {
-        return $this->returnUrl;
+        return (string)$this->returnUrl;
     }
 
     /**

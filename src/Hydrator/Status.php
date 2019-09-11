@@ -7,7 +7,7 @@ namespace PayNL\Sdk\Hydrator;
 use PayNL\Sdk\Exception\InvalidArgumentException;
 use PayNL\Sdk\Validator\ObjectInstance as ObjectInstanceValidator;
 use Zend\Hydrator\ClassMethods;
-use \DateTime;
+use PayNL\Sdk\DateTime;
 use PayNL\Sdk\Model\Status as StatusModel;
 
 /**
@@ -46,7 +46,11 @@ class Status extends ClassMethods
         }
 
         if (true === array_key_exists('date', $data)) {
-            $data['date'] = empty($data['date']) === true ? null : DateTime::createFromFormat(DateTime::ATOM, $data['date']);
+            $date = $data['date'];
+            if ($date instanceof DateTime) {
+                $date = $date->format(DateTime::ATOM);
+            }
+            $data['date'] = empty($data['date']) === true ? null : DateTime::createFromFormat(DateTime::ATOM, $date);
         }
 
         if (false === array_key_exists('reason', $data) || true === empty($data['reason'])) {

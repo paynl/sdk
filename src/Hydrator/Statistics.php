@@ -13,6 +13,8 @@ use PayNL\Sdk\Model\Statistics as StatisticsModel;
  * Class Statistics
  *
  * @package PayNL\Sdk\Hydrator
+ *
+ * @deprecated
  */
 class Statistics extends ClassMethods
 {

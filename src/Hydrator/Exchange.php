@@ -13,6 +13,8 @@ use PayNL\Sdk\Model\Exchange as ExchangeModel;
  * Class Exchange
  *
  * @package PayNL\Sdk\Hydrator
+ *
+ * @deprecated
  */
 class Exchange extends ClassMethods
 {

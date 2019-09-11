@@ -57,8 +57,8 @@ class BankAccountTest extends UnitTest
         verify($data)->hasKey('bic');
         verify($data)->hasKey('owner');
 
-        expect($bankAccount->getIban())->equals('NL00RABO0123456789');
-        expect($bankAccount->getBic())->equals('NL00RABO');
-        expect($bankAccount->getOwner())->equals('H. Solo');
+        expect($data['iban'])->equals('NL00RABO0123456789');
+        expect($data['bic'])->equals('NL00RABO');
+        expect($data['owner'])->equals('H. Solo');
     }
 }

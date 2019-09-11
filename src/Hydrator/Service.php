@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Hydrator;
 
-use \Exception;
 use PayNL\Sdk\DateTime;
+use PayNL\Sdk\Exception\InvalidArgumentException;
+use PayNL\Sdk\Validator\ObjectInstance as ObjectInstanceValidator;
 use Zend\Hydrator\ClassMethods;
 use PayNL\Sdk\Model\Service as ServiceModel;
 
@@ -31,19 +32,30 @@ class Service extends ClassMethods
     /**
      * @inheritDoc
      *
-     * @throws Exception
+     * @throws InvalidArgumentException when the given object is not an instance of the Service model
      *
      * @return ServiceModel
      */
     public function hydrate(array $data, $object): ServiceModel
     {
+        $instanceValidator = new ObjectInstanceValidator();
+        if (false === $instanceValidator->isValid($object, ServiceModel::class)) {
+            throw new InvalidArgumentException(
+                implode(PHP_EOL, $instanceValidator->getMessages())
+            );
+        }
+
         $data['description'] = $data['description'] ?? '';
         $data['testMode']    = $data['testMode'] ?? 0;
         $data['secret']      = $data['secret'] ?? '';
 
         $dateField = 'createdAt';
         if (true === array_key_exists($dateField, $data)) {
-            $data[$dateField] = empty($data[$dateField]) === true ? null : DateTime::createFromFormat(DateTime::ATOM, $data[$dateField]);
+            $createdDate = $data[$dateField];
+            if ($createdDate instanceof DateTime) {
+                $createdDate = $createdDate->format(DateTime::ATOM);
+            }
+            $data[$dateField] = empty($data[$dateField]) === true ? null : DateTime::createFromFormat(DateTime::ATOM, $createdDate);
         }
 
         /** @var ServiceModel $service */

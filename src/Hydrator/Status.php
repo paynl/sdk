@@ -18,6 +18,18 @@ use PayNL\Sdk\Model\Status as StatusModel;
 class Status extends ClassMethods
 {
     /**
+     * Address constructor.
+     *
+     * @param bool $underscoreSeparatedKeys
+     * @param bool $methodExistsCheck
+     */
+    public function __construct($underscoreSeparatedKeys = true, $methodExistsCheck = false)
+    {
+        // override the given params
+        parent::__construct(false, true);
+    }
+
+    /**
      * @inheritDoc
      *
      * @throws InvalidArgumentException when given object is not an instance of Status model

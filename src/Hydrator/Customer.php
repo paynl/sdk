@@ -20,6 +20,18 @@ use PayNL\Sdk\Hydrator\BankAccount as BankAccountHydrator;
 class Customer extends ClassMethods
 {
     /**
+     * Address constructor.
+     *
+     * @param bool $underscoreSeparatedKeys
+     * @param bool $methodExistsCheck
+     */
+    public function __construct($underscoreSeparatedKeys = true, $methodExistsCheck = false)
+    {
+        // override the given params
+        parent::__construct(false, true);
+    }
+
+    /**
      * @inheritDoc
      *
      * @throws InvalidArgumentException when given object is not an instance of Customer model

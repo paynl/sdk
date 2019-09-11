@@ -17,6 +17,18 @@ use PayNL\Sdk\Model\Service as ServiceModel;
 class Service extends ClassMethods
 {
     /**
+     * Address constructor.
+     *
+     * @param bool $underscoreSeparatedKeys
+     * @param bool $methodExistsCheck
+     */
+    public function __construct($underscoreSeparatedKeys = true, $methodExistsCheck = false)
+    {
+        // override the given params
+        parent::__construct(false, true);
+    }
+
+    /**
      * @inheritDoc
      *
      * @throws Exception

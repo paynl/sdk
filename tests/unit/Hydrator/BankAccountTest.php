@@ -10,15 +10,26 @@ use PayNL\Sdk\Hydrator\BankAccount as BankAccountHydrator;
 use PayNL\Sdk\Model\BankAccount;
 use Zend\Hydrator\HydratorInterface;
 
+/**
+ * Class BankAccountTest
+ *
+ * @package Tests\Unit\PayNL\Sdk\Hydrator
+ */
 class BankAccountTest extends UnitTest
 {
+    /**
+     * @return void
+     */
     public function testItIsAHydrator(): void
     {
         $hydrator = new BankAccountHydrator();
         verify($hydrator)->isInstanceOf(HydratorInterface::class);
     }
 
-    public function testItShouldOnlyAcceptSipUriObjects(): void
+    /**
+     * @return void
+     */
+    public function testItShouldOnlyAcceptSpecificModel(): void
     {
         $hydrator = new BankAccountHydrator();
 
@@ -28,7 +39,10 @@ class BankAccountTest extends UnitTest
         expect($hydrator->hydrate([], new BankAccount()))->isInstanceOf(BankAccount::class);
     }
 
-    public function testItShouldCorrectlyFillAddressModel(): void
+    /**
+     * @return void
+     */
+    public function testItShouldCorrectlyFillModel(): void
     {
         $hydrator = new BankAccountHydrator();
         $bankAccount = $hydrator->hydrate([
@@ -42,6 +56,9 @@ class BankAccountTest extends UnitTest
         expect($bankAccount->getOwner())->equals('H. Solo');
     }
 
+    /**
+     * @return void
+     */
     public function testItCanExtract(): void
     {
         $hydrator = new BankAccountHydrator();

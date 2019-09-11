@@ -85,6 +85,9 @@ class CustomerTest extends UnitTest
         expect($customer->getBirthDate()->format('Y-m-d'))->equals('1970-01-01');
     }
 
+    /**
+     * @return void
+     */
     public function testItCanExtract(): void
     {
         $hydrator = new CustomerHydrator();

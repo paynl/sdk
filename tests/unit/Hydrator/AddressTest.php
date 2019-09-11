@@ -29,7 +29,7 @@ class AddressTest extends UnitTest
     /**
      * @return void
      */
-    public function testItShouldOnlyAcceptSipUriObjects(): void
+    public function testItShouldOnlyAcceptSpecificModel(): void
     {
         $hydrator = new AddressHydrator();
 
@@ -42,7 +42,7 @@ class AddressTest extends UnitTest
     /**
      * @return void
      */
-    public function testItShouldCorrectlyFillAddressModel(): void
+    public function testItShouldCorrectlyFillModel(): void
     {
         $hydrator = new AddressHydrator();
         $address = $hydrator->hydrate([
@@ -68,6 +68,9 @@ class AddressTest extends UnitTest
         expect($address->getCountryCode())->equals('NL');
     }
 
+    /**
+     * @return void
+     */
     public function testItCanExtract(): void
     {
         $hydrator = new AddressHydrator();

@@ -6,7 +6,7 @@ namespace Tests\Unit\PayNL\Sdk\Filter;
 
 use Codeception\Test\Unit as UnitTest;
 use PayNL\Sdk\DateTime;
-use PayNL\Sdk\Filter\AbstractScalar;
+use PayNL\Sdk\Filter\AbstractDate;
 use PayNL\Sdk\Filter\EndDate;
 use PayNL\Sdk\Filter\FilterInterface;
 
@@ -35,7 +35,7 @@ class EndDateTest extends UnitTest
      */
     public function testItExtendsAbstract(): void
     {
-        verify($this->filter)->isInstanceOf(AbstractScalar::class);
+        verify($this->filter)->isInstanceOf(AbstractDate::class);
     }
 
     /**

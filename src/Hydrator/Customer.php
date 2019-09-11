@@ -68,7 +68,11 @@ class Customer extends ClassMethods
         }
 
         if (true === array_key_exists('birthDate', $data)) {
-            $data['birthDate'] = (empty($data['birthDate']) === true ? null : DateTime::createFromFormat(DateTime::ATOM, $data['birthDate']));
+            $birthDate = $data['birthDate'];
+            if ($birthDate instanceof DateTime) {
+                $birthDate = $birthDate->format(DateTime::ATOM);
+            }
+            $data['birthDate'] = (empty($data['birthDate']) === true ? null : DateTime::createFromFormat(DateTime::ATOM, $birthDate));
         }
 
         /** @var CustomerModel $customer */

@@ -62,6 +62,9 @@ class MerchantTest extends UnitTest
 //        expect($merchant->getInitials())->equals('M');
     }
 
+    /**
+     * @return void
+     */
     public function testItCanExtract(): void
     {
 //        $hydrator = new MerchantHydrator();

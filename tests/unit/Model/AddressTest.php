@@ -41,6 +41,8 @@ class AddressTest extends UnitTest
     public function testIsItJsonSerializable(): void
     {
         verify($this->address)->isInstanceOf(\JsonSerializable::class);
+
+        verify($this->address->jsonSerialize())->array();
     }
 
     /**

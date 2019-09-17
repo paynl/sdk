@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace PayNL\Sdk\Model;
 
 use \JsonSerializable;
+use PayNL\Sdk\Exception\InvalidArgumentException;
+use PayNL\Sdk\Validator\InputType;
 
 /**
  * Class Address
@@ -28,7 +30,7 @@ class Address implements ModelInterface, JsonSerializable
     /**
      * @var string
      */
-    protected $streetNumberExtension;
+    protected $streetNumberExtension = '';
 
     /**
      * @var string
@@ -88,12 +90,23 @@ class Address implements ModelInterface, JsonSerializable
     }
 
     /**
-     * @param string $streetNumber
+     * @param string|integer $streetNumber
+     *
+     * @throws InvalidArgumentException when the given argument is not a string nor an integer
      *
      * @return Address
      */
-    public function setStreetNumber(string $streetNumber): Address
+    public function setStreetNumber($streetNumber): Address
     {
+        $validator = new InputType();
+        if (true === is_int($streetNumber)) {
+            $streetNumber = (string)$streetNumber;
+        } elseif (false === $validator->isValid($streetNumber, 'string')) {
+            throw new InvalidArgumentException(
+                implode(PHP_EOL, $validator->getMessages())
+            );
+        }
+
         $this->streetNumber = $streetNumber;
         return $this;
     }

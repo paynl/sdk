@@ -40,6 +40,8 @@ class AmountTest extends UnitTest
     public function testIsItJsonSerializable(): void
     {
         verify($this->amount)->isInstanceOf(\JsonSerializable::class);
+
+        verify($this->amount->jsonSerialize())->array();
     }
 
     /**

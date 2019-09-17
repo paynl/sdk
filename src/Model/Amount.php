@@ -41,11 +41,10 @@ class Amount implements ModelInterface, JsonSerializable
      *
      * @return Amount
      */
-    public function setAmount(?int $amount): Amount
+    public function setAmount(int $amount): Amount
     {
-        if (null !== $amount) {
-            $this->amount = $amount;
-        }
+        $this->amount = $amount;
+
         return $this;
     }
 

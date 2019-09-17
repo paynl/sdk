@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Model;
 
-use \LogicException;
+use PayNL\Sdk\Exception\LogicException;
 
 /**
  * Trait JsonSerializeTrait

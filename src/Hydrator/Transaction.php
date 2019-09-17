@@ -126,7 +126,11 @@ class Transaction extends ClassMethods
         ];
         foreach ($dateFields as $dateField) {
             if (true === array_key_exists($dateField, $data)) {
-                $data[$dateField] = empty($data[$dateField]) === true ? null : DateTime::createFromFormat(DateTime::ATOM, $data[$dateField]);
+                $date = $data[$dateField];
+                if ($date instanceof DateTime) {
+                    $date = $date->format(DateTime::ATOM);
+                }
+                $data[$dateField] = empty($data[$dateField]) === true ? null : DateTime::createFromFormat(DateTime::ATOM, $date);
             }
         }
 

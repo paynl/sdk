@@ -253,7 +253,7 @@ class Transaction implements ModelInterface, JsonSerializable
     /**
      * @return Exchange
      */
-    public function getExchange(): Exchange
+    public function getExchange(): ?Exchange
     {
         return $this->exchange;
     }

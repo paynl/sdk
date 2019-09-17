@@ -31,12 +31,12 @@ class Product implements ModelInterface, JsonSerializable
     protected $price;
 
     /**
-     * @var string
+     * @var float
      */
     protected $quantity;
 
     /**
-     * @var string
+     * @var integer
      */
     protected $vat;
 
@@ -98,38 +98,38 @@ class Product implements ModelInterface, JsonSerializable
     }
 
     /**
-     * @return string
+     * @return float
      */
-    public function getQuantity(): string
+    public function getQuantity(): float
     {
         return $this->quantity;
     }
 
     /**
-     * @param string $quantity
+     * @param float $quantity
      *
      * @return Product
      */
-    public function setQuantity(string $quantity): Product
+    public function setQuantity(float $quantity): Product
     {
         $this->quantity = $quantity;
         return $this;
     }
 
     /**
-     * @return string
+     * @return integer
      */
-    public function getVat(): string
+    public function getVat(): int
     {
         return $this->vat;
     }
 
     /**
-     * @param string $vat
+     * @param integer $vat
      *
      * @return Product
      */
-    public function setVat(string $vat): Product
+    public function setVat(int $vat): Product
     {
         $this->vat = $vat;
         return $this;

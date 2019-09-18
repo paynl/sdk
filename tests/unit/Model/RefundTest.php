@@ -5,9 +5,13 @@ declare(strict_types=1);
 namespace Tests\Unit\PayNL\Sdk\Model;
 
 use Codeception\Test\Unit as UnitTest;
+use PayNL\Sdk\DateTime;
 use PayNL\Sdk\Model\Amount;
+use PayNL\Sdk\Model\BankAccount;
+use PayNL\Sdk\Model\Product;
 use PayNL\Sdk\Model\Refund;
 use PayNL\Sdk\Model\ModelInterface;
+use PayNL\Sdk\Model\Status;
 
 /**
  * Class RefundTest
@@ -107,5 +111,115 @@ class RefundTest extends UnitTest
         verify($this->refund->getDescription())->string();
         verify($this->refund->getDescription())->notEmpty();
         verify($this->refund->getDescription())->equals('Refund description');
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanSetABankAccount(): void
+    {
+        expect($this->refund->setBankAccount(new BankAccount()))->isInstanceOf(Refund::class);
+    }
+
+    /**
+     * @depends testItCanSetABankAccount
+     *
+     * @return void
+     */
+    public function testItCanGetABankAccount(): void
+    {
+        $this->refund->setBankAccount(new BankAccount());
+
+        verify($this->refund->getBankAccount())->notEmpty();
+        verify($this->refund->getBankAccount())->isInstanceOf(BankAccount::class);
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanSetAStatus(): void
+    {
+        expect($this->refund->setStatus(new Status()))->isInstanceOf(Refund::class);
+    }
+
+    /**
+     * @depends testItCanSetAStatus
+     *
+     * @return void
+     */
+    public function testItCanGetAStatus(): void
+    {
+        $this->refund->setStatus(new Status());
+
+        verify($this->refund->getStatus())->notEmpty();
+        verify($this->refund->getStatus())->isInstanceOf(Status::class);
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanSetProducts(): void
+    {
+        expect($this->refund->setProducts([]))->isInstanceOf(Refund::class);
+    }
+
+    /**
+     * @depends testItCanSetProducts
+     *
+     * @return void
+     */
+    public function testItCanGetProducts(): void
+    {
+        $this->refund->setProducts([
+            new Product()
+        ]);
+
+        verify($this->refund->getProducts())->array();
+        verify($this->refund->getProducts())->notEmpty();
+        verify($this->refund->getProducts())->count(1);
+        verify($this->refund->getProducts())->containsOnlyInstancesOf(Product::class);
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanSetAReason(): void
+    {
+        expect($this->refund->setReason('Some reason why'))->isInstanceOf(Refund::class);
+    }
+
+    /**
+     * @depends testItCanSetAReason
+     *
+     * @return void
+     */
+    public function testItCanGetAReason(): void
+    {
+        $this->refund->setReason('Some reason why');
+
+        verify($this->refund->getReason())->string();
+        verify($this->refund->getReason())->notEmpty();
+        verify($this->refund->getReason())->equals('Some reason why');
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanSetAProcessDate(): void
+    {
+        expect($this->refund->setProcessDate(DateTime::createFromFormat('Y-m-d', '2019-09-18')))->isInstanceOf(Refund::class);
+    }
+
+    /**
+     * @depends testItCanSetAProcessDate
+     *
+     * @return void
+     */
+    public function testItCanGetAProcessDate(): void
+    {
+        $this->refund->setProcessDate(DateTime::createFromFormat('Y-m-d', '2019-09-18'));
+
+        verify($this->refund->getProcessDate())->notEmpty();
+        verify($this->refund->getProcessDate())->isInstanceOf(DateTime::class);
     }
 }

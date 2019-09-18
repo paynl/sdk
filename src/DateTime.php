@@ -54,4 +54,14 @@ class DateTime extends \DateTime implements \JsonSerializable
     {
         return $this->format(static::ATOM);
     }
+
+    /**
+     * @throws Exception
+     *
+     * @return DateTime
+     */
+    public static function now(): self
+    {
+        return new self();
+    }
 }

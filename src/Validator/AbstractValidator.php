@@ -14,11 +14,6 @@ use PayNL\Sdk\Exception\InvalidArgumentException;
 abstract class AbstractValidator implements ValidatorInterface
 {
     /**
-     * @var mixed
-     */
-    protected $value;
-
-    /**
      * @var array
      */
     protected $messageTemplates = [];
@@ -27,25 +22,6 @@ abstract class AbstractValidator implements ValidatorInterface
      * @var array
      */
     protected $messages = [];
-
-    /**
-     * @return mixed
-     */
-    public function getValue()
-    {
-        return $this->value;
-    }
-
-    /**
-     * @param mixed $value
-     *
-     * @return AbstractValidator
-     */
-    public function setValue($value): self
-    {
-        $this->value = $value;
-        return $this;
-    }
 
     /**
      * @return array

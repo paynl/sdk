@@ -41,6 +41,9 @@ class ObjectInstance extends AbstractValidator
             $this->error(self::MSG_VALUE_NOT_AN_OBJECT);
         }
 
+        // only validate when previous errors aren't triggered
+        // make sure $className is a string otherwise PHP will freak!
+        $className = (string)$className;
         if (false === ($value instanceof $className) && 0 === count($this->getMessages())) {
             $this->error(self::MSG_WRONG_INSTANCE, get_class($value), $className);
         }

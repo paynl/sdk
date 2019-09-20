@@ -56,7 +56,7 @@ class Merchant implements ModelInterface
     /**
      * @var array
      */
-    protected $tradeNames = [];
+    protected $trademarks = [];
 
     /**
      * @var array
@@ -223,19 +223,19 @@ class Merchant implements ModelInterface
     /**
      * @return array
      */
-    public function getTradeNames(): array
+    public function getTrademarks(): array
     {
-        return $this->tradeNames;
+        return $this->trademarks;
     }
 
     /**
-     * @param array $tradeNames
+     * @param array $trademarks
      *
      * @return Merchant
      */
-    public function setTradeNames(array $tradeNames): Merchant
+    public function setTrademarks(array $trademarks): Merchant
     {
-        $this->tradeNames = $tradeNames;
+        $this->trademarks = $trademarks;
         return $this;
     }
 

@@ -14,7 +14,9 @@ use PayNL\Sdk\Hydrator\{
 };
 use PayNL\Sdk\Model\{
     Address,
-    BankAccount
+    BankAccount,
+    ContactMethod,
+    Trademark
 };
 
 /**
@@ -61,17 +63,19 @@ class Merchant extends ClassMethods
             }
         }
 
-//        if (true === array_key_exists('tradeNames', $data) && false === empty($data['tradeNames'])) {
-//            foreach ($data['tradeNames'] as &$tradeName) {
-//                $tradeName = (new TradeNameHydrator())->hydrate($tradeName, new TradeName());
-//            }
-//        }
+        if (true === array_key_exists('trademarks', $data) && false === empty($data['trademarks'])) {
+            foreach ($data['trademarks'] as &$tradeName) {
+                $tradeName = (new ClassMethods())->hydrate($tradeName, new Trademark());
+            }
+            unset($tradeName);
+        }
 
-//        if (true === array_key_exists('contactMethods', $data) && false === empty($data['contactMethods'])) {
-//            foreach ($data['contactMethods'] as &$contactMethod) {
-//                $tradeName = (new ContactMethodHydrator())->hydrate($contactMethod, new ContactMethod());
-//            }
-//        }
+        if (true === array_key_exists('contactMethods', $data) && false === empty($data['contactMethods'])) {
+            foreach ($data['contactMethods'] as &$contactMethod) {
+                $contactMethod = (new ClassMethods())->hydrate($contactMethod, new ContactMethod());
+            }
+            unset($contactMethod);
+        }
 
         if (true === array_key_exists('createdAt', $data) && '' !== $data['createdAt']) {
             $data['createdAt'] = DateTime::createFromFormat(DateTime::ATOM, $data['createdAt']);

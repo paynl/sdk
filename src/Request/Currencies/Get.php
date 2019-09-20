@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Request\Currencies;
 
-use PayNL\Sdk\Request\{RequestInterface, AbstractRequest};
+use PayNL\Sdk\Request\AbstractRequest;
 /**
  * Class Currencies
  *
@@ -17,6 +17,11 @@ class Get extends AbstractRequest
      */
     protected $abbreviation;
 
+    /**
+     * Get constructor.
+     *
+     * @param string $abbreviation
+     */
     public function __construct(string $abbreviation)
     {
         $this->setAbbreviation($abbreviation);

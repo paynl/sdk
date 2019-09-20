@@ -44,9 +44,6 @@ declare(strict_types=1);
             </div>
             <h2>Merchants</h2>
             <div>
-                <a href="merchants/get-all.php" target="_blank">Get merchants</a>
-            </div>
-            <div>
                 <a href="merchants/get.php" target="_blank">Get a merchant</a>
             </div>
             <div>

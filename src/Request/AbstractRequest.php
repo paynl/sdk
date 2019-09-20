@@ -286,7 +286,7 @@ abstract class AbstractRequest implements RequestInterface
             ->setRawBody($rawBody)
             ->setBody($body)
         ;
-
+dump($response);die;
         if (true === $this->isDebug()) {
             $this->dumpDebugInfo('Response: ', $response);
         }

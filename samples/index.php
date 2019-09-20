@@ -29,10 +29,19 @@ declare(strict_types=1);
             <div>
                 <a href="currencies/get.php" target="_blank">Get currency</a>
             </div>
+            <h2>DirectDebits</h2>
+            <div>
+                <p>TODO</p>
+            </div>
             <h2>Invoices</h2>
+                <p>TODO</p>
 <!--            <div>-->
 <!--                <a href="invoices/index.php" target="_blank">Invoices</a>-->
 <!--            </div>-->
+            <h2>IsPay</h2>
+            <div>
+                <a href="is-pay/check-ip.php" target="_blank">Check IP</a>
+            </div>
             <h2>Merchants</h2>
             <div>
                 <a href="merchants/get-all.php" target="_blank">Get merchants</a>

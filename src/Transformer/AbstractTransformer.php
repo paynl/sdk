@@ -8,6 +8,7 @@ use PayNL\Sdk\Exception\InvalidArgumentException;
 use PayNL\Sdk\Exception\UnexpectedValueException;
 use PayNL\Sdk\Validator\InputType as InputTypeValidator;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Exception\NotEncodableValueException;
 
 /**
  * Class AbstractTransformer
@@ -19,22 +20,19 @@ abstract class AbstractTransformer implements TransformerInterface
     /**
      * @param string $inputToTransform
      *
-     * @throws InvalidArgumentException
      * @throws UnexpectedValueException
      *
      * @return mixed
      */
     protected function getDecodedInput(string $inputToTransform)
     {
-        $validator = new InputTypeValidator();
-        if (false === $validator->isValid($inputToTransform, 'string')) {
-            throw new InvalidArgumentException(
-                implode(PHP_EOL, $validator->getMessages())
-            );
+        // always expect a JSON-encoded string
+        try {
+            $inputToTransform = (new JsonEncoder())->decode($inputToTransform, 'json');
+        } catch (NotEncodableValueException $notEncodableValueException) {
+            throw new UnexpectedValueException('Cannot transform');
         }
 
-        // always expect a JSON-encoded string
-        $inputToTransform = (new JsonEncoder())->decode($inputToTransform, 'json');
         if (null === $inputToTransform) {
             throw new UnexpectedValueException('Cannot transform');
         }

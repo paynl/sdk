@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Transformer;
 
-use \Exception;
 use PayNL\Sdk\Hydrator\Service as ServiceHydrator;
 use PayNL\Sdk\Model\Service as ServiceModel;
 
@@ -17,8 +16,6 @@ class Service extends AbstractTransformer
 {
     /**
      * @inheritDoc
-     *
-     * @throws Exception
      */
     public function transform($inputToTransform)
     {

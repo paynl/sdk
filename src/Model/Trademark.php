@@ -4,13 +4,17 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Model;
 
+use JsonSerializable;
+
 /**
  * Class Trademark
  *
  * @package PayNL\Sdk\Model
  */
-class Trademark implements ModelInterface
+class Trademark implements ModelInterface, JsonSerializable
 {
+    use JsonSerializeTrait;
+
     /**
      * @var string
      */

@@ -35,6 +35,9 @@ class Factory
             case Request\Currencies\Get::class:
                 $transformerClass = Transformer\Currency::class;
                 break;
+            case Request\Directdebits\Get::class:
+                $transformerClass = Transformer\Directdebit::class;
+                break;
 //            case Request\Merchants\GetAll::class:
             case Request\Merchants\Get::class:
             case Request\Merchants\AddTrademark::class:

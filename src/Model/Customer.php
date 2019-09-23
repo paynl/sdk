@@ -44,6 +44,11 @@ class Customer implements ModelInterface, JsonSerializable
     /**
      * @var string
      */
+    protected $ip;
+
+    /**
+     * @var string
+     */
     protected $email;
 
     /**
@@ -79,7 +84,7 @@ class Customer implements ModelInterface, JsonSerializable
      *
      * @return Customer
      */
-    public function setInitials(string $initials): Customer
+    public function setInitials(string $initials): self
     {
         $this->initials = $initials;
         return $this;
@@ -98,7 +103,7 @@ class Customer implements ModelInterface, JsonSerializable
      *
      * @return Customer
      */
-    public function setLastName(string $lastName): Customer
+    public function setLastName(string $lastName): self
     {
         $this->lastName = $lastName;
         return $this;
@@ -117,7 +122,7 @@ class Customer implements ModelInterface, JsonSerializable
      *
      * @return Customer
      */
-    public function setBirthDate(DateTime $birthDate): Customer
+    public function setBirthDate(DateTime $birthDate): self
     {
         $this->birthDate = $birthDate;
         return $this;
@@ -136,7 +141,7 @@ class Customer implements ModelInterface, JsonSerializable
      *
      * @return Customer
      */
-    public function setGender(string $gender): Customer
+    public function setGender(string $gender): self
     {
         $this->gender = $gender;
         return $this;
@@ -155,9 +160,28 @@ class Customer implements ModelInterface, JsonSerializable
      *
      * @return Customer
      */
-    public function setPhone(string $phone): Customer
+    public function setPhone(string $phone): self
     {
         $this->phone = $phone;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIp(): string
+    {
+        return $this->ip;
+    }
+
+    /**
+     * @param string $ip
+     *
+     * @return Customer
+     */
+    public function setIp(string $ip): self
+    {
+        $this->ip = $ip;
         return $this;
     }
 
@@ -174,7 +198,7 @@ class Customer implements ModelInterface, JsonSerializable
      *
      * @return Customer
      */
-    public function setEmail(string $email): Customer
+    public function setEmail(string $email): self
     {
         $this->email = $email;
         return $this;
@@ -193,7 +217,7 @@ class Customer implements ModelInterface, JsonSerializable
      *
      * @return Customer
      */
-    public function setTrustLevel(string $trustLevel): Customer
+    public function setTrustLevel(string $trustLevel): self
     {
         $this->trustLevel = $trustLevel;
         return $this;
@@ -212,7 +236,7 @@ class Customer implements ModelInterface, JsonSerializable
      *
      * @return Customer
      */
-    public function setBankAccount(BankAccount $bankAccount): Customer
+    public function setBankAccount(BankAccount $bankAccount): self
     {
         $this->bankAccount = $bankAccount;
         return $this;
@@ -231,7 +255,7 @@ class Customer implements ModelInterface, JsonSerializable
      *
      * @return Customer
      */
-    public function setReference(string $reference): Customer
+    public function setReference(string $reference): self
     {
         $this->reference = $reference;
         return $this;
@@ -250,7 +274,7 @@ class Customer implements ModelInterface, JsonSerializable
      *
      * @return Customer
      */
-    public function setLanguage(string $language): Customer
+    public function setLanguage(string $language): self
     {
         $this->language = $language;
         return $this;

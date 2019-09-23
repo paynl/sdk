@@ -57,6 +57,10 @@ class Status extends ClassMethods
             $data['reason'] = '';
         }
 
+        if (null === $data['date']) {
+            unset($data['date']);
+        }
+
         /** @var StatusModel $status */
         $status = parent::hydrate($data, $object);
         return $status;

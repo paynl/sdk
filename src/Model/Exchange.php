@@ -10,6 +10,8 @@ use \JsonSerializable;
  * Class Exchange
  *
  * @package PayNL\Sdk\Model
+ *
+ * @deprecated
  */
 class Exchange implements ModelInterface, JsonSerializable
 {

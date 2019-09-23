@@ -75,6 +75,10 @@ class Customer extends ClassMethods
             $data['birthDate'] = (empty($data['birthDate']) === true ? null : DateTime::createFromFormat(DateTime::ATOM, $birthDate));
         }
 
+        if (null === $data['birthDate']) {
+            unset($data['birthDate']);
+        }
+
         /** @var CustomerModel $customer */
         $customer = parent::hydrate($data, $object);
         return $customer;

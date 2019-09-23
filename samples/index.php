@@ -31,13 +31,20 @@ declare(strict_types=1);
             </div>
             <h2>DirectDebits</h2>
             <div>
-                <p>TODO</p>
+                <a href="directdebits/get.php" target="_blank">Get directdebit order</a>
             </div>
-            <h2>Invoices</h2>
-                <p>TODO</p>
-<!--            <div>-->
-<!--                <a href="invoices/index.php" target="_blank">Invoices</a>-->
-<!--            </div>-->
+            <div>
+                <a href="directdebits/create.php" target="_blank">Create new directdebit order</a>
+            </div>
+            <div>
+                <a href="directdebits/update.php" target="_blank">Update directdebit order</a>
+            </div>
+            <div>
+                <a href="directdebits/remove.php" target="_blank">Remove directdebit order</a>
+            </div>
+            <div>
+                <a href="directdebits/debits/create.php" target="_blank">Create a recurring debit</a>
+            </div>
             <h2>IsPay</h2>
             <div>
                 <a href="is-pay/check-ip.php" target="_blank">Check IP</a>
@@ -81,10 +88,6 @@ declare(strict_types=1);
             <div>
                 <a href="services/enable-paymethod.php" target="_blank">Enable payment method</a>
             </div>
-            <h2>Statistics</h2>
-            <div>
-                <a href="statistics/get.php" target="_blank">Get Statistics</a>
-            </div>
             <h2>Terminals</h2>
             <div>
                 <a href="terminals/get.php" target="_blank">Get Terminals</a>
@@ -120,6 +123,18 @@ declare(strict_types=1);
             <div>
                 <a href="transactions/recurring.php" target="_blank">Add a recurring Transaction</a>
             </div>
+            <h2>Voucher</h2>
+            <div>
+                <a href="voucher/activate.php" target="_blank">Activate voucher</a>
+            </div>
+            <div>
+                <a href="voucher/balance.php" target="_blank">Get voucher balance</a>
+            </div>
+            <div>
+                <a href="voucher/charge.php" target="_blank">Charge voucher</a>
+            </div>
+            <h2>QR codes</h2>
+            <p>TODO?</p>
         </div>
     </body>
 </html>

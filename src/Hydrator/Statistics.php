@@ -58,7 +58,7 @@ class Statistics extends ClassMethods
                 $data[$optionalField] = '';
             }
         }
-        if (false === array_key_exists('transferData', $data)) {
+        if (false === array_key_exists('transferData', $data) || null === $data['transferData']) {
             $data['transferData'] = [];
         }
 

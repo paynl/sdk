@@ -4,13 +4,17 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Model;
 
+use JsonSerializable, DateTime;
+
 /**
  * Class Mandate
  *
  * @package PayNL\Sdk\Model
  */
-class Mandate implements ModelInterface
+class Mandate implements ModelInterface, JsonSerializable
 {
+    use JsonSerializeTrait;
+
     /**
      * @var string
      */
@@ -20,6 +24,21 @@ class Mandate implements ModelInterface
      * @var string
      */
     protected $type;
+
+    /**
+     * @var string
+     */
+    protected $serviceId;
+
+    /**
+     * @var DateTime|null
+     */
+    protected $processDate;
+
+    /**
+     * @var string
+     */
+    protected $exchangeUrl;
 
     /**
      * @var Amount
@@ -86,6 +105,63 @@ class Mandate implements ModelInterface
     public function setType(string $type): Mandate
     {
         $this->type = $type;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getServiceId(): string
+    {
+        return (string)$this->serviceId;
+    }
+
+    /**
+     * @param string $serviceId
+     *
+     * @return Mandate
+     */
+    public function setServiceId(string $serviceId): self
+    {
+        $this->serviceId = $serviceId;
+        return $this;
+    }
+
+    /**
+     * @return DateTime|null
+     */
+    public function getProcessDate(): ?DateTime
+    {
+        return $this->processDate;
+    }
+
+    /**
+     * @param DateTime $processDate
+     *
+     * @return Mandate
+     */
+    public function setProcessDate(DateTime $processDate): self
+    {
+        $this->processDate = $processDate;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getExchangeUrl(): string
+    {
+        return (string)$this->exchangeUrl;
+    }
+
+    /**
+     * @param string $exchangeUrl
+     *
+     * @return Mandate
+     */
+    public function setExchangeUrl(string $exchangeUrl): Mandate
+    {
+        $this->exchangeUrl = $exchangeUrl;
         return $this;
     }
 

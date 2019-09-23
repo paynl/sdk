@@ -35,8 +35,10 @@ class Factory
             case Request\Currencies\Get::class:
                 $transformerClass = Transformer\Currency::class;
                 break;
-            case Request\Merchants\GetAll::class:
+//            case Request\Merchants\GetAll::class:
             case Request\Merchants\Get::class:
+            case Request\Merchants\AddTrademark::class:
+            case Request\Merchants\DeleteTrademark::class:
                 $transformerClass = Transformer\Merchant::class;
                 break;
             case Request\Refunds\Get::class:

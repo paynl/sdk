@@ -75,7 +75,7 @@ class Customer extends ClassMethods
             $data['birthDate'] = (empty($data['birthDate']) === true ? null : DateTime::createFromFormat(DateTime::ATOM, $birthDate));
         }
 
-        if (null === $data['birthDate']) {
+        if (true === array_key_exists('birthDate', $data) && null === $data['birthDate']) {
             unset($data['birthDate']);
         }
 

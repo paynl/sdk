@@ -43,7 +43,7 @@ declare(strict_types=1);
                 <a href="directdebits/remove.php" target="_blank">Remove directdebit order</a>
             </div>
             <div>
-                <a href="directdebits/debits/create.php" target="_blank">Create a recurring debit</a>
+                <a href="directdebits/create-recurring.php" target="_blank">Create a recurring debit</a>
             </div>
             <h2>IsPay</h2>
             <div>

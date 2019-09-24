@@ -73,6 +73,8 @@ class Factory
             case Request\Directdebits\Delete::class:
                 $transformerClass = Transformer\NoContent::class;
                 break;
+            case Request\Services\CreatePaymentLink::class:
+//                $transformerClass = Transformer\Simple::class;
             default:
                 throw new Exception\DomainException(
                     sprintf(

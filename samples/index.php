@@ -74,9 +74,6 @@ declare(strict_types=1);
                 <a href="services/get.php" target="_blank">Get a service</a>
             </div>
             <div>
-                <a href="services/get-categories.php" target="_blank">Get service categories</a>
-            </div>
-            <div>
                 <a href="services/create.php" target="_blank">Create a new service</a>
             </div>
             <div>

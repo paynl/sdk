@@ -37,6 +37,7 @@ class Factory
                 break;
             case Request\Directdebits\Get::class:
             case Request\Directdebits\Create::class:
+            case Request\Directdebits\Update::class:
                 $transformerClass = Transformer\Directdebit::class;
                 break;
 //            case Request\Merchants\GetAll::class:

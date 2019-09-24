@@ -38,6 +38,7 @@ class Factory
             case Request\Directdebits\Get::class:
             case Request\Directdebits\Create::class:
             case Request\Directdebits\Update::class:
+            case Request\Directdebits\CreateRecurring::class:
                 $transformerClass = Transformer\Directdebit::class;
                 break;
 //            case Request\Merchants\GetAll::class:

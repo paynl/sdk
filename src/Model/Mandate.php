@@ -71,6 +71,11 @@ class Mandate implements ModelInterface, JsonSerializable
     protected $customer;
 
     /**
+     * @var boolean
+     */
+    protected $isLastOrder;
+
+    /**
      * @return string
      */
     public function getId(): string
@@ -276,6 +281,35 @@ class Mandate implements ModelInterface, JsonSerializable
     public function setCustomer(?Customer $customer): Mandate
     {
         $this->customer = $customer;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isLastOrder(): bool
+    {
+        return $this->isLastOrder;
+    }
+
+    /**
+     * alias method used by hydrator
+     *
+     * @return bool
+     */
+    public function getIsLastOrder(): bool
+    {
+        return $this->isLastOrder();
+    }
+
+    /**
+     * @param bool $isLastOrder
+     *
+     * @return Mandate
+     */
+    public function setIsLastOrder(bool $isLastOrder): Mandate
+    {
+        $this->isLastOrder = $isLastOrder;
         return $this;
     }
 }

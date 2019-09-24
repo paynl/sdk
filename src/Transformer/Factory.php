@@ -74,6 +74,9 @@ class Factory
             case Request\Transactions\GetReceipt::class:
                 $transformerClass = Transformer\Receipt::class;
                 break;
+            case Request\Directdebits\Delete::class:
+                $transformerClass = Transformer\NoContent::class;
+                break;
             default:
                 throw new Exception\DomainException(
                     sprintf(

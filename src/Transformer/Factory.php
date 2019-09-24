@@ -57,9 +57,6 @@ class Factory
             case Request\Services\EnablePaymentMethod::class:
                 $transformerClass = Transformer\Service::class;
                 break;
-            case Request\Services\GetCategories::class:
-                $transformerClass = Transformer\ServiceCategory::class;
-                break;
             case Request\Services\GetPaymentMethods::class:
                 $transformerClass = Transformer\PaymentMethod::class;
                 break;

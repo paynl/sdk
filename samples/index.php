@@ -74,16 +74,10 @@ declare(strict_types=1);
                 <a href="services/get.php" target="_blank">Get a service</a>
             </div>
             <div>
-                <a href="services/create.php" target="_blank">Create a new service</a>
-            </div>
-            <div>
                 <a href="services/get-paymethods.php" target="_blank">Get service payment methods</a>
             </div>
             <div>
-                <a href="services/disable-paymethod.php" target="_blank">Disable payment method</a>
-            </div>
-            <div>
-                <a href="services/enable-paymethod.php" target="_blank">Enable payment method</a>
+                <a href="services/create-payment-link.php" target="_blank">Create service payment link</a>
             </div>
             <h2>Terminals</h2>
             <div>

@@ -74,7 +74,9 @@ class Factory
                 $transformerClass = Transformer\NoContent::class;
                 break;
             case Request\Services\CreatePaymentLink::class:
-//                $transformerClass = Transformer\Simple::class;
+            case Request\Voucher\Activate::class:
+                $transformerClass = Transformer\Simple::class;
+                break;
             default:
                 throw new Exception\DomainException(
                     sprintf(

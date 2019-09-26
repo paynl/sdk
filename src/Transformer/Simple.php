@@ -20,6 +20,9 @@ class Simple extends AbstractTransformer
         $returnInstance = new stdClass();
 
         foreach ($inputToTransform as $key => $value) {
+            if (0 === strpos($key, '_')) {
+                continue;
+            }
             $returnInstance->$key = $value;
         }
 

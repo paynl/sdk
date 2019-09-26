@@ -75,6 +75,7 @@ class Factory
                 break;
             case Request\Services\CreatePaymentLink::class:
             case Request\Voucher\Activate::class:
+            case Request\Voucher\Balance::class:
                 $transformerClass = Transformer\Simple::class;
                 break;
             default:

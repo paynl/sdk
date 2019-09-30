@@ -6,15 +6,10 @@ require_once __DIR__ . '/../init.php';
 
 use PayNL\Sdk\Api;
 use PayNL\Sdk\Request\Pin\ConfirmTerminalTransaction as ConfirmTerminalTransactionRequest;
-use PayNL\Sdk\Hydrator\TerminalTransaction as TerminalTransactionHydrator;
-use PayNL\Sdk\Model\TerminalTransaction;
 
 $authAdapter = getAuthAdapter();
 
-$request = (new ConfirmTerminalTransactionRequest('TT-9054-1003-5510', (new TerminalTransactionHydrator())->hydrate([
-    'email'    => 'o.prime@cybertron.net',
-    'language' => 'nl',
-], new TerminalTransaction())))
+$request = (new ConfirmTerminalTransactionRequest('TT-9054-1003-5510', 'o.prime@cybertron.net', 'nl'))
     ->setDebug(true)
 ;
 

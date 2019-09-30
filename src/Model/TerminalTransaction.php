@@ -61,16 +61,6 @@ class TerminalTransaction implements ModelInterface, JsonSerializable
     protected $progress;
 
     /**
-     * @var string
-     */
-    protected $email;
-
-    /**
-     * @var string
-     */
-    protected $language;
-
-    /**
      * @return string
      */
     public function getState(): string
@@ -238,44 +228,6 @@ class TerminalTransaction implements ModelInterface, JsonSerializable
     public function setProgress(Progress $progress): self
     {
         $this->progress = $progress;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getEmail(): string
-    {
-        return $this->email;
-    }
-
-    /**
-     * @param string $email
-     *
-     * @return TerminalTransaction
-     */
-    public function setEmail(string $email): self
-    {
-        $this->email = $email;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getLanguage(): string
-    {
-        return $this->language;
-    }
-
-    /**
-     * @param string $language
-     *
-     * @return TerminalTransaction
-     */
-    public function setLanguage(string $language): self
-    {
-        $this->language = $language;
         return $this;
     }
 }

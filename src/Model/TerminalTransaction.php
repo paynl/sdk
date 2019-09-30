@@ -4,13 +4,17 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Model;
 
+use JsonSerializable;
+
 /**
  * Class TerminalTransaction
  *
  * @package PayNL\Sdk\Model
  */
-class TerminalTransaction implements ModelInterface
+class TerminalTransaction implements ModelInterface, JsonSerializable
 {
+    use JsonSerializeTrait;
+
     /**
      * @var string
      */
@@ -55,6 +59,16 @@ class TerminalTransaction implements ModelInterface
      * @var Progress
      */
     protected $progress;
+
+    /**
+     * @var string
+     */
+    protected $email;
+
+    /**
+     * @var string
+     */
+    protected $language;
 
     /**
      * @return string
@@ -224,6 +238,44 @@ class TerminalTransaction implements ModelInterface
     public function setProgress(Progress $progress): self
     {
         $this->progress = $progress;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param string $email
+     *
+     * @return TerminalTransaction
+     */
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLanguage(): string
+    {
+        return $this->language;
+    }
+
+    /**
+     * @param string $language
+     *
+     * @return TerminalTransaction
+     */
+    public function setLanguage(string $language): self
+    {
+        $this->language = $language;
         return $this;
     }
 }

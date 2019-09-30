@@ -78,6 +78,7 @@ class Factory
             case Request\Voucher\Charge::class:
                 $transformerClass = Transformer\NoContent::class;
                 break;
+            case Request\Pin\ConfirmTerminalTransaction::class:
             case Request\Services\CreatePaymentLink::class:
             case Request\Voucher\Balance::class:
                 $transformerClass = Transformer\Simple::class;

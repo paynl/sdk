@@ -73,7 +73,7 @@ declare(strict_types=1);
                 <a href="pin/get-terminal-transaction-status.php" target="_blank">Get terminal transaction status</a>
             </div>
             <div>
-                <a href="pin/confirm.php" target="_blank">Get Refund</a>
+                <a href="pin/confirm-terminal-transaction.php" target="_blank">Confirm terminal transaction</a>
             </div>
             <div>
                 <a href="pin/receipt.php" target="_blank">Get Refund</a>

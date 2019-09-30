@@ -26,7 +26,7 @@ class Card implements ModelInterface
      */
     public function getId(): string
     {
-        return $this->id;
+        return (string)$this->id;
     }
 
     /**
@@ -34,7 +34,7 @@ class Card implements ModelInterface
      *
      * @return Card
      */
-    public function setId(string $id): Card
+    public function setId(?string $id): self
     {
         $this->id = $id;
         return $this;
@@ -45,7 +45,7 @@ class Card implements ModelInterface
      */
     public function getName(): string
     {
-        return $this->name;
+        return (string)$this->name;
     }
 
     /**
@@ -53,7 +53,7 @@ class Card implements ModelInterface
      *
      * @return Card
      */
-    public function setName(string $name): Card
+    public function setName(?string $name): self
     {
         $this->name = $name;
         return $this;

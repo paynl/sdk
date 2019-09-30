@@ -76,7 +76,7 @@ declare(strict_types=1);
                 <a href="pin/confirm-terminal-transaction.php" target="_blank">Confirm terminal transaction</a>
             </div>
             <div>
-                <a href="pin/receipt.php" target="_blank">Get Refund</a>
+                <a href="pin/get-receipt.php" target="_blank">Get pin receipt</a>
             </div>
             <h2>Refunds</h2>
             <div>
@@ -101,9 +101,6 @@ declare(strict_types=1);
             </div>
             <div>
                 <a href="transactions/get.php" target="_blank">Get a Transaction</a>
-            </div>
-            <div>
-                <a href="transactions/get-receipt.php" target="_blank">Get Transaction receipt</a>
             </div>
             <div>
                 <a href="transactions/create.php" target="_blank">Create a Transaction</a>

@@ -62,6 +62,22 @@ declare(strict_types=1);
             <div>
                 <a href="merchants/remove-trademark.php" target="_blank">Remove trademark</a>
             </div>
+            <h2>Pin</h2>
+            <div>
+                <a href="pin/get-all-terminals.php" target="_blank">Get all pin terminals</a>
+            </div>
+            <div>
+                <a href="pin/pay.php" target="_blank">Pay pin transaction</a>
+            </div>
+            <div>
+                <a href="pin/get-terminal-transaction-status.php" target="_blank">Get terminal transaction status</a>
+            </div>
+            <div>
+                <a href="pin/confirm.php" target="_blank">Get Refund</a>
+            </div>
+            <div>
+                <a href="pin/receipt.php" target="_blank">Get Refund</a>
+            </div>
             <h2>Refunds</h2>
             <div>
                 <a href="refunds/get.php" target="_blank">Get Refund</a>
@@ -78,10 +94,6 @@ declare(strict_types=1);
             </div>
             <div>
                 <a href="services/create-payment-link.php" target="_blank">Create service payment link</a>
-            </div>
-            <h2>Terminals</h2>
-            <div>
-                <a href="terminals/get.php" target="_blank">Get Terminals</a>
             </div>
             <h2>Transactions</h2>
             <div>

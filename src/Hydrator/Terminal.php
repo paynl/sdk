@@ -44,6 +44,10 @@ class Terminal extends ClassMethods
             );
         }
 
+        $data['id']          = $data['id'] ?? '';
+        $data['name']        = $data['name'] ?? '';
+        $data['ecrProtocol'] = $data['ecrProtocol'] ?? '';
+
         /** @var TerminalModel $terminal */
         $terminal = parent::hydrate($data, $object);
         return $terminal;

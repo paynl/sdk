@@ -47,6 +47,12 @@ class Factory
             case Request\Merchants\DeleteTrademark::class:
                 $transformerClass = Transformer\Merchant::class;
                 break;
+            case Request\Pin\GetTerminals::class:
+                $transformerClass = Transformer\Terminal::class;
+                break;
+            case Request\Pin\GetTerminalTransactionStatus::class:
+                $transformerClass = Transformer\TerminalTransaction::class;
+                break;
             case Request\Refunds\Get::class:
             case Request\Transactions\Refund::class:
                 $transformerClass = Transformer\Refund::class;
@@ -57,9 +63,6 @@ class Factory
                 break;
             case Request\Services\GetPaymentMethods::class:
                 $transformerClass = Transformer\PaymentMethod::class;
-                break;
-            case Request\Terminals\Get::class:
-                $transformerClass = Transformer\Terminal::class;
                 break;
             case Request\Transactions\GetAll::class:
             case Request\Transactions\Get::class:

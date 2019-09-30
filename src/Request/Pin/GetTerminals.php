@@ -2,23 +2,23 @@
 
 declare(strict_types=1);
 
-namespace PayNL\Sdk\Request\Terminals;
+namespace PayNL\Sdk\Request\Pin;
 
 use PayNL\Sdk\Request\AbstractRequest;
 
 /**
- * Class Get
+ * Class GetTerminals
  *
- * @package PayNL\Sdk\Request\Terminals
+ * @package PayNL\Sdk\Request\Pin
  */
-class Get extends AbstractRequest
+class GetTerminals extends AbstractRequest
 {
     /**
      * @inheritDoc
      */
     public function getUri(): string
     {
-        return 'terminals';
+        return 'pin';
     }
 
     /**

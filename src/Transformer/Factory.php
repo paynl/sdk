@@ -71,10 +71,11 @@ class Factory
                 $transformerClass = Transformer\Receipt::class;
                 break;
             case Request\Directdebits\Delete::class:
+            case Request\Voucher\Activate::class:
+            case Request\Voucher\Charge::class:
                 $transformerClass = Transformer\NoContent::class;
                 break;
             case Request\Services\CreatePaymentLink::class:
-            case Request\Voucher\Activate::class:
             case Request\Voucher\Balance::class:
                 $transformerClass = Transformer\Simple::class;
                 break;

@@ -64,7 +64,6 @@ class Factory
             case Request\Services\GetPaymentMethods::class:
                 $transformerClass = Transformer\PaymentMethod::class;
                 break;
-            case Request\Transactions\GetAll::class:
             case Request\Transactions\Get::class:
             case Request\Transactions\Create::class:
             case Request\Transactions\Recurring::class:

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace PayNL\Sdk\Request\Transactions;
+namespace PayNL\Sdk\Request\Pin;
 
 use PayNL\Sdk\Request\AbstractRequest;
-use PayNL\Sdk\Request\Parameter\TransactionIdTrait;
+use PayNL\Sdk\Request\Parameter\TerminalTransactionIdTrait;
 
 /**
  * Class Get
@@ -14,16 +14,16 @@ use PayNL\Sdk\Request\Parameter\TransactionIdTrait;
  */
 class GetReceipt extends AbstractRequest
 {
-    use TransactionIdTrait;
+    use TerminalTransactionIdTrait;
 
     /**
      * GetReceipt constructor.
      *
-     * @param string $transactionId
+     * @param string $terminalTransactionId
      */
-    public function __construct(string $transactionId)
+    public function __construct(string $terminalTransactionId)
     {
-        $this->setTransactionId($transactionId);
+        $this->setTerminalTransactionId($terminalTransactionId);
     }
 
     /**
@@ -39,6 +39,6 @@ class GetReceipt extends AbstractRequest
      */
     public function getUri(): string
     {
-        return 'transactions/' . $this->getTransactionId() . '/receipt';
+        return "pin/{$this->getTerminalTransactionId()}/receipt";
     }
 }

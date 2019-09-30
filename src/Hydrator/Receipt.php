@@ -44,11 +44,20 @@ class Receipt extends ClassMethods
             );
         }
 
+        $data['approvalId'] = $data['approvalId'] ?? 0;
+
         if (true === array_key_exists('card', $data) && true === is_array($data['card'])) {
             $data['card'] = (new ClassMethods())->hydrate($data['card'], new Card());
         }
 
         if (true === array_key_exists('paymentMethod', $data) && true === is_array($data['paymentMethod'])) {
+            if (
+                true === array_key_exists('id', $data['paymentMethod'])
+                && true === is_string($data['paymentMethod']['id'])
+            ) {
+                $data['paymentMethod']['id'] = 0;
+            }
+
             $data['paymentMethod'] = (new ClassMethods())->hydrate($data['paymentMethod'], new PaymentMethod());
         }
 

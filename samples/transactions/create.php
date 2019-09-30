@@ -17,13 +17,12 @@ $transaction = (new Hydrator\Transaction)->hydrate([
         'amount'   => 34500,
         'currency' => 'USD'
     ], new Model\Amount()),
-    'returnUrl' => 'http://www.pay.nl',
-    'exchange' => (new Hydrator\Exchange())->hydrate([
-        'method' => 'GET',
-        'type'   => 'json'
-    ], new Model\Exchange()),
-    'paymentMethodId' => 10,
-    'paymentMethodSubId' => 'Rabobank',
+    'returnUrl' => 'https://www.pay.nl/return-url',
+    'exchangeUrl' => 'https://www.pay.nl/exchange-url',
+    'paymentMethod' => [
+        'id' => 10,
+        'name' => 'Rabobank',
+    ],
     'testMode' => 0,
     'transferType' => 'merchant',
     //TODO, delete for goto live - is production merchant ID!!
@@ -87,7 +86,7 @@ $transaction = (new Hydrator\Transaction)->hydrate([
                 'currency' => 'USD'
             ], new Model\Amount()),
             'quantity' => 1,
-            'vat' => 0
+            'vat' => 'N'
         ], new Model\Product())
     ],
     'statistics' => (new Hydrator\Statistics())->hydrate([
@@ -106,12 +105,13 @@ $transaction = (new Hydrator\Transaction)->hydrate([
 $authAdapter = getAuthAdapter();
 
 $request = (new CreateTransactionRequest($transaction))
-    ->setFormat(RequestInterface::FORMAT_OBJECTS)
+    ->setDebug(true)
 ;
 
-$api = new Api($authAdapter);
-$response = $api->handleCall($request);
+$response = (new Api($authAdapter))
+    ->handleCall($request)
+;
 
-echo '<pre/>';
-print_r($response);
-exit(0);
+echo '<pre/>' . PHP_EOL .
+    var_export($response, true)
+;

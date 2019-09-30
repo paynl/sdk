@@ -36,7 +36,7 @@ class Product implements ModelInterface, JsonSerializable
     protected $quantity;
 
     /**
-     * @var integer
+     * @var string
      */
     protected $vat;
 
@@ -117,19 +117,19 @@ class Product implements ModelInterface, JsonSerializable
     }
 
     /**
-     * @return integer
+     * @return string
      */
-    public function getVat(): int
+    public function getVat(): string
     {
         return $this->vat;
     }
 
     /**
-     * @param integer $vat
+     * @param string $vat
      *
      * @return Product
      */
-    public function setVat(int $vat): Product
+    public function setVat(string $vat): Product
     {
         $this->vat = $vat;
         return $this;

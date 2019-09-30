@@ -40,9 +40,9 @@ class Transaction implements ModelInterface, JsonSerializable
     protected $returnUrl;
 
     /**
-     * @var Exchange
+     * @var string
      */
-    protected $exchange;
+    protected $exchangeUrl;
 
     /**
      * @var string
@@ -136,18 +136,6 @@ class Transaction implements ModelInterface, JsonSerializable
      * @var DateTime
      */
     protected $expiresAt;
-
-    /**
-     * @var integer
-     *
-     * TODO @Mike, please remove paymentMethodId AND paymentMethodSubId from the request and work with paymentMethod object
-     */
-    protected $paymentMethodId;
-
-    /**
-     * @var string
-     */
-    protected $paymentMethodSubId;
 
     /**
      * @var integer
@@ -251,21 +239,21 @@ class Transaction implements ModelInterface, JsonSerializable
     }
 
     /**
-     * @return Exchange
+     * @return string
      */
-    public function getExchange(): ?Exchange
+    public function getExchangeUrl(): ?string
     {
-        return $this->exchange;
+        return $this->exchangeUrl;
     }
 
     /**
-     * @param Exchange $exchange
+     * @param string $exchangeUrl
      *
      * @return Transaction
      */
-    public function setExchange(Exchange $exchange): self
+    public function setExchangeUrl(string $exchangeUrl): self
     {
-        $this->exchange = $exchange;
+        $this->exchangeUrl = $exchangeUrl;
         return $this;
     }
 
@@ -608,44 +596,6 @@ class Transaction implements ModelInterface, JsonSerializable
     public function setExpiresAt(DateTime $expiresAt): self
     {
         $this->expiresAt = $expiresAt;
-        return $this;
-    }
-
-    /**
-     * @return integer
-     */
-    public function getPaymentMethodId(): int
-    {
-        return $this->paymentMethodId;
-    }
-
-    /**
-     * @param integer $paymentMethodId
-     *
-     * @return Transaction
-     */
-    public function setPaymentMethodId(int $paymentMethodId): self
-    {
-        $this->paymentMethodId = $paymentMethodId;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getPaymentMethodSubId(): string
-    {
-        return $this->paymentMethodSubId;
-    }
-
-    /**
-     * @param string $paymentMethodSubId
-     *
-     * @return Transaction
-     */
-    public function setPaymentMethodSubId(string $paymentMethodSubId): self
-    {
-        $this->paymentMethodSubId = $paymentMethodSubId;
         return $this;
     }
 

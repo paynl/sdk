@@ -17,10 +17,13 @@ class ConfirmTerminalTransaction extends AbstractRequest
 {
     use TerminalTransactionIdTrait;
 
-    public function __construct(string $terminalTransactionId, TerminalTransaction $terminalTransaction)
+    public function __construct(string $terminalTransactionId, string $emailAddress = '', string $language = 'nl')
     {
         $this->setTerminalTransactionId($terminalTransactionId)
-            ->setBody($terminalTransaction)
+            ->setBody((object)[
+                'email'    => $emailAddress,
+                'language' => $language,
+            ])
         ;
     }
 

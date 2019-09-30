@@ -60,6 +60,7 @@ class Customer extends ClassMethods
             'trustLevel',
             'reference',
             'language',
+            'ip',
         ];
         foreach ($optionalKeys as $optionalKey) {
             if (false === array_key_exists($optionalKey, $data) || true === empty($data[$optionalKey])) {

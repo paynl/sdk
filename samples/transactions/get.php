@@ -9,11 +9,12 @@ use PayNL\Sdk\Request\Transactions\Get as GetTransactionRequest;
 
 $authAdapter = getAuthAdapter();
 
-$request = new GetTransactionRequest('EX-9681-2215-2190');
+$request = new GetTransactionRequest('EX-7436-1212-5160');
 
-$api = new Api($authAdapter);
-$response = $api->handleCall($request);
+$response = (new Api($authAdapter))
+    ->handleCall($request)
+;
 
-echo '<pre/>';
-print_r($response);
-exit(0);
+echo '<pre/>' . PHP_EOL .
+    var_export($response, true)
+;

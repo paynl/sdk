@@ -132,6 +132,10 @@ class Transaction extends ClassMethods
                 }
                 $data[$dateField] = empty($data[$dateField]) === true ? null : DateTime::createFromFormat(DateTime::ATOM, $date);
             }
+
+            if (null === $data[$dateField]) {
+                unset($data[$dateField]);
+            }
         }
 
         $optionalFields = [

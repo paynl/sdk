@@ -68,6 +68,7 @@ class Factory
             case Request\Transactions\Create::class:
             case Request\Transactions\Recurring::class:
             case Request\Transactions\QR::class:
+            case Request\Transactions\Tokenize::class:
                 $transformerClass = Transformer\Transaction::class;
                 break;
             case Request\Pin\GetReceipt::class:

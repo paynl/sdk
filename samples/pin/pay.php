@@ -4,17 +4,20 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../init.php';
 
-use PayNL\Sdk\Api;
+use PayNL\Sdk\{
+    Api,
+    Config
+};
 use PayNL\Sdk\Request\Pin\PayTransaction as PayTransactionRequest;
 use PayNL\Sdk\Hydrator\Terminal as TerminalHydrator;
 use PayNL\Sdk\Model\Terminal;
 
 $authAdapter = getAuthAdapter();
 
-$request = (new PayTransactionRequest('EX-6581-2257-2190', (new TerminalHydrator())->hydrate([
-    'id' => 'TH-3640-7060',
+$request = (new PayTransactionRequest(Config::getInstance()->get('transactionId'), (new TerminalHydrator())->hydrate([
+    'id' => Config::getInstance()->get('terminalId'),
 ], new Terminal())))
-    ->setDebug(true)
+    ->setDebug((bool)Config::getInstance()->get('debug'))
 ;
 
 $response = (new Api($authAdapter))

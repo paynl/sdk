@@ -4,20 +4,30 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../init.php';
 
-use PayNL\Sdk\Api;
+use PayNL\Sdk\{
+    Api,
+    Config
+};
 use PayNL\Sdk\Model\Trademark;
 use PayNL\Sdk\Request\Merchants\AddTrademark as AddTrademarkRequest;
 use Zend\Hydrator\ClassMethods;
 
 $authAdapter = getAuthAdapter();
 
-$request = (new AddTrademarkRequest(/*'M-6328-7160'*/ 'M-9040-1000', (new ClassMethods())->hydrate([
-    'id' => 'TestTrademark',
-], new Trademark())))->setDebug(true);
+/** @var Trademark $tradeMark */
+$tradeMark = (new ClassMethods())->hydrate([
+    'id' => 'TestTrademark' . random_int(10, 9999),
+], new Trademark());
 
-$api = new Api($authAdapter);
-$response = $api->handleCall($request);
+$request = (new AddTrademarkRequest(Config::getInstance()->get('merchantId'), $tradeMark))
+    ->setDebug((bool)Config::getInstance()->get('debug'))
+;
 
+$response = (new Api($authAdapter))
+    ->handleCall($request)
+;
+
+// NOTE: only approved trademarks are given to the response merchant object, the new trademark isn't instantly approved
 echo '<pre/>' . PHP_EOL .
     var_export($response, true)
 ;

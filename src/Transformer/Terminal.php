@@ -22,7 +22,7 @@ class Terminal extends AbstractTransformer
         $inputToTransform = $this->getDecodedInput($inputToTransform);
 
         $hydrator = new TerminalHydrator();
-var_dump($inputToTransform);die;
+
         $transactions = &$inputToTransform['pin'];
         foreach ($transactions as $key => $terminalArray) {
             $terminal = $hydrator->hydrate($terminalArray, new TerminalModel());

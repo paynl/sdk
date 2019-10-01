@@ -13,7 +13,7 @@ use PayNL\Sdk\Request\Transactions\Decline as DeclineTransactionRequest;
 $authAdapter = getAuthAdapter();
 
 $request = (new DeclineTransactionRequest(Config::getInstance()->get('transactionId')))
-    ->setDebug(true)
+    ->setDebug((bool)Config::getInstance()->get('debug'))
 ;
 
 $response = (new Api($authAdapter))

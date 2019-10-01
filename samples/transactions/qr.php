@@ -13,7 +13,7 @@ use PayNL\Sdk\Request\Transactions\QR as QRTransactionRequest;
 $authAdapter = getAuthAdapter();
 
 $request = (new QRTransactionRequest(Config::getInstance()->get('transactionId'), 'QR SCAN DATA'))
-    ->setDebug(true)
+    ->setDebug((bool)Config::getInstance()->get('debug'))
 ;
 
 $response = (new Api($authAdapter))

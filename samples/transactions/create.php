@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../init.php';
 
-use PayNL\Sdk\Api;
-use PayNL\Sdk\Request\RequestInterface;
+use PayNL\Sdk\{
+    Api,
+    Config,
+    Hydrator,
+    Model
+};
 use PayNL\Sdk\Request\Transactions\Create as CreateTransactionRequest;
-use PayNL\Sdk\Hydrator;
 use Zend\Hydrator\ClassMethods;
-use PayNL\Sdk\Model;
 
 $transaction = (new Hydrator\Transaction)->hydrate([
     'serviceId' => 'SL-5350-2350',
@@ -105,7 +107,7 @@ $transaction = (new Hydrator\Transaction)->hydrate([
 $authAdapter = getAuthAdapter();
 
 $request = (new CreateTransactionRequest($transaction))
-    ->setDebug(true)
+    ->setDebug((bool)Config::getInstance()->get('debug'))
 ;
 
 $response = (new Api($authAdapter))

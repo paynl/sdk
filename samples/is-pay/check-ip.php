@@ -4,16 +4,18 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../init.php';
 
-use PayNL\Sdk\Api;
+use PayNL\Sdk\{
+    Api,
+    Config
+};
 use PayNL\Sdk\Request\IsPay\Get as IsPayRequest;
-use PayNL\Sdk\Request\RequestInterface;
 
 $authAdapter = getAuthAdapter();
 
 $ipAddress = '127.0.0.1';
 
 $request = (new IsPayRequest(IsPayRequest::TYPE_IP, $ipAddress))
-    ->setFormat(RequestInterface::FORMAT_JSON)
+    ->setDebug((bool)Config::getInstance()->get('debug'))
 ;
 
 $response = (new Api($authAdapter))
@@ -21,5 +23,5 @@ $response = (new Api($authAdapter))
 ;
 
 echo '<pre/>' . PHP_EOL .
-    var_export(json_decode($response->getBody(), false)->$ipAddress, true)
+    var_export($response, true)
 ;

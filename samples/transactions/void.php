@@ -13,7 +13,7 @@ use PayNL\Sdk\Request\Transactions\Cancel as VoidTransactionRequest;
 $authAdapter = getAuthAdapter();
 
 $request = (new VoidTransactionRequest(Config::getInstance()->get('transactionId')))
-    ->setDebug(true)
+    ->setDebug((bool)Config::getInstance()->get('debug'))
 ;
 
 $response = (new Api($authAdapter))

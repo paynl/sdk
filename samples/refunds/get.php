@@ -4,16 +4,22 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../init.php';
 
-use PayNL\Sdk\Api;
+use PayNL\Sdk\{
+    Api,
+    Config
+};
 use PayNL\Sdk\Request\Refunds\Get as GetRefundRequest;
 
 $authAdapter = getAuthAdapter();
 
-$request = new GetRefundRequest('RF-7039-3062-3700');
+$request = (new GetRefundRequest('RF-7039-3062-3700'))
+    ->setDebug((bool)Config::getInstance()->get('debug'))
+;
 
-$api = new Api($authAdapter);
-$response = $api->handleCall($request);
+$response = (new Api($authAdapter))
+    ->handleCall($request)
+;
 
-echo '<pre/>';
-print_r($response);
-exit(0);
+echo '<pre/>' . PHP_EOL .
+    var_export($response, true)
+;

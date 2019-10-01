@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk;
 
+use PayNL\Sdk\Exception\InvalidArgumentException;
+
 /**
  * Class Config
  *
@@ -24,19 +26,13 @@ class Config
     protected static $instance;
 
     /**
-     * @var string
+     * @var array
      */
-    protected $apiUrl;
-
-    /**
-     * @var string
-     */
-    protected $userName;
-
-    /**
-     * @var string
-     */
-    protected $password;
+    protected $data = [
+        self::KEY_API_URL  => '',
+        self::KEY_USERNAME => '',
+        self::KEY_PASSWORD => '',
+    ];
 
     /**
      * @return Config
@@ -67,73 +63,73 @@ class Config
 
     public function load(array $config): void
     {
-        if (true === array_key_exists(self::KEY_API_URL, $config)) {
-            $this->setApiUrl($config[self::KEY_API_URL]);
+        if (
+            false === array_key_exists(self::KEY_API_URL, $config)
+            || false === array_key_exists(self::KEY_USERNAME, $config)
+            || false === array_key_exists(self::KEY_PASSWORD, $config)
+        ) {
+            throw new InvalidArgumentException(
+                sprintf(
+                    '%s, %s and %s need to be defined',
+                    self::KEY_API_URL,
+                    self::KEY_USERNAME,
+                    self::KEY_PASSWORD
+                )
+            );
         }
 
-        if (true === array_key_exists(self::KEY_USERNAME, $config)) {
-            $this->setUserName($config[self::KEY_USERNAME]);
-        }
-
-        if (true === array_key_exists(self::KEY_PASSWORD, $config)) {
-            $this->setPassword($config[self::KEY_PASSWORD]);
+        foreach ($config as $key => $value) {
+            // TODO: validate??
+            $this->set($key, $value);
         }
     }
 
     /**
+     * @param string $key
+     *
      * @return mixed
      */
-    public function getApiUrl()
+    public function get(string $key)
     {
-        return $this->apiUrl;
+        if (false === array_key_exists($key, $this->data)) {
+            return null;
+        }
+
+        return $this->data[$key];
     }
 
     /**
-     * @param mixed $apiUrl
+     * @param string $key
+     * @param mixed $value
      *
-     * @return Config
+     * @return void
      */
-    public function setApiUrl($apiUrl): self
+    public function set(string $key, $value): void
     {
-        $this->apiUrl = $apiUrl;
-        return $this;
+        $this->data[$key] = $value;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getUserName()
+    public function getApiUrl(): string
     {
-        return $this->userName;
+        return $this->get(self::KEY_API_URL);
     }
 
     /**
-     * @param mixed $userName
-     *
-     * @return Config
+     * @return string
      */
-    public function setUserName($userName): self
+    public function getUserName(): string
     {
-        $this->userName = $userName;
-        return $this;
+        return $this->get(self::KEY_USERNAME);
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getPassword()
+    public function getPassword(): string
     {
-        return $this->password;
-    }
-
-    /**
-     * @param mixed $password
-     *
-     * @return Config
-     */
-    public function setPassword($password): self
-    {
-        $this->password = $password;
-        return $this;
+        return $this->get(self::KEY_PASSWORD);
     }
 }

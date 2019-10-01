@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../init.php';
 
-use PayNL\Sdk\Api;
+use PayNL\Sdk\{
+    Api,
+    Config
+};
 use PayNL\Sdk\Request\Pin\GetReceipt as GetPinReceiptRequest;
 
 $authAdapter = getAuthAdapter();
-$request = (new GetPinReceiptRequest('TT-9054-1003-5510'))
-    ->setDebug(true)
+$request = (new GetPinReceiptRequest(Config::getInstance()->get('terminalTransactionId')))
+    ->setDebug((bool)Config::getInstance()->get('debug'))
 ;
 
 $response = (new Api($authAdapter))

@@ -13,7 +13,7 @@ use PayNL\Sdk\Request\Transactions\Approve as ApproveTransactionRequest;
 $authAdapter = getAuthAdapter();
 
 $request = (new ApproveTransactionRequest(Config::getInstance()->get('transactionId')))
-    ->setDebug(true)
+    ->setDebug((bool)Config::getInstance()->get('debug'))
 ;
 
 $response = (new Api($authAdapter))

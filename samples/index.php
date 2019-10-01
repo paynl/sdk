@@ -54,9 +54,6 @@ declare(strict_types=1);
                 <a href="merchants/get.php" target="_blank">Get a merchant</a>
             </div>
             <div>
-                <a href="merchants/create.php" target="_blank">Create a merchant</a>
-            </div>
-            <div>
                 <a href="merchants/create-trademark.php" target="_blank">Create a trademark</a>
             </div>
             <div>

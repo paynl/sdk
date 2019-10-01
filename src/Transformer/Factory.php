@@ -74,6 +74,7 @@ class Factory
                 $transformerClass = Transformer\Receipt::class;
                 break;
             case Request\Directdebits\Delete::class:
+            case Request\IsPay\Get::class:
             case Request\Voucher\Activate::class:
             case Request\Voucher\Charge::class:
                 $transformerClass = Transformer\NoContent::class;

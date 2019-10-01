@@ -9,8 +9,15 @@ use PayNL\Sdk\{
     Config
 };
 use PayNL\Sdk\Request\Transactions\Refund as RefundTransactionRequest;
-use PayNL\Sdk\Model\{Refund, Amount, Product};
-use PayNL\Sdk\Hydrator\{Refund as RefundHydrator, Product as ProductHydrator};
+use PayNL\Sdk\Model\{
+    Refund,
+    Amount,
+    Product
+};
+use PayNL\Sdk\Hydrator\{
+    Refund as RefundHydrator,
+    Product as ProductHydrator
+};
 use Zend\Hydrator\ClassMethods;
 
 $authAdapter = getAuthAdapter();
@@ -37,7 +44,7 @@ $refund = (new RefundHydrator())->hydrate([
 ], new Refund());
 
 $request = (new RefundTransactionRequest(Config::getInstance()->get('transactionId'), $refund))
-    ->setDebug(true)
+    ->setDebug((bool)Config::getInstance()->get('debug'))
 ;
 
 $response = (new Api($authAdapter))

@@ -13,7 +13,7 @@ use PayNL\Sdk\Request\Transactions\Capture as CaptureTransactionRequest;
 $authAdapter = getAuthAdapter();
 
 $request = (new CaptureTransactionRequest(Config::getInstance()->get('transactionId')))
-    ->setDebug(true)
+    ->setDebug((bool)Config::getInstance()->get('debug'))
 ;
 
 $response = (new Api($authAdapter))

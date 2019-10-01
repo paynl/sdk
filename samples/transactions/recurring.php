@@ -27,7 +27,8 @@ $request = (new RecurringTransactionRequest(
         'extra3' => 'Extra 3',
     ], new RecurringTransaction())
 ))
-    ->setDebug(true);
+    ->setDebug((bool)Config::getInstance()->get('debug'))
+;
 
 $response = (new Api($authAdapter))
     ->handleCall($request)

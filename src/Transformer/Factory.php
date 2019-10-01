@@ -41,7 +41,6 @@ class Factory
             case Request\Directdebits\CreateRecurring::class:
                 $transformerClass = Transformer\Directdebit::class;
                 break;
-//            case Request\Merchants\GetAll::class:
             case Request\Merchants\Get::class:
             case Request\Merchants\AddTrademark::class:
             case Request\Merchants\DeleteTrademark::class:

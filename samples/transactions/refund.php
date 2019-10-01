@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../init.php';
 
-use PayNL\Sdk\Api;
+use PayNL\Sdk\{
+    Api,
+    Config
+};
 use PayNL\Sdk\Request\Transactions\Refund as RefundTransactionRequest;
 use PayNL\Sdk\Model\{Refund, Amount, Product};
 use PayNL\Sdk\Hydrator\{Refund as RefundHydrator, Product as ProductHydrator};
@@ -33,14 +36,14 @@ $refund = (new RefundHydrator())->hydrate([
     'processDate' => (new DateTime())->sub(new DateInterval('P2D'))->format(DateTime::ATOM),
 ], new Refund());
 
-$transactionId = 'EX-6581-2257-2190';
-$request = new RefundTransactionRequest($transactionId, $refund);
+$request = (new RefundTransactionRequest(Config::getInstance()->get('transactionId'), $refund))
+    ->setDebug(true)
+;
 
 $response = (new Api($authAdapter))
-    ->setDebug(true)
     ->handleCall($request)
 ;
 
-echo '<pre/>';
-print_r($response);
-exit(0);
+echo '<pre/>' . PHP_EOL .
+    var_export($response, true)
+;

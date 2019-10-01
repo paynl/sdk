@@ -120,6 +120,12 @@ declare(strict_types=1);
             <div>
                 <a href="transactions/recurring.php" target="_blank">Add a recurring Transaction</a>
             </div>
+            <div>
+                <a href="transactions/qr.php" target="_blank">Capture Transaction by QR code</a>
+            </div>
+            <div>
+                <a href="transactions/tokenize.php" target="_blank">Tokenize Transaction</a>
+            </div>
             <h2>Voucher</h2>
             <div>
                 <a href="voucher/activate.php" target="_blank">Activate voucher</a>

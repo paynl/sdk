@@ -6,6 +6,7 @@ require_once __DIR__ . '/../init.php';
 
 use PayNL\Sdk\{
     Api,
+    Config,
     DateTime
 };
 use PayNL\Sdk\Request\Directdebits\Create as CreateDirectdebitRequest;
@@ -51,7 +52,7 @@ $mandate = (new MandateHydrator())->hydrate([
 ], new Mandate());
 
 $request = (new CreateDirectdebitRequest($mandate))
-    ->setDebug(true)
+    ->setDebug((bool)Config::getInstance()->get('debug'))
 ;
 
 $response = (new Api($authAdapter))

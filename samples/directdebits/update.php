@@ -6,6 +6,7 @@ require_once __DIR__ . '/../init.php';
 
 use PayNL\Sdk\{
     Api,
+    Config,
     DateTime
 };
 use PayNL\Sdk\Request\Directdebits\Update as UpdateDirectdebitRequest;
@@ -49,8 +50,8 @@ $mandate = (new MandateHydrator())->hydrate([
     ],
 ], new Mandate());
 
-$request = (new UpdateDirectdebitRequest('IO-8284-8371-9550', $mandate))
-    ->setDebug(true)
+$request = (new UpdateDirectdebitRequest(Config::getInstance()->get('incassoOrderId'), $mandate))
+    ->setDebug((bool)Config::getInstance()->get('debug'))
 ;
 
 $response = (new Api($authAdapter))

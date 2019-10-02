@@ -281,12 +281,11 @@ abstract class AbstractRequest implements RequestInterface
             $body = $transformer->transform($rawBody);
         }
 
-        // TODO: is a hydrator necessary?
         $response->setStatusCode($guzzleResponse->getStatusCode())
             ->setRawBody($rawBody)
             ->setBody($body)
         ;
-dump($response);die;
+
         if (true === $this->isDebug()) {
             $this->dumpDebugInfo('Response: ', $response);
         }

@@ -56,10 +56,6 @@ declare(strict_types=1);
             }
 
             ?>
-            <h2>QR codes</h2>
-            <div>
-                <p>TODO?</p>
-            </div>
         </div>
     </body>
 </html>

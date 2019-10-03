@@ -52,6 +52,9 @@ class Factory
             case Request\Pin\GetTerminalTransactionStatus::class:
                 $transformerClass = Transformer\TerminalTransaction::class;
                 break;
+            case Request\Qr\Decode::class:
+                $transformerClass = Transformer\Qr::class;
+                break;
             case Request\Refunds\Get::class:
             case Request\Transactions\Refund::class:
                 $transformerClass = Transformer\Refund::class;
@@ -80,6 +83,8 @@ class Factory
                 $transformerClass = Transformer\NoContent::class;
                 break;
             case Request\Pin\ConfirmTerminalTransaction::class:
+            case Request\Qr\Encode::class:
+            case Request\Qr\Validate::class:
             case Request\Services\CreatePaymentLink::class:
             case Request\Voucher\Balance::class:
                 $transformerClass = Transformer\Simple::class;

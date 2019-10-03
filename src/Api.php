@@ -154,7 +154,6 @@ class Api
              * @var GuzzleResponse $guzzleResponse
              */
             if (true === method_exists($guzzleException, 'getResponse')) {
-                // TODO: refactor this (read stream + convert to messages)
                 $guzzleResponse = $guzzleException->getResponse();
                 if (null !== $guzzleResponse) {
                     $rawResponseBody = $guzzleResponse->getBody();
@@ -164,13 +163,7 @@ class Api
                         $content = $rawResponseBody->read($size);
                         $rawResponseBody->rewind();
 
-                        // TODO: loop through errors and fill $content with correct messages
                         $errorMessages = $content;
-//                        $encoder = new JsonEncoder();
-//                        if (RequestInterface::FORMAT_XML === $format) {
-//                            $encoder = new XmlEncoder();
-//                        }
-//                        $errors = $encoder->decode($content, $format)['errors'];
                     }
                 }
             }

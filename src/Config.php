@@ -79,7 +79,6 @@ class Config
         }
 
         foreach ($config as $key => $value) {
-            // TODO: validate??
             $this->set($key, $value);
         }
     }

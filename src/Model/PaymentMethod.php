@@ -4,13 +4,17 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Model;
 
+use JsonSerializable;
+
 /**
  * Class PaymentMethod
  *
  * @package PayNL\Sdk\Model
  */
-class PaymentMethod implements ModelInterface
+class PaymentMethod implements ModelInterface, JsonSerializable
 {
+    use JsonSerializeTrait;
+
     /**
      * @var integer
      */

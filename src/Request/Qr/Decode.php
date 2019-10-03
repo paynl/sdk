@@ -29,7 +29,7 @@ class Decode extends AbstractRequest
      */
     public function getUri(): string
     {
-        return 'qr/0/decode';
+        return 'qr/decode';
     }
 
     /**

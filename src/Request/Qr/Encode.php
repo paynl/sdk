@@ -24,7 +24,7 @@ class Encode extends AbstractRequest
      */
     public function getUri(): string
     {
-        return 'qr/0/encode';
+        return 'qr/encode';
     }
 
     /**

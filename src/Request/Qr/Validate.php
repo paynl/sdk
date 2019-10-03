@@ -26,7 +26,7 @@ class Validate extends AbstractRequest
      */
     public function getUri(): string
     {
-        return 'qr/0/validate';
+        return 'qr/validate';
     }
 
     /**

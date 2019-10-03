@@ -15,7 +15,6 @@ class Amount implements ModelInterface, JsonSerializable
 {
     use JsonSerializeTrait;
 
-    // TODO: adjust documentation should be an integer
     /**
      * Amount in cents
      *

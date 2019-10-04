@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Hydrator;
 
-use PayNL\Sdk\Exception\InvalidArgumentException;
-use PayNL\Sdk\Validator\ObjectInstance as ObjectInstanceValidator;
-use Zend\Hydrator\ClassMethods;
 use PayNL\Sdk\Model\Statistics as StatisticsModel;
 
 /**
@@ -14,35 +11,16 @@ use PayNL\Sdk\Model\Statistics as StatisticsModel;
  *
  * @package PayNL\Sdk\Hydrator
  */
-class Statistics extends ClassMethods
+class Statistics extends AbstractHydrator
 {
     /**
-     * Address constructor.
-     *
-     * @param bool $underscoreSeparatedKeys
-     * @param bool $methodExistsCheck
-     */
-    public function __construct($underscoreSeparatedKeys = true, $methodExistsCheck = false)
-    {
-        // override the given params
-        parent::__construct(false, true);
-    }
-
-    /**
      * @inheritDoc
-     *
-     * @throws InvalidArgumentException when given object is not an instance of Statistics model
      *
      * @return StatisticsModel
      */
     public function hydrate(array $data, $object): StatisticsModel
     {
-        $instanceValidator = new ObjectInstanceValidator();
-        if (false === $instanceValidator->isValid($object, StatisticsModel::class)) {
-            throw new InvalidArgumentException(
-                implode(PHP_EOL, $instanceValidator->getMessages())
-            );
-        }
+        $this->validateGivenObject($object, StatisticsModel::class);
 
         $optionalFields = [
             'promoterId',

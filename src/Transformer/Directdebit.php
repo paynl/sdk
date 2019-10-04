@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Transformer;
 
-use PayNL\Sdk\Model\ModelInterface;
 use PayNL\Sdk\Hydrator\{
     Mandate as MandateHydrator,
     Directdebit as DirectdebitHydrator
@@ -45,8 +44,7 @@ class Directdebit extends AbstractTransformer
             }
         }
 
-        // TODO: finish this
-        dump($output);die;
+        return $output;
     }
 
 }

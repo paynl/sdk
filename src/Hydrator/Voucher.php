@@ -15,7 +15,7 @@ use PayNL\Sdk\Model\{
  *
  * @package PayNL\Sdk\Hydrator
  */
-class Voucher extends ClassMethods
+class Voucher extends AbstractHydrator
 {
     /**
      * @inheritDoc
@@ -24,6 +24,8 @@ class Voucher extends ClassMethods
      */
     public function hydrate(array $data, $object): VoucherModel
     {
+        $this->validateGivenObject($object, VoucherModel::class);
+
         if (true === array_key_exists('amount', $data)) {
             $data['amount'] = (new ClassMethods())->hydrate($data['amount'], new Amount());
         }

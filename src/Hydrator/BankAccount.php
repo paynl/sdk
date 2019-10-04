@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Hydrator;
 
-use PayNL\Sdk\Exception\InvalidArgumentException;
-use PayNL\Sdk\Validator\ObjectInstance as ObjectInstanceValidator;
-use Zend\Hydrator\ClassMethods;
 use PayNL\Sdk\Model\BankAccount as BankAccountModel;
 
 /**
@@ -14,35 +11,16 @@ use PayNL\Sdk\Model\BankAccount as BankAccountModel;
  *
  * @package PayNL\Sdk\Hydrator
  */
-class BankAccount extends ClassMethods
+class BankAccount extends AbstractHydrator
 {
     /**
-     * Address constructor.
-     *
-     * @param bool $underscoreSeparatedKeys
-     * @param bool $methodExistsCheck
-     */
-    public function __construct($underscoreSeparatedKeys = true, $methodExistsCheck = false)
-    {
-        // override the given params
-        parent::__construct(false, true);
-    }
-
-    /**
      * @inheritDoc
-     *
-     * @throws InvalidArgumentException when given object is not an instance of BankAccount model
      *
      * @return BankAccountModel
      */
     public function hydrate(array $data, $object): BankAccountModel
     {
-        $instanceValidator = new ObjectInstanceValidator();
-        if (false === $instanceValidator->isValid($object, BankAccountModel::class)) {
-            throw new InvalidArgumentException(
-                implode(PHP_EOL, $instanceValidator->getMessages())
-            );
-        }
+        $this->validateGivenObject($object, BankAccountModel::class);
 
         foreach (['iban', 'bic', 'owner'] as $optionalKey) {
             if (false === array_key_exists($optionalKey, $data) || true === empty($data[$optionalKey])) {

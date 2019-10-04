@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Hydrator;
 
-use \Exception;
 use PayNL\Sdk\DateTime;
 use Zend\Hydrator\ClassMethods;
 use PayNL\Sdk\Model\Merchant as MerchantModel;
@@ -24,27 +23,20 @@ use PayNL\Sdk\Model\{
  *
  * @package PayNL\Sdk\Hydrator
  */
-class Merchant extends ClassMethods
+class Merchant extends AbstractHydrator
 {
-    /**
-     * Address constructor.
-     *
-     * @param bool $underscoreSeparatedKeys
-     * @param bool $methodExistsCheck
-     */
-    public function __construct($underscoreSeparatedKeys = true, $methodExistsCheck = false)
-    {
-        // override the given params
-        parent::__construct(false, true);
-    }
-
     /**
      * @inheritDoc
      *
      * @return MerchantModel
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function hydrate(array $data, $object): MerchantModel
     {
+        $this->validateGivenObject($object, MerchantModel::class);
+
         $data['coc'] = $data['coc'] ?? '';
         $data['vat'] = $data['vat'] ?? '';
         $data['website'] = $data['website'] ?? '';

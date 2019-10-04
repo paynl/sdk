@@ -5,13 +5,20 @@ declare(strict_types=1);
 namespace PayNL\Sdk;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\{GuzzleException, RequestException as GuzzleRequestException};
+use GuzzleHttp\Exception\{
+    GuzzleException,
+    RequestException as GuzzleRequestException
+};
 use GuzzleHttp\Psr7\Response as GuzzleResponse;
-use PayNL\Sdk\AuthAdapter\{AdapterInterface, Basic};
+use PayNL\Sdk\AuthAdapter\{
+    AdapterInterface,
+    Basic
+};
 use PayNL\Sdk\Exception\InvalidArgumentException;
-use PayNL\Sdk\Request\{AbstractRequest, RequestInterface};
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Encoder\XmlEncoder;
+use PayNL\Sdk\Request\{
+    AbstractRequest,
+    RequestInterface
+};
 
 /**
  * Class Api
@@ -44,13 +51,13 @@ class Api
     {
         if (true === is_string($adapterOrUsername)) {
             $adapterOrUsername = new Basic($adapterOrUsername, (string)$password);
-        } elseif (($adapterOrUsername instanceof AdapterInterface) === false) {
+        } elseif (!($adapterOrUsername instanceof AdapterInterface)) {
             throw new InvalidArgumentException(
                 sprintf(
                     '%s expect argument given to be %s or a string, %s given',
-                    __CLASS__,
+                    __METHOD__,
                     AdapterInterface::class,
-                    (is_object($adapterOrUsername) === true ? get_class($adapterOrUsername) : gettype($adapterOrUsername))
+                    true === is_object($adapterOrUsername) ? get_class($adapterOrUsername) : gettype($adapterOrUsername)
                 )
             );
         }

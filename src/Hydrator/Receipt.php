@@ -4,45 +4,28 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Hydrator;
 
-use PayNL\Sdk\Exception\InvalidArgumentException;
 use Zend\Hydrator\ClassMethods;
-use PayNL\Sdk\Model\{Card, PaymentMethod, Receipt as ReceiptModel};
-use PayNL\Sdk\Validator\ObjectInstance as ObjectInstanceValidator;
+use PayNL\Sdk\Model\{
+    Card,
+    PaymentMethod,
+    Receipt as ReceiptModel
+};
 
 /**
  * Class Receipt
  *
  * @package PayNL\Sdk\Hydrator
  */
-class Receipt extends ClassMethods
+class Receipt extends AbstractHydrator
 {
     /**
-     * Address constructor.
-     *
-     * @param bool $underscoreSeparatedKeys
-     * @param bool $methodExistsCheck
-     */
-    public function __construct($underscoreSeparatedKeys = true, $methodExistsCheck = false)
-    {
-        // override the given params
-        parent::__construct(false, true);
-    }
-
-    /**
      * @inheritDoc
-     *
-     * @throws InvalidArgumentException when given object is not an instance of Receipt model
      *
      * @return ReceiptModel
      */
     public function hydrate(array $data, $object): ReceiptModel
     {
-        $validator = new ObjectInstanceValidator();
-        if (false === $validator->isValid($object, ReceiptModel::class)) {
-            throw new InvalidArgumentException(
-                implode(PHP_EOL, $validator->getMessages())
-            );
-        }
+        $this->validateGivenObject($object, ReceiptModel::class);
 
         $data['approvalId'] = $data['approvalId'] ?? 0;
 

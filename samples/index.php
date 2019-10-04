@@ -28,33 +28,34 @@ declare(strict_types=1);
             <?php
 
             $entries = glob(__DIR__ . DIRECTORY_SEPARATOR . '*');
-            foreach ($entries as $entry) {
-                if (true === is_file($entry)) {
-                    continue;
-                }
+            if (false !== $entries) {
+                foreach ($entries as $entry) {
+                    if (true === is_file($entry)) {
+                        continue;
+                    }
 
-                $samples = glob($entry . DIRECTORY_SEPARATOR . '*.php');
-                if (0 === count($samples)) {
-                    continue;
-                }
+                    $samples = glob($entry . DIRECTORY_SEPARATOR . '*.php');
+                    if (false === $samples || 0 === count($samples)) {
+                        continue;
+                    }
 
-                echo sprintf(
-                    '<h2>%s</h2>' . PHP_EOL,
-                    str_replace(' ', '', ucwords(str_replace('-', ' ', basename($entry))))
-                );
-
-                foreach ($samples as $sample) {
                     echo sprintf(
-                        '<div>
+                        '<h2>%s</h2>' . PHP_EOL,
+                        str_replace(' ', '', ucwords(str_replace('-', ' ', basename($entry))))
+                    );
+
+                    foreach ($samples as $sample) {
+                        echo sprintf(
+                            '<div>
                             <a href="%s" target="_blank">%s</a>
                         </div>' . PHP_EOL,
-                        ltrim(str_replace(__DIR__, '', $sample), DIRECTORY_SEPARATOR),
-                        str_replace(['-', '.php'], [' ', ''], ucfirst(basename($sample)))
-                    );
+                            ltrim(str_replace(__DIR__, '', $sample), DIRECTORY_SEPARATOR),
+                            str_replace(['-', '.php'], [' ', ''], ucfirst(basename($sample)))
+                        );
+                    }
+
                 }
-
             }
-
             ?>
         </div>
     </body>

@@ -293,16 +293,6 @@ class Mandate implements ModelInterface, JsonSerializable
     }
 
     /**
-     * alias method used by hydrator
-     *
-     * @return bool
-     */
-    public function getIsLastOrder(): bool
-    {
-        return $this->isLastOrder();
-    }
-
-    /**
      * @param bool $isLastOrder
      *
      * @return Mandate

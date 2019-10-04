@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Hydrator;
 
-use \Exception;
 use PayNL\Sdk\DateTime;
 use PayNL\Sdk\Model\{
     Address,
     Amount,
     Company,
     Customer,
-    Exchange,
     PaymentMethod,
     Product,
     Statistics,
@@ -21,13 +19,10 @@ use PayNL\Sdk\Model\{
 use PayNL\Sdk\Hydrator\{
     Address as AddressHydrator,
     Customer as CustomerHydrator,
-    Exchange as ExchangeHydrator,
     Product as ProductHydrator,
     Status as StatusHydrator,
     Statistics as StatisticsHydrator
 };
-use PayNL\Sdk\Exception\InvalidArgumentException;
-use PayNL\Sdk\Validator\ObjectInstance as ObjectInstanceValidator;
 use Zend\Hydrator\ClassMethods;
 
 /**
@@ -37,24 +32,10 @@ use Zend\Hydrator\ClassMethods;
  *
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
-class Transaction extends ClassMethods
+class Transaction extends AbstractHydrator
 {
     /**
-     * Address constructor.
-     *
-     * @param bool $underscoreSeparatedKeys
-     * @param bool $methodExistsCheck
-     */
-    public function __construct($underscoreSeparatedKeys = true, $methodExistsCheck = false)
-    {
-        // override the given params
-        parent::__construct(false, true);
-    }
-
-    /**
      * @inheritDoc
-     *
-     * @throws InvalidArgumentException when given object is not an instance of Transaction model
      *
      * @return TransactionModel
      *
@@ -63,19 +44,14 @@ class Transaction extends ClassMethods
      */
     public function hydrate(array $data, $object): TransactionModel
     {
-        $instanceValidator = new ObjectInstanceValidator();
-        if (false === $instanceValidator->isValid($object, TransactionModel::class)) {
-            throw new InvalidArgumentException(
-                implode(PHP_EOL, $instanceValidator->getMessages())
-            );
-        }
+        $this->validateGivenObject($object, TransactionModel::class);
 
         if (true === array_key_exists('status', $data) && true === is_array($data['status'])) {
             $data['status'] =  (new StatusHydrator())->hydrate($data['status'], new Status());
         }
-        if (true === array_key_exists('exchange', $data) && true === is_array($data['exchange'])) {
-            $data['exchange'] =  (new ExchangeHydrator())->hydrate($data['exchange'], new Exchange());
-        }
+
+        $data['exchangeUrl'] = $data['exchangeUrl'] ?? '';
+
         if (true === array_key_exists('paymentMethod', $data) && true === is_array($data['paymentMethod'])) {
             $data['paymentMethod'] = (new ClassMethods())->hydrate($data['paymentMethod'], new PaymentMethod());
         }

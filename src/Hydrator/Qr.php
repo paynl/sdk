@@ -15,7 +15,7 @@ use PayNL\Sdk\Model\{
  *
  * @package PayNL\Sdk\Hydrator
  */
-class Qr extends ClassMethods
+class Qr extends AbstractHydrator
 {
     /**
      * @inheritDoc
@@ -24,6 +24,8 @@ class Qr extends ClassMethods
      */
     public function hydrate(array $data, $object): QrModel
     {
+        $this->validateGivenObject($object, QrModel::class);
+
         if (true === array_key_exists('paymentMethod', $data) && false === $data['paymentMethod'] instanceof PaymentMethod) {
             $data['paymentMethod'] = (new ClassMethods())->hydrate($data['paymentMethod'], new PaymentMethod());
         }

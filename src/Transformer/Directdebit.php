@@ -23,9 +23,9 @@ class Directdebit extends AbstractTransformer
     /**
      * @inheritDoc
      *
-     * @return
+     * @return array
      */
-    public function transform($inputToTransform)
+    public function transform($inputToTransform): array
     {
         $inputToTransform = $this->getDecodedInput($inputToTransform);
 

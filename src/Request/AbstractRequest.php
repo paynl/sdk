@@ -4,17 +4,22 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Request;
 
+use RuntimeException;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Exception\GuzzleException;
-use PayNL\Sdk\DebugTrait;
-use PayNL\Sdk\Exception\InvalidArgumentException;
-use PayNL\Sdk\Response;
-use PayNL\Sdk\Transformer\Factory;
-use PayNL\Sdk\Filter\FilterInterface;
-use PayNL\Sdk\Validator\ObjectInstance;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Encoder\XmlEncoder;
+use PayNL\Sdk\{
+    DebugTrait,
+    Response,
+    Exception\InvalidArgumentException,
+    Filter\FilterInterface,
+    Transformer\Factory,
+    Validator\ObjectInstance
+};
+use Symfony\Component\Serializer\Encoder\{
+    JsonEncoder,
+    XmlEncoder
+};
 
 /**
  * Class AbstractRequest
@@ -246,8 +251,6 @@ abstract class AbstractRequest implements RequestInterface
     /**
      * @param Response $response
      *
-     * @throws GuzzleException
-     *
      * @return void
      */
     public function execute(Response $response): void
@@ -267,7 +270,12 @@ abstract class AbstractRequest implements RequestInterface
         if (true === $this->isDebug()) {
             $this->dumpDebugInfo('Requested URL: ' . $guzzleRequest->getUri());
         }
-        $guzzleResponse = $this->getClient()->send($guzzleRequest);
+
+        try {
+            $guzzleResponse = $this->getClient()->send($guzzleRequest);
+        } catch (GuzzleException $ge) {
+            throw new RuntimeException($ge->getMessage(), $ge->getCode(), $ge->getPrevious());
+        }
 
         $rawBody = $guzzleResponse->getBody()->getContents();
 

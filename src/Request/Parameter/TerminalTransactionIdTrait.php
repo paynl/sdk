@@ -27,7 +27,7 @@ trait TerminalTransactionIdTrait
     /**
      * @param string $terminalTransactionId
      *
-     * @return TerminalTransactionIdTrait
+     * @return static
      */
     public function setTerminalTransactionId(string $terminalTransactionId): self
     {

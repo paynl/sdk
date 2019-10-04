@@ -42,7 +42,7 @@ class Api
     /**
      * Api constructor.
      *
-     * @param AdapterInterface|string $adapterOrUsername
+     * @param mixed $adapterOrUsername
      * @param string|null $password
      *
      * @throws InvalidArgumentException when given $adapterOrUsername is not a string nor an AdapterInterface object

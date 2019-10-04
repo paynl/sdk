@@ -12,12 +12,12 @@ namespace PayNL\Sdk\Model;
 class Card implements ModelInterface
 {
     /**
-     * @var string
+     * @var string|null
      */
     protected $id;
 
     /**
-     * @var string
+     * @var string|null
      */
     protected $name;
 

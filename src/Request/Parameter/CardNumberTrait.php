@@ -27,7 +27,7 @@ trait CardNumberTrait
     /**
      * @param string $cardNumber
      *
-     * @return CardNumberTrait
+     * @return static
      */
     public function setCardNumber(string $cardNumber): self
     {

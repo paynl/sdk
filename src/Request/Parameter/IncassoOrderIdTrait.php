@@ -27,7 +27,7 @@ trait IncassoOrderIdTrait
     /**
      * @param string $incassoOrderId
      *
-     * @return IncassoOrderIdTrait
+     * @return static
      */
     public function setIncassoOrderId(string $incassoOrderId): self
     {

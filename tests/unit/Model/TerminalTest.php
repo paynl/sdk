@@ -36,9 +36,11 @@ class TerminalTest extends UnitTest
     /**
      * @return void
      */
-    public function testIsItNotJsonSerializable(): void
+    public function testIsItJsonSerializable(): void
     {
-        verify($this->terminal)->isNotInstanceOf(\JsonSerializable::class);
+        verify($this->terminal)->isInstanceOf(\JsonSerializable::class);
+
+        verify($this->terminal->jsonSerialize())->array();
     }
 
     /**

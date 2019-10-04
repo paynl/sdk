@@ -10,7 +10,7 @@ use PayNL\Sdk\Transformer\{
     Transaction as TransactionTransformer,
     TransformerInterface
 };
-use PayNL\Sdk\Model\Merchant;
+use PayNL\Sdk\Model\Transaction;
 
 /**
  * Class TransactionTest
@@ -49,7 +49,8 @@ class TransactionTest extends UnitTest
     {
         $input = json_encode([
             'transactions' => [
-               [],
+                [],
+                [],
             ],
         ]);
 
@@ -58,7 +59,7 @@ class TransactionTest extends UnitTest
         verify($output)->hasKey('transactions');
         verify($output['transactions'])->array();
         verify($output['transactions'])->count(2);
-        verify($output['transactions'])->containsOnlyInstancesOf(Merchant::class);
+        verify($output['transactions'])->containsOnlyInstancesOf(Transaction::class);
     }
 
     // TODO fix the transaction transformer test

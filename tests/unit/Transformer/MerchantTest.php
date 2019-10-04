@@ -49,7 +49,8 @@ class MerchantTest extends UnitTest
     {
         $input = json_encode([
             'merchants' => [
-               [],
+                [],
+                [],
             ],
         ]);
 

@@ -75,12 +75,8 @@ class TransactionTest extends UnitTest
                 'date'   => DateTime::createFromFormat('Y-m-d', '2019-09-11'),
                 'reason' => 'Just because...'
             ], new Status()),
-            'returnUrl' => 'http://www.pay.nl',
-            // TODO: change exchange to exchangeUrl
-//            'exchange' => (new Hydrator\Exchange())->hydrate([
-//                'method' => 'GET',
-//                'type'   => 'json'
-//            ], new Exchange()),
+            'returnUrl' => 'http://www.pay.nl/return-url',
+            'exchangeUrl' => 'https://www.pay.nl/exchange-url',
             'reference' => '',
             'paymentMethod' => (new ClassMethods())->hydrate([
                 'id' => 10,
@@ -170,8 +166,6 @@ class TransactionTest extends UnitTest
             ], new Statistics()),
             'createdAt' => DateTime::createFromFormat('Y-m-d', '2019-09-11'),
             'expiresAt' => '2019-12-31T00:00:00+02:00',
-            'paymentMethodId' => 10,
-            'paymentMethodSubId' => 'Rabobank',
             'testMode' => 0,
             'transferType' => 'merchant',
             'transferValue' => 'M-3421-2120',
@@ -188,7 +182,7 @@ class TransactionTest extends UnitTest
         expect($transaction->getServiceId())->string();
         expect($transaction->getStatus())->isInstanceOf(Status::class);
         expect($transaction->getReturnUrl())->string();
-//        expect($transaction->getExchange())->string();
+        expect($transaction->getExchangeUrl())->string();
         expect($transaction->getReference())->string();
         expect($transaction->getPaymentMethod())->isInstanceOf(PaymentMethod::class);
         expect($transaction->getDescription())->string();
@@ -209,8 +203,6 @@ class TransactionTest extends UnitTest
         expect($transaction->getStatistics())->isInstanceOf(Statistics::class);
         expect($transaction->getCreatedAt())->isInstanceOf(DateTime::class);
         expect($transaction->getExpiresAt())->isInstanceOf(DateTime::class);
-        expect($transaction->getPaymentMethodId())->int();
-        expect($transaction->getPaymentMethodSubId())->string();
         expect($transaction->getTestMode())->int();
         expect($transaction->getTransferType())->string();
         expect($transaction->getTransferValue())->string();
@@ -233,12 +225,8 @@ class TransactionTest extends UnitTest
                 'date'   => DateTime::createFromFormat('Y-m-d', '2019-09-11'),
                 'reason' => 'Just because...'
             ], new Status()),
-            'returnUrl' => 'http://www.pay.nl',
-            // TODO: change exchange to exchangeUrl
-//            'exchange' => (new Hydrator\Exchange())->hydrate([
-//                'method' => 'GET',
-//                'type'   => 'json'
-//            ], new Exchange()),
+            'returnUrl' => 'https://www.pay.nl/return-url',
+            'exchangeUrl' => 'https://www.pay.nl/exchange-url',
             'reference' => '',
             'paymentMethod' => (new ClassMethods())->hydrate([
                 'id' => 10,
@@ -328,8 +316,6 @@ class TransactionTest extends UnitTest
             ], new Statistics()),
             'createdAt' => DateTime::createFromFormat('Y-m-d', '2019-09-11'),
             'expiresAt' => '2019-12-31T00:00:00+02:00',
-            'paymentMethodId' => 10,
-            'paymentMethodSubId' => 'Rabobank',
             'testMode' => 0,
             'transferType' => 'merchant',
             'transferValue' => 'M-3421-2120',
@@ -348,7 +334,7 @@ class TransactionTest extends UnitTest
         verify($data)->hasKey('serviceId');
         verify($data)->hasKey('status');
         verify($data)->hasKey('returnUrl');
-//        verify($data)->hasKey('exchangeUrl');
+        verify($data)->hasKey('exchangeUrl');
         verify($data)->hasKey('reference');
         verify($data)->hasKey('paymentMethod');
         verify($data)->hasKey('description');
@@ -367,8 +353,6 @@ class TransactionTest extends UnitTest
         verify($data)->hasKey('statistics');
         verify($data)->hasKey('createdAt');
         verify($data)->hasKey('expiresAt');
-        verify($data)->hasKey('paymentMethodId');
-        verify($data)->hasKey('paymentMethodSubId');
         verify($data)->hasKey('testMode');
         verify($data)->hasKey('transferType');
         verify($data)->hasKey('transferValue');
@@ -379,7 +363,7 @@ class TransactionTest extends UnitTest
         expect($data['serviceId'])->string();
         expect($data['status'])->isInstanceOf(Status::class);
         expect($data['returnUrl'])->string();
-//        expect($transaction->getExchange())->string();
+        expect($transaction->getExchangeUrl())->string();
         expect($data['reference'])->string();
         expect($data['paymentMethod'])->isInstanceOf(PaymentMethod::class);
         expect($data['description'])->string();
@@ -400,8 +384,6 @@ class TransactionTest extends UnitTest
         expect($data['statistics'])->isInstanceOf(Statistics::class);
         expect($data['createdAt'])->isInstanceOf(DateTime::class);
         expect($data['expiresAt'])->isInstanceOf(DateTime::class);
-        expect($data['paymentMethodId'])->int();
-        expect($data['paymentMethodSubId'])->string();
         expect($data['testMode'])->int();
         expect($data['transferType'])->string();
         expect($data['transferValue'])->string();

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Filter;
 
-use \DateTime;
-use \Exception;
+use DateTime;
+use Exception;
 use PayNL\Sdk\Exception\InvalidArgumentException;
 
 /**
@@ -24,12 +24,13 @@ abstract class AbstractDate extends AbstractScalar
     {
         if (true === is_string($value)) {
             try {
-                $value = new DateTime($value);
+                $valueAsString = $value;
+                $value = new DateTime($valueAsString);
             } catch (Exception $e) {
                 throw new InvalidArgumentException(
                     sprintf(
                         'Can not convert "%s" to a %s object',
-                        $value,
+                        $valueAsString ?? '',
                         DateTime::class
                     )
                 );

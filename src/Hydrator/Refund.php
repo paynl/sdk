@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Hydrator;
 
-use \Exception;
 use Zend\Hydrator\ClassMethods;
-use PayNL\Sdk\Model\{Amount, Refund as RefundModel, Product, BankAccount, Status};
+use PayNL\Sdk\Model\{
+    Amount,
+    Refund as RefundModel,
+    Product,
+    BankAccount,
+    Status
+};
 use PayNL\Sdk\DateTime;
-use PayNL\Sdk\Validator\ObjectInstance as ObjectInstanceValidator;
-use PayNL\Sdk\Exception\InvalidArgumentException;
 use PayNL\Sdk\Hydrator\{
     BankAccount as BankAccountHydrator,
     Product as ProductHydrator,
@@ -21,25 +24,11 @@ use PayNL\Sdk\Hydrator\{
  *
  * @package PayNL\Sdk\Hydrator
  */
-class Refund extends ClassMethods
+class Refund extends AbstractHydrator
 {
-    /**
-     * Address constructor.
-     *
-     * @param bool $underscoreSeparatedKeys
-     * @param bool $methodExistsCheck
-     */
-    public function __construct($underscoreSeparatedKeys = true, $methodExistsCheck = false)
-    {
-        // override the given params
-        parent::__construct(false, true);
-    }
-
     /**
      * @param array $data
      * @param object $object
-     *
-     * @throws InvalidArgumentException when given object is not an instance of Refund model
      *
      * @return RefundModel
      *
@@ -48,12 +37,7 @@ class Refund extends ClassMethods
      */
     public function hydrate(array $data, $object): RefundModel
     {
-        $instanceValidator = new ObjectInstanceValidator();
-        if (false === $instanceValidator->isValid($object, RefundModel::class)) {
-            throw new InvalidArgumentException(
-                implode(PHP_EOL, $instanceValidator->getMessages())
-            );
-        }
+        $this->validateGivenObject($object, RefundModel::class);
 
         $data['description'] = $data['description'] ?? '';
 

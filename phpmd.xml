@@ -48,12 +48,12 @@
     </rule>
     <rule ref="rulesets/naming.xml/ShortVariable">
         <properties>
-            <property name="exceptions" value="id" />
+            <property name="exceptions" value="id,ip,qr" />
         </properties>
     </rule>
     <rule ref="rulesets/naming.xml/LongVariable">
         <properties>
-            <property name="maximum" value="25" />
+            <property name="maximum" value="30" />
         </properties>
     </rule>
     <rule ref="rulesets/codesize.xml/ExcessivePublicCount">

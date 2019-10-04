@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PayNL\Sdk;
 
 use PayNL\Sdk\Exception\InvalidArgumentException;
+use PayNL\Sdk\Exception\UnexpectedValueException;
 
 /**
  * Class Config
@@ -79,6 +80,11 @@ class Config
         }
 
         foreach ($config as $key => $value) {
+            if (false === is_string($key)) {
+                throw new UnexpectedValueException(
+                    'Keys in the configuration must be a string'
+                );
+            }
             $this->set($key, $value);
         }
     }

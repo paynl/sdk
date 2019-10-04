@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Hydrator;
 
-use PayNL\Sdk\Exception\InvalidArgumentException;
-use PayNL\Sdk\Validator\ObjectInstance;
 use Zend\Hydrator\ClassMethods;
 use PayNL\Sdk\Hydrator\Terminal as TerminalHydrator;
 use PayNL\Sdk\Model\{
@@ -19,14 +17,8 @@ use PayNL\Sdk\Model\{
  *
  * @package PayNL\Sdk\Hydrator
  */
-class TerminalTransaction extends ClassMethods
+class TerminalTransaction extends AbstractHydrator
 {
-    public function __construct($underscoreSeparatedKeys = true, $methodExistsCheck = false)
-    {
-        // override the given params
-        parent::__construct(false, true);
-    }
-
     /**
      * @inheritDoc
      *
@@ -34,12 +26,7 @@ class TerminalTransaction extends ClassMethods
      */
     public function hydrate(array $data, $object): TerminalTransactionModel
     {
-        $instanceValidator = new ObjectInstance();
-        if (false === $instanceValidator->isValid($object, TerminalTransactionModel::class)) {
-            throw new InvalidArgumentException(
-                implode(PHP_EOL, $instanceValidator->getMessages())
-            );
-        }
+        $this->validateGivenObject($object, TerminalTransactionModel::class);
 
         $data['issuerUrl'] = $data['issuerUrl'] ?? '';
         $data['statusUrl'] = $data['statusUrl'] ?? '';

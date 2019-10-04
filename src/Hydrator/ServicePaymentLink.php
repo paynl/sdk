@@ -6,18 +6,18 @@ namespace PayNL\Sdk\Hydrator;
 
 use PayNL\Sdk\Model\{
     Amount,
-    Statistics
+    Statistics,
+    ServicePaymentLink as ServicePaymentLinkModel
 };
 use PayNL\Sdk\Hydrator\Statistics as StatisticsHydrator;
 use Zend\Hydrator\ClassMethods;
-use PayNL\Sdk\Model\ServicePaymentLink as ServicePaymentLinkModel;
 
 /**
  * Class ServicePaymentLink
  *
  * @package PayNL\Sdk\Hydrator
  */
-class ServicePaymentLink extends ClassMethods
+class ServicePaymentLink extends AbstractHydrator
 {
     /**
      * @inheritDoc
@@ -26,6 +26,8 @@ class ServicePaymentLink extends ClassMethods
      */
     public function hydrate(array $data, $object): ServicePaymentLinkModel
     {
+        $this->validateGivenObject($object, ServicePaymentLinkModel::class);
+
         if (true === array_key_exists('amount', $data)) {
             $data['amount'] = (new ClassMethods())->hydrate($data['amount'], new Amount());
         }

@@ -24,20 +24,8 @@ use PayNL\Sdk\Model\{
  *
  * @package PayNL\Sdk\Hydrator
  */
-class Mandate extends ClassMethods
+class Mandate extends AbstractHydrator
 {
-    /**
-     * Address constructor.
-     *
-     * @param bool $underscoreSeparatedKeys
-     * @param bool $methodExistsCheck
-     */
-    public function __construct($underscoreSeparatedKeys = true, $methodExistsCheck = false)
-    {
-        // override the given params
-        parent::__construct(false, true);
-    }
-
     /**
      * @inheritDoc
      *
@@ -45,6 +33,8 @@ class Mandate extends ClassMethods
      */
     public function hydrate(array $data, $object): MandateModel
     {
+        $this->validateGivenObject($object, MandateModel::class);
+
         $data['description'] = $data['description'] ?? '';
 
         if (true === array_key_exists('amount', $data)) {

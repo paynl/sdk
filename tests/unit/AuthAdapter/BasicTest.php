@@ -6,6 +6,7 @@ namespace Tests\Unit\PayNL\Sdk\AuthAdapter;
 
 use Codeception\Test\Unit as UnitTest;
 use PayNL\Sdk\AuthAdapter\Basic;
+use PayNL\Sdk\Exception\InvalidArgumentException;
 use UnitTester;
 
 /**
@@ -26,7 +27,6 @@ class BasicTest extends UnitTest
     protected $tester;
 
     /**
-     *
      * @return void
      */
     public function _before()
@@ -38,7 +38,6 @@ class BasicTest extends UnitTest
     }
 
     /**
-     *
      * @return void
      */
     public function testItCanConstruct(): void
@@ -47,7 +46,24 @@ class BasicTest extends UnitTest
     }
 
     /**
-     *
+     * @return void
+     */
+    public function testItThrowsAnExceptionOnEmptyUsername(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        new Basic('', 'password');
+    }
+
+    /**
+     * @return void
+     */
+    public function testItThrowsAnExceptionOnEmptyPassword(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        new Basic('username', '');
+    }
+
+    /**
      * @return void
      */
     public function testItCanRetrieveTheUsername(): void
@@ -56,7 +72,6 @@ class BasicTest extends UnitTest
     }
 
     /**
-     *
      * @return void
      */
     public function testItCanSetAnUsername(): void
@@ -67,7 +82,6 @@ class BasicTest extends UnitTest
     }
 
     /**
-     *
      * @return void
      */
     public function testItCanRetrieveThePassword(): void
@@ -76,7 +90,6 @@ class BasicTest extends UnitTest
     }
 
     /**
-     *
      * @return void
      */
     public function testItCanSetAPassword(): void
@@ -87,7 +100,6 @@ class BasicTest extends UnitTest
     }
 
     /**
-     *
      * @return void
      */
     public function testItCanGetTheHeaderString(): void

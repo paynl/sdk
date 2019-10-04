@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace Tests\Unit\PayNL\Sdk\Filter;
 
 use Codeception\Test\Unit as UnitTest;
-use PayNL\Sdk\Filter\AbstractScalar;
-use PayNL\Sdk\Filter\PaymentMethodId;
-use PayNL\Sdk\Filter\FilterInterface;
+use PayNL\Sdk\Filter\{
+    AbstractScalar,
+    PaymentMethodId
+};
 
 /**
  * Class PaymentMethodIdTest
@@ -17,7 +18,7 @@ use PayNL\Sdk\Filter\FilterInterface;
 class PaymentMethodIdTest extends UnitTest
 {
     /**
-     * @var FilterInterface
+     * @var PaymentMethodId
      */
     protected $filter;
 

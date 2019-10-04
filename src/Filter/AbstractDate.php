@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Filter;
 
-use DateTime;
-use Exception;
+use DateTime, Exception;
 use PayNL\Sdk\Exception\InvalidArgumentException;
 
 /**

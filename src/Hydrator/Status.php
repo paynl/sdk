@@ -35,7 +35,7 @@ class Status extends AbstractHydrator
             $data['reason'] = '';
         }
 
-        if (null === $data['date']) {
+        if (true === array_key_exists('date', $data) && null === $data['date']) {
             unset($data['date']);
         }
 

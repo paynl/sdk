@@ -36,9 +36,11 @@ class PaymentMethodTest extends UnitTest
     /**
      * @return void
      */
-    public function testIsItNotJsonSerializable(): void
+    public function testIsItJsonSerializable(): void
     {
-        verify($this->paymentMethod)->isNotInstanceOf(\JsonSerializable::class);
+        verify($this->paymentMethod)->isInstanceOf(\JsonSerializable::class);
+
+        verify($this->paymentMethod->jsonSerialize())->array();
     }
 
     /**

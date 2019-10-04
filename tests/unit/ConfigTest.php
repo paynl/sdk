@@ -58,9 +58,9 @@ class ConfigTest extends UnitTest
             Config::KEY_PASSWORD => 'blaatschaap',
         ]);
 
-        verify(Config::getInstance()->getApiUrl())->notEmpty();
-        verify(Config::getInstance()->getUserName())->notEmpty();
-        verify(Config::getInstance()->getPassword())->notEmpty();
+        verify(Config::getInstance()->get(Config::KEY_API_URL))->notEmpty();
+        verify(Config::getInstance()->get(Config::KEY_USERNAME))->notEmpty();
+        verify(Config::getInstance()->get(Config::KEY_PASSWORD))->notEmpty();
     }
 
     /**
@@ -71,14 +71,10 @@ class ConfigTest extends UnitTest
     public function testItCanContainAnApiUrl(): void
     {
         verify(Config::getInstance()->getApiUrl())->equals('https://rest.somehost.topleveldomain');
-        verify(
-            Config::getInstance()->setApiUrl('http://rest.at.some.other.endpoint')
-            ->getApiUrl()
-        )->equals('http://rest.at.some.other.endpoint');
+        Config::getInstance()->set(Config::KEY_API_URL, 'http://rest.at.some.other.endpoint');
+        verify(Config::getInstance()->getApiUrl())->equals('http://rest.at.some.other.endpoint');
 
-        Config::getInstance()->load([
-            'wrong_api_key' => 'http://some.bogus.address'
-        ]);
+        Config::getInstance()->set('wrong_api_key', 'http://some.bogus.address');
         verify(Config::getInstance()->getApiUrl())->equals('http://rest.at.some.other.endpoint');
     }
 
@@ -90,14 +86,10 @@ class ConfigTest extends UnitTest
     public function testItCanContainAnUsername(): void
     {
         verify(Config::getInstance()->getUserName())->equals('piet');
-        verify(
-            Config::getInstance()->setUserName('henk')
-                ->getUserName()
-        )->equals('henk');
+        Config::getInstance()->set(Config::KEY_USERNAME, 'henk');
+        verify(Config::getInstance()->getUserName())->equals('henk');
 
-        Config::getInstance()->load([
-            'wrong_username_key' => 'klaas'
-        ]);
+        Config::getInstance()->set('wrong_username_key', 'klaas');
         verify(Config::getInstance()->getUserName())->equals('henk');
     }
 
@@ -109,14 +101,10 @@ class ConfigTest extends UnitTest
     public function testItCanContainAPassword(): void
     {
         verify(Config::getInstance()->getPassword())->equals('blaatschaap');
-        verify(
-            Config::getInstance()->setPassword('s0M3H4xOrP4ssw0rD')
-                ->getPassword()
-        )->equals('s0M3H4xOrP4ssw0rD');
+        Config::getInstance()->set(Config::KEY_PASSWORD, 's0M3H4xOrP4ssw0rD');
+        verify(Config::getInstance()->getPassword())->equals('s0M3H4xOrP4ssw0rD');
 
-        Config::getInstance()->load([
-            'wrong_password_key' => '1234'
-        ]);
+        Config::getInstance()->set('wrong_password_key', '1234');
         verify(Config::getInstance()->getPassword())->equals('s0M3H4xOrP4ssw0rD');
     }
 }

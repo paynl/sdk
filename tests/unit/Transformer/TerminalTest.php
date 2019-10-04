@@ -48,7 +48,7 @@ class TerminalTest extends UnitTest
     public function testItCanTransformMultiple(): void
     {
         $input = json_encode([
-            'terminals' => [
+            'pin' => [
                 [
                     'id'          => 'T-0001',
                     'name'        => 'Terminal #1',
@@ -66,9 +66,9 @@ class TerminalTest extends UnitTest
 
         $output = $this->terminalTransformer->transform($input);
         verify($output)->array();
-        verify($output)->hasKey('terminals');
-        verify($output['terminals'])->array();
-        verify($output['terminals'])->count(2);
-        verify($output['terminals'])->containsOnlyInstancesOf(Terminal::class);
+        verify($output)->hasKey('pin');
+        verify($output['pin'])->array();
+        verify($output['pin'])->count(2);
+        verify($output['pin'])->containsOnlyInstancesOf(Terminal::class);
     }
 }

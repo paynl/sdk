@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Tests\Unit\PayNL\Sdk\Filter;
 
 use Codeception\Test\Unit as UnitTest;
-use PayNL\Sdk\Filter\AbstractArray;
-use PayNL\Sdk\Filter\GroupBy;
+use PayNL\Sdk\Filter\{
+    AbstractArray,
+    GroupBy
+};
 
 /**
  * Class GroupByTest
@@ -16,7 +18,7 @@ use PayNL\Sdk\Filter\GroupBy;
 class GroupByTest extends UnitTest
 {
     /**
-     * @var AbstractArray
+     * @var GroupBy
      */
     protected $filter;
 

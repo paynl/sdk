@@ -28,7 +28,6 @@ class AbstractScalarTest extends UnitTest
     protected $anonymousClassFromAbstract;
 
     /**
-     *
      * @return void
      */
     public function _before(): void
@@ -42,7 +41,6 @@ class AbstractScalarTest extends UnitTest
     }
 
     /**
-     *
      * @return void
      */
     public function testInstanceOfFilterInterface(): void
@@ -51,24 +49,27 @@ class AbstractScalarTest extends UnitTest
     }
 
     /**
-     *
      * @return void
      */
     public function testItCanConstruct(): void
     {
         verify($this->anonymousClassFromAbstract)->isInstanceOf(AbstractScalar::class);
+    }
 
+    /**
+     * @return void
+     */
+    public function testItTriggersAnExceptionOnWrongInput(): void
+    {
         $this->expectException(InvalidArgumentException::class);
         new class(new \stdClass()) extends AbstractScalar {
             public function getName(): string
             {
-                return 'ThisBreaksFilter';
             }
         };
     }
 
     /**
-     *
      * @return void
      */
     public function testItContainsAValue(): void
@@ -79,7 +80,6 @@ class AbstractScalarTest extends UnitTest
     }
 
     /**
-     *
      * @return void
      */
     public function testItCanSetAValue(): void
@@ -90,7 +90,6 @@ class AbstractScalarTest extends UnitTest
     }
 
     /**
-     *
      * @return void
      */
     public function testItCanBeConvertedToAString(): void

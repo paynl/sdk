@@ -7,7 +7,7 @@ namespace Tests\Unit\PayNL\Sdk\Filter;
 use Codeception\Test\Unit as UnitTest;
 use PayNL\Sdk\Filter\AbstractArray;
 use PayNL\Sdk\Filter\FilterInterface;
-use UnitTester;
+use UnitTester, TypeError, stdClass;
 
 /**
  * Class AbstractArrayTest
@@ -27,7 +27,6 @@ class AbstractArrayTest extends UnitTest
     protected $anonymousClassFromAbstract;
 
     /**
-     *
      * @return void
      */
     public function _before(): void
@@ -41,7 +40,6 @@ class AbstractArrayTest extends UnitTest
     }
 
     /**
-     *
      * @return void
      */
     public function testInstanceOfFilterInterface(): void
@@ -50,7 +48,6 @@ class AbstractArrayTest extends UnitTest
     }
 
     /**
-     *
      * @return void
      */
     public function testItCanConstruct(): void
@@ -58,7 +55,7 @@ class AbstractArrayTest extends UnitTest
         verify($this->anonymousClassFromAbstract)->isInstanceOf(AbstractArray::class);
 
         $this->expectException(\TypeError::class);
-        new class(new \stdClass()) extends AbstractArray {
+        new class(new stdClass()) extends AbstractArray {
             public function getName(): string
             {
                 return 'ThisBreaksFilter';
@@ -67,7 +64,19 @@ class AbstractArrayTest extends UnitTest
     }
 
     /**
-     *
+     * @return void
+     */
+    public function testItTriggersATypeErrorOnNonArrayInput(): void
+    {
+        $this->expectException(TypeError::class);
+        new class(new stdClass()) extends AbstractArray {
+            public function getName(): string
+            {
+            }
+        };
+    }
+
+    /**
      * @return void
      */
     public function testItContainsAValue(): void
@@ -78,7 +87,6 @@ class AbstractArrayTest extends UnitTest
     }
 
     /**
-     *
      * @return void
      */
     public function testItCanSetAValue(): void
@@ -89,7 +97,6 @@ class AbstractArrayTest extends UnitTest
     }
 
     /**
-     *
      * @return void
      */
     public function testItCanBeConvertedToAString(): void

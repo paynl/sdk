@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Tests\Unit\PayNL\Sdk\Filter;
 
 use Codeception\Test\Unit as UnitTest;
-use PayNL\Sdk\Filter\AbstractArray;
-use PayNL\Sdk\Filter\Filters;
+use PayNL\Sdk\Filter\{
+    AbstractArray,
+    Filters
+};
 
 /**
  * Class FiltersTest
@@ -16,7 +18,7 @@ use PayNL\Sdk\Filter\Filters;
 class FiltersTest extends UnitTest
 {
     /**
-     * @var AbstractArray
+     * @var Filters
      */
     protected $filter;
 

@@ -6,9 +6,10 @@ namespace Tests\Unit\PayNL\Sdk\Filter;
 
 use Codeception\Test\Unit as UnitTest;
 use PayNL\Sdk\DateTime;
-use PayNL\Sdk\Filter\AbstractDate;
-use PayNL\Sdk\Filter\EndDate;
-use PayNL\Sdk\Filter\FilterInterface;
+use PayNL\Sdk\Filter\{
+    AbstractDate,
+    EndDate
+};
 
 /**
  * Class EndDateTest
@@ -18,7 +19,7 @@ use PayNL\Sdk\Filter\FilterInterface;
 class EndDateTest extends UnitTest
 {
     /**
-     * @var FilterInterface
+     * @var EndDate
      */
     protected $filter;
 

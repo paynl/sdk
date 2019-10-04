@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace Tests\Unit\PayNL\Sdk\Filter;
 
 use Codeception\Test\Unit as UnitTest;
-use PayNL\Sdk\Filter\AbstractScalar;
-use PayNL\Sdk\Filter\Staffels;
-use PayNL\Sdk\Filter\FilterInterface;
+use PayNL\Sdk\Filter\{
+    AbstractScalar,
+    Staffels
+};
 
 /**
  * Class StaffelsTest
@@ -17,7 +18,7 @@ use PayNL\Sdk\Filter\FilterInterface;
 class StaffelsTest extends UnitTest
 {
     /**
-     * @var FilterInterface
+     * @var Staffels
      */
     protected $filter;
 

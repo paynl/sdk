@@ -7,9 +7,11 @@ namespace Tests\Unit\PayNL\Sdk\Filter;
 use Codeception\Test\Unit as UnitTest;
 use PayNL\Sdk\DateTime;
 use PayNL\Sdk\Exception\InvalidArgumentException;
-use PayNL\Sdk\Filter\AbstractDate;
-use PayNL\Sdk\Filter\FilterInterface;
-use UnitTester;
+use PayNL\Sdk\Filter\{
+    AbstractDate,
+    FilterInterface
+};
+use UnitTester, Exception;
 
 /**
  * Class AbstractDateTest
@@ -29,14 +31,15 @@ class AbstractDateTest extends UnitTest
     protected $anonymousClassFromAbstract;
 
     /**
-     * @throws \Exception
+     * @throws Exception
      *
      * @return void
      */
     public function _before(): void
     {
         $date = DateTime::createFromFormat('Y-m-d', '2019-09-10');
-        $this->anonymousClassFromAbstract = new class($date) extends AbstractDate {
+        $this->anonymousClassFromAbstract = new class($date) extends AbstractDate
+        {
             public function getName(): string
             {
                 return 'anonymousClassFilter';
@@ -60,12 +63,15 @@ class AbstractDateTest extends UnitTest
     public function testItCanConstruct(): void
     {
         verify($this->anonymousClassFromAbstract)->isInstanceOf(AbstractDate::class);
+    }
 
+    public function testItTriggersAnExceptionWhenGivenInputIsNotAStringNorDatetimeObject(): void
+    {
         $this->expectException(InvalidArgumentException::class);
-        new class(new \stdClass()) extends AbstractDate {
+        new class(new \stdClass()) extends AbstractDate
+        {
             public function getName(): string
             {
-                return 'ThisBreaksFilter';
             }
         };
     }

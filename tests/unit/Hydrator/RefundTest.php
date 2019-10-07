@@ -42,14 +42,21 @@ class RefundTest extends UnitTest
     /**
      * @return void
      */
-    public function testItShouldOnlyAcceptSpecificModel(): void
+    public function testItShouldAcceptARefundModel(): void
+    {
+        $hydrator = new RefundHydrator();
+        expect($hydrator->hydrate([], new Refund()))->isInstanceOf(Refund::class);
+    }
+
+    /**
+     * @return void
+     */
+    public function testItThrowsAnExceptionWhenAWrongInstanceGiven(): void
     {
         $hydrator = new RefundHydrator();
 
         $this->expectException(InvalidArgumentException::class);
         $hydrator->hydrate([], new \stdClass());
-
-        expect($hydrator->hydrate([], new Refund()))->isInstanceOf(Refund::class);
     }
 
     /**
@@ -90,16 +97,19 @@ class RefundTest extends UnitTest
             'processDate'      => DateTime::createFromFormat('Y-m-d', '2019-09-11'),
         ], new Refund());
 
+        expect($refund->getPaymentSessionId())->string();
         expect($refund->getPaymentSessionId())->equals('100000000');
         expect($refund->getAmount())->isInstanceOf(Amount::class);
         expect($refund->getAmount()->getAmount())->equals(10);
         expect($refund->getAmount()->getCurrency())->equals('EUR');
+        expect($refund->getDescription())->string();
         expect($refund->getDescription())->equals('Refund to Scrooge McDuck');
         expect($refund->getBankAccount())->isInstanceOf(BankAccount::class);
         expect($refund->getStatus())->isInstanceOf(Status::class);
         expect($refund->getProducts())->array();
         expect($refund->getProducts())->count(2);
         expect($refund->getProducts())->containsOnlyInstancesOf(Product::class);
+        expect($refund->getReason())->string();
         expect($refund->getReason())->equals('Product was broken');
         expect($refund->getProcessDate())->isInstanceOf(DateTime::class);
     }
@@ -153,13 +163,17 @@ class RefundTest extends UnitTest
         verify($data)->hasKey('reason');
         verify($data)->hasKey('processDate');
 
+        expect($data['paymentSessionId'])->string();
         expect($data['paymentSessionId'])->equals('100000000');
         expect($data['amount'])->isInstanceOf(Amount::class);
+        expect($data['description'])->string();
         expect($data['description'])->equals('Refund to Scrooge McDuck');
         expect($data['bankAccount'])->isInstanceOf(BankAccount::class);
         expect($data['status'])->isInstanceOf(Status::class);
         expect($data['products'])->array();
         expect($data['products'])->count(2);
+        expect($data['reason'])->string();
+        expect($data['reason'])->equals('Product was broken');
         expect($data['processDate'])->isInstanceOf(DateTime::class);
     }
 }

@@ -26,7 +26,7 @@ class Progress implements ModelInterface, JsonSerializable
     protected $secondsPast;
 
     /**
-     * @var integer
+     * @var float
      */
     protected $percentagePerSecond;
 
@@ -69,19 +69,19 @@ class Progress implements ModelInterface, JsonSerializable
     }
 
     /**
-     * @return int
+     * @return float
      */
-    public function getPercentagePerSecond(): int
+    public function getPercentagePerSecond(): float
     {
         return $this->percentagePerSecond;
     }
 
     /**
-     * @param int $percentagePerSecond
+     * @param float $percentagePerSecond
      *
      * @return Progress
      */
-    public function setPercentagePerSecond(int $percentagePerSecond): self
+    public function setPercentagePerSecond(float $percentagePerSecond): self
     {
         $this->percentagePerSecond = $percentagePerSecond;
         return $this;

@@ -16,11 +16,6 @@ class Voucher implements ModelInterface, JsonSerializable
     use JsonSerializeTrait;
 
     /**
-     * @var string
-     */
-//    protected $cardNumber;
-
-    /**
      * @var Amount
      */
     protected $amount;

@@ -30,14 +30,21 @@ class StatusTest extends UnitTest
     /**
      * @return void
      */
-    public function testItShouldOnlyAcceptSpecificModel(): void
+    public function testItShouldAcceptAStatusModel(): void
+    {
+        $hydrator = new StatusHydrator();
+        expect($hydrator->hydrate([], new Status()))->isInstanceOf(Status::class);
+    }
+
+    /**
+     * @return void
+     */
+    public function testItThrowsAnExceptionWhenAWrongInstanceGiven(): void
     {
         $hydrator = new StatusHydrator();
 
         $this->expectException(InvalidArgumentException::class);
         $hydrator->hydrate([], new \stdClass());
-
-        expect($hydrator->hydrate([], new Status()))->isInstanceOf(Status::class);
     }
 
     /**

@@ -30,14 +30,21 @@ class ServiceTest extends UnitTest
     /**
      * @return void
      */
-    public function testItShouldOnlyAcceptSpecificModel(): void
+    public function testItShouldAcceptAServiceModel(): void
+    {
+        $hydrator = new ServiceHydrator();
+        expect($hydrator->hydrate([], new Service()))->isInstanceOf(Service::class);
+    }
+
+    /**
+     * @return void
+     */
+    public function testItThrowsAnExceptionWhenAWrongInstanceGiven(): void
     {
         $hydrator = new ServiceHydrator();
 
         $this->expectException(InvalidArgumentException::class);
         $hydrator->hydrate([], new \stdClass());
-
-        expect($hydrator->hydrate([], new Service()))->isInstanceOf(Service::class);
     }
 
     /**

@@ -69,8 +69,12 @@ class Merchant extends AbstractHydrator
             unset($contactMethod);
         }
 
-        if (true === array_key_exists('createdAt', $data) && '' !== $data['createdAt']) {
-            $data['createdAt'] = DateTime::createFromFormat(DateTime::ATOM, $data['createdAt']);
+        if (true === array_key_exists('createdAt', $data)) {
+            $createdAt = $data['createdAt'];
+            if ($createdAt instanceof DateTime) {
+                $createdAt = $createdAt->format(DateTime::ATOM);
+            }
+            $data['createdAt'] = (true === empty($createdAt) ? null : DateTime::createFromFormat(DateTime::ATOM, $createdAt));
         }
 
         /** @var MerchantModel $merchant */

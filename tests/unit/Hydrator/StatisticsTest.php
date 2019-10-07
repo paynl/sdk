@@ -29,14 +29,21 @@ class StatisticsTest extends UnitTest
     /**
      * @return void
      */
-    public function testItShouldOnlyAcceptSpecificModel(): void
+    public function testItShouldAcceptAStatisticsModel(): void
+    {
+        $hydrator = new StatisticsHydrator();
+        expect($hydrator->hydrate([], new Statistics()))->isInstanceOf(Statistics::class);
+    }
+
+    /**
+     * @return void
+     */
+    public function testItThrowsAnExceptionWhenAWrongInstanceGiven(): void
     {
         $hydrator = new StatisticsHydrator();
 
         $this->expectException(InvalidArgumentException::class);
         $hydrator->hydrate([], new \stdClass());
-
-        expect($hydrator->hydrate([], new Statistics()))->isInstanceOf(Statistics::class);
     }
 
     /**
@@ -46,7 +53,7 @@ class StatisticsTest extends UnitTest
     {
         $hydrator = new StatisticsHydrator();
         $statistics = $hydrator->hydrate([
-            'promoterId' => '0',
+            'promoterId' => '10',
             'info' => 'test string',
             'tool' => 'statistics tool',
             'extra1' => '1',
@@ -58,11 +65,17 @@ class StatisticsTest extends UnitTest
         ], new Statistics());
 
         expect($statistics->getPromoterId())->string();
+        expect($statistics->getPromoterId())->equals('10');
         expect($statistics->getInfo())->string();
+        expect($statistics->getInfo())->equals('test string');
         expect($statistics->getTool())->string();
+        expect($statistics->getTool())->equals('statistics tool');
         expect($statistics->getExtra1())->string();
+        expect($statistics->getExtra1())->equals('1');
         expect($statistics->getExtra2())->string();
+        expect($statistics->getExtra2())->equals('2');
         expect($statistics->getExtra3())->string();
+        expect($statistics->getExtra3())->equals('3');
         expect($statistics->getTransferData())->array();
         expect($statistics->getTransferData())->containsOnly('string');
         expect($statistics->getTransferData())->count(1);
@@ -75,7 +88,7 @@ class StatisticsTest extends UnitTest
     {
         $hydrator = new StatisticsHydrator();
         $statistics = $hydrator->hydrate([
-            'promoterId' => '0',
+            'promoterId' => '10',
             'info' => 'test string',
             'tool' => 'statistics tool',
             'extra1' => '1',
@@ -97,11 +110,17 @@ class StatisticsTest extends UnitTest
         verify($data)->hasKey('transferData');
 
         expect($data['promoterId'])->string();
+        expect($data['promoterId'])->equals('10');
         expect($data['info'])->string();
+        expect($data['info'])->equals('test string');
         expect($data['tool'])->string();
+        expect($data['tool'])->equals('statistics tool');
         expect($data['extra1'])->string();
+        expect($data['extra1'])->equals('1');
         expect($data['extra2'])->string();
+        expect($data['extra2'])->equals('2');
         expect($data['extra3'])->string();
+        expect($data['extra3'])->equals('3');
         expect($data['transferData'])->array();
         expect($data['transferData'])->containsOnly('string');
         expect($data['transferData'])->count(1);

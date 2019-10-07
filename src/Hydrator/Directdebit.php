@@ -44,12 +44,17 @@ class Directdebit extends AbstractHydrator
             $data['status'] = (new StatusHydrator())->hydrate($data['status'], new Status());
         }
 
-        if (true === array_key_exists('declined', $data) && null !== $data['declined']['code']) {
+        if (
+            true === array_key_exists('declined', $data)
+            && true === is_array($data['declined'])
+            && true === array_key_exists('code', $data['declined'])
+            && null !== $data['declined']['code']
+        ) {
             $data['declined'] = (new StatusHydrator())->hydrate($data['declined'], new Status());
         }
 
         foreach (['status', 'declined'] as $statusField) {
-            if (false === ($data[$statusField] instanceof Status)) {
+            if (false === array_key_exists($statusField, $data) || false === ($data[$statusField] instanceof Status)) {
                 unset($data[$statusField]);
             }
         }

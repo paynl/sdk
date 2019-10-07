@@ -29,14 +29,21 @@ class TerminalTest extends UnitTest
     /**
      * @return void
      */
-    public function testItShouldOnlyAcceptSpecificModel(): void
+    public function testItShouldAcceptATerminalModel(): void
+    {
+        $hydrator = new TerminalHydrator();
+        expect($hydrator->hydrate([], new Terminal()))->isInstanceOf(Terminal::class);
+    }
+
+    /**
+     * @return void
+     */
+    public function testItThrowsAnExceptionWhenAWrongInstanceGiven(): void
     {
         $hydrator = new TerminalHydrator();
 
         $this->expectException(InvalidArgumentException::class);
         $hydrator->hydrate([], new \stdClass());
-
-        expect($hydrator->hydrate([], new Terminal()))->isInstanceOf(Terminal::class);
     }
 
     /**

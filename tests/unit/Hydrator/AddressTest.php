@@ -29,17 +29,27 @@ class AddressTest extends UnitTest
     /**
      * @return void
      */
-    public function testItShouldOnlyAcceptSpecificModel(): void
+    public function testItShouldAcceptAnAddressModel(): void
+    {
+        $hydrator = new AddressHydrator();
+        expect($hydrator->hydrate([], new Address()))->isInstanceOf(Address::class);
+    }
+
+    /**
+     * @return void
+     */
+    public function testItThrowsAnExceptionWhenAWrongInstanceGiven(): void
     {
         $hydrator = new AddressHydrator();
 
         $this->expectException(InvalidArgumentException::class);
         $hydrator->hydrate([], new \stdClass());
-
-        expect($hydrator->hydrate([], new Address()))->isInstanceOf(Address::class);
     }
 
     /**
+     * @depends testItShouldAcceptAnAddressModel
+     * @depends testItThrowsAnExceptionWhenAWrongInstanceGiven
+     *
      * @return void
      */
     public function testItShouldCorrectlyFillModel(): void
@@ -53,22 +63,34 @@ class AddressTest extends UnitTest
             'streetNumberExtension' => '',
             'zipCode'               => '3201AX',
             'city'                  => 'Spijkenisse',
-            'regionCode'            => 'Zuid-Holland',
+            'regionCode'            => 'ZH',
             'countryCode'           => 'NL',
         ], new Address());
 
+        expect($address->getInitials())->string();
         expect($address->getInitials())->equals('I');
+        expect($address->getLastName())->string();
         expect($address->getLastName())->equals('Sneep');
+        expect($address->getStreetName())->string();
         expect($address->getStreetName())->equals('Jan Campertlaan');
+        expect($address->getStreetNumber())->string();
         expect($address->getStreetNumber())->equals('10');
+        expect($address->getStreetNumberExtension())->string();
         expect($address->getStreetNumberExtension())->equals('');
+        expect($address->getZipCode())->string();
         expect($address->getZipCode())->equals('3201AX');
+        expect($address->getCity())->string();
         expect($address->getCity())->equals('Spijkenisse');
-        expect($address->getRegionCode())->equals('Zuid-Holland');
+        expect($address->getRegionCode())->string();
+        expect($address->getRegionCode())->equals('ZH');
+        expect($address->getCountryCode())->string();
         expect($address->getCountryCode())->equals('NL');
     }
 
     /**
+     * @depends testItShouldAcceptAnAddressModel
+     * @depends testItThrowsAnExceptionWhenAWrongInstanceGiven
+     *
      * @return void
      */
     public function testItCanExtract(): void
@@ -82,7 +104,7 @@ class AddressTest extends UnitTest
             'streetNumberExtension' => '',
             'zipCode'               => '3201AX',
             'city'                  => 'Spijkenisse',
-            'regionCode'            => 'Zuid-Holland',
+            'regionCode'            => 'ZH',
             'countryCode'           => 'NL',
         ], new Address());
 
@@ -98,14 +120,23 @@ class AddressTest extends UnitTest
         verify($data)->hasKey('regionCode');
         verify($data)->hasKey('countryCode');
 
+        expect($data['initials'])->string();
         expect($data['initials'])->equals('I');
+        expect($data['lastName'])->string();
         expect($data['lastName'])->equals('Sneep');
+        expect($data['streetName'])->string();
         expect($data['streetName'])->equals('Jan Campertlaan');
+        expect($data['streetNumber'])->string();
         expect($data['streetNumber'])->equals('10');
+        expect($data['streetNumberExtension'])->string();
         expect($data['streetNumberExtension'])->equals('');
+        expect($data['zipCode'])->string();
         expect($data['zipCode'])->equals('3201AX');
+        expect($data['city'])->string();
         expect($data['city'])->equals('Spijkenisse');
-        expect($data['regionCode'])->equals('Zuid-Holland');
+        expect($data['regionCode'])->string();
+        expect($data['regionCode'])->equals('ZH');
+        expect($data['countryCode'])->string();
         expect($data['countryCode'])->equals('NL');
     }
 }

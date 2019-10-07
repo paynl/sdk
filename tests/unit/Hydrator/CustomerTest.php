@@ -36,14 +36,21 @@ class CustomerTest extends UnitTest
     /**
      * @return void
      */
-    public function testItShouldOnlyAcceptSpecificModel(): void
+    public function testItShouldAcceptACustomerModel(): void
+    {
+        $hydrator = new CustomerHydrator();
+        expect($hydrator->hydrate([], new Customer()))->isInstanceOf(Customer::class);
+    }
+
+    /**
+     * @return void
+     */
+    public function testItThrowsAnExceptionWhenAWrongInstanceGiven(): void
     {
         $hydrator = new CustomerHydrator();
 
         $this->expectException(InvalidArgumentException::class);
         $hydrator->hydrate([], new \stdClass());
-
-        expect($hydrator->hydrate([], new Customer()))->isInstanceOf(Customer::class);
     }
 
     /**
@@ -69,13 +76,21 @@ class CustomerTest extends UnitTest
             'birthDate'   => DateTime::createFromFormat('Y-m-d', '1970-01-01'),
         ], new Customer());
 
+        expect($customer->getInitials())->string();
         expect($customer->getInitials())->equals('M');
+        expect($customer->getLastName())->string();
         expect($customer->getLastName())->equals('Windu');
+        expect($customer->getGender())->string();
         expect($customer->getGender())->equals('male');
+        expect($customer->getPhone())->string();
         expect($customer->getPhone())->equals('+441115551234');
+        expect($customer->getEmail())->string();
         expect($customer->getEmail())->equals('mace@purple-lightsabers-rule.com');
+        expect($customer->getTrustLevel())->string();
         expect($customer->getTrustLevel())->equals('1');
+        expect($customer->getReference())->string();
         expect($customer->getReference())->equals('SW1-3');
+        expect($customer->getLanguage())->string();
         expect($customer->getLanguage())->equals('EN');
         expect($customer->getBankAccount())->isInstanceOf(BankAccount::class);
         expect($customer->getBankAccount()->getIban())->equals('021000021');
@@ -120,15 +135,27 @@ class CustomerTest extends UnitTest
         verify($data)->hasKey('bankAccount');
         verify($data)->hasKey('birthDate');
 
+        expect($data['initials'])->string();
         expect($data['initials'])->equals('M');
+        expect($data['lastName'])->string();
         expect($data['lastName'])->equals('Windu');
+        expect($data['gender'])->string();
         expect($data['gender'])->equals('male');
+        expect($data['phone'])->string();
         expect($data['phone'])->equals('+441115551234');
+        expect($data['email'])->string();
         expect($data['email'])->equals('mace@purple-lightsabers-rule.com');
+        expect($data['trustLevel'])->string();
         expect($data['trustLevel'])->equals('1');
+        expect($data['reference'])->string();
         expect($data['reference'])->equals('SW1-3');
+        expect($data['language'])->string();
         expect($data['language'])->equals('EN');
         expect($data['bankAccount'])->isInstanceOf(BankAccount::class);
+        expect($data['bankAccount']->getIban())->equals('021000021');
+        expect($data['bankAccount']->getBic())->equals('BOFAUS3N');
+        expect($data['bankAccount']->getOwner())->equals('M. Windu');
         expect($data['birthDate'])->isInstanceOf(DateTime::class);
+        expect($data['birthDate']->format('Y-m-d'))->equals('1970-01-01');
     }
 }

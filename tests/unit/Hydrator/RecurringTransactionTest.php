@@ -32,14 +32,21 @@ class RecurringTransactionTest extends UnitTest
     /**
      * @return void
      */
-    public function testItShouldOnlyAcceptSpecificModel(): void
+    public function testItShouldAcceptARecurringTransactionModel(): void
+    {
+        $hydrator = new RecurringTransactionHydrator();
+        expect($hydrator->hydrate([], new RecurringTransaction()))->isInstanceOf(RecurringTransaction::class);
+    }
+
+    /**
+     * @return void
+     */
+    public function testItThrowsAnExceptionWhenAWrongInstanceGiven(): void
     {
         $hydrator = new RecurringTransactionHydrator();
 
         $this->expectException(InvalidArgumentException::class);
         $hydrator->hydrate([], new \stdClass());
-
-        expect($hydrator->hydrate([], new RecurringTransaction()))->isInstanceOf(RecurringTransaction::class);
     }
 
     /**
@@ -60,9 +67,13 @@ class RecurringTransactionTest extends UnitTest
         ], new RecurringTransaction());
 
         expect($recurringTransaction->getAmount())->isInstanceOf(Amount::class);
+        expect($recurringTransaction->getDescription())->string();
         expect($recurringTransaction->getDescription())->equals('Test recurring');
+        expect($recurringTransaction->getExtra1())->string();
         expect($recurringTransaction->getExtra1())->equals('Extra 1');
+        expect($recurringTransaction->getExtra2())->string();
         expect($recurringTransaction->getExtra2())->equals('Extra 2');
+        expect($recurringTransaction->getExtra3())->string();
         expect($recurringTransaction->getExtra3())->equals('Extra 3');
     }
 
@@ -92,9 +103,13 @@ class RecurringTransactionTest extends UnitTest
         verify($data)->hasKey('extra3');
 
         expect($data['amount'])->isInstanceOf(Amount::class);
+        expect($data['description'])->string();
         expect($data['description'])->equals('Test recurring');
+        expect($data['extra1'])->string();
         expect($data['extra1'])->equals('Extra 1');
+        expect($data['extra2'])->string();
         expect($data['extra2'])->equals('Extra 2');
+        expect($data['extra3'])->string();
         expect($data['extra3'])->equals('Extra 3');
     }
 }

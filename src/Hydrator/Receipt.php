@@ -28,6 +28,7 @@ class Receipt extends AbstractHydrator
         $this->validateGivenObject($object, ReceiptModel::class);
 
         $data['approvalId'] = $data['approvalId'] ?? 0;
+        $data['signature'] = $data['signature'] ?? '';
 
         if (true === array_key_exists('card', $data) && true === is_array($data['card'])) {
             $data['card'] = (new ClassMethods())->hydrate($data['card'], new Card());

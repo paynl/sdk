@@ -6,9 +6,11 @@ namespace Tests\Unit\PayNL\Sdk\Model;
 
 use Codeception\Test\Unit as UnitTest;
 use PayNL\Sdk\Exception\InvalidArgumentException;
-use PayNL\Sdk\Model\Address;
-use PayNL\Sdk\Model\ModelInterface;
-use TypeError;
+use PayNL\Sdk\Model\{
+    ModelInterface,
+    Address
+};
+use TypeError, JsonSerializable;
 
 /**
  * Class AddressTest
@@ -40,7 +42,7 @@ class AddressTest extends UnitTest
      */
     public function testIsItJsonSerializable(): void
     {
-        verify($this->address)->isInstanceOf(\JsonSerializable::class);
+        verify($this->address)->isInstanceOf(JsonSerializable::class);
 
         verify($this->address->jsonSerialize())->array();
     }
@@ -74,13 +76,22 @@ class AddressTest extends UnitTest
     {
         expect($this->address->setStreetNumber('10'))->isInstanceOf(Address::class);
         expect($this->address->setStreetNumber(10))->isInstanceOf(Address::class);
+    }
 
+    public function testItThrowsAnExceptionForSettingStreetNumberOnWrongInput1(): void
+    {
         $this->expectException(InvalidArgumentException::class);
         $this->address->setStreetNumber(1.01);
+    }
 
+    public function testItThrowsAnExceptionForSettingStreetNumberOnWrongInput2(): void
+    {
         $this->expectException(InvalidArgumentException::class);
         $this->address->setStreetNumber(array());
+    }
 
+    public function testItThrowsAnExceptionForSettingStreetNumberOnWrongInput3(): void
+    {
         $this->expectException(InvalidArgumentException::class);
         $this->address->setStreetNumber(new Address());
     }

@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace Tests\Unit\PayNL\Sdk\Model;
 
 use Codeception\Test\Unit as UnitTest;
-use PayNL\Sdk\Model\Service;
-use PayNL\Sdk\Model\ModelInterface;
+use PayNL\Sdk\Model\{
+    ModelInterface,
+    Service
+};
 use PayNL\Sdk\DateTime;
-use Exception;
+use Exception, JsonSerializable;
 
 /**
  * Class ServiceTest
@@ -40,7 +42,7 @@ class ServiceTest extends UnitTest
      */
     public function testIsItNotJsonSerializable(): void
     {
-        verify($this->service)->isNotInstanceOf(\JsonSerializable::class);
+        verify($this->service)->isNotInstanceOf(JsonSerializable::class);
     }
 
     /**

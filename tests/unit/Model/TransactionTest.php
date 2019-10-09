@@ -16,7 +16,7 @@ use PayNL\Sdk\Model\Statistics;
 use PayNL\Sdk\Model\Status;
 use PayNL\Sdk\Model\Transaction;
 use PayNL\Sdk\Model\ModelInterface;
-use Exception;
+use Exception, JsonSerializable;
 
 /**
  * Class TransactionTest
@@ -48,7 +48,7 @@ class TransactionTest extends UnitTest
      */
     public function testIsItJsonSerializable(): void
     {
-        verify($this->transaction)->isInstanceOf(\JsonSerializable::class);
+        verify($this->transaction)->isInstanceOf(JsonSerializable::class);
 
         verify($this->transaction->jsonSerialize())->array();
     }
@@ -140,7 +140,27 @@ class TransactionTest extends UnitTest
         verify($this->transaction->getReturnUrl())->equals('http://www.pay.nl/return-url');
     }
 
-    // TODO: add exchange URL tests!
+    /**
+     * @return void
+     */
+    public function testItCanSetAExchangeUrl(): void
+    {
+        expect($this->transaction->setExchangeUrl('http://www.pay.nl/exchange-url'))->isInstanceOf(Transaction::class);
+    }
+
+    /**
+     * @depends testItCanSetAExchangeUrl
+     *
+     * @return void
+     */
+    public function testItCanGetAExchangeUrl(): void
+    {
+        $this->transaction->setExchangeUrl('http://www.pay.nl/exchange-url');
+
+        verify($this->transaction->getExchangeUrl())->string();
+        verify($this->transaction->getExchangeUrl())->notEmpty();
+        verify($this->transaction->getExchangeUrl())->equals('http://www.pay.nl/exchange-url');
+    }
 
     /**
      * @return void
@@ -581,8 +601,6 @@ class TransactionTest extends UnitTest
         verify($this->transaction->getExpiresAt())->notEmpty();
         verify($this->transaction->getExpiresAt())->isInstanceOf(DateTime::class);
     }
-
-    // TODO: paymentMethod(Sub)Id ????
 
     /**
      * @return void

@@ -6,9 +6,11 @@ namespace Tests\Unit\PayNL\Sdk\Model;
 
 use Codeception\Test\Unit as UnitTest;
 use PayNL\Sdk\DateTime;
-use PayNL\Sdk\Model\Status;
-use PayNL\Sdk\Model\ModelInterface;
-use Exception;
+use PayNL\Sdk\Model\{
+    ModelInterface,
+    Status
+};
+use Exception, JsonSerializable;
 
 /**
  * Class StatusTest
@@ -40,7 +42,7 @@ class StatusTest extends UnitTest
      */
     public function testIsItNotJsonSerializable(): void
     {
-        verify($this->status)->isNotInstanceOf(\JsonSerializable::class);
+        verify($this->status)->isNotInstanceOf(JsonSerializable::class);
     }
 
     /**

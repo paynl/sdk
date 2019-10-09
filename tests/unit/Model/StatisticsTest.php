@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace Tests\Unit\PayNL\Sdk\Model;
 
 use Codeception\Test\Unit as UnitTest;
-use PayNL\Sdk\Model\Statistics;
-use PayNL\Sdk\Model\ModelInterface;
+use PayNL\Sdk\Model\{
+    ModelInterface,
+    Statistics
+};
+use JsonSerializable;
 
 /**
  * Class StatisticsTest
@@ -38,7 +41,7 @@ class StatisticsTest extends UnitTest
      */
     public function testIsItJsonSerializable(): void
     {
-        verify($this->statistics)->isInstanceOf(\JsonSerializable::class);
+        verify($this->statistics)->isInstanceOf(JsonSerializable::class);
 
         verify($this->statistics->jsonSerialize())->array();
     }

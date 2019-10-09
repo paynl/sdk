@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace Tests\Unit\PayNL\Sdk\Model;
 
 use Codeception\Test\Unit as UnitTest;
-use PayNL\Sdk\Model\Currency;
-use PayNL\Sdk\Model\ModelInterface;
+use PayNL\Sdk\Model\{
+    ModelInterface,
+    Currency
+};
+use JsonSerializable;
 
 /**
  * Class CurrencyTest
@@ -38,7 +41,7 @@ class CurrencyTest extends UnitTest
      */
     public function testIsItNotJsonSerializable(): void
     {
-        verify($this->currency)->isNotInstanceOf(\JsonSerializable::class);
+        verify($this->currency)->isNotInstanceOf(JsonSerializable::class);
     }
 
     /**

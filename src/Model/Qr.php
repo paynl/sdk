@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PayNL\Sdk\Model;
 
 use JsonSerializable;
+use PayNL\Sdk\Exception\InvalidArgumentException;
 
 /**
  * Class Qr
@@ -159,10 +160,21 @@ class Qr implements ModelInterface, JsonSerializable
     /**
      * @param string $referenceType
      *
+     * @throws InvalidArgumentException when the reference type given is not supported
+     *
      * @return Qr
      */
     public function setReferenceType(string $referenceType): Qr
     {
+        if (false === in_array($referenceType, [ self::REFERENCE_TYPE_STRING, self::REFERENCE_TYPE_HEX ], true)) {
+            throw new InvalidArgumentException(
+                sprintf(
+                    'Value "%s" is not supported as reference type',
+                    $referenceType
+                )
+            );
+        }
+
         $this->referenceType = $referenceType;
         return $this;
     }

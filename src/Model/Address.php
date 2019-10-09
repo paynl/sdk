@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Model;
 
-use \JsonSerializable;
+use JsonSerializable;
 use PayNL\Sdk\Exception\InvalidArgumentException;
 use PayNL\Sdk\Validator\InputType;
 
@@ -90,7 +90,7 @@ class Address implements ModelInterface, JsonSerializable
     }
 
     /**
-     * @param string|integer $streetNumber
+     * @param mixed $streetNumber
      *
      * @throws InvalidArgumentException when the given argument is not a string nor an integer
      *

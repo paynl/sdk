@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace Tests\Unit\PayNL\Sdk\Model;
 
 use Codeception\Test\Unit as UnitTest;
-use PayNL\Sdk\Model\BankAccount;
-use PayNL\Sdk\Model\Customer;
-use PayNL\Sdk\Model\ModelInterface;
-use DateTime;
+use PayNL\Sdk\Model\{
+    ModelInterface,
+    BankAccount,
+    Customer
+};
+use DateTime, JsonSerializable;
 
 /**
  * Class CustomerTest
@@ -40,7 +42,7 @@ class CustomerTest extends UnitTest
      */
     public function testIsItJsonSerializable(): void
     {
-        verify($this->customer)->isInstanceOf(\JsonSerializable::class);
+        verify($this->customer)->isInstanceOf(JsonSerializable::class);
 
         verify($this->customer->jsonSerialize())->array();
     }
@@ -94,7 +96,9 @@ class CustomerTest extends UnitTest
      */
     public function testItCanSetABirthDate(): void
     {
-        expect($this->customer->setBirthDate(DateTime::createFromFormat('Y-m-d', '1970-01-01')))->isInstanceOf(Customer::class);
+        expect($this->customer->setBirthDate(DateTime::createFromFormat('Y-m-d', '1970-01-01')))
+            ->isInstanceOf(Customer::class)
+        ;
     }
 
     /**
@@ -154,6 +158,28 @@ class CustomerTest extends UnitTest
         verify($this->customer->getPhone())->string();
         verify($this->customer->getPhone())->notEmpty();
         verify($this->customer->getPhone())->equals('+31 (0)88 - 88 666 66');
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanSetAnIp(): void
+    {
+        expect($this->customer->setIp('127.0.0.1'))->isInstanceOf(Customer::class);
+    }
+
+    /**
+     * @depends testItCanSetAnIp
+     *
+     * @return void
+     */
+    public function testItCanGetAnIp(): void
+    {
+        $this->customer->setIp('127.0.0.1');
+
+        verify($this->customer->getIp())->string();
+        verify($this->customer->getIp())->notEmpty();
+        verify($this->customer->getIp())->equals('127.0.0.1');
     }
 
     /**
@@ -248,7 +274,7 @@ class CustomerTest extends UnitTest
      */
     public function testItCanSetALanguage(): void
     {
-        expect($this->customer->setLanguage('Dutch'))->isInstanceOf(Customer::class);
+        expect($this->customer->setLanguage('nl'))->isInstanceOf(Customer::class);
     }
 
     /**
@@ -258,10 +284,10 @@ class CustomerTest extends UnitTest
      */
     public function testItCanGetALanguage(): void
     {
-        $this->customer->setLanguage('Dutch');
+        $this->customer->setLanguage('nl');
 
         verify($this->customer->getLanguage())->string();
         verify($this->customer->getLanguage())->notEmpty();
-        verify($this->customer->getLanguage())->equals('Dutch');
+        verify($this->customer->getLanguage())->equals('nl');
     }
 }

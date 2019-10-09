@@ -166,7 +166,25 @@ class Refund implements ModelInterface, JsonSerializable
      */
     public function setProducts(array $products): self
     {
-        $this->products = $products;
+        $this->products = [];
+        if (0 === count($products)) {
+            return $this;
+        }
+
+        foreach ($products as $product) {
+            $this->addProduct($product);
+        }
+        return $this;
+    }
+
+    /**
+     * @param Product $product
+     *
+     * @return Refund
+     */
+    public function addProduct(Product $product): self
+    {
+        $this->products[] = $product;
         return $this;
     }
 

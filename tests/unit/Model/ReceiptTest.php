@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace Tests\Unit\PayNL\Sdk\Model;
 
 use Codeception\Test\Unit as UnitTest;
-use PayNL\Sdk\Model\Card;
-use PayNL\Sdk\Model\PaymentMethod;
-use PayNL\Sdk\Model\Receipt;
-use PayNL\Sdk\Model\ModelInterface;
+use PayNL\Sdk\Model\{
+    ModelInterface,
+    Card,
+    PaymentMethod,
+    Receipt
+};
+use JsonSerializable;
 
 /**
  * Class ReceiptTest
@@ -40,7 +43,7 @@ class ReceiptTest extends UnitTest
      */
     public function testIsItNotJsonSerializable(): void
     {
-        verify($this->receipt)->isNotInstanceOf(\JsonSerializable::class);
+        verify($this->receipt)->isNotInstanceOf(JsonSerializable::class);
     }
 
     /**
@@ -48,7 +51,9 @@ class ReceiptTest extends UnitTest
      */
     public function testItCanSetAnId(): void
     {
-        expect($this->receipt->setId('TG9yZW0lMjBpcHN1bSUyMGRvbG9yJTIwc2l0JTIwYW1ldCwlMjBjb25zZWN0ZXR1ciUyMGFkaXBpc2NpbmclMjBlbGl0Lg=='))->isInstanceOf(Receipt::class);
+        $id = 'TG9yZW0lMjBpcHN1bSUyMGRvbG9yJTIwc2l0JTIwYW1ldCwlMjBjb25zZWN0ZXR1ciUyMGFkaXBpc2NpbmclMjBlbGl0Lg==';
+
+        expect($this->receipt->setId($id))->isInstanceOf(Receipt::class);
     }
 
     /**
@@ -58,11 +63,13 @@ class ReceiptTest extends UnitTest
      */
     public function testItCanGetAnId(): void
     {
-        $this->receipt->setId('TG9yZW0lMjBpcHN1bSUyMGRvbG9yJTIwc2l0JTIwYW1ldCwlMjBjb25zZWN0ZXR1ciUyMGFkaXBpc2NpbmclMjBlbGl0Lg==');
+        $id = 'TG9yZW0lMjBpcHN1bSUyMGRvbG9yJTIwc2l0JTIwYW1ldCwlMjBjb25zZWN0ZXR1ciUyMGFkaXBpc2NpbmclMjBlbGl0Lg==';
+
+        $this->receipt->setId($id);
 
         verify($this->receipt->getId())->string();
         verify($this->receipt->getId())->notEmpty();
-        verify($this->receipt->getId())->equals('TG9yZW0lMjBpcHN1bSUyMGRvbG9yJTIwc2l0JTIwYW1ldCwlMjBjb25zZWN0ZXR1ciUyMGFkaXBpc2NpbmclMjBlbGl0Lg==');
+        verify($this->receipt->getId())->equals($id);
     }
 
     /**

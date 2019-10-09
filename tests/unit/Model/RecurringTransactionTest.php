@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace Tests\Unit\PayNL\Sdk\Model;
 
 use Codeception\Test\Unit as UnitTest;
-use PayNL\Sdk\Model\Amount;
-use PayNL\Sdk\Model\RecurringTransaction;
-use PayNL\Sdk\Model\ModelInterface;
+use PayNL\Sdk\Model\{
+    ModelInterface,
+    Amount,
+    RecurringTransaction
+};
+use JsonSerializable;
 
 /**
  * Class RecurringTransactionTest
@@ -39,7 +42,7 @@ class RecurringTransactionTest extends UnitTest
      */
     public function testIsItJsonSerializable(): void
     {
-        verify($this->recurringTransaction)->isInstanceOf(\JsonSerializable::class);
+        verify($this->recurringTransaction)->isInstanceOf(JsonSerializable::class);
 
         verify($this->recurringTransaction->jsonSerialize())->array();
     }

@@ -10,7 +10,7 @@ use PayNL\Sdk\Validator\{
     AbstractValidator,
     ValidatorInterface
 };
-use stdClass, Exception;
+use stdClass;
 
 /**
  * Class InputTypeTest

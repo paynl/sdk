@@ -81,7 +81,7 @@ class Merchant implements ModelInterface
      *
      * @return Merchant
      */
-    public function setId(string $id): Merchant
+    public function setId(string $id): self
     {
         $this->id = $id;
         return $this;
@@ -100,7 +100,7 @@ class Merchant implements ModelInterface
      *
      * @return Merchant
      */
-    public function setName(string $name): Merchant
+    public function setName(string $name): self
     {
         $this->name = $name;
         return $this;
@@ -119,7 +119,7 @@ class Merchant implements ModelInterface
      *
      * @return Merchant
      */
-    public function setCoc(string $coc): Merchant
+    public function setCoc(string $coc): self
     {
         $this->coc = $coc;
         return $this;
@@ -138,7 +138,7 @@ class Merchant implements ModelInterface
      *
      * @return Merchant
      */
-    public function setVat(string $vat): Merchant
+    public function setVat(string $vat): self
     {
         $this->vat = $vat;
         return $this;
@@ -157,7 +157,7 @@ class Merchant implements ModelInterface
      *
      * @return Merchant
      */
-    public function setWebsite(string $website): Merchant
+    public function setWebsite(string $website): self
     {
         $this->website = $website;
         return $this;
@@ -176,7 +176,7 @@ class Merchant implements ModelInterface
      *
      * @return Merchant
      */
-    public function setBankAccount(BankAccount $bankAccount): Merchant
+    public function setBankAccount(BankAccount $bankAccount): self
     {
         $this->bankAccount = $bankAccount;
         return $this;
@@ -195,7 +195,7 @@ class Merchant implements ModelInterface
      *
      * @return Merchant
      */
-    public function setPostalAddress(Address $postalAddress): Merchant
+    public function setPostalAddress(Address $postalAddress): self
     {
         $this->postalAddress = $postalAddress;
         return $this;
@@ -214,7 +214,7 @@ class Merchant implements ModelInterface
      *
      * @return Merchant
      */
-    public function setVisitAddress(Address $visitAddress): Merchant
+    public function setVisitAddress(Address $visitAddress): self
     {
         $this->visitAddress = $visitAddress;
         return $this;
@@ -233,9 +233,27 @@ class Merchant implements ModelInterface
      *
      * @return Merchant
      */
-    public function setTrademarks(array $trademarks): Merchant
+    public function setTrademarks(array $trademarks): self
     {
-        $this->trademarks = $trademarks;
+        $this->trademarks = [];
+        if (0 === count($trademarks)) {
+            return $this;
+        }
+
+        foreach ($trademarks as $trademark) {
+            $this->addTrademark($trademark);
+        }
+        return $this;
+    }
+
+    /**
+     * @param Trademark $trademark
+     *
+     * @return Merchant
+     */
+    public function addTrademark(Trademark $trademark): self
+    {
+        $this->trademarks[] = $trademark;
         return $this;
     }
 
@@ -252,9 +270,27 @@ class Merchant implements ModelInterface
      *
      * @return Merchant
      */
-    public function setContactMethods(array $contactMethods): Merchant
+    public function setContactMethods(array $contactMethods): self
     {
-        $this->contactMethods = $contactMethods;
+        $this->contactMethods = [];
+        if (0 === count($contactMethods)) {
+            return $this;
+        }
+
+        foreach ($contactMethods as $contactMethod) {
+            $this->addContactMethod($contactMethod);
+        }
+        return $this;
+    }
+
+    /**
+     * @param ContactMethod $contactMethod
+     *
+     * @return Merchant
+     */
+    public function addContactMethod(ContactMethod $contactMethod): self
+    {
+        $this->contactMethods[] = $contactMethod;
         return $this;
     }
 
@@ -271,7 +307,7 @@ class Merchant implements ModelInterface
      *
      * @return Merchant
      */
-    public function setCreatedAt(DateTime $createdAt): Merchant
+    public function setCreatedAt(DateTime $createdAt): self
     {
         $this->createdAt = $createdAt;
         return $this;

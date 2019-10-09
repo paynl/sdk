@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace Tests\Unit\PayNL\Sdk\Model;
 
 use Codeception\Test\Unit as UnitTest;
-use PayNL\Sdk\Model\Company;
-use PayNL\Sdk\Model\ModelInterface;
+use PayNL\Sdk\Model\{
+    ModelInterface,
+    Company
+};
+use JsonSerializable;
 
 /**
  * Class CompanyTest
@@ -38,7 +41,7 @@ class CompanyTest extends UnitTest
      */
     public function testIsItJsonSerializable(): void
     {
-        verify($this->company)->isInstanceOf(\JsonSerializable::class);
+        verify($this->company)->isInstanceOf(JsonSerializable::class);
 
         verify($this->company->jsonSerialize())->array();
     }

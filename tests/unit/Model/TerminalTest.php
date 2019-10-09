@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace Tests\Unit\PayNL\Sdk\Model;
 
 use Codeception\Test\Unit as UnitTest;
-use PayNL\Sdk\Model\Terminal;
-use PayNL\Sdk\Model\ModelInterface;
+use PayNL\Sdk\Model\{
+    ModelInterface,
+    Terminal
+};
+use JsonSerializable;
 
 /**
  * Class TerminalTest
@@ -38,7 +41,7 @@ class TerminalTest extends UnitTest
      */
     public function testIsItJsonSerializable(): void
     {
-        verify($this->terminal)->isInstanceOf(\JsonSerializable::class);
+        verify($this->terminal)->isInstanceOf(JsonSerializable::class);
 
         verify($this->terminal->jsonSerialize())->array();
     }

@@ -6,12 +6,15 @@ namespace Tests\Unit\PayNL\Sdk\Model;
 
 use Codeception\Test\Unit as UnitTest;
 use PayNL\Sdk\DateTime;
-use PayNL\Sdk\Model\Amount;
-use PayNL\Sdk\Model\BankAccount;
-use PayNL\Sdk\Model\Product;
-use PayNL\Sdk\Model\Refund;
-use PayNL\Sdk\Model\ModelInterface;
-use PayNL\Sdk\Model\Status;
+use PayNL\Sdk\Model\{
+    ModelInterface,
+    Amount,
+    BankAccount,
+    Product,
+    Refund,
+    Status
+};
+use JsonSerializable, TypeError, stdClass;
 
 /**
  * Class RefundTest
@@ -43,7 +46,7 @@ class RefundTest extends UnitTest
      */
     public function testIsItJsonSerializable(): void
     {
-        verify($this->refund)->isInstanceOf(\JsonSerializable::class);
+        verify($this->refund)->isInstanceOf(JsonSerializable::class);
 
         verify($this->refund->jsonSerialize())->array();
     }
@@ -158,9 +161,32 @@ class RefundTest extends UnitTest
     /**
      * @return void
      */
+    public function testItCanAddAProduct(): void
+    {
+        expect($this->refund->addProduct(new Product()))->isInstanceOf(Refund::class);
+    }
+
+    /**
+     * @depends testItCanAddAProduct
+     *
+     * @return void
+     */
     public function testItCanSetProducts(): void
     {
         expect($this->refund->setProducts([]))->isInstanceOf(Refund::class);
+    }
+
+    /**
+     * @depends testItCanSetProducts
+     *
+     * @return void
+     */
+    public function testItThrowsAnExceptionWhenSettingProducts(): void
+    {
+        $this->expectException(TypeError::class);
+        $this->refund->setProducts([
+            new stdClass(),
+        ]);
     }
 
     /**

@@ -77,13 +77,31 @@ class AbstractValidatorTest extends UnitTest
         expect($this->anonymousClassFromAbstract->addMessage('Test message2', 0))
             ->isInstanceOf(AbstractValidator::class)
         ;
+    }
 
+    /**
+     * @return void
+     */
+    public function testItThrowsAnExceptionWhenMessageKeyIsFloat(): void
+    {
         $this->expectException(InvalidArgumentException::class);
         $this->anonymousClassFromAbstract->addMessage('Test message', 1.0);
+    }
 
+    /**
+     * @return void
+     */
+    public function testItThrowsAnExceptionWhenMessageKeyIsArray(): void
+    {
         $this->expectException(InvalidArgumentException::class);
         $this->anonymousClassFromAbstract->addMessage('Test message', []);
+    }
 
+    /**
+     * @return void
+     */
+    public function testItThrowsAnExceptionWhenMessageKeyIsObject(): void
+    {
         $this->expectException(InvalidArgumentException::class);
         $this->anonymousClassFromAbstract->addMessage('Test message', new \stdClass());
     }
@@ -144,7 +162,13 @@ class AbstractValidatorTest extends UnitTest
         verify($messages)->count(2);
         verify($messages)->contains('Error message');
         verify($messages)->contains('Message with variable, VariableValue');
+    }
 
+    /**
+     * @return void
+     */
+    public function testItThrowsAnExceptionWhenAddingErrorWithNonExistingKey(): void
+    {
         $this->expectException(InvalidArgumentException::class);
         $this->anonymousClassFromAbstract->error('NonExistingKey', 'VariableValue');
     }

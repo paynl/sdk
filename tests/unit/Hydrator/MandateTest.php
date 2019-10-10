@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Unit\PayNL\Sdk\Hydrator;
 
 use Codeception\Test\Unit as UnitTest;
-use PayNL\Sdk\DateTime;
 use PayNL\Sdk\Hydrator\Mandate as MandateHydrator;
 use PayNL\Sdk\Model\{
     Amount,
@@ -17,7 +16,7 @@ use PayNL\Sdk\Model\{
 };
 use PayNL\Sdk\Exception\InvalidArgumentException;
 use Zend\Hydrator\HydratorInterface;
-use Exception;
+use Exception, DateTime;
 
 /**
  * Class MandateTest

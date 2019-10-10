@@ -27,26 +27,34 @@ class Directdebit extends AbstractHydrator
      * @inheritDoc
      *
      * @return DirectdebitModel
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function hydrate(array $data, $object): DirectdebitModel
     {
         $this->validateGivenObject($object, DirectdebitModel::class);
 
-        if (true === array_key_exists('amount', $data)) {
+        if (true === array_key_exists('amount', $data) && false === ($data['amount'] instanceof Amount)) {
             $data['amount'] = (new ClassMethods())->hydrate($data['amount'], new Amount());
         }
 
-        if (true === array_key_exists('bankAccount', $data)) {
+        if (true === array_key_exists('bankAccount', $data) && false === ($data['amount'] instanceof BankAccount)) {
             $data['bankAccount'] = (new BankAccountHydrator())->hydrate($data['bankAccount'], new BankAccount());
         }
 
-        if (true === array_key_exists('status', $data) && null !== $data['status']['code']) {
+        if (
+            true === array_key_exists('status', $data)
+            && false === ($data['status'] instanceof Status)
+            && true === array_key_exists('code', $data['status'])
+            && null !== $data['status']['code']
+        ) {
             $data['status'] = (new StatusHydrator())->hydrate($data['status'], new Status());
         }
 
         if (
             true === array_key_exists('declined', $data)
-            && true === is_array($data['declined'])
+            && false === ($data['declined'] instanceof Status)
             && true === array_key_exists('code', $data['declined'])
             && null !== $data['declined']['code']
         ) {

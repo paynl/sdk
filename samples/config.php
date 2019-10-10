@@ -10,7 +10,7 @@ return [
     Config::KEY_USERNAME => 'token',
     Config::KEY_PASSWORD => '68babb1a525f6116b387231af9d2e4413a6c8f61',
 
-    'debug'         => true,
+    'debug'         => false,
 
     // sample data
     'incassoOrderId'        => 'IO-8284-8371-9550',

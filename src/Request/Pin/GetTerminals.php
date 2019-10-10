@@ -18,7 +18,7 @@ class GetTerminals extends AbstractRequest
      */
     public function getUri(): string
     {
-        return 'pin';
+        return 'pin/terminals';
     }
 
     /**

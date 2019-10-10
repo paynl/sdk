@@ -12,38 +12,43 @@ use Paynl\Result\Transaction as Result;
  */
 class Transaction
 {
-    /** @var string Arikel / product */
+    /** @var string Normal retail article */
     const PRODUCT_TYPE_ARTICLE = 'ARTICLE';
-    /** @var string Hoog risico product (mobiele telefoon, laptop) */
+    /** @var string Retail product with high fraud risk, easy to resell (mobile phones, tablets, laptops, juwelery) */
     const PRODUCT_TYPE_ARTICLE_H = 'ARTICLE_H';
-    /** @var string Gratis artikel, welke een waarde vertegenwoordigd */
-    const PRODUCT_TYPE_VOUCHER = 'VOUCHER';
-    /** @var string Kaart welke eenmalig is in te wisselen (gemiddeld fraude risico) */
-    const PRODUCT_TYPE_GIFTCARD = 'GIFTCARD';
-    /** @var string Hoger risico digitaal geld (steam/paysafecard etc.) */
-    const PRODUCT_TYPE_EMONEY = 'EMONEY';
-    /** @var string Opwaarding van een bestaand account/wallet */
-    const PRODUCT_TYPE_TOPUP = 'TOPUP';
-    /** @var string Digitale waarde, zoals een BitCoin, Litecoin of andere altcoin */
-    const PRODUCT_TYPE_CRYPTO = 'CRYPTO';
-    /** @var string Betaling ter bevestiging van een extern accounts */
-    const PRODUCT_TYPE_IDENTITY = 'IDENTITY';
-    /** @var string Betaling van een factuur */
-    const PRODUCT_TYPE_INVOICE = 'INVOICE';
-    /** @var string Digitale overdracht van een bestand */
-    const PRODUCT_TYPE_DOWNLOAD = 'DOWNLOAD';
-    /** @var string Digitaal product welke bewaard op de server van de ondernemer (bijvoorbeeld: asset binnen een game) */
-    const PRODUCT_TYPE_VIRTUAL = 'VIRTUAL';
-    /** @var string Creditfactuur of product (van een eerdere order) */
+    /** @var string Credit of a previous payment */
     const PRODUCT_TYPE_CREDIT = 'CREDIT';
-    /** @var string Administratie- of handelingskosten */
-    const PRODUCT_TYPE_HANDLING = 'HANDLING';
-    /** @var string Betalingskosten */
-    const PRODUCT_TYPE_PAYMENT = 'PAYMENT';
-    /** @var string Verzendkosten */
-    const PRODUCT_TYPE_SHIPPING = 'SHIPPING';
-    /** @var string Algemene korting */
+    /** @var string Digital currency like BitCoin, Ethereum or other altcoins */
+    const PRODUCT_TYPE_CRYPTO = 'CRYPTO';
+    /** @var string Discount for the total order */
     const PRODUCT_TYPE_DISCOUNT = 'DISCOUNT';
+    /** @var string Digital transfer of a file (photo, video, data) */
+    const PRODUCT_TYPE_DOWNLOAD = 'DOWNLOAD';
+    /** @var string Vouchers that can be redeemded at multiple platforms or potentially be resold (eg. iTunes/steam/paysafecard etc.) - open loop (high risk) */
+    const PRODUCT_TYPE_EMONEY = 'EMONEY';
+    /** @var string Card that represents a value for a (group of) merchant(s) - closed loop (medium risk) */
+    const PRODUCT_TYPE_GIFTCARD = 'GIFTCARD';
+    /** @var string Costs that are added for taking care of the order */
+    const PRODUCT_TYPE_HANDLING = 'HANDLING';
+    /** @var string Verification payment to check identity or account/name verification. */
+    const PRODUCT_TYPE_IDENTITY = 'IDENTITY';
+    /** @var string Payment of an invoice (products or service must already be delivered) */
+    const PRODUCT_TYPE_INVOICE = 'INVOICE';
+    /** @var string Payment fees */
+    const PRODUCT_TYPE_PAYMENT = 'PAYMENT';
+    /** @var string An extra order line added by PAY. if the total amount does not match the total of the product lines */
+    const PRODUCT_TYPE_ROUNDING = 'ROUNDING';   
+    /** @var string Costs for shipment */
+    const PRODUCT_TYPE_SHIPPING = 'SHIPPING';
+    /** @var string Ticket for events, festivals or theaters */
+    const PRODUCT_TYPE_TICKET = 'TICKET';
+    /** @var string Add funds to an account (owned by a person or company) NOTE: if you sell anonymous or temporary accounts please use EMONEY */
+    const PRODUCT_TYPE_TOPUP = 'TOPUP';
+    /** @var string Digital assets, stored on the server of the merchant (eg. in game puchases) */
+    const PRODUCT_TYPE_VIRTUAL = 'VIRTUAL';
+    /** @var string Voucher for a free article or discount for next order */
+    const PRODUCT_TYPE_VOUCHER = 'VOUCHER';
+
 
     /**
      * Start a new transaction

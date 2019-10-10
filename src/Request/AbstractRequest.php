@@ -88,11 +88,11 @@ abstract class AbstractRequest implements RequestInterface
 
     /**
      * @param string $name
-     * @param mixed $value
+     * @param string $value
      *
      * @return AbstractRequest
      */
-    public function addHeader(string $name, $value): self
+    public function addHeader(string $name, string $value): self
     {
         $this->headers[$name] = $value;
         return $this;
@@ -105,7 +105,9 @@ abstract class AbstractRequest implements RequestInterface
      */
     public function setHeaders(array $headers): self
     {
-        $this->headers = $headers;
+        foreach ($headers as $name => $header) {
+            $this->addHeader($name, $header);
+        }
         return $this;
     }
 
@@ -116,7 +118,7 @@ abstract class AbstractRequest implements RequestInterface
      */
     public function getHeader(string $name): ?string
     {
-        if (false === array_key_exists($name, $this->headers)) {
+        if (false === array_key_exists($name, $this->getHeaders())) {
             return null;
         }
         return $this->headers[$name];

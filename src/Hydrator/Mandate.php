@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Hydrator;
 
+use DateTime;
 use Zend\Hydrator\ClassMethods;
 use PayNL\Sdk\Hydrator\{
     BankAccount as BankAccountHydrator,
@@ -36,6 +37,14 @@ class Mandate extends AbstractHydrator
         $this->validateGivenObject($object, MandateModel::class);
 
         $data['description'] = $data['description'] ?? '';
+
+        if (true === array_key_exists('processDate', $data)) {
+            $processDate = $data['processDate'];
+            if ($processDate instanceof DateTime) {
+                $processDate = $processDate->format(DateTime::ATOM);
+            }
+            $data['processDate'] = DateTime::createFromFormat(DateTime::ATOM, $processDate);
+        }
 
         if (true === array_key_exists('amount', $data)) {
             $data['amount'] = (new ClassMethods())->hydrate($data['amount'], new Amount());

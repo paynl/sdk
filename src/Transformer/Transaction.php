@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Transformer;
 
-use \Exception;
 use PayNL\Sdk\Model\Transaction as TransactionModel;
 use PayNL\Sdk\Hydrator\Transaction as TransactionHydrator;
 
@@ -18,7 +17,7 @@ class Transaction extends AbstractTransformer
     /**
      * @inheritDoc
      *
-     * @throws Exception
+     * @return array|TransactionModel
      */
     public function transform($inputToTransform)
     {

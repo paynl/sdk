@@ -40,11 +40,17 @@ class TerminalTest extends UnitTest
         verify($this->terminalTransformer)->isInstanceOf(TransformerInterface::class);
     }
 
+    /**
+     * @return void
+     */
     public function testItExtendsAbstract(): void
     {
         verify($this->terminalTransformer)->isInstanceOf(AbstractTransformer::class);
     }
 
+    /**
+     * @return void
+     */
     public function testItCanTransformMultiple(): void
     {
         $input = json_encode([

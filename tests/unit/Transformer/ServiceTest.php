@@ -41,11 +41,17 @@ class ServiceTest extends UnitTest
         verify($this->serviceTransformer)->isInstanceOf(TransformerInterface::class);
     }
 
+    /**
+     * @return void
+     */
     public function testItExtendsAbstract(): void
     {
         verify($this->serviceTransformer)->isInstanceOf(AbstractTransformer::class);
     }
 
+    /**
+     * @return void
+     */
     public function testItCanTransformMultiple(): void
     {
         $input = json_encode([
@@ -75,6 +81,9 @@ class ServiceTest extends UnitTest
         verify($output['services'])->containsOnlyInstancesOf(Service::class);
     }
 
+    /**
+     * @return void
+     */
     public function testItCanTransformSingle(): void
     {
         $input = json_encode([

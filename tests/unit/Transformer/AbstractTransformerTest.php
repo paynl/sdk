@@ -10,7 +10,7 @@ use PayNL\Sdk\Transformer\{
     AbstractTransformer,
     TransformerInterface
 };
-use UnitTester, TypeError;
+use UnitTester, TypeError, stdClass;
 
 /**
  * Class AbstractTransformerTest
@@ -37,7 +37,7 @@ class AbstractTransformerTest extends UnitTest
         $this->anonymousClassFromAbstract = new class() extends AbstractTransformer {
             public function transform($inputToTransform)
             {
-                return new \stdClass();
+                return new stdClass();
             }
         };
     }

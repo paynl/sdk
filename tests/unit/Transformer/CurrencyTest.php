@@ -40,11 +40,17 @@ class CurrencyTest extends UnitTest
         verify($this->currencyTransformer)->isInstanceOf(TransformerInterface::class);
     }
 
+    /**
+     * @return void
+     */
     public function testItExtendsAbstract(): void
     {
         verify($this->currencyTransformer)->isInstanceOf(AbstractTransformer::class);
     }
 
+    /**
+     * @return void
+     */
     public function testItCanTransformMultiple(): void
     {
         $input = json_encode([
@@ -67,6 +73,9 @@ class CurrencyTest extends UnitTest
         verify($output['currencies'])->containsOnlyInstancesOf(Currency::class);
     }
 
+    /**
+     * @return void
+     */
     public function testItCanTransformSingle(): void
     {
         $input = json_encode([

@@ -172,7 +172,7 @@ abstract class AbstractRequest implements RequestInterface
     /**
      * @return Client
      */
-    public function getClient(): Client
+    public function getClient(): ?Client
     {
         return $this->client;
     }
@@ -207,6 +207,9 @@ abstract class AbstractRequest implements RequestInterface
      */
     public function setFilters(array $filters): self
     {
+        // reset the filters
+        $this->filters = [];
+
         $validator = new ObjectInstance();
         foreach ($filters as $filter) {
             if (false === $validator->isValid($filter, FilterInterface::class)) {

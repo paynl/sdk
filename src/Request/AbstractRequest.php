@@ -277,7 +277,11 @@ abstract class AbstractRequest implements RequestInterface
         }
 
         try {
-            $guzzleResponse = $this->getClient()->send($guzzleRequest);
+            $guzzleClient = $this->getClient();
+            if (false === ($guzzleClient instanceof Client)) {
+                throw new RuntimeException('No HTTP client found');
+            }
+            $guzzleResponse = $guzzleClient->send($guzzleRequest);
         } catch (GuzzleException $ge) {
             throw new RuntimeException($ge->getMessage(), $ge->getCode(), $ge->getPrevious());
         }

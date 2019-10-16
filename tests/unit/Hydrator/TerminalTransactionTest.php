@@ -57,20 +57,20 @@ class TerminalTransactionTest extends UnitTest
     {
         $hydrator = new TerminalTransactionHydrator();
         $terminalTransaction = $hydrator->hydrate([
-            'state'           => 'approved',
-            'transactionId'   => 'TT-1000-0000-0001',
-            'transactionHash' => '000194280617b1106fa30fa88271c6a5c6fe235770696e34262b1099',
-            'issuerUrl'       => 'https://www.pay.nl/issuer-url',
-            'statusUrl'       => 'https://www.pay.nl/status-url',
-            'cancelUrl'       => 'https://www.pay.nl/cancel-url',
-            'nextUrl'         => 'https://www.pay.nl/next-url/2',
-            'terminal'        => [
+            'state'                 => 'approved',
+            'terminalTransactionId' => 'TT-1000-0000-0001',
+            'transactionHash'       => '000194280617b1106fa30fa88271c6a5c6fe235770696e34262b1099',
+            'issuerUrl'             => 'https://www.pay.nl/issuer-url',
+            'statusUrl'             => 'https://www.pay.nl/status-url',
+            'cancelUrl'             => 'https://www.pay.nl/cancel-url',
+            'nextUrl'               => 'https://www.pay.nl/next-url/2',
+            'terminal'              => [
                 'id'          => 'TT-0000-0000-0000',
                 'name'        => 'Terminal New York #5.',
                 'ecrProtocol' => 'WEB',
                 'state'       => 'final'
             ],
-            'progress'        => [
+            'progress'              => [
                 'percentage'          => 100,
                 'secondsPast'         => 120,
                 'percentagePerSecond' => 100/120,
@@ -102,20 +102,20 @@ class TerminalTransactionTest extends UnitTest
     {
         $hydrator = new TerminalTransactionHydrator();
         $terminalTransaction = $hydrator->hydrate([
-            'state'           => 'approved',
-            'transactionId'   => 'TT-1000-0000-0001',
-            'transactionHash' => '000194280617b1106fa30fa88271c6a5c6fe235770696e34262b1099',
-            'issuerUrl'       => 'https://www.pay.nl/issuer-url',
-            'statusUrl'       => 'https://www.pay.nl/status-url',
-            'cancelUrl'       => 'https://www.pay.nl/cancel-url',
-            'nextUrl'         => 'https://www.pay.nl/next-url/2',
-            'terminal'        => [
+            'state'                 => 'approved',
+            'terminalTransactionId' => 'TT-1000-0000-0001',
+            'transactionHash'       => '000194280617b1106fa30fa88271c6a5c6fe235770696e34262b1099',
+            'issuerUrl'             => 'https://www.pay.nl/issuer-url',
+            'statusUrl'             => 'https://www.pay.nl/status-url',
+            'cancelUrl'             => 'https://www.pay.nl/cancel-url',
+            'nextUrl'               => 'https://www.pay.nl/next-url/2',
+            'terminal'              => [
                 'id'          => 'TT-0000-0000-0000',
                 'name'        => 'Terminal New York #5.',
                 'ecrProtocol' => 'WEB',
                 'state'       => 'final'
             ],
-            'progress'        => [
+            'progress'              => [
                 'percentage'          => 100,
                 'secondsPast'         => 120,
                 'percentagePerSecond' => 100/120,
@@ -125,7 +125,7 @@ class TerminalTransactionTest extends UnitTest
         $data = $hydrator->extract($terminalTransaction);
         $this->assertIsArray($data);
         verify($data)->hasKey('state');
-        verify($data)->hasKey('transactionId');
+        verify($data)->hasKey('terminalTransactionId');
         verify($data)->hasKey('transactionHash');
         verify($data)->hasKey('issuerUrl');
         verify($data)->hasKey('statusUrl');
@@ -136,8 +136,8 @@ class TerminalTransactionTest extends UnitTest
 
         expect($data['state'])->string();
         expect($data['state'])->equals('approved');
-        expect($data['transactionId'])->string();
-        expect($data['transactionId'])->equals('TT-1000-0000-0001');
+        expect($data['terminalTransactionId'])->string();
+        expect($data['terminalTransactionId'])->equals('TT-1000-0000-0001');
         expect($data['transactionHash'])->string();
         expect($data['transactionHash'])->equals('000194280617b1106fa30fa88271c6a5c6fe235770696e34262b1099');
         expect($data['issuerUrl'])->string();

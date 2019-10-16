@@ -46,6 +46,7 @@ class Directdebit extends AbstractHydrator
         if (
             true === array_key_exists('status', $data)
             && false === ($data['status'] instanceof Status)
+            && true === is_array($data['status'])
             && true === array_key_exists('code', $data['status'])
             && null !== $data['status']['code']
         ) {
@@ -55,6 +56,7 @@ class Directdebit extends AbstractHydrator
         if (
             true === array_key_exists('declined', $data)
             && false === ($data['declined'] instanceof Status)
+            && true === is_array($data['declined'])
             && true === array_key_exists('code', $data['declined'])
             && null !== $data['declined']['code']
         ) {

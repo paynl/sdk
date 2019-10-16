@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Hydrator;
 
+use DateTime as stdDateTime;
 use PayNL\Sdk\DateTime;
 use Zend\Hydrator\ClassMethods;
 use PayNL\Sdk\Hydrator\{
@@ -38,10 +39,10 @@ class Mandate extends AbstractHydrator
 
         $data['description'] = $data['description'] ?? '';
 
-        if (true === array_key_exists('processDate', $data)) {
+        if (true === array_key_exists('processDate', $data) && false === ($data['processDate'] instanceof DateTime)) {
             $processDate = $data['processDate'];
-            if ($processDate instanceof DateTime) {
-                $processDate = $processDate->format(DateTime::ATOM);
+            if ($processDate instanceof stdDateTime) {
+                $processDate = $processDate->format(stdDateTime::ATOM);
             }
             $data['processDate'] = DateTime::createFromFormat(DateTime::ATOM, $processDate);
         }

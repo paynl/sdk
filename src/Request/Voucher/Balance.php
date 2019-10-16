@@ -20,10 +20,14 @@ class Balance extends AbstractRequest
      * Balance constructor.
      *
      * @param string $cardNumber
+     * @param string $pinCode
      */
-    public function __construct(string $cardNumber)
+    public function __construct(string $cardNumber, string $pinCode)
     {
-        $this->setCardNumber($cardNumber);
+        $this->setCardNumber($cardNumber)
+            ->setBody((object)[
+                'pinCode' => $pinCode
+            ]);
     }
 
     /**

@@ -70,7 +70,7 @@ class TerminalTransactionTest extends UnitTest
      */
     public function testItCanSetATransactionId(): void
     {
-        expect($this->terminalTransaction->setTransactionId('TT-0000-0000'))->isInstanceOf(TerminalTransaction::class);
+        expect($this->terminalTransaction->setTerminalTransactionId('TT-0000-0000'))->isInstanceOf(TerminalTransaction::class);
     }
 
     /**
@@ -80,11 +80,11 @@ class TerminalTransactionTest extends UnitTest
      */
     public function testItCanGetATransactionId(): void
     {
-        $this->terminalTransaction->setTransactionId('TT-0000-0000');
+        $this->terminalTransaction->setTerminalTransactionId('TT-0000-0000');
 
-        verify($this->terminalTransaction->getTransactionId())->string();
-        verify($this->terminalTransaction->getTransactionId())->notEmpty();
-        verify($this->terminalTransaction->getTransactionId())->equals('TT-0000-0000');
+        verify($this->terminalTransaction->getTerminalTransactionId())->string();
+        verify($this->terminalTransaction->getTerminalTransactionId())->notEmpty();
+        verify($this->terminalTransaction->getTerminalTransactionId())->equals('TT-0000-0000');
     }
 
     /**

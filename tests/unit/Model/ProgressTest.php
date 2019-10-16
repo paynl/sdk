@@ -73,7 +73,7 @@ class ProgressTest extends UnitTest
      */
     public function testItCanSetSecondsPast(): void
     {
-        expect($this->progress->setSecondsPast(2))->isInstanceOf(Progress::class);
+        expect($this->progress->setSecondsPassed(2))->isInstanceOf(Progress::class);
     }
 
     /**
@@ -83,11 +83,11 @@ class ProgressTest extends UnitTest
      */
     public function testItCanGetSecondsPast(): void
     {
-        $this->progress->setSecondsPast(2);
+        $this->progress->setSecondsPassed(2);
 
-        verify($this->progress->getSecondsPast())->int();
-        verify($this->progress->getSecondsPast())->notEmpty();
-        verify($this->progress->getSecondsPast())->equals(2);
+        verify($this->progress->getSecondsPassed())->int();
+        verify($this->progress->getSecondsPassed())->notEmpty();
+        verify($this->progress->getSecondsPassed())->equals(2);
     }
 
     /**

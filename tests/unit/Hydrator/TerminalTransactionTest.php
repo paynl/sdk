@@ -79,8 +79,8 @@ class TerminalTransactionTest extends UnitTest
 
         expect($terminalTransaction->getState())->string();
         expect($terminalTransaction->getState())->equals('approved');
-        expect($terminalTransaction->getTransactionId())->string();
-        expect($terminalTransaction->getTransactionId())->equals('TT-1000-0000-0001');
+        expect($terminalTransaction->getTerminalTransactionId())->string();
+        expect($terminalTransaction->getTerminalTransactionId())->equals('TT-1000-0000-0001');
         expect($terminalTransaction->getTransactionHash())->string();
         expect($terminalTransaction->getTransactionHash())->equals('000194280617b1106fa30fa88271c6a5c6fe235770696e34262b1099');
         expect($terminalTransaction->getIssuerUrl())->string();

@@ -16,7 +16,7 @@ use PayNL\Sdk\Model\Mandate;
 $authAdapter = getAuthAdapter();
 
 $mandate = (new MandateHydrator())->hydrate([
-    'serviceId' => 'SL-5796-8370',
+    'serviceId' => 'SL-3490-4320',
     'description' => 'Test directdebit',
     'processDate' => DateTime::now(),
     'exchangeUrl' => 'https://www.pay.nl/exchange-url',

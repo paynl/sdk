@@ -27,7 +27,7 @@ $request = (new CreatePaymentLinkRequest(
             'currency' => 'EUR',
         ],
         'countryCode' => 'NL',
-        'language' => 'nl_NL',
+        'language' => 'nl',
         'statistics' => [
             'promoterId' => 0,
             'info' => 'Information',

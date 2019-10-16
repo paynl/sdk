@@ -12,7 +12,7 @@ use PayNL\Sdk\Request\Voucher\Balance as BalanceVoucherRequest;
 
 $authAdapter = getAuthAdapter();
 
-$request = (new BalanceVoucherRequest(Config::getInstance()->get('voucherNumber')))
+$request = (new BalanceVoucherRequest(Config::getInstance()->get('voucherNumber'), '58809'))
     ->setDebug((bool)Config::getInstance()->get('debug'))
 ;
 

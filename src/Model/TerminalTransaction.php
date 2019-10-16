@@ -23,7 +23,7 @@ class TerminalTransaction implements ModelInterface, JsonSerializable
     /**
      * @var string
      */
-    protected $transactionId;
+    protected $terminalTransactionId;
 
     /**
      * @var string
@@ -82,19 +82,19 @@ class TerminalTransaction implements ModelInterface, JsonSerializable
     /**
      * @return string
      */
-    public function getTransactionId(): string
+    public function getTerminalTransactionId(): string
     {
-        return $this->transactionId;
+        return $this->terminalTransactionId;
     }
 
     /**
-     * @param string $transactionId
+     * @param string $terminalTransactionId
      *
      * @return TerminalTransaction
      */
-    public function setTransactionId(string $transactionId): self
+    public function setTerminalTransactionId(string $terminalTransactionId): self
     {
-        $this->transactionId = $transactionId;
+        $this->terminalTransactionId = $terminalTransactionId;
         return $this;
     }
 

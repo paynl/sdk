@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Hydrator;
 
-use DateTime;
+use PayNL\Sdk\DateTime;
 use Zend\Hydrator\ClassMethods;
 use PayNL\Sdk\Hydrator\{
     BankAccount as BankAccountHydrator,

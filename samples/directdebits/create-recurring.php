@@ -1,5 +1,9 @@
 <?php
 
+/*
+ * Note: Mandate must have the flag "requeing"
+ */
+
 declare(strict_types=1);
 
 require_once __DIR__ . '/../init.php';
@@ -18,8 +22,6 @@ $authAdapter = getAuthAdapter();
 $request = (new CreateRecurringDirectdebitRequest(
     Config::getInstance()->get('incassoOrderId'),
     (new MandateHydrator())->hydrate([
-        'id' => '',
-        'type' => '',
         'isLastOrder' => true,
         'description' => 'Test recurring',
         'processDate' => DateTime::now(),

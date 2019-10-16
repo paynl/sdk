@@ -23,7 +23,7 @@ class Progress implements ModelInterface, JsonSerializable
     /**
      * @var integer
      */
-    protected $secondsPast;
+    protected $secondsPassed;
 
     /**
      * @var float
@@ -52,19 +52,19 @@ class Progress implements ModelInterface, JsonSerializable
     /**
      * @return int
      */
-    public function getSecondsPast(): int
+    public function getSecondsPassed(): int
     {
-        return $this->secondsPast;
+        return $this->secondsPassed;
     }
 
     /**
-     * @param int $secondsPast
+     * @param int $secondsPassed
      *
      * @return Progress
      */
-    public function setSecondsPast(int $secondsPast): self
+    public function setSecondsPassed(int $secondsPassed): self
     {
-        $this->secondsPast = $secondsPast;
+        $this->secondsPassed = $secondsPassed;
         return $this;
     }
 

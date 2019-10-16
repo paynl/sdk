@@ -23,7 +23,7 @@ class Terminal extends AbstractTransformer
 
         $hydrator = new TerminalHydrator();
 
-        $terminals = &$inputToTransform['pin'];
+        $terminals = &$inputToTransform['terminals'];
         foreach ($terminals as $key => $terminalArray) {
             $terminal = $hydrator->hydrate($terminalArray, new TerminalModel());
             $terminals[$key] = $terminal;

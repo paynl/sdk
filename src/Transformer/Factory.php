@@ -50,6 +50,7 @@ class Factory
                 $transformerClass = Transformer\Terminal::class;
                 break;
             case Request\Pin\GetTerminalTransactionStatus::class:
+            case Request\Pin\PayTransaction::class:
                 $transformerClass = Transformer\TerminalTransaction::class;
                 break;
             case Request\Qr\Decode::class:
@@ -68,6 +69,9 @@ class Factory
                 break;
             case Request\Transactions\Get::class:
             case Request\Transactions\Create::class:
+            case Request\Transactions\Approve::class:
+            case Request\Transactions\Capture::class:
+            case Request\Transactions\Decline::class:
             case Request\Transactions\Recurring::class:
             case Request\Transactions\QR::class:
             case Request\Transactions\Tokenize::class:

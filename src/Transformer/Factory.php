@@ -29,6 +29,11 @@ class Factory
      */
     public static function getByRequestClassName(string $requestClass): TransformerInterface
     {
+        if (0 === strpos($requestClass, 'class@anonymous')) {
+            // mock test response
+            return new Transformer\Simple();
+        }
+
         // TODO create transformer interfaces to recognize the correct transformer instead its based on request class name?
         switch ($requestClass) {
             case Request\Currencies\GetAll::class:

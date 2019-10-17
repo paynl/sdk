@@ -5,14 +5,19 @@ declare(strict_types=1);
 namespace Tests\Unit\PayNL\Sdk\Request;
 
 use Codeception\Test\Unit as UnitTest;
-use GuzzleHttp\Client;
-use PayNL\Sdk\Exception\InvalidArgumentException;
-use PayNL\Sdk\Filter\FilterInterface;
-use PayNL\Sdk\Request\{
-    RequestInterface,
-    AbstractRequest
+use GuzzleHttp\{
+    Client,
+    Psr7\Response as Psr7Response,
+    Handler\MockHandler
 };
-use TypeError, UnitTester;
+use PayNL\Sdk\{
+    Exception\InvalidArgumentException,
+    Filter\FilterInterface,
+    Response,
+    Request\RequestInterface,
+    Request\AbstractRequest
+};
+use TypeError, UnitTester, stdClass, RuntimeException;
 
 /**
  * Class AbstractRequestTest
@@ -31,6 +36,9 @@ class AbstractRequestTest extends UnitTest
      */
     protected $anonymousClassFromAbstract;
 
+    /**
+     * @var Client
+     */
     protected $guzzleClient;
 
     /**
@@ -493,5 +501,93 @@ class AbstractRequestTest extends UnitTest
     {
         $filter = $this->anonymousClassFromAbstract->getFilter('Bogus');
         verify($filter)->null();
+    }
+
+    /**
+     * @return void
+     */
+    public function testItHasAnUri(): void
+    {
+        verify(method_exists($this->anonymousClassFromAbstract, 'getUri'))->true();
+        verify($this->anonymousClassFromAbstract->getUri())->string();
+        verify($this->anonymousClassFromAbstract->getUri())->notEmpty();
+    }
+
+    /**
+     * @return void
+     */
+    public function testItHasAMethod(): void
+    {
+        verify(method_exists($this->anonymousClassFromAbstract, 'getMethod'))->true();
+        verify($this->anonymousClassFromAbstract->getMethod())->string();
+        verify($this->anonymousClassFromAbstract->getMethod())->notEmpty();
+    }
+
+    /**
+     * @depends testItHasAnUri
+     * @depends testItCanGetFilters
+     * @depends testItHasAMethod
+     * @depends testItCanGetHeaders
+     * @depends testItCanGetABody
+     * @depends testItCanApplyAGuzzleClient
+     * @depends testItCanGetTheGuzzleClient
+     *
+     * @return void
+     */
+    public function testCanItExecute(): void
+    {
+        $response = new Response();
+
+        $guzzleMockHandler = new MockHandler();
+        $guzzleMockHandler->append(new Psr7Response(200, [], '{"result": "ok"}'));
+
+        $guzzleClient = new Client([
+            'handler' => $guzzleMockHandler,
+        ]);
+
+        $this->anonymousClassFromAbstract->applyClient($guzzleClient);
+
+        $output = $this->anonymousClassFromAbstract->execute($response);
+        verify($output)->null();
+        verify($response->getBody())->notEmpty();
+        verify($response->getBody())->isInstanceOf(stdClass::class);
+        verify($response->getBody())->hasAttribute('result');
+        verify($response->getBody()->result)->string();
+        verify($response->getBody()->result)->notEmpty();
+        verify($response->getBody()->result)->equals('ok');
+    }
+
+    /**
+     * @depends testCanItExecute
+     *
+     * @return void
+     */
+    public function testExecuteThrowsAnExceptionWhenNoGuzzleClientIsSet(): void
+    {
+        $this->expectException(RuntimeException::class);
+        $this->anonymousClassFromAbstract->execute(new Response());
+    }
+
+    /**
+     * @depends testCanItExecute
+     *
+     * @return void
+     */
+    public function testExecuteThrowsAnExceptionWhenRequestIsNotSuccessful(): void
+    {
+        $this->expectException(RuntimeException::class);
+
+        $response = new Response();
+
+        $guzzleMockHandler = new MockHandler();
+        $guzzleMockHandler->append(new Psr7Response(400));
+
+        $guzzleClient = new Client([
+            'handler' => $guzzleMockHandler,
+        ]);
+
+        $this->anonymousClassFromAbstract->applyClient($guzzleClient);
+
+        $this->anonymousClassFromAbstract->execute($response);
     }
 }

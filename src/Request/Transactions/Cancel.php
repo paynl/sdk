@@ -9,7 +9,7 @@ namespace PayNL\Sdk\Request\Transactions;
  *
  * @package PayNL\Sdk\Request\Transactions
  */
-class Cancel extends StatusChange
+class Cancel extends AbstractStatusChange
 {
     /**
      * Approve constructor.
@@ -21,13 +21,5 @@ class Cancel extends StatusChange
     {
         $this->setTransactionId($transactionId);
         $this->setStatus(static::STATUS_VOID);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getMethod(): string
-    {
-        return static::METHOD_PATCH;
     }
 }

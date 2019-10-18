@@ -8,7 +8,7 @@ use PayNL\Sdk\{
     Api,
     Config
 };
-use PayNL\Sdk\Request\Voucher\Charge as ChargeVoucherRequest;
+use PayNL\Sdk\Request\Vouchers\Charge as ChargeVoucherRequest;
 use PayNL\Sdk\Hydrator\Voucher as VoucherHydrator;
 use PayNL\Sdk\Model\Voucher;
 

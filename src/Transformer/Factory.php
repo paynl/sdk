@@ -87,15 +87,15 @@ class Factory
                 break;
             case Request\Directdebits\Delete::class:
             case Request\IsPay\Get::class:
-            case Request\Voucher\Activate::class:
-            case Request\Voucher\Charge::class:
+            case Request\Vouchers\Activate::class:
+            case Request\Vouchers\Charge::class:
                 $transformerClass = Transformer\NoContent::class;
                 break;
             case Request\Pin\ConfirmTerminalTransaction::class:
             case Request\Qr\Encode::class:
             case Request\Qr\Validate::class:
             case Request\Services\CreatePaymentLink::class:
-            case Request\Voucher\Balance::class:
+            case Request\Vouchers\Balance::class:
                 $transformerClass = Transformer\Simple::class;
                 break;
             default:

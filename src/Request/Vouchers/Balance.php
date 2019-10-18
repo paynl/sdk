@@ -2,26 +2,32 @@
 
 declare(strict_types=1);
 
-namespace PayNL\Sdk\Request\Voucher;
+namespace PayNL\Sdk\Request\Vouchers;
 
-use PayNL\Sdk\Model\Voucher;
 use PayNL\Sdk\Request\AbstractRequest;
 use PayNL\Sdk\Request\Parameter\CardNumberTrait;
 
 /**
- * Class Activate
+ * Class Balance
  *
  * @package PayNL\Sdk\Request\Voucher
  */
-class Activate extends AbstractRequest
+class Balance extends AbstractRequest
 {
     use CardNumberTrait;
 
-    public function __construct(string $cardNumber, Voucher $voucher)
+    /**
+     * Balance constructor.
+     *
+     * @param string $cardNumber
+     * @param string $pinCode
+     */
+    public function __construct(string $cardNumber, string $pinCode)
     {
         $this->setCardNumber($cardNumber)
-            ->setBody($voucher)
-        ;
+            ->setBody((object)[
+                'pinCode' => $pinCode
+            ]);
     }
 
     /**
@@ -29,7 +35,7 @@ class Activate extends AbstractRequest
      */
     public function getUri(): string
     {
-        return "vouchers/{$this->getCardNumber()}/activate";
+        return "vouchers/{$this->getCardNumber()}/balance";
     }
 
     /**

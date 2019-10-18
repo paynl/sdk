@@ -9,7 +9,7 @@ namespace PayNL\Sdk\Request\Transactions;
  *
  * @package PayNL\Sdk\Request\Transactions
  */
-class Capture extends StatusChange
+class Capture extends AbstractStatusChange
 {
     /**
      * Approve constructor.
@@ -21,13 +21,5 @@ class Capture extends StatusChange
     {
         $this->setTransactionId($transactionId);
         $this->setStatus(static::STATUS_CAPTURE);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getMethod(): string
-    {
-        return static::METHOD_PATCH;
     }
 }

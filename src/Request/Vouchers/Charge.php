@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PayNL\Sdk\Request\Voucher;
+namespace PayNL\Sdk\Request\Vouchers;
 
 use PayNL\Sdk\Model\Voucher;
 use PayNL\Sdk\Request\AbstractRequest;

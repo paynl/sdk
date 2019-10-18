@@ -9,7 +9,7 @@ namespace PayNL\Sdk\Request\Transactions;
  *
  * @package PayNL\Sdk\Request\Transactions
  */
-class Decline extends StatusChange
+class Decline extends AbstractStatusChange
 {
     /**
      * Approve constructor.
@@ -21,13 +21,5 @@ class Decline extends StatusChange
     {
         $this->setTransactionId($transactionId);
         $this->setStatus(static::STATUS_DECLINE);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getMethod(): string
-    {
-        return static::METHOD_PATCH;
     }
 }

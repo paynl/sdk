@@ -10,3 +10,9 @@ extensions:
         - Codeception\Extension\RunFailed
 #settings:
 #    shuffle: true
+
+coverage:
+    enabled: true
+    remote: false
+    include:
+        - src/*

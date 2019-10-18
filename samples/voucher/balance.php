@@ -8,7 +8,7 @@ use PayNL\Sdk\{
     Api,
     Config
 };
-use PayNL\Sdk\Request\Voucher\Balance as BalanceVoucherRequest;
+use PayNL\Sdk\Request\Vouchers\Balance as BalanceVoucherRequest;
 
 $authAdapter = getAuthAdapter();
 

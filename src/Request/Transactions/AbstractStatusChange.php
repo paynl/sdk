@@ -13,7 +13,7 @@ use PayNL\Sdk\Request\Parameter\TransactionIdTrait;
  *
  * @package PayNL\Sdk\Request\Transactions
  */
-abstract class StatusChange extends AbstractRequest
+abstract class AbstractStatusChange extends AbstractRequest
 {
     protected const STATUS_APPROVE   = 'approve';
     protected const STATUS_CAPTURE   = 'capture';
@@ -36,6 +36,14 @@ abstract class StatusChange extends AbstractRequest
     }
 
     /**
+     * @inheritDoc
+     */
+    public function getMethod(): string
+    {
+        return static::METHOD_PATCH;
+    }
+
+    /**
      * @return string
      */
     public function getStatus(): string
@@ -48,9 +56,9 @@ abstract class StatusChange extends AbstractRequest
      *
      * @throws InvalidArgumentException
      *
-     * @return StatusChange
+     * @return AbstractStatusChange
      */
-    public function setStatus(string $status): self
+    protected function setStatus(string $status): self
     {
         $statusConstants = [
             static::STATUS_APPROVE,

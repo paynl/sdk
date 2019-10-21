@@ -77,9 +77,9 @@ class Factory
             case Request\Transactions\Approve::class:
             case Request\Transactions\Capture::class:
             case Request\Transactions\Decline::class:
-            case Request\Transactions\Recurring::class:
             case Request\Transactions\QR::class:
             case Request\Transactions\Tokenize::class:
+            case Request\Transactions\Cancel::class:
                 $transformerClass = Transformer\Transaction::class;
                 break;
             case Request\Pin\GetReceipt::class:
@@ -90,6 +90,7 @@ class Factory
             case Request\Vouchers\Activate::class:
             case Request\Vouchers\Charge::class:
             case Request\Qr\Validate::class:
+            case Request\Transactions\Recurring::class:
                 $transformerClass = Transformer\NoContent::class;
                 break;
             case Request\Pin\ConfirmTerminalTransaction::class:

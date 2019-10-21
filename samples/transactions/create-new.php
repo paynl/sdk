@@ -14,7 +14,7 @@ use PayNL\Sdk\Request\Transactions\Create as CreateTransactionRequest;
 use Zend\Hydrator\ClassMethods;
 
 $transaction = (new Hydrator\Transaction)->hydrate([
-    'serviceId' => 'SL-5350-2350',
+    'serviceId' => 'SL-3490-4320',
     'amount' => (new ClassMethods())->hydrate([
         'amount'   => 34500,
         'currency' => 'USD'

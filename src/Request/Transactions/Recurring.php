@@ -43,6 +43,6 @@ class Recurring extends AbstractRequest
      */
     public function getMethod(): string
     {
-        return static::METHOD_PATCH;
+        return static::METHOD_POST;
     }
 }

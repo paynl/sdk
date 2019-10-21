@@ -300,9 +300,6 @@ abstract class AbstractRequest implements RequestInterface
 
             $statusCode = $guzzleResponse->getStatusCode();
 
-            if (true === $this->isDebug()) {
-                $this->dumpDebugInfo('Response: ', $response);
-            }
         } catch (RequestException $re) {
             $rawBody = $errorMessages = '';
             $body = $re->getMessage();
@@ -336,6 +333,10 @@ abstract class AbstractRequest implements RequestInterface
                 ->setRawBody($rawBody)
                 ->setBody($body)
             ;
+
+            if (true === $this->isDebug()) {
+                $this->dumpDebugInfo('Response: ', $response);
+            }
         }
     }
 }

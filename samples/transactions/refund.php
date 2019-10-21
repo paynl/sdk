@@ -24,9 +24,14 @@ $authAdapter = getAuthAdapter();
 
 $refund = (new RefundHydrator())->hydrate([
     'amount' => (new ClassMethods())->hydrate([
-        'amount' => 10,
+        'amount' => 100,
         'currency' => 'EUR',
     ], new Amount()),
+    'bankAccount' => [
+        'iban'  => 'NL91ABNA0417164300',
+        'bic'   => 'INGBNL2A',
+        'owner' => 'Bruce Wayne'
+    ],
     'products' => [
         (new ProductHydrator())->hydrate([
             'id' => 'P-0000-0000',

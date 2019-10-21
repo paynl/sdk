@@ -6,6 +6,8 @@ namespace Tests\Unit\PayNL\Sdk;
 
 use Codeception\Test\Unit as UnitTest;
 use PayNL\Sdk\Config;
+use PayNL\Sdk\Exception\InvalidArgumentException;
+use PayNL\Sdk\Exception\UnexpectedValueException;
 use UnitTester;
 
 /**
@@ -21,19 +23,6 @@ class ConfigTest extends UnitTest
     protected $tester;
 
     /**
-     * @var Config
-     */
-    protected $config;
-
-    /**
-     * @return void
-     */
-    public function _before(): void
-    {
-        $this->config = Config::getInstance();
-    }
-
-    /**
      * @return void
      */
     public function testItIsASingleton(): void
@@ -41,10 +30,10 @@ class ConfigTest extends UnitTest
         $config = Config::getInstance();
         verify($config)->isInstanceOf(Config::class);
 
-        $this->assertEquals($config, $this->config);
+        $this->assertEquals($config, Config::getInstance());
 
-        verify($this->tester->getMethodAccessibility($config, '__construct'))->equals('protected');
-        verify($this->tester->getMethodAccessibility($config, '__clone'))->equals('private');
+        verify($this->tester->getMethodAccessibility(Config::getInstance(), '__construct'))->equals('protected');
+        verify($this->tester->getMethodAccessibility(Config::getInstance(), '__clone'))->equals('private');
     }
 
     /**
@@ -52,7 +41,7 @@ class ConfigTest extends UnitTest
      */
     public function testItCanLoadAConfigurationArray(): void
     {
-        $this->config->load([
+        Config::getInstance()->load([
             Config::KEY_API_URL  => 'https://rest.somehost.topleveldomain',
             Config::KEY_USERNAME => 'piet',
             Config::KEY_PASSWORD => 'blaatschaap',
@@ -61,6 +50,56 @@ class ConfigTest extends UnitTest
         verify(Config::getInstance()->get(Config::KEY_API_URL))->notEmpty();
         verify(Config::getInstance()->get(Config::KEY_USERNAME))->notEmpty();
         verify(Config::getInstance()->get(Config::KEY_PASSWORD))->notEmpty();
+    }
+
+    /**
+     * @return void
+     */
+    public function testItThrowsAnExceptionWhenApiUrlIsNotSet(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        Config::getInstance()->load([
+            Config::KEY_USERNAME => 'piet',
+            Config::KEY_PASSWORD => 'blaatschaap',
+        ]);
+    }
+
+    /**
+     * @return void
+     */
+    public function testItThrowsAnExceptionWhenUsernameIsNotSet(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        Config::getInstance()->load([
+            Config::KEY_API_URL  => 'https://rest.somehost.topleveldomain',
+            Config::KEY_PASSWORD => 'blaatschaap',
+        ]);
+    }
+
+    /**
+     * @return void
+     */
+    public function testItThrowsAnExceptionWhenPasswordIsNotSet(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        Config::getInstance()->load([
+            Config::KEY_API_URL  => 'https://rest.somehost.topleveldomain',
+            Config::KEY_USERNAME => 'piet',
+        ]);
+    }
+
+    /**
+     * @return void
+     */
+    public function testItThrowsAnExceptionWhenConfigKeyIsNotAString(): void
+    {
+        $this->expectException(UnexpectedValueException::class);
+        Config::getInstance()->load([
+            Config::KEY_API_URL  => 'https://rest.somehost.topleveldomain',
+            Config::KEY_USERNAME => 'piet',
+            Config::KEY_PASSWORD => 'blaatschaap',
+            1 => 'value',
+        ]);
     }
 
     /**
@@ -106,5 +145,10 @@ class ConfigTest extends UnitTest
 
         Config::getInstance()->set('wrong_password_key', '1234');
         verify(Config::getInstance()->getPassword())->equals('s0M3H4xOrP4ssw0rD');
+    }
+
+    public function testItReturnsNullWhenConfigKeyDoesNotExist(): void
+    {
+        verify(Config::getInstance()->get('test'))->null();
     }
 }

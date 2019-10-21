@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk;
 
+use Symfony\Component\VarDumper\Cloner\VarCloner;
+use Symfony\Component\VarDumper\Dumper\CliDumper;
+
 /**
  * Trait DebugTrait
  *
@@ -44,16 +47,14 @@ trait DebugTrait
      */
     public function dumpDebugInfo(...$arguments): void
     {
-        $function = 'var_dump';
-        $dumpString = '<pre>%s</pre>' . PHP_EOL;
-        if (true === function_exists('dump')) {
-            $function = 'dump';
-            $dumpString = '';
+        ini_set('xdebug.overload_var_dump', 'off');
+        if (true === function_exists('dump') && 'cli' !== PHP_SAPI) {
+            dump(...$arguments);
+            return;
         }
 
-        echo sprintf(
-            $dumpString,
-            $function(...$arguments)
-        );
+        print '<pre>';
+        var_dump(...$arguments);
+        print '</pre>' . PHP_EOL;
     }
 }

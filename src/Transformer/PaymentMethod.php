@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Transformer;
 
-use Zend\Hydrator\ClassMethods;
-use PayNL\Sdk\Model\PaymentMethod as PaymentMethodModel;
+use PayNL\Sdk\{
+    Model\PaymentMethod as PaymentMethodModel,
+    Hydrator\Simple as SimpleHydrator
+};
 
 /**
  * Class PaymentMethod
@@ -21,7 +23,7 @@ class PaymentMethod extends AbstractTransformer
     {
         $inputToTransform = $this->getDecodedInput($inputToTransform);
 
-        $hydrator = new ClassMethods();
+        $hydrator = new SimpleHydrator();
 
         $paymentMethods = &$inputToTransform['paymentMethods'];
         foreach ($paymentMethods as $key => $paymentMethodArray) {

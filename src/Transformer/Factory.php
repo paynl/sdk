@@ -37,6 +37,8 @@ class Factory
         // TODO create transformer interfaces to recognize the correct transformer instead its based on request class name?
         switch ($requestClass) {
             case Request\Currencies\GetAll::class:
+                $transformerClass = Transformer\Currencies::class;
+                break;
             case Request\Currencies\Get::class:
                 $transformerClass = Transformer\Currency::class;
                 break;

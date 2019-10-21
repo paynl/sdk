@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Hydrator;
 
-use PayNL\Sdk\Exception\InvalidArgumentException;
-use PayNL\Sdk\Validator\ObjectInstance as ObjectInstanceValidator;
+use PayNL\Sdk\{
+    Exception\InvalidArgumentException,
+    Validator\ObjectInstance as ObjectInstanceValidator,
+    Model\Links as LinksModel
+};
 use Zend\Hydrator\ClassMethods;
 
 /**
@@ -34,6 +37,16 @@ abstract class AbstractHydrator extends ClassMethods
 
         // override the given params
         parent::__construct($underscoreSeparatedKeys, $methodExistsCheck);
+    }
+
+    public function hydrate(array $data, $object)
+    {
+        if (true === array_key_exists('_links', $data) && false === ($data['_links'] instanceof LinksModel)) {
+            $data['links'] = (new Links())->hydrate($data['_links'], new LinksModel());
+            unset($data['_links']);
+        }
+
+        return parent::hydrate($data, $object);
     }
 
     /**

@@ -562,25 +562,12 @@ class AbstractRequestTest extends UnitTest
      *
      * @return void
      */
-    public function testExecuteThrowsAnExceptionWhenNoGuzzleClientIsSet(): void
+    public function testItReturnsAResponseWhenRequestIsNotSuccessful(): void
     {
-        $this->expectException(RuntimeException::class);
-        $this->anonymousClassFromAbstract->execute(new Response());
-    }
-
-    /**
-     * @depends testCanItExecute
-     *
-     * @return void
-     */
-    public function testExecuteThrowsAnExceptionWhenRequestIsNotSuccessful(): void
-    {
-        $this->expectException(RuntimeException::class);
-
         $response = new Response();
 
         $guzzleMockHandler = new MockHandler();
-        $guzzleMockHandler->append(new Psr7Response(400));
+        $guzzleMockHandler->append(new Psr7Response(500));
 
         $guzzleClient = new Client([
             'handler' => $guzzleMockHandler,
@@ -589,5 +576,8 @@ class AbstractRequestTest extends UnitTest
         $this->anonymousClassFromAbstract->applyClient($guzzleClient);
 
         $this->anonymousClassFromAbstract->execute($response);
+
+        verify($response)->isInstanceOf(Response::class);
+        verify($response->getStatusCode())->equals(500);
     }
 }

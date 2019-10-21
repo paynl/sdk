@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Hydrator;
 
-use DateTime as stdDateTime;
+use DateTime as stdDateTime, Exception;
 use PayNL\Sdk\DateTime;
 use Zend\Hydrator\ClassMethods;
 use PayNL\Sdk\Hydrator\{
@@ -31,6 +31,8 @@ class Mandate extends AbstractHydrator
     /**
      * @inheritDoc
      *
+     * @throws Exception
+     *
      * @return MandateModel
      */
     public function hydrate(array $data, $object): MandateModel
@@ -49,11 +51,6 @@ class Mandate extends AbstractHydrator
 
         if (true === array_key_exists('amount', $data)) {
             $data['amount'] = (new ClassMethods())->hydrate($data['amount'], new Amount());
-        }
-
-        if (true === array_key_exists('bankaccount', $data)) {
-            $data['bankAccount'] = (new BankAccountHydrator())->hydrate($data['bankaccount'], new BankAccount());
-            unset($data['bankaccount']);
         }
 
         if (true === array_key_exists('statistics', $data)) {

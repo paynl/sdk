@@ -51,11 +51,6 @@ class Mandate implements ModelInterface, JsonSerializable
     protected $description;
 
     /**
-     * @var BankAccount
-     */
-    protected $bankAccount;
-
-    /**
      * @var Statistics
      */
     protected $statistics;
@@ -210,25 +205,6 @@ class Mandate implements ModelInterface, JsonSerializable
     public function setDescription(string $description): Mandate
     {
         $this->description = $description;
-        return $this;
-    }
-
-    /**
-     * @return BankAccount
-     */
-    public function getBankAccount(): BankAccount
-    {
-        return $this->bankAccount;
-    }
-
-    /**
-     * @param BankAccount $bankAccount
-     *
-     * @return Mandate
-     */
-    public function setBankAccount(BankAccount $bankAccount): Mandate
-    {
-        $this->bankAccount = $bankAccount;
         return $this;
     }
 

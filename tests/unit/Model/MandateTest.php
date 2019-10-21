@@ -217,27 +217,6 @@ class MandateTest extends UnitTest
     /**
      * @return void
      */
-    public function testItCanSetABankAccount(): void
-    {
-        expect($this->mandate->setBankAccount(new BankAccount()))->isInstanceOf(Mandate::class);
-    }
-
-    /**
-     * @depends testItCanSetABankAccount
-     *
-     * @return void
-     */
-    public function testItCanGetABankAccount(): void
-    {
-        $this->mandate->setBankAccount(new BankAccount());
-
-        verify($this->mandate->getBankAccount())->notEmpty();
-        verify($this->mandate->getBankAccount())->isInstanceOf(BankAccount::class);
-    }
-
-    /**
-     * @return void
-     */
     public function testItCanSetStatistics(): void
     {
         expect($this->mandate->setStatistics(new Statistics()))->isInstanceOf(Mandate::class);

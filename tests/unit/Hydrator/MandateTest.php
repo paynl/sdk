@@ -67,6 +67,7 @@ class MandateTest extends UnitTest
             'type'        => 'single',
             'serviceId'   => 'SL-5796-8370',
             'description' => 'Test directdebit',
+            'state'       => 'single',
             'processDate' => DateTime::createFromFormat('Y-m-d H:i:s', '2019-10-07 08:39:42'),
             'exchangeUrl' => 'https://www.pay.nl/exchange-url',
             'customer' => [
@@ -81,11 +82,6 @@ class MandateTest extends UnitTest
             'amount' => [
                 'amount' => 100,
                 'currency' => 'EUR',
-            ],
-            'bankaccount' => [
-                'iban'  => 'NL00RABO0000000000',
-                'bic'   => 'RABONL2U',
-                'owner' => 'John Hancock'
             ],
             'interval' => [
                 'period' => 'Month',
@@ -114,12 +110,13 @@ class MandateTest extends UnitTest
         expect($directdebit->getServiceId())->equals('SL-5796-8370');
         expect($directdebit->getDescription())->string();
         expect($directdebit->getDescription())->equals('Test directdebit');
+        expect($directdebit->getState())->string();
+        expect($directdebit->getState())->equals('single');
         expect($directdebit->getProcessDate())->isInstanceOf(DateTime::class);
         expect($directdebit->getExchangeUrl())->string();
         expect($directdebit->getExchangeUrl())->equals('https://www.pay.nl/exchange-url');
         expect($directdebit->getCustomer())->isInstanceOf(Customer::class);
         expect($directdebit->getAmount())->isInstanceOf(Amount::class);
-        expect($directdebit->getBankAccount())->isInstanceOf(BankAccount::class);
         expect($directdebit->getInterval())->isInstanceOf(Interval::class);
         expect($directdebit->getStatistics())->isInstanceOf(Statistics::class);
         expect($directdebit->isLastOrder())->bool();
@@ -137,6 +134,7 @@ class MandateTest extends UnitTest
             'type'        => 'single',
             'serviceId'   => 'SL-5796-8370',
             'description' => 'Test directdebit',
+            'state'       => 'single',
             'processDate' => DateTime::createFromFormat('Y-m-d H:i:s', '2019-10-07 08:39:42'),
             'exchangeUrl' => 'https://www.pay.nl/exchange-url',
             'customer' => [
@@ -151,11 +149,6 @@ class MandateTest extends UnitTest
             'amount' => [
                 'amount' => 100,
                 'currency' => 'EUR',
-            ],
-            'bankaccount' => [
-                'iban'  => 'NL00RABO0000000000',
-                'bic'   => 'RABONL2U',
-                'owner' => 'John Hancock'
             ],
             'interval' => [
                 'period' => 'Month',
@@ -182,6 +175,7 @@ class MandateTest extends UnitTest
         verify($data)->hasKey('type');
         verify($data)->hasKey('serviceId');
         verify($data)->hasKey('description');
+        verify($data)->hasKey('state');
         verify($data)->hasKey('processDate');
         verify($data)->hasKey('exchangeUrl');
         verify($data)->hasKey('customer');
@@ -198,12 +192,13 @@ class MandateTest extends UnitTest
         expect($data['serviceId'])->equals('SL-5796-8370');
         expect($data['description'])->string();
         expect($data['description'])->equals('Test directdebit');
+        expect($data['state'])->string();
+        expect($data['state'])->equals('single');
         expect($data['processDate'])->isInstanceOf(DateTime::class);
         expect($data['exchangeUrl'])->string();
         expect($data['exchangeUrl'])->equals('https://www.pay.nl/exchange-url');
         expect($data['customer'])->isInstanceOf(Customer::class);
         expect($data['amount'])->isInstanceOf(Amount::class);
-        expect($data['bankAccount'])->isInstanceOf(BankAccount::class);
         expect($data['interval'])->isInstanceOf(Interval::class);
         expect($data['statistics'])->isInstanceOf(Statistics::class);
         expect($data['isLastOrder'])->bool();

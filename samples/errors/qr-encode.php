@@ -35,7 +35,7 @@ $response = (new Api($authAdapter))
 $errors = $response->getBody();
 
 echo '<pre/>' . PHP_EOL .
-    'Nr of errors: ' . var_export($errors->count(), true) . PHP_EOL
+    'Nr of errors: ' . var_export(count($errors), true) . PHP_EOL
 ;
 echo 'Errors: ';
 foreach ($errors as $key => $value) {

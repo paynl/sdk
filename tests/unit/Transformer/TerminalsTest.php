@@ -7,7 +7,7 @@ namespace Tests\Unit\PayNL\Sdk\Transformer;
 use Codeception\Test\Unit as UnitTest;
 use PayNL\Sdk\Transformer\{
     AbstractTransformer,
-    Terminal as TerminalTransformer,
+    Terminals as TerminalTransformer,
     TransformerInterface
 };
 use PayNL\Sdk\Model\Terminal;
@@ -17,7 +17,7 @@ use PayNL\Sdk\Model\Terminal;
  *
  * @package Tests\Unit\PayNL\Sdk\Transformer
  */
-class TerminalTest extends UnitTest
+class TerminalsTest extends UnitTest
 {
     /**
      * @var TerminalTransformer

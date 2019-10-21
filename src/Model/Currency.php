@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Model;
 
+use PayNL\Sdk\LinksTrait;
+
 /**
  * Class Currency
  *
@@ -11,6 +13,8 @@ namespace PayNL\Sdk\Model;
  */
 class Currency implements ModelInterface
 {
+    use LinksTrait;
+
     /**
      * @var string
      */

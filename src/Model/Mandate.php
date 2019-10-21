@@ -76,6 +76,11 @@ class Mandate implements ModelInterface, JsonSerializable
     protected $isLastOrder;
 
     /**
+     * @var string
+     */
+    protected $state;
+
+    /**
      * @return string
      */
     public function getId(): string
@@ -300,6 +305,25 @@ class Mandate implements ModelInterface, JsonSerializable
     public function setIsLastOrder(bool $isLastOrder): Mandate
     {
         $this->isLastOrder = $isLastOrder;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getState(): string
+    {
+        return (string)$this->state;
+    }
+
+    /**
+     * @param string $state
+     *
+     * @return Directdebit
+     */
+    public function setState(string $state): self
+    {
+        $this->state = $state;
         return $this;
     }
 }

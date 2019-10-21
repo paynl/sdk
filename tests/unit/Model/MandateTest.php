@@ -318,4 +318,29 @@ class MandateTest extends UnitTest
         verify($this->mandate->isLastOrder())->bool();
         verify($this->mandate->isLastOrder())->true();
     }
+
+    /**
+     * @return void
+     */
+    public function testItCanSetAState(): void
+    {
+        verify(method_exists($this->mandate, 'setState'))->true();
+        verify($this->mandate->setState('single'))->isInstanceOf(Mandate::class);
+    }
+
+    /**
+     * @depends testItCanSetAState
+     *
+     * @return void
+     */
+    public function testItCanGetAState(): void
+    {
+        verify(method_exists($this->mandate, 'getState'))->true();
+
+        $this->mandate->setState('single');
+
+        verify($this->mandate->getState())->string();
+        verify($this->mandate->getState())->notEmpty();
+        verify($this->mandate->getState())->equals('single');
+    }
 }

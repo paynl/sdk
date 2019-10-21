@@ -17,6 +17,7 @@ use PayNL\Sdk\Model\{
     ContactMethod,
     Trademark
 };
+use Exception;
 
 /**
  * Class Merchant
@@ -27,6 +28,8 @@ class Merchant extends AbstractHydrator
 {
     /**
      * @inheritDoc
+     *
+     * @throws Exception
      *
      * @return MerchantModel
      *

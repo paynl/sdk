@@ -54,7 +54,7 @@ class Factory
                 $transformerClass = Transformer\Merchant::class;
                 break;
             case Request\Pin\GetTerminals::class:
-                $transformerClass = Transformer\Terminal::class;
+                $transformerClass = Transformer\Terminals::class;
                 break;
             case Request\Pin\GetTerminalTransactionStatus::class:
             case Request\Pin\PayTransaction::class:

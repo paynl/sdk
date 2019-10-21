@@ -94,6 +94,6 @@ class RecurringTest extends UnitTest
     {
         verify($this->request->getMethod())->string();
         verify($this->request->getMethod())->notEmpty();
-        verify($this->request->getMethod())->equals(RequestInterface::METHOD_PATCH);
+        verify($this->request->getMethod())->equals(RequestInterface::METHOD_POST);
     }
 }

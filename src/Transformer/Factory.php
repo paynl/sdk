@@ -89,11 +89,11 @@ class Factory
             case Request\IsPay\Get::class:
             case Request\Vouchers\Activate::class:
             case Request\Vouchers\Charge::class:
+            case Request\Qr\Validate::class:
                 $transformerClass = Transformer\NoContent::class;
                 break;
             case Request\Pin\ConfirmTerminalTransaction::class:
             case Request\Qr\Encode::class:
-            case Request\Qr\Validate::class:
             case Request\Services\CreatePaymentLink::class:
             case Request\Vouchers\Balance::class:
                 $transformerClass = Transformer\Simple::class;

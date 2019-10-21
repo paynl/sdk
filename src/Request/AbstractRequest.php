@@ -5,17 +5,20 @@ declare(strict_types=1);
 namespace PayNL\Sdk\Request;
 
 use RuntimeException;
-use GuzzleHttp\Client;
-use GuzzleHttp\Psr7\Request;
-use GuzzleHttp\Exception\GuzzleException;
-use PayNL\Sdk\{
-    DebugTrait,
+use GuzzleHttp\{
+    Client,
+    Psr7\Request,
+    Exception\RequestException,
+    Exception\GuzzleException
+};
+use PayNL\Sdk\{DebugTrait,
+    Exception\ExceptionInterface,
     Response,
     Exception\InvalidArgumentException,
     Filter\FilterInterface,
     Transformer\Factory,
-    Validator\ObjectInstance
-};
+    Transformer\Errors as ErrorsTransformer,
+    Validator\ObjectInstance};
 use Symfony\Component\Serializer\Encoder\{
     JsonEncoder,
     XmlEncoder
@@ -282,29 +285,56 @@ abstract class AbstractRequest implements RequestInterface
                 throw new RuntimeException('No HTTP client found');
             }
             $guzzleResponse = $guzzleClient->send($guzzleRequest);
-        } catch (GuzzleException $ge) {
-            throw new RuntimeException($ge->getMessage(), $ge->getCode(), $ge->getPrevious());
-        }
 
-        $rawBody = $guzzleResponse->getBody()->getContents();
+            $rawBody = $guzzleResponse->getBody()->getContents();
 
-        $body = $rawBody;
-        // initiate transformer (... more than meets the eye ;-) )
-        if (static::FORMAT_OBJECTS === $this->getFormat()) {
-            $transformer = Factory::getByRequestClassName(static::class);
-            if (true === $this->isDebug()) {
-                $this->dumpDebugInfo('Use transformer: ' . get_class($transformer));
+            $body = $rawBody;
+            // initiate transformer (... more than meets the eye ;-) )
+            if (static::FORMAT_OBJECTS === $this->getFormat()) {
+                $transformer = Factory::getByRequestClassName(static::class);
+                if (true === $this->isDebug()) {
+                    $this->dumpDebugInfo('Use transformer: ' . get_class($transformer));
+                }
+                $body = $transformer->transform($rawBody);
             }
-            $body = $transformer->transform($rawBody);
-        }
 
-        $response->setStatusCode($guzzleResponse->getStatusCode())
-            ->setRawBody($rawBody)
-            ->setBody($body)
-        ;
+            $statusCode = $guzzleResponse->getStatusCode();
 
-        if (true === $this->isDebug()) {
-            $this->dumpDebugInfo('Response: ', $response);
+            if (true === $this->isDebug()) {
+                $this->dumpDebugInfo('Response: ', $response);
+            }
+        } catch (RequestException $re) {
+            $rawBody = $errorMessages = '';
+            $body = $re->getMessage();
+            if (true === method_exists($re, 'getResponse') && null !== $re->getResponse()) {
+                $guzzleExceptionBody = $re->getResponse()->getBody();
+                $size = $guzzleExceptionBody->isSeekable() === true ? $guzzleExceptionBody->getSize() : 0;
+
+                if (0 < $size) {
+                    $content = $guzzleExceptionBody->read($size);
+                    $guzzleExceptionBody->rewind();
+
+                    $errorMessages = $content;
+                }
+
+                $rawBody = $re->getResponse()->getReasonPhrase() . ': ' . $errorMessages;
+
+                $transformer = new ErrorsTransformer();
+                $body = $transformer->transform($errorMessages);
+            }
+
+            $statusCode = $re->getCode();
+
+        } catch (GuzzleException | ExceptionInterface $e) {
+            $statusCode = $e->getCode() ?: 500;
+            $rawBody    = $e->getMessage();
+            $body       = $e->getMessage();
+
+        } finally {
+            $response->setStatusCode($statusCode)
+                ->setRawBody($rawBody)
+                ->setBody($body)
+            ;
         }
     }
 }

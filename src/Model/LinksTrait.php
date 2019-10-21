@@ -2,9 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PayNL\Sdk;
-
-use PayNL\Sdk\Model\Links;
+namespace PayNL\Sdk\Model;
 
 /**
  * Trait LinksTrait

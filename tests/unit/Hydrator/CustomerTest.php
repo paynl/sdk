@@ -16,6 +16,7 @@ use PayNL\Sdk\Model\{
     Customer
 };
 use Zend\Hydrator\HydratorInterface;
+use Exception;
 
 /**
  * Class CustomerTest
@@ -34,6 +35,8 @@ class CustomerTest extends UnitTest
     }
 
     /**
+     * @throws Exception
+     *
      * @return void
      */
     public function testItShouldAcceptACustomerModel(): void
@@ -43,6 +46,8 @@ class CustomerTest extends UnitTest
     }
 
     /**
+     * @throws Exception
+     *
      * @return void
      */
     public function testItThrowsAnExceptionWhenAWrongInstanceGiven(): void
@@ -54,6 +59,8 @@ class CustomerTest extends UnitTest
     }
 
     /**
+     * @throws Exception
+     *
      * @return void
      */
     public function testItShouldCorrectlyFillModel(): void
@@ -86,7 +93,7 @@ class CustomerTest extends UnitTest
         expect($customer->getPhone())->equals('+441115551234');
         expect($customer->getEmail())->string();
         expect($customer->getEmail())->equals('mace@purple-lightsabers-rule.com');
-        expect($customer->getTrustLevel())->string();
+        expect($customer->getTrustLevel())->int();
         expect($customer->getTrustLevel())->equals('1');
         expect($customer->getReference())->string();
         expect($customer->getReference())->equals('SW1-3');
@@ -101,6 +108,8 @@ class CustomerTest extends UnitTest
     }
 
     /**
+     * @throws Exception
+     *
      * @return void
      */
     public function testItCanExtract(): void
@@ -145,7 +154,7 @@ class CustomerTest extends UnitTest
         expect($data['phone'])->equals('+441115551234');
         expect($data['email'])->string();
         expect($data['email'])->equals('mace@purple-lightsabers-rule.com');
-        expect($data['trustLevel'])->string();
+        expect($data['trustLevel'])->int();
         expect($data['trustLevel'])->equals('1');
         expect($data['reference'])->string();
         expect($data['reference'])->equals('SW1-3');

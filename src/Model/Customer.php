@@ -52,7 +52,7 @@ class Customer implements ModelInterface, JsonSerializable
     protected $email;
 
     /**
-     * @var string
+     * @var integer
      */
     protected $trustLevel;
 
@@ -205,19 +205,19 @@ class Customer implements ModelInterface, JsonSerializable
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getTrustLevel(): string
+    public function getTrustLevel(): int
     {
         return $this->trustLevel;
     }
 
     /**
-     * @param string $trustLevel
+     * @param int $trustLevel
      *
      * @return Customer
      */
-    public function setTrustLevel(string $trustLevel): self
+    public function setTrustLevel(int $trustLevel): self
     {
         $this->trustLevel = $trustLevel;
         return $this;

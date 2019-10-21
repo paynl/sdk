@@ -209,7 +209,7 @@ class CustomerTest extends UnitTest
      */
     public function testItCanSetATrustLevel(): void
     {
-        expect($this->customer->setTrustLevel('very high'))->isInstanceOf(Customer::class);
+        expect($this->customer->setTrustLevel(-5))->isInstanceOf(Customer::class);
     }
 
     /**
@@ -219,11 +219,11 @@ class CustomerTest extends UnitTest
      */
     public function testItCanGetATrustLevel(): void
     {
-        $this->customer->setTrustLevel('very high');
+        $this->customer->setTrustLevel(-5);
 
-        verify($this->customer->getTrustLevel())->string();
+        verify($this->customer->getTrustLevel())->int();
         verify($this->customer->getTrustLevel())->notEmpty();
-        verify($this->customer->getTrustLevel())->equals('very high');
+        verify($this->customer->getTrustLevel())->equals(-5);
     }
 
     /**

@@ -10,6 +10,7 @@ use PayNL\Sdk\Model\{
     Customer as CustomerModel
 };
 use PayNL\Sdk\Hydrator\BankAccount as BankAccountHydrator;
+use Exception;
 
 /**
  * Class Customer
@@ -21,6 +22,8 @@ class Customer extends AbstractHydrator
     /**
      * @inheritDoc
      *
+     * @throws Exception
+     *
      * @return CustomerModel
      */
     public function hydrate(array $data, $object): CustomerModel
@@ -31,13 +34,14 @@ class Customer extends AbstractHydrator
             $data['bankAccount'] =  (new BankAccountHydrator())->hydrate($data['bankAccount'], new BankAccount());
         }
 
+        $data['trustLevel'] = $data['trustLevel'] ?? 0;
+
         $optionalKeys = [
             'initials',
             'lastName',
             'gender',
             'phone',
             'email',
-            'trustLevel',
             'reference',
             'language',
             'ip',

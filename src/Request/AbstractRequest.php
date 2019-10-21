@@ -317,19 +317,20 @@ abstract class AbstractRequest implements RequestInterface
                     $errorMessages = $content;
                 }
 
-                $rawBody = $re->getResponse()->getReasonPhrase() . ': ' . $errorMessages;
+                $rawBody = trim($re->getResponse()->getReasonPhrase() . ': ' . $errorMessages, ': ');
 
-                $transformer = new ErrorsTransformer();
-                $body = $transformer->transform($errorMessages);
+                if ('' !== $errorMessages) {
+                    $transformer = new ErrorsTransformer();
+                    $body = $transformer->transform($errorMessages);
+                }
             }
 
             $statusCode = $re->getCode();
 
         } catch (GuzzleException | ExceptionInterface $e) {
             $statusCode = $e->getCode() ?: 500;
-            $rawBody    = $e->getMessage();
-            $body       = $e->getMessage();
-
+            $rawBody = $e->getMessage();
+            $body = $e->getMessage();
         } finally {
             $response->setStatusCode($statusCode)
                 ->setRawBody($rawBody)

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Model;
 
-use PayNL\Sdk\LinksTrait;
 use Countable, ArrayAccess, IteratorAggregate, ArrayIterator;
 
 /**

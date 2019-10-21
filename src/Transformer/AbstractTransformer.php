@@ -30,11 +30,11 @@ abstract class AbstractTransformer implements TransformerInterface
         try {
             $inputToTransform = (new JsonEncoder())->decode($inputToTransform, 'json');
         } catch (NotEncodableValueException $notEncodableValueException) {
-            throw new UnexpectedValueException('Cannot transform');
+            throw new UnexpectedValueException('Cannot transform', 500);
         }
 
         if (null === $inputToTransform) {
-            throw new UnexpectedValueException('Cannot transform');
+            throw new UnexpectedValueException('Cannot transform', 500);
         }
 
         return $inputToTransform;

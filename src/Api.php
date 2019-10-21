@@ -134,61 +134,23 @@ class Api
             ->setStatusCode(500)
         ;
 
-        try {
-            $acceptHeader = 'application/json';
-            if (RequestInterface::FORMAT_XML === $format) {
-                $acceptHeader = 'application/xml';
-            }
-
-            $request->applyClient($client)
-                ->addHeader(RequestInterface::HEADER_ACCEPT, $acceptHeader)
-                ->addHeader(RequestInterface::HEADER_AUTHORIZATION, $this->getAuthAdapter()->getHeaderString())
-            ;
-
-            if (0 < count($headers)) {
-                foreach ($headers as $name => $value) {
-                    $request->addHeader($name, $value);
-                }
-            }
-
-            $request->execute($response);
-        } catch (GuzzleException $guzzleException) {
-            $errorMessages = '';
-            $body = $guzzleException->getMessage();
-
-            /**
-             * @var GuzzleRequestException $guzzleException
-             * @var GuzzleResponse $guzzleResponse
-             */
-            if (true === method_exists($guzzleException, 'getResponse')) {
-                $guzzleResponse = $guzzleException->getResponse();
-                if (null !== $guzzleResponse) {
-                    $rawResponseBody = $guzzleResponse->getBody();
-                    $size = $rawResponseBody->isSeekable() === true ? $rawResponseBody->getSize() : 0;
-
-                    if (0 < $size) {
-                        $content = $rawResponseBody->read($size);
-                        $rawResponseBody->rewind();
-
-                        $errorMessages = $content;
-                    }
-                }
-            }
-
-            if (true === isset($guzzleResponse)) {
-                $body = $guzzleResponse->getReasonPhrase();
-            }
-
-            $response->setStatusCode($guzzleException->getCode())
-                ->setRawBody($errorMessages)
-                ->setBody($body)
-            ;
-        } catch (Exception\ExceptionInterface $exception) {
-            $response->setStatusCode($exception->getCode())
-                ->setRawBody($exception->getMessage())
-                ->setBody($exception->getMessage())
-            ;
+        $acceptHeader = 'application/json';
+        if (RequestInterface::FORMAT_XML === $format) {
+            $acceptHeader = 'application/xml';
         }
+
+        $request->applyClient($client)
+            ->addHeader(RequestInterface::HEADER_ACCEPT, $acceptHeader)
+            ->addHeader(RequestInterface::HEADER_AUTHORIZATION, $this->getAuthAdapter()->getHeaderString())
+        ;
+
+        if (0 < count($headers)) {
+            foreach ($headers as $name => $value) {
+                $request->addHeader($name, $value);
+            }
+        }
+
+        $request->execute($response);
 
         return $response;
     }

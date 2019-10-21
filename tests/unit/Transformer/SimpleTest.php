@@ -54,14 +54,16 @@ class SimpleTest extends UnitTest
     public function testItCanTransformToStdClass(): void
     {
         $input = json_encode([
-            'some_key' => 'a_value',
-            'another_random_key' => 'Autobots, roll out!!'
+            'some_key'           => 'a_value',
+            'another_random_key' => 'Autobots, roll out!!',
+            '_skip_key'          => 'bogus',
         ]);
 
         $output = $this->simpleTransformer->transform($input);
         verify($output)->isInstanceOf(stdClass::class);
         verify($output)->hasAttribute('some_key');
         verify($output)->hasAttribute('another_random_key');
+        verify($output)->notHasAttribute('_skip_key');
         verify($output->some_key)->equals('a_value');
         verify($output->another_random_key)->equals('Autobots, roll out!!');
     }

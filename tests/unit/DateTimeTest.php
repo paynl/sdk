@@ -6,6 +6,8 @@ namespace Tests\Unit\PayNL\Sdk;
 
 use Codeception\Test\Unit as UnitTest;
 use PayNL\Sdk\DateTime;
+use Exception;
+use PayNL\Sdk\Exception\InvalidArgumentException;
 
 /**
  * Class DateTime
@@ -39,20 +41,17 @@ class DateTimeTest extends UnitTest
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      *
      * @return void
      */
     public function testItCanBeCreatedFromString(): void
     {
         verify(DateTime::createFromFormat(DateTime::ATOM, '2018-09-12T14:35:57+02:00'))->isInstanceOf(DateTime::class);
-
-//        $this->expectExceptionCode(\Exception::class);
-//        DateTime::createFromFormat(DateTime::ATOM, '')->format(DateTime::ATOM);
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      *
      * @return void
      */

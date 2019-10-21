@@ -13,6 +13,8 @@ use \DateTime;
  */
 class Merchant implements ModelInterface
 {
+    use LinksTrait;
+
     /**
      * @var string
      */

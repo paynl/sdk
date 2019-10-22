@@ -7,12 +7,16 @@ namespace Tests\Unit\PayNL\Sdk\Request;
 use Codeception\Test\Unit as UnitTest;
 use GuzzleHttp\{
     Client,
+    Exception\ClientException,
+    Psr7\Request,
     Psr7\Response as Psr7Response,
     Handler\MockHandler
 };
 use PayNL\Sdk\{
     Exception\InvalidArgumentException,
     Filter\FilterInterface,
+    Filter\Page as PageFilter,
+    Model\Errors,
     Response,
     Request\RequestInterface,
     Request\AbstractRequest
@@ -534,7 +538,7 @@ class AbstractRequestTest extends UnitTest
      *
      * @return void
      */
-    public function testCanItExecute(): void
+    public function testItCanExecute(): void
     {
         $response = new Response();
 
@@ -545,10 +549,13 @@ class AbstractRequestTest extends UnitTest
             'handler' => $guzzleMockHandler,
         ]);
 
-        $this->anonymousClassFromAbstract->applyClient($guzzleClient);
+        $this->anonymousClassFromAbstract->setFilters([
+            new PageFilter(1),
+        ])->applyClient($guzzleClient)
+            ->setDebug(true)
+            ->execute($response)
+        ;
 
-        $output = $this->anonymousClassFromAbstract->execute($response);
-        verify($output)->null();
         verify($response->getBody())->notEmpty();
         verify($response->getBody())->isInstanceOf(stdClass::class);
         verify($response->getBody())->hasAttribute('result');
@@ -558,7 +565,7 @@ class AbstractRequestTest extends UnitTest
     }
 
     /**
-     * @depends testCanItExecute
+     * @depends testItCanExecute
      *
      * @return void
      */
@@ -579,5 +586,52 @@ class AbstractRequestTest extends UnitTest
 
         verify($response)->isInstanceOf(Response::class);
         verify($response->getStatusCode())->equals(500);
+    }
+
+    /**
+     * @depends testItCanExecute
+     *
+     * @return void
+     */
+    public function testItThrowsAnExceptionWhenNoGuzzleClientIsSet(): void
+    {
+        $this->expectException(RuntimeException::class);
+
+        $response = new Response();
+
+        $this->anonymousClassFromAbstract->setFilters([
+            new PageFilter(1),
+        ])->execute($response)
+        ;
+    }
+
+    /**
+     * @depends testItCanExecute
+     *
+     * @return void
+     */
+    public function testItCanProcessErrors(): void
+    {
+        $response = new Response();
+
+        $guzzleMockHandler = new MockHandler();
+        $guzzleMockHandler->append(new ClientException(
+            "Client error: Something went wrong response:\n{\"errors\": {\"field\": {\"code\": 100, \"message\": \"exception_message\"}}}\n",
+            new Request('GET', 'test'),
+            new Psr7Response(400, [], '{"errors": {"field": {"code": 100, "message": "exception_message"}}}')
+        ));
+
+        $guzzleClient = new Client([
+            'handler' => $guzzleMockHandler,
+        ]);
+
+        $this->anonymousClassFromAbstract->setFilters([
+            new PageFilter(1),
+        ])->applyClient($guzzleClient)
+            ->setDebug(true)
+            ->execute($response)
+        ;
+
+        verify($response->getBody())->isInstanceOf(Errors::class);
     }
 }

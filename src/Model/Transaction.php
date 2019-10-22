@@ -17,7 +17,7 @@ use \JsonSerializable;
  */
 class Transaction implements ModelInterface, JsonSerializable
 {
-    use JsonSerializeTrait;
+    use JsonSerializeTrait, LinksTrait;
 
     /**
      * @var string

@@ -13,7 +13,7 @@ use JsonSerializable;
  */
 class TerminalTransaction implements ModelInterface, JsonSerializable
 {
-    use JsonSerializeTrait;
+    use JsonSerializeTrait, LinksTrait;
 
     /**
      * @var string

@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Transformer;
 
-use PayNL\Sdk\Hydrator\Service as ServiceHydrator;
-use PayNL\Sdk\Model\Service as ServiceModel;
+use PayNL\Sdk\{
+    Hydrator\Service as ServiceHydrator,
+    Model\Service as ServiceModel
+};
 
 /**
  * Class Service
@@ -16,23 +18,13 @@ class Service extends AbstractTransformer
 {
     /**
      * @inheritDoc
+     *
+     * @return ServiceModel
      */
-    public function transform($inputToTransform)
+    public function transform($inputToTransform): ServiceModel
     {
         $inputToTransform = $this->getDecodedInput($inputToTransform);
 
-        $hydrator = new ServiceHydrator();
-        if (false === array_key_exists('services', $inputToTransform)) {
-            // get request
-            return $hydrator->hydrate($inputToTransform, new ServiceModel());
-        }
-
-        $services = &$inputToTransform['services'];
-        foreach ($services as $key => $serviceArray) {
-            $service = $hydrator->hydrate($serviceArray, new ServiceModel());
-            $services[$key] = $service;
-        }
-
-        return $inputToTransform;
+        return (new ServiceHydrator())->hydrate($inputToTransform, new ServiceModel());
     }
 }

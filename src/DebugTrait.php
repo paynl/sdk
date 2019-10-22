@@ -48,7 +48,7 @@ trait DebugTrait
     public function dumpDebugInfo(...$arguments): void
     {
         ini_set('xdebug.overload_var_dump', 'off');
-        if (true === function_exists('dump') && 'cli' !== PHP_SAPI) {
+        if (true === function_exists('dump') && 0 !== strpos(get_class($this), 'Mock_')) {
             dump(...$arguments);
             return;
         }

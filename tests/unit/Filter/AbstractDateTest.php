@@ -65,6 +65,23 @@ class AbstractDateTest extends UnitTest
         verify($this->anonymousClassFromAbstract)->isInstanceOf(AbstractDate::class);
     }
 
+    /**
+     * @return void
+     */
+    public function testItTriggersAnExceptionWhenGivenInputIsNotAValidString(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        new class('test') extends AbstractDate
+        {
+            public function getName(): string
+            {
+            }
+        };
+    }
+
+    /**
+     * @return void
+     */
     public function testItTriggersAnExceptionWhenGivenInputIsNotAStringNorDatetimeObject(): void
     {
         $this->expectException(InvalidArgumentException::class);

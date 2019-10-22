@@ -7,8 +7,9 @@ namespace Tests\Unit\PayNL\Sdk;
 use Codeception\Test\Unit as UnitTest;
 use PayNL\Sdk\Config;
 use PayNL\Sdk\Exception\InvalidArgumentException;
+use PayNL\Sdk\Exception\LogicException;
 use PayNL\Sdk\Exception\UnexpectedValueException;
-use UnitTester;
+use UnitTester, ReflectionClass, ReflectionException, Error;
 
 /**
  * Class ConfigTest
@@ -23,6 +24,21 @@ class ConfigTest extends UnitTest
     protected $tester;
 
     /**
+     * @throws ReflectionException
+     *
+     * @return void
+     */
+    public function _before(): void
+    {
+        $reflector = new ReflectionClass(Config::class);
+        $property = $reflector->getProperty('instance');
+        $property->setAccessible(true);
+
+        $property->setValue(null);
+
+    }
+
+    /**
      * @return void
      */
     public function testItIsASingleton(): void
@@ -34,6 +50,35 @@ class ConfigTest extends UnitTest
 
         verify($this->tester->getMethodAccessibility(Config::getInstance(), '__construct'))->equals('protected');
         verify($this->tester->getMethodAccessibility(Config::getInstance(), '__clone'))->equals('private');
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanNotConstruct(): void
+    {
+        $this->expectException(Error::class);
+        new Config();
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanNotClone1(): void
+    {
+        $this->expectException(Error::class);
+        $config = Config::getInstance();
+        clone $config;
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanNotClone2(): void
+    {
+        $this->expectException(LogicException::class);
+        $config = Config::getInstance();
+        $this->tester->invokeMethod($config, '__clone');
     }
 
     /**
@@ -109,6 +154,12 @@ class ConfigTest extends UnitTest
      */
     public function testItCanContainAnApiUrl(): void
     {
+        Config::getInstance()->load([
+            Config::KEY_API_URL  => 'https://rest.somehost.topleveldomain',
+            Config::KEY_USERNAME => 'piet',
+            Config::KEY_PASSWORD => 'blaatschaap',
+        ]);
+
         verify(Config::getInstance()->getApiUrl())->equals('https://rest.somehost.topleveldomain');
         Config::getInstance()->set(Config::KEY_API_URL, 'http://rest.at.some.other.endpoint');
         verify(Config::getInstance()->getApiUrl())->equals('http://rest.at.some.other.endpoint');
@@ -124,6 +175,12 @@ class ConfigTest extends UnitTest
      */
     public function testItCanContainAnUsername(): void
     {
+        Config::getInstance()->load([
+            Config::KEY_API_URL  => 'https://rest.somehost.topleveldomain',
+            Config::KEY_USERNAME => 'piet',
+            Config::KEY_PASSWORD => 'blaatschaap',
+        ]);
+
         verify(Config::getInstance()->getUserName())->equals('piet');
         Config::getInstance()->set(Config::KEY_USERNAME, 'henk');
         verify(Config::getInstance()->getUserName())->equals('henk');
@@ -139,6 +196,12 @@ class ConfigTest extends UnitTest
      */
     public function testItCanContainAPassword(): void
     {
+        Config::getInstance()->load([
+            Config::KEY_API_URL  => 'https://rest.somehost.topleveldomain',
+            Config::KEY_USERNAME => 'piet',
+            Config::KEY_PASSWORD => 'blaatschaap',
+        ]);
+
         verify(Config::getInstance()->getPassword())->equals('blaatschaap');
         Config::getInstance()->set(Config::KEY_PASSWORD, 's0M3H4xOrP4ssw0rD');
         verify(Config::getInstance()->getPassword())->equals('s0M3H4xOrP4ssw0rD');

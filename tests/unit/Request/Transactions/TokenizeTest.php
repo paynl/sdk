@@ -81,7 +81,7 @@ class TokenizeTest extends UnitTest
 
         verify($this->request->getUri())->string();
         verify($this->request->getUri())->notEmpty();
-        verify($this->request->getUri())->equals('transactions/1234/refund');
+        verify($this->request->getUri())->equals('transactions/1234/tokenize');
     }
 
     /**

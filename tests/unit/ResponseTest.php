@@ -84,6 +84,19 @@ class ResponseTest extends UnitTest
      *
      * @return void
      */
+    public function testItCanSetBodyBasedOnHttpStatusCode(): void
+    {
+        $this->response->setStatusCode(400);
+
+        verify($this->response->getBody())->string();
+        verify($this->response->getBody())->notEmpty();
+    }
+
+    /**
+     * @depends testItCanSetABody
+     *
+     * @return void
+     */
     public function testItCanGetABody(): void
     {
         $this->response->setBody(Response::HTTP_STATUS_CODES[503]);

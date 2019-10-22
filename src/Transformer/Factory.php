@@ -68,6 +68,8 @@ class Factory
                 $transformerClass = Transformer\Refund::class;
                 break;
             case Request\Services\GetAll::class:
+                $transformerClass = Transformer\Services::class;
+                break;
             case Request\Services\Get::class:
                 $transformerClass = Transformer\Service::class;
                 break;

@@ -13,6 +13,8 @@ use PayNL\Sdk\DateTime;
  */
 class Service implements ModelInterface
 {
+    use LinksTrait;
+
     /**
      * @var string
      */

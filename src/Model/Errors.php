@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Model;
 
-use Countable, ArrayAccess, IteratorAggregate, ArrayIterator, Traversable;
+use Countable, ArrayAccess, IteratorAggregate, ArrayIterator;
 
 /**
  * Class Errors
@@ -37,7 +37,10 @@ class Errors implements ModelInterface, Countable, ArrayAccess, IteratorAggregat
         return $this;
     }
 
-    public function count()
+    /**
+     * @inheritDoc
+     */
+    public function count(): int
     {
         return count($this->errors);
     }
@@ -45,7 +48,7 @@ class Errors implements ModelInterface, Countable, ArrayAccess, IteratorAggregat
     /**
      * @inheritDoc
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return isset($this->errors[$offset]);
     }
@@ -61,7 +64,7 @@ class Errors implements ModelInterface, Countable, ArrayAccess, IteratorAggregat
     /**
      * @inheritDoc
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         if (null === $offset) {
             $this->errors[] = $value;
@@ -73,16 +76,17 @@ class Errors implements ModelInterface, Countable, ArrayAccess, IteratorAggregat
     /**
      * @inheritDoc
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         unset($this->errors[$offset]);
     }
 
     /**
      * @inheritDoc
-     * @return ArrayIterator|Traversable
+     *
+     * @return ArrayIterator
      */
-    public function getIterator()
+    public function getIterator(): ArrayIterator
     {
         return new ArrayIterator($this->errors);
     }

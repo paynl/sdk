@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PayNL\Sdk;
 
 use PayNL\Sdk\Exception\InvalidArgumentException;
+use PayNL\Sdk\Exception\LogicException;
 use PayNL\Sdk\Exception\UnexpectedValueException;
 
 /**
@@ -60,6 +61,7 @@ class Config
     private function __clone()
     {
         // to prevent object copies - singleton pattern
+        throw new LogicException('Config may not be cloned');
     }
 
     public function load(array $config): void

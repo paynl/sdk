@@ -64,7 +64,7 @@ class ErrorsTest extends UnitTest
 
         $this->errors->setErrors([
             'error_1' => 'error_message_1',
-            'error_2' => 'error_message_2'
+            'error_2' => 'error_message_2',
         ]);
 
         verify($this->errors->getErrors())->array();
@@ -113,12 +113,14 @@ class ErrorsTest extends UnitTest
 
         // offsetSet
         $this->errors['error_3'] = 'error_message_3';
+        $this->errors[] = 'some_message';
         verify($this->errors)->hasKey('error_3');
-        verify($this->errors)->count(3);
+        verify($this->errors)->hasKey(0);
+        verify($this->errors)->count(4);
 
         // offsetUnset
         unset($this->errors['error_1']);
-        verify($this->errors)->count(2);
+        verify($this->errors)->count(3);
         verify($this->errors)->hasntKey('error_1');
     }
 

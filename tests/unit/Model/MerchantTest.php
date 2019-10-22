@@ -308,6 +308,18 @@ class MerchantTest extends UnitTest
     }
 
     /**
+     * @depends testItCanSetTrademarks
+     * @depends testItCanGetTrademarks
+     *
+     * @return void
+     */
+    public function testItCanResetTrademarks(): void
+    {
+        expect($this->merchant->setTrademarks([]))->isInstanceOf(Merchant::class);
+        verify($this->merchant->getTrademarks())->isEmpty();
+    }
+
+    /**
      * @return void
      */
     public function testItCanAddAContactMethod(): void
@@ -355,6 +367,18 @@ class MerchantTest extends UnitTest
         verify($this->merchant->getContactMethods())->array();
         verify($this->merchant->getContactMethods())->count(2);
         verify($this->merchant->getContactMethods())->containsOnlyInstancesOf(ContactMethod::class);
+    }
+
+    /**
+     * @depends testItCanSetContactMethods
+     * @depends testItCanGetContactMethods
+     *
+     * @return void
+     */
+    public function testItCanResetContactMethods(): void
+    {
+        expect($this->merchant->setContactMethods([]))->isInstanceOf(Merchant::class);
+        verify($this->merchant->getContactMethods())->isEmpty();
     }
 
     /**

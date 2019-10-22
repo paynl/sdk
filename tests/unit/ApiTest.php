@@ -6,10 +6,14 @@ namespace Tests\Unit\PayNL\Sdk;
 
 use Codeception\Test\Unit as UnitTest;
 use GuzzleHttp\Client;
-use PayNL\Sdk\Api;
-use PayNL\Sdk\AuthAdapter\AdapterInterface;
-use PayNL\Sdk\AuthAdapter\Basic;
-use UnitTester;
+use PayNL\Sdk\{
+    Api,
+    AuthAdapter\AdapterInterface,
+    AuthAdapter\Basic,
+    Exception\InvalidArgumentException,
+    Request\AbstractRequest
+};
+use UnitTester, Exception;
 
 /**
  * Class ApiTest
@@ -28,7 +32,12 @@ class ApiTest extends UnitTest
      */
     protected $api;
 
-    public function _before()
+    /**
+     * @throws Exception
+     *
+     * @return void
+     */
+    public function _before(): void
     {
         $adapterMock = $this->make(Basic::class, [
             'username' => 'harry',
@@ -38,6 +47,9 @@ class ApiTest extends UnitTest
         $this->api = new Api($adapterMock);
     }
 
+    /**
+     * @return void
+     */
     public function testItCanConstructWithAnAdapter(): void
     {
         $api = $this->api;
@@ -52,6 +64,9 @@ class ApiTest extends UnitTest
         verify($adapter->getHeaderString())->equals('Basic ' . base64_encode("{$adapter->getUsername()}:{$adapter->getPassword()}"));
     }
 
+    /**
+     * @return void
+     */
     public function testItCanConstructWithUsernameAndPassword(): void
     {
         $api = new Api('LukeSkywalker', 'LookingForMyDad');
@@ -67,7 +82,17 @@ class ApiTest extends UnitTest
     }
 
     /**
+     * @return void
+     */
+    public function testItThrowsAnExceptionWhenConstructorGetInvalidArguments(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        new Api([]);
+    }
+
+    /**
      * @depends testItCanConstructWithAnAdapter
+     * @depends testItCanConstructWithUsernameAndPassword
      *
      * @return void
      */
@@ -77,8 +102,37 @@ class ApiTest extends UnitTest
         verify($this->api->getClient())->isInstanceOf(Client::class);
     }
 
+    /**
+     * @depends testItCanConstructWithAnAdapter
+     * @depends testItCanConstructWithUsernameAndPassword
+     *
+     * @return void
+     */
     public function testItCanHandleACall(): void
     {
-        // TODO: fix this test
+        $mockRequest = new class() extends AbstractRequest
+        {
+            public function getUri(): string
+            {
+                return 'currencies/EUR';
+            }
+
+            public function getMethod(): string
+            {
+                return AbstractRequest::METHOD_GET;
+            }
+        };
+        $mockRequest->setFormat(AbstractRequest::FORMAT_XML);
+
+        $mockHeaders = [
+            'Accept'          => 'application/json',
+            'Authorization'   => '',
+            'Content-Type'    => 'application/json',
+            'X-Custom-Header' => 'Own value'
+        ];
+
+        $this->api->setDebug(true)
+            ->handleCall($mockRequest, $mockHeaders)
+        ;
     }
 }

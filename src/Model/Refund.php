@@ -14,7 +14,7 @@ use \JsonSerializable;
  */
 class Refund implements ModelInterface, JsonSerializable
 {
-    use JsonSerializeTrait;
+    use JsonSerializeTrait, LinksTrait;
 
     /**
      * @var string

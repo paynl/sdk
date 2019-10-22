@@ -13,7 +13,7 @@ use JsonSerializable;
  */
 class Voucher implements ModelInterface, JsonSerializable
 {
-    use JsonSerializeTrait;
+    use JsonSerializeTrait, LinksTrait;
 
     /**
      * @var Amount

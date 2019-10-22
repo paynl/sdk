@@ -107,6 +107,49 @@ class CustomerTest extends UnitTest
         expect($customer->getBirthDate()->format('Y-m-d'))->equals('1970-01-01');
     }
 
+    public function testItShouldCorrectlyUnsetBirthDate(): void
+    {
+        $hydrator = new CustomerHydrator();
+        $customer = $hydrator->hydrate([
+            'initials'    => 'M',
+            'lastName'    => 'Windu',
+            'gender'      => 'male',
+            'phone'       => '+441115551234',
+            'email'       => 'mace@purple-lightsabers-rule.com',
+            'trustLevel'  => '1',
+            'reference'   => 'SW1-3',
+            'language'    => 'EN',
+            'bankAccount' => (new BankAccountHydrator())->hydrate([
+                'iban'   => '021000021',
+                'bic'    => 'BOFAUS3N',
+                'owner' => 'M. Windu'
+            ], new BankAccount()),
+            'birthDate'   => null,
+        ], new Customer());
+
+        expect($customer->getInitials())->string();
+        expect($customer->getInitials())->equals('M');
+        expect($customer->getLastName())->string();
+        expect($customer->getLastName())->equals('Windu');
+        expect($customer->getGender())->string();
+        expect($customer->getGender())->equals('male');
+        expect($customer->getPhone())->string();
+        expect($customer->getPhone())->equals('+441115551234');
+        expect($customer->getEmail())->string();
+        expect($customer->getEmail())->equals('mace@purple-lightsabers-rule.com');
+        expect($customer->getTrustLevel())->int();
+        expect($customer->getTrustLevel())->equals('1');
+        expect($customer->getReference())->string();
+        expect($customer->getReference())->equals('SW1-3');
+        expect($customer->getLanguage())->string();
+        expect($customer->getLanguage())->equals('EN');
+        expect($customer->getBankAccount())->isInstanceOf(BankAccount::class);
+        expect($customer->getBankAccount()->getIban())->equals('021000021');
+        expect($customer->getBankAccount()->getBic())->equals('BOFAUS3N');
+        expect($customer->getBankAccount()->getOwner())->equals('M. Windu');
+        expect($customer->getBirthDate())->isEmpty();
+    }
+
     /**
      * @throws Exception
      *

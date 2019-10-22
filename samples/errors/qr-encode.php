@@ -18,7 +18,7 @@ use PayNL\Sdk\Hydrator\Qr as QrHydrator;
 $authAdapter = getAuthAdapter();
 
 $qr = (new QrHydrator())->hydrate([
-    'serviceId' => Config::getInstance()->get('serviceId'),
+    'serviceId' => 'SL-0000-0000',
     'secret'    => '',
     'reference' => 'ABCD0123',
 ], new QrModel());

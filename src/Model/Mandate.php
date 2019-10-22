@@ -295,7 +295,7 @@ class Mandate implements ModelInterface, JsonSerializable
     /**
      * @param string $state
      *
-     * @return Directdebit
+     * @return Mandate
      */
     public function setState(string $state): self
     {

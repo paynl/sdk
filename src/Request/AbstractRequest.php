@@ -305,7 +305,7 @@ abstract class AbstractRequest implements RequestInterface
             $body = $re->getMessage();
             if (true === method_exists($re, 'getResponse') && null !== $re->getResponse()) {
                 $guzzleExceptionBody = $re->getResponse()->getBody();
-                $size = $guzzleExceptionBody->isSeekable() === true ? $guzzleExceptionBody->getSize() : 0;
+                $size = $guzzleExceptionBody->isSeekable() === true ? (int)$guzzleExceptionBody->getSize() : 0;
 
                 if (0 < $size) {
                     $content = $guzzleExceptionBody->read($size);
@@ -328,15 +328,15 @@ abstract class AbstractRequest implements RequestInterface
             $statusCode = $e->getCode() ?: 500;
             $rawBody = $e->getMessage();
             $body = $e->getMessage();
-        } finally {
-            $response->setStatusCode($statusCode)
-                ->setRawBody($rawBody)
-                ->setBody($body)
-            ;
+        }
 
-            if (true === $this->isDebug()) {
-                $this->dumpDebugInfo('Response: ', $response);
-            }
+        $response->setStatusCode($statusCode)
+            ->setRawBody($rawBody)
+            ->setBody($body)
+        ;
+
+        if (true === $this->isDebug()) {
+            $this->dumpDebugInfo('Response: ', $response);
         }
     }
 }

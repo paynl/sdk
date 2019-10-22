@@ -18,6 +18,7 @@ use PayNL\Sdk\Hydrator\{
     Product as ProductHydrator,
     Status as StatusHydrator
 };
+use Exception;
 
 /**
  * Class Refund
@@ -27,8 +28,9 @@ use PayNL\Sdk\Hydrator\{
 class Refund extends AbstractHydrator
 {
     /**
-     * @param array $data
-     * @param object $object
+     * @inheritDoc
+     *
+     * @throws Exception
      *
      * @return RefundModel
      *
@@ -42,10 +44,6 @@ class Refund extends AbstractHydrator
         $data['description'] = $data['description'] ?? '';
 
         if (true === array_key_exists('bankAccount', $data) && true === is_array($data['bankAccount'])) {
-            if (true === array_key_exists('number', $data['bankAccount'])) {
-                $data['bankAccount']['iban'] = $data['bankAccount']['number'];
-                unset($data['bankAccount']['number']);
-            }
             $data['bankAccount'] = (new BankAccountHydrator())->hydrate($data['bankAccount'], new BankAccount());
         }
 
@@ -64,11 +62,6 @@ class Refund extends AbstractHydrator
                 }
                 return $product;
             }, $data['products']);
-        }
-
-        if (true === array_key_exists('processedDate', $data)) {
-            $data['processDate'] = $data['processedDate'];
-            unset($data['processedDate']);
         }
 
         if (true === array_key_exists('processDate', $data) && false === empty($data['processDate'])) {

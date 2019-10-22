@@ -76,7 +76,12 @@ class DirectdebitTest extends UnitTest
                 'date'   =>  null,
                 'reason' =>  '',
             ],
-            'declined'         => null,
+            'declined'         => [
+                'code'   => -72,
+                'name'   => 'Blaatschaap',
+                'date'   => null,
+                'reason' => 'zomaar',
+            ],
         ], new Directdebit());
 
         expect($directdebit->getId())->string();
@@ -88,7 +93,7 @@ class DirectdebitTest extends UnitTest
         expect($directdebit->getDescription())->equals('Test');
         expect($directdebit->getBankAccount())->isInstanceOf(BankAccount::class);
         expect($directdebit->getStatus())->isInstanceOf(Status::class);
-        expect($directdebit->getDeclined())->null();
+        expect($directdebit->getDeclined())->isInstanceOf(Status::class);
     }
 
     /**

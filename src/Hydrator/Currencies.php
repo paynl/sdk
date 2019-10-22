@@ -26,6 +26,8 @@ class Currencies extends AbstractHydrator
     {
         $this->validateGivenObject($object, CurrenciesModel::class);
 
+        // "reset" total
+        $data['total'] = 0;
         foreach ($data['currencies'] as $key => $currency) {
             $data['currencies'][$key] = (new SimpleHydrator())->hydrate($currency, new CurrencyModel());
         }

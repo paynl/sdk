@@ -128,6 +128,6 @@ class Services implements ModelInterface, Countable, ArrayAccess, IteratorAggreg
      */
     public function count()
     {
-        return $this->getTotal();
+        return count($this->services);
     }
 }

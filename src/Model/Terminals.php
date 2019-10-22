@@ -128,6 +128,6 @@ class Terminals implements ModelInterface, Countable, ArrayAccess, IteratorAggre
      */
     public function count()
     {
-        return $this->getTotal();
+        return count($this->terminals);
     }
 }

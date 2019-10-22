@@ -128,6 +128,6 @@ class Currencies implements ModelInterface, Countable, ArrayAccess, IteratorAggr
      */
     public function count()
     {
-        return $this->getTotal();
+        return count($this->currencies);
     }
 }

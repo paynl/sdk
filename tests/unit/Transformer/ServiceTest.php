@@ -10,7 +10,6 @@ use PayNL\Sdk\Transformer\{
     Service as ServiceTransformer,
     TransformerInterface
 };
-use PayNL\Sdk\DateTime;
 use PayNL\Sdk\Model\Service;
 
 /**
@@ -52,39 +51,7 @@ class ServiceTest extends UnitTest
     /**
      * @return void
      */
-    public function testItCanTransformMultiple(): void
-    {
-        $input = json_encode([
-            'services' => [
-                [
-                    'id'          => 'SL-8714-2314',
-                    'name'        => 'Some service',
-                    'description' => 'Service description',
-                    'testMode'    => 0,
-                    'secret'      => 'jhsnd8ayua8DHJS*9dheq8hrq8rewqrf',
-                    'createdAt'   => DateTime::createFromFormat('Y-m-d H:i:s', '2019-01-01 08:30:00'),
-                ],
-                [
-                    'id'          => 'SL-8714-2323',
-                    'name'        => 'Some other service',
-                    'testMode'    => 1,
-                    'secret'      => 'jhsnd8ayua8sdEW$R#@$JS*SDJsIFe99',
-                    'createdAt'   => DateTime::createFromFormat('Y-m-d H:i:s', '2019-03-31 10:14:57'),
-                ],
-            ],
-        ]);
-
-        $output = $this->serviceTransformer->transform($input);
-        verify($output)->array();
-        verify($output)->hasKey('services');
-        verify($output['services'])->array();
-        verify($output['services'])->containsOnlyInstancesOf(Service::class);
-    }
-
-    /**
-     * @return void
-     */
-    public function testItCanTransformSingle(): void
+    public function testItCanTransform(): void
     {
         $input = json_encode([
             'id'          => 'SL-8714-2314',
@@ -92,7 +59,7 @@ class ServiceTest extends UnitTest
             'description' => 'Service description',
             'testMode'    => 0,
             'secret'      => 'jhsnd8ayua8DHJS*9dheq8hrq8rewqrf',
-            'createdAt'   => DateTime::createFromFormat('Y-m-d H:i:s', '2019-01-01 08:30:00'),
+            'createdAt'   => '2019-01-01T08:30:00+02:00',
         ]);
 
         $output = $this->serviceTransformer->transform($input);

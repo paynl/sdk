@@ -18,10 +18,12 @@ use PayNL\Sdk\Model\{
     Refund,
     BankAccount,
     Amount,
-    Status
+    Status,
+    Links
 };
 use Zend\Hydrator\ClassMethods;
 use Zend\Hydrator\HydratorInterface;
+use Exception;
 
 /**
  * Class RefundTest
@@ -60,6 +62,8 @@ class RefundTest extends UnitTest
     }
 
     /**
+     * @throws Exception
+     *
      * @return void
      */
     public function testItShouldCorrectlyFillModel(): void
@@ -95,6 +99,13 @@ class RefundTest extends UnitTest
             ],
             'reason'           => 'Product was broken',
             'processDate'      => DateTime::createFromFormat('Y-m-d', '2019-09-11'),
+            '_links' => [
+                [
+                    'rel' => 'self',
+                    'type' => 'GET',
+                    'url' => 'https://www.pay.nl/get-refund',
+                ]
+            ],
         ], new Refund());
 
         expect($refund->getPaymentSessionId())->string();
@@ -112,9 +123,13 @@ class RefundTest extends UnitTest
         expect($refund->getReason())->string();
         expect($refund->getReason())->equals('Product was broken');
         expect($refund->getProcessDate())->isInstanceOf(DateTime::class);
+        expect($refund->getLinks())->isInstanceOf(Links::class);
+        expect($refund->getLinks())->count(1);
     }
 
     /**
+     * @throws Exception
+     *
      * @return void
      */
     public function testItCanExtract(): void
@@ -150,6 +165,13 @@ class RefundTest extends UnitTest
             ],
             'reason'           => 'Product was broken',
             'processDate'      => DateTime::createFromFormat('Y-m-d', '2019-09-11'),
+            '_links' => [
+                [
+                    'rel' => 'self',
+                    'type' => 'GET',
+                    'url' => 'https://www.pay.nl/get-refund',
+                ]
+            ],
         ], new Refund());
 
         $data = $hydrator->extract($refund);
@@ -162,6 +184,7 @@ class RefundTest extends UnitTest
         verify($data)->hasKey('products');
         verify($data)->hasKey('reason');
         verify($data)->hasKey('processDate');
+        verify($data)->hasKey('links');
 
         expect($data['paymentSessionId'])->string();
         expect($data['paymentSessionId'])->equals('100000000');
@@ -175,5 +198,7 @@ class RefundTest extends UnitTest
         expect($data['reason'])->string();
         expect($data['reason'])->equals('Product was broken');
         expect($data['processDate'])->isInstanceOf(DateTime::class);
+        expect($data['links'])->isInstanceOf(Links::class);
+        expect($data['links'])->count(1);
     }
 }

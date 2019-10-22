@@ -7,6 +7,7 @@ namespace Tests\Unit\PayNL\Sdk\Model;
 use Codeception\Test\Unit as UnitTest;
 use PayNL\Sdk\Model\{
     ModelInterface,
+    Links,
     Address,
     BankAccount,
     ContactMethod,
@@ -15,6 +16,7 @@ use PayNL\Sdk\Model\{
 };
 use JsonSerializable, TypeError, stdClass, Exception;
 use PayNL\Sdk\DateTime;
+use PayNL\Sdk\Hydrator\Links as LinksHydrator;
 
 /**
  * Class MerchantTest
@@ -47,6 +49,39 @@ class MerchantTest extends UnitTest
     public function testIsItNotJsonSerializable(): void
     {
         verify($this->merchant)->isNotInstanceOf(JsonSerializable::class);
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanSetLinks(): void
+    {
+        verify(method_exists($this->merchant, 'setLinks'))->true();
+        verify($this->merchant->setLinks(new Links()))->isInstanceOf(Merchant::class);
+    }
+
+    /**
+     * @depends testItCanSetLinks
+     *
+     * @return void
+     */
+    public function testItCanGetLinks(): void
+    {
+        verify(method_exists($this->merchant, 'getLinks'))->true();
+
+        $this->merchant->setLinks(
+            (new LinksHydrator())->hydrate([
+                [
+                    'rel'  => 'self',
+                    'type' => 'GET',
+                    'url'  => 'http://some.url.com',
+                ],
+            ], new Links())
+        );
+
+        verify($this->merchant->getLinks())->isInstanceOf(Links::class);
+        verify($this->merchant->getLinks())->count(1);
+        verify($this->merchant->getLinks())->hasKey('self');
     }
 
     /**

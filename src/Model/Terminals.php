@@ -18,7 +18,7 @@ class Terminals implements ModelInterface, Countable, ArrayAccess, IteratorAggre
     /**
      * @var integer
      */
-    protected $total;
+    protected $total = 0;
 
     /**
      * @var array
@@ -78,6 +78,7 @@ class Terminals implements ModelInterface, Countable, ArrayAccess, IteratorAggre
     public function addTerminal(Terminal $terminal): self
     {
         $this->terminals[$terminal->getId()] = $terminal;
+        $this->total++;
         return $this;
     }
 
@@ -119,6 +120,7 @@ class Terminals implements ModelInterface, Countable, ArrayAccess, IteratorAggre
     public function offsetUnset($offset)
     {
         unset($this->terminals[$offset]);
+        $this->total--;
     }
 
     /**

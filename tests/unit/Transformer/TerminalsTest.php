@@ -10,7 +10,10 @@ use PayNL\Sdk\Transformer\{
     Terminals as TerminalTransformer,
     TransformerInterface
 };
-use PayNL\Sdk\Model\Terminal;
+use PayNL\Sdk\Model\{
+    Terminals,
+    Terminal
+};
 
 /**
  * Class TerminalTest
@@ -51,7 +54,7 @@ class TerminalsTest extends UnitTest
     /**
      * @return void
      */
-    public function testItCanTransformMultiple(): void
+    public function testItCanTransform(): void
     {
         $input = json_encode([
             'terminals' => [
@@ -71,10 +74,8 @@ class TerminalsTest extends UnitTest
         ]);
 
         $output = $this->terminalTransformer->transform($input);
-        verify($output)->array();
-        verify($output)->hasKey('terminals');
-        verify($output['terminals'])->array();
-        verify($output['terminals'])->count(2);
-        verify($output['terminals'])->containsOnlyInstancesOf(Terminal::class);
+        verify($output)->isInstanceOf(Terminals::class);
+        verify($output)->count(2);
+        verify($output)->containsOnlyInstancesOf(Terminal::class);
     }
 }

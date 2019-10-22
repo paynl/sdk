@@ -51,32 +51,7 @@ class CurrencyTest extends UnitTest
     /**
      * @return void
      */
-    public function testItCanTransformMultiple(): void
-    {
-        $input = json_encode([
-            'currencies' => [
-                [
-                    'abbreviation' => 'EUR',
-                    'description'  => 'Euro',
-                ],
-                [
-                    'abbreviation' => 'USD',
-                    'description'  => 'US Dollar',
-                ],
-            ],
-        ]);
-
-        $output = $this->currencyTransformer->transform($input);
-        verify($output)->array();
-        verify($output)->hasKey('currencies');
-        verify($output['currencies'])->array();
-        verify($output['currencies'])->containsOnlyInstancesOf(Currency::class);
-    }
-
-    /**
-     * @return void
-     */
-    public function testItCanTransformSingle(): void
+    public function testItCanTransform(): void
     {
         $input = json_encode([
             'abbreviation' => 'EUR',

@@ -5,17 +5,21 @@ declare(strict_types=1);
 namespace Tests\Unit\PayNL\Sdk\Hydrator;
 
 use Codeception\Test\Unit as UnitTest;
-use PayNL\Sdk\DateTime;
-use PayNL\Sdk\Exception\InvalidArgumentException;
-use PayNL\Sdk\Hydrator\Merchant as MerchantHydrator;
+use PayNL\Sdk\{
+    DateTime,
+    Exception\InvalidArgumentException,
+    Hydrator\Merchant as MerchantHydrator
+};
 use PayNL\Sdk\Model\{
     ContactMethod,
+    Links,
     Merchant,
     BankAccount,
     Address,
     Trademark
 };
 use Zend\Hydrator\HydratorInterface;
+use Exception;
 
 /**
  * Class MerchantTest
@@ -34,6 +38,8 @@ class MerchantTest extends UnitTest
     }
 
     /**
+     * @throws Exception
+     *
      * @return void
      */
     public function testItShouldAcceptAMerchantModel(): void
@@ -43,6 +49,8 @@ class MerchantTest extends UnitTest
     }
 
     /**
+     * @throws Exception
+     *
      * @return void
      */
     public function testItThrowsAnExceptionWhenAWrongInstanceGiven(): void
@@ -54,6 +62,8 @@ class MerchantTest extends UnitTest
     }
 
     /**
+     * @throws Exception
+     *
      * @return void
      */
     public function testItShouldCorrectlyFillModel(): void
@@ -106,6 +116,13 @@ class MerchantTest extends UnitTest
                 ],
             ],
             'createdAt'      => DateTime::createFromFormat(DateTime::ATOM, '2007-09-10T13:26:26+02:00'),
+            '_links' => [
+                [
+                    'rel'  => 'self',
+                    'type' => 'GET',
+                    'url'  => 'https://www.pay.nl/get-merchant'
+                ]
+            ],
         ], new Merchant());
 
         expect($merchant->getId())->string();
@@ -128,9 +145,13 @@ class MerchantTest extends UnitTest
         expect($merchant->getContactMethods())->count(1);
         expect($merchant->getContactMethods())->containsOnlyInstancesOf(ContactMethod::class);
         expect($merchant->getCreatedAt())->isInstanceOf(DateTime::class);
+        expect($merchant->getLinks())->isInstanceOf(Links::class);
+        expect($merchant->getLinks()->count())->equals(1);
     }
 
     /**
+     * @throws Exception
+     *
      * @return void
      */
     public function testItCanExtract(): void
@@ -183,6 +204,13 @@ class MerchantTest extends UnitTest
                 ],
             ],
             'createdAt'      => DateTime::createFromFormat(DateTime::ATOM, '2007-09-10T13:26:26+02:00'),
+            '_links' => [
+                [
+                    'rel'  => 'self',
+                    'type' => 'GET',
+                    'url'  => 'https://www.pay.nl/get-merchant'
+                ]
+            ],
         ], new Merchant());
 
         $data = $hydrator->extract($merchant);
@@ -198,6 +226,7 @@ class MerchantTest extends UnitTest
         verify($data)->hasKey('trademarks');
         verify($data)->hasKey('contactMethods');
         verify($data)->hasKey('createdAt');
+        verify($data)->hasKey('links');
 
         expect($data['id'])->string();
         expect($data['id'])->equals('M-1000-0001');
@@ -219,5 +248,7 @@ class MerchantTest extends UnitTest
         expect($data['contactMethods'])->count(1);
         expect($data['contactMethods'])->containsOnlyInstancesOf(ContactMethod::class);
         expect($data['createdAt'])->isInstanceOf(DateTime::class);
+        expect($data['links'])->isInstanceOf(Links::class);
+        expect($data['links'])->count(1);
     }
 }

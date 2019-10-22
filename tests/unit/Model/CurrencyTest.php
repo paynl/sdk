@@ -7,9 +7,11 @@ namespace Tests\Unit\PayNL\Sdk\Model;
 use Codeception\Test\Unit as UnitTest;
 use PayNL\Sdk\Model\{
     ModelInterface,
+    Links,
     Currency
 };
 use JsonSerializable;
+use PayNL\Sdk\Hydrator\Links as LinksHydrator;
 
 /**
  * Class CurrencyTest
@@ -42,6 +44,39 @@ class CurrencyTest extends UnitTest
     public function testIsItNotJsonSerializable(): void
     {
         verify($this->currency)->isNotInstanceOf(JsonSerializable::class);
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanSetLinks(): void
+    {
+        verify(method_exists($this->currency, 'setLinks'))->true();
+        verify($this->currency->setLinks(new Links()))->isInstanceOf(Currency::class);
+    }
+
+    /**
+     * @depends testItCanSetLinks
+     *
+     * @return void
+     */
+    public function testItCanGetLinks(): void
+    {
+        verify(method_exists($this->currency, 'getLinks'))->true();
+
+        $this->currency->setLinks(
+            (new LinksHydrator())->hydrate([
+                [
+                    'rel'  => 'self',
+                    'type' => 'GET',
+                    'url'  => 'http://some.url.com',
+                ],
+            ], new Links())
+        );
+
+        verify($this->currency->getLinks())->isInstanceOf(Links::class);
+        verify($this->currency->getLinks())->count(1);
+        verify($this->currency->getLinks())->hasKey('self');
     }
 
     /**

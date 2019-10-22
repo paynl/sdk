@@ -11,8 +11,13 @@ use PayNL\Sdk\Transformer\{
     TransformerInterface
 };
 use PayNL\Sdk\DateTime;
-use PayNL\Sdk\Model\Directdebit;
-use PayNL\Sdk\Model\Mandate;
+use PayNL\Sdk\Model\{
+    Directdebit,
+    Mandate,
+    Links,
+    Link
+};
+use Exception;
 
 /**
  * Class DirectdebitTest
@@ -51,6 +56,8 @@ class DirectdebitTest extends UnitTest
     }
 
     /**
+     * @throws Exception
+     *
      * @return void
      */
     public function testItCanTransform(): void
@@ -143,6 +150,13 @@ class DirectdebitTest extends UnitTest
                     'declined'         => null,
                 ],
             ],
+            '_links' => [
+                [
+                    'rel'  => 'self',
+                    'type' => 'GET',
+                    'url'  => 'https://www.pay.nl'
+                ]
+            ]
         ]);
 
         $output = $this->directdebitTransformer->transform($input);
@@ -153,5 +167,9 @@ class DirectdebitTest extends UnitTest
         verify($output['directdebits'])->array();
         verify($output['directdebits'])->count(2);
         verify($output['directdebits'])->containsOnlyInstancesOf(Directdebit::class);
+        verify($output)->hasKey('links');
+        verify($output['links'])->isInstanceOf(Links::class);
+        verify($output['links'])->count(1);
+        verify($output['links'])->containsOnlyInstancesOf(Link::class);
     }
 }

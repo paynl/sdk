@@ -12,6 +12,7 @@ use PayNL\Sdk\Transformer\{
 };
 use PayNL\Sdk\DateTime;
 use PayNL\Sdk\Model\Merchant;
+use Exception;
 
 /**
  * Class MerchantTest
@@ -50,29 +51,11 @@ class MerchantTest extends UnitTest
     }
 
     /**
+     * @throws Exception
+     *
      * @return void
      */
-    public function testItCanTransformMultiple(): void
-    {
-        $input = json_encode([
-            'merchants' => [
-                [],
-                [],
-            ],
-        ]);
-
-        $output = $this->merchantTransformer->transform($input);
-        verify($output)->array();
-        verify($output)->hasKey('merchants');
-        verify($output['merchants'])->array();
-        verify($output['merchants'])->count(2);
-        verify($output['merchants'])->containsOnlyInstancesOf(Merchant::class);
-    }
-
-    /**
-     * @return void
-     */
-    public function testItCanTransformSingle(): void
+    public function testItCanTransform(): void
     {
         $input = json_encode([
             'id'             => 'M-1000-0001',

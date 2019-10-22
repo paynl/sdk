@@ -18,7 +18,7 @@ class Currencies implements ModelInterface, Countable, ArrayAccess, IteratorAggr
     /**
      * @var integer
      */
-    protected $total;
+    protected $total = 0;
 
     /**
      * @var array
@@ -78,6 +78,7 @@ class Currencies implements ModelInterface, Countable, ArrayAccess, IteratorAggr
     public function addCurrency(Currency $currency): self
     {
         $this->currencies[$currency->getAbbreviation()] = $currency;
+        $this->total++;
         return $this;
     }
 
@@ -119,6 +120,7 @@ class Currencies implements ModelInterface, Countable, ArrayAccess, IteratorAggr
     public function offsetUnset($offset)
     {
         unset($this->currencies[$offset]);
+        $this->total--;
     }
 
     /**

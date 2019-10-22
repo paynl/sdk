@@ -19,7 +19,7 @@ trait LinksTrait
     /**
      * @return Links
      */
-    public function getLinks(): Links
+    public function getLinks(): ?Links
     {
         return $this->links;
     }
@@ -27,7 +27,7 @@ trait LinksTrait
     /**
      * @param Links $links
      *
-     * @return LinksTrait
+     * @return static
      */
     public function setLinks(Links $links): self
     {

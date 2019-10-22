@@ -18,7 +18,7 @@ class Services implements ModelInterface, Countable, ArrayAccess, IteratorAggreg
     /**
      * @var integer
      */
-    protected $total;
+    protected $total = 0;
 
     /**
      * @var array
@@ -78,6 +78,7 @@ class Services implements ModelInterface, Countable, ArrayAccess, IteratorAggreg
     public function addService(Service $service): self
     {
         $this->services[$service->getId()] = $service;
+        $this->total++;
         return $this;
     }
 
@@ -119,6 +120,7 @@ class Services implements ModelInterface, Countable, ArrayAccess, IteratorAggreg
     public function offsetUnset($offset)
     {
         unset($this->services[$offset]);
+        $this->total--;
     }
 
     /**

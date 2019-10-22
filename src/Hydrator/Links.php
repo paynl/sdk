@@ -9,6 +9,11 @@ use PayNL\Sdk\Model\{
     Link as LinkModel
 };
 
+/**
+ * Class Links
+ *
+ * @package PayNL\Sdk\Hydrator
+ */
 class Links extends AbstractHydrator
 {
     /**

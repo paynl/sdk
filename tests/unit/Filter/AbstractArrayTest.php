@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Tests\Unit\PayNL\Sdk\Filter;
 
 use Codeception\Test\Unit as UnitTest;
-use PayNL\Sdk\Filter\AbstractArray;
-use PayNL\Sdk\Filter\FilterInterface;
+use PayNL\Sdk\Filter\{
+    FilterInterface,
+    AbstractArray
+};
 use UnitTester, TypeError, stdClass;
 
 /**
@@ -31,7 +33,7 @@ class AbstractArrayTest extends UnitTest
      */
     public function _before(): void
     {
-        $this->anonymousClassFromAbstract = new class([ 1, 2 ]) extends AbstractArray {
+        $this->anonymousClassFromAbstract = new class([ 1, 2, ['test' => 1] ]) extends AbstractArray {
             public function getName(): string
             {
                 return 'anonymousClassFilter';
@@ -83,7 +85,7 @@ class AbstractArrayTest extends UnitTest
     {
         verify($this->anonymousClassFromAbstract->getValues())->notEmpty();
         verify($this->anonymousClassFromAbstract->getValues())->array();
-        verify($this->anonymousClassFromAbstract->getValues())->equals([ 1, 2 ]);
+        verify($this->anonymousClassFromAbstract->getValues())->equals([ 1, 2, ['test' => 1] ]);
     }
 
     /**
@@ -94,6 +96,14 @@ class AbstractArrayTest extends UnitTest
         verify($this->tester->getMethodAccessibility($this->anonymousClassFromAbstract, 'setValues'))->equals('protected');
         $this->tester->invokeMethod($this->anonymousClassFromAbstract, 'setValues', [ [ 3, 4 ] ]);
         verify($this->anonymousClassFromAbstract->getValues())->equals([ 3, 4 ]);
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanGetAValue(): void
+    {
+        verify($this->anonymousClassFromAbstract->getValue())->equals('0: 1, 1: 2, test: 1');
     }
 
     /**

@@ -40,7 +40,12 @@ abstract class AbstractArray implements FilterInterface
      */
     final public function getValue(): string
     {
-        return implode(',', $this->getValues());
+        $output = '';
+        $values = $this->getValues();
+        array_walk_recursive($values, static function($item, $key) use (&$output) {
+            $output .= "{$key}: {$item}, ";
+        });
+        return trim($output, ', ');
     }
 
     /**

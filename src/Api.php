@@ -5,11 +5,6 @@ declare(strict_types=1);
 namespace PayNL\Sdk;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\{
-    GuzzleException,
-    RequestException as GuzzleRequestException
-};
-use GuzzleHttp\Psr7\Response as GuzzleResponse;
 use PayNL\Sdk\AuthAdapter\{
     AdapterInterface,
     Basic

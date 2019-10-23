@@ -14,6 +14,8 @@ use Symfony\Component\Serializer\Exception\NotEncodableValueException;
  * Class AbstractTransformer
  *
  * @package PayNL\Sdk\Transformer
+ *
+ * @SuppressWarnings(PHPMD.NumberOfChildren)
  */
 abstract class AbstractTransformer implements TransformerInterface
 {

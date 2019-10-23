@@ -33,10 +33,6 @@ abstract class AbstractTransformer implements TransformerInterface
             throw new UnexpectedValueException('Cannot transform', 500);
         }
 
-        if (null === $inputToTransform) {
-            throw new UnexpectedValueException('Cannot transform', 500);
-        }
-
         return $inputToTransform;
     }
 }

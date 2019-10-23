@@ -73,7 +73,7 @@ class CustomerTest extends UnitTest
             'phone'       => '+441115551234',
             'email'       => 'mace@purple-lightsabers-rule.com',
             'trustLevel'  => '1',
-            'reference'   => 'SW1-3',
+            'reference'   => 1234,
             'language'    => 'EN',
             'bankAccount' => (new BankAccountHydrator())->hydrate([
                 'iban'   => '021000021',
@@ -95,8 +95,8 @@ class CustomerTest extends UnitTest
         expect($customer->getEmail())->equals('mace@purple-lightsabers-rule.com');
         expect($customer->getTrustLevel())->int();
         expect($customer->getTrustLevel())->equals('1');
-        expect($customer->getReference())->string();
-        expect($customer->getReference())->equals('SW1-3');
+        expect($customer->getReference())->int();
+        expect($customer->getReference())->equals(1234);
         expect($customer->getLanguage())->string();
         expect($customer->getLanguage())->equals('EN');
         expect($customer->getBankAccount())->isInstanceOf(BankAccount::class);
@@ -117,7 +117,7 @@ class CustomerTest extends UnitTest
             'phone'       => '+441115551234',
             'email'       => 'mace@purple-lightsabers-rule.com',
             'trustLevel'  => '1',
-            'reference'   => 'SW1-3',
+            'reference'   => 1234,
             'language'    => 'EN',
             'bankAccount' => (new BankAccountHydrator())->hydrate([
                 'iban'   => '021000021',
@@ -139,8 +139,8 @@ class CustomerTest extends UnitTest
         expect($customer->getEmail())->equals('mace@purple-lightsabers-rule.com');
         expect($customer->getTrustLevel())->int();
         expect($customer->getTrustLevel())->equals('1');
-        expect($customer->getReference())->string();
-        expect($customer->getReference())->equals('SW1-3');
+        expect($customer->getReference())->int();
+        expect($customer->getReference())->equals(1234);
         expect($customer->getLanguage())->string();
         expect($customer->getLanguage())->equals('EN');
         expect($customer->getBankAccount())->isInstanceOf(BankAccount::class);
@@ -165,7 +165,7 @@ class CustomerTest extends UnitTest
             'phone'       => '+441115551234',
             'email'       => 'mace@purple-lightsabers-rule.com',
             'trustLevel'  => '1',
-            'reference'   => 'SW1-3',
+            'reference'   => 1234,
             'language'    => 'EN',
             'bankAccount' => (new BankAccountHydrator())->hydrate([
                 'iban'   => '021000021',
@@ -199,8 +199,8 @@ class CustomerTest extends UnitTest
         expect($data['email'])->equals('mace@purple-lightsabers-rule.com');
         expect($data['trustLevel'])->int();
         expect($data['trustLevel'])->equals('1');
-        expect($data['reference'])->string();
-        expect($data['reference'])->equals('SW1-3');
+        expect($data['reference'])->int();
+        expect($data['reference'])->equals(1234);
         expect($data['language'])->string();
         expect($data['language'])->equals('EN');
         expect($data['bankAccount'])->isInstanceOf(BankAccount::class);

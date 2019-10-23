@@ -62,7 +62,7 @@ class Customer implements ModelInterface, JsonSerializable
     protected $bankAccount;
 
     /**
-     * @var string
+     * @var integer
      */
     protected $reference;
 
@@ -243,19 +243,19 @@ class Customer implements ModelInterface, JsonSerializable
     }
 
     /**
-     * @return string
+     * @return integer
      */
-    public function getReference(): string
+    public function getReference(): int
     {
         return $this->reference;
     }
 
     /**
-     * @param string $reference
+     * @param integer $reference
      *
      * @return Customer
      */
-    public function setReference(string $reference): self
+    public function setReference(int $reference): self
     {
         $this->reference = $reference;
         return $this;

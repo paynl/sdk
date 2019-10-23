@@ -62,6 +62,10 @@ class Customer extends AbstractHydrator
             unset($data['birthDate']);
         }
 
+        if (true === array_key_exists('reference', $data) && true === empty($data['reference'])) {
+            unset($data['reference']);
+        }
+
         /** @var CustomerModel $customer */
         $customer = parent::hydrate($data, $object);
         return $customer;

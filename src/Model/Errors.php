@@ -68,9 +68,10 @@ class Errors implements ModelInterface, Countable, ArrayAccess, IteratorAggregat
     {
         if (null === $offset) {
             $this->errors[] = $value;
-        } else {
-            $this->errors[$offset] = $value;
+            return;
         }
+
+        $this->errors[$offset] = $value;
     }
 
     /**

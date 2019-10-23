@@ -11,14 +11,16 @@ use GuzzleHttp\{
     Exception\RequestException,
     Exception\GuzzleException
 };
-use PayNL\Sdk\{DebugTrait,
+use PayNL\Sdk\{
+    DebugTrait,
     Exception\ExceptionInterface,
     Response,
     Exception\InvalidArgumentException,
     Filter\FilterInterface,
     Transformer\Factory,
     Transformer\Errors as ErrorsTransformer,
-    Validator\ObjectInstance};
+    Validator\ObjectInstance
+};
 use Symfony\Component\Serializer\Encoder\{
     JsonEncoder,
     XmlEncoder
@@ -30,6 +32,7 @@ use Symfony\Component\Serializer\Encoder\{
  * @package PayNL\Sdk\Request
  *
  * @SuppressWarnings(PHPMD.NumberOfChildren)
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 abstract class AbstractRequest implements RequestInterface
 {
@@ -258,6 +261,9 @@ abstract class AbstractRequest implements RequestInterface
 
     /**
      * @param Response $response
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      *
      * @return void
      */

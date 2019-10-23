@@ -24,6 +24,7 @@ use PayNL\Sdk\Hydrator\{
     Statistics as StatisticsHydrator
 };
 use Zend\Hydrator\ClassMethods;
+use Exception;
 
 /**
  * Class Transaction
@@ -36,6 +37,8 @@ class Transaction extends AbstractHydrator
 {
     /**
      * @inheritDoc
+     *
+     * @throws Exception
      *
      * @return TransactionModel
      *

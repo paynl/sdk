@@ -67,6 +67,11 @@ class Transaction implements ModelInterface, JsonSerializable
     /**
      * @var string
      */
+    protected $orderId;
+
+    /**
+     * @var string
+     */
     protected $orderNumber;
 
     /**
@@ -330,6 +335,25 @@ class Transaction implements ModelInterface, JsonSerializable
     public function setIssuerUrl(string $issuerUrl): self
     {
         $this->issuerUrl = $issuerUrl;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOrderId(): string
+    {
+        return (string)$this->orderId;
+    }
+
+    /**
+     * @param string $orderId
+     *
+     * @return Transaction
+     */
+    public function setOrderId(string $orderId): self
+    {
+        $this->orderId = $orderId;
         return $this;
     }
 

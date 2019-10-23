@@ -252,17 +252,42 @@ class TransactionTest extends UnitTest
     /**
      * @return void
      */
-    public function testItCanSetAOrderNumber(): void
+    public function testItCanSetAnOrderId(): void
+    {
+        verify(method_exists($this->transaction, 'setOrderId'))->true();
+        verify($this->transaction->setOrderId('Test123'))->isInstanceOf(Transaction::class);
+    }
+
+    /**
+     * @depends testItCanSetAnOrderId
+     *
+     * @return void
+     */
+    public function testItCanGetAnOrderId(): void
+    {
+        verify(method_exists($this->transaction, 'getOrderId'))->true();
+
+        $this->transaction->setOrderId('Test1234');
+
+        verify($this->transaction->getOrderId())->string();
+        verify($this->transaction->getOrderId())->notEmpty();
+        verify($this->transaction->getOrderId())->equals('Test1234');
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanSetAnOrderNumber(): void
     {
         expect($this->transaction->setOrderNumber('O1000024'))->isInstanceOf(Transaction::class);
     }
 
     /**
-     * @depends testItCanSetAOrderNumber
+     * @depends testItCanSetAnOrderNumber
      *
      * @return void
      */
-    public function testItCanGetAOrderNumber(): void
+    public function testItCanGetAnOrderNumber(): void
     {
         $this->transaction->setOrderNumber('O10000042');
 

@@ -252,7 +252,7 @@ class CustomerTest extends UnitTest
      */
     public function testItCanSetAReference(): void
     {
-        expect($this->customer->setReference('master yoda'))->isInstanceOf(Customer::class);
+        expect($this->customer->setReference(1234))->isInstanceOf(Customer::class);
     }
 
     /**
@@ -262,11 +262,11 @@ class CustomerTest extends UnitTest
      */
     public function testItCanGetAReference(): void
     {
-        $this->customer->setReference('master yoda');
+        $this->customer->setReference(1234);
 
-        verify($this->customer->getReference())->string();
+        verify($this->customer->getReference())->int();
         verify($this->customer->getReference())->notEmpty();
-        verify($this->customer->getReference())->equals('master yoda');
+        verify($this->customer->getReference())->equals(1234);
     }
 
     /**

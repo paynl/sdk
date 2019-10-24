@@ -5,8 +5,12 @@ declare(strict_types=1);
 namespace Tests\Unit\PayNL\Sdk\Request\Transactions;
 
 use Codeception\Test\Unit as UnitTest;
+use PayNL\Sdk\Transformer\{
+    Transaction,
+    TransformerInterface
+};
 use PayNL\Sdk\Request\{
-    Transactions\QR,
+    Transactions\Qr,
     RequestInterface,
     AbstractRequest
 };
@@ -16,10 +20,10 @@ use PayNL\Sdk\Request\{
  *
  * @package Tests\Unit\PayNL\Sdk\Request\Transactions
  */
-class QRTest extends UnitTest
+class QrTest extends UnitTest
 {
     /**
-     * @var QR
+     * @var Qr
      */
     protected $request;
 
@@ -28,7 +32,7 @@ class QRTest extends UnitTest
      */
     public function _before(): void
     {
-        $this->request = new QR('1234', 'scan-data');
+        $this->request = new Qr('1234', 'scan-data');
     }
 
     /**
@@ -53,7 +57,7 @@ class QRTest extends UnitTest
     public function testItCanSetATransactionId(): void
     {
         verify(method_exists($this->request, 'setTransactionId'))->true();
-        verify($this->request->setTransactionId('1234'))->isInstanceOf(QR::class);
+        verify($this->request->setTransactionId('1234'))->isInstanceOf(Qr::class);
     }
 
     /**
@@ -92,5 +96,15 @@ class QRTest extends UnitTest
         verify($this->request->getMethod())->string();
         verify($this->request->getMethod())->notEmpty();
         verify($this->request->getMethod())->equals(RequestInterface::METHOD_PATCH);
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanTransform(): void
+    {
+        verify(method_exists($this->request, 'getTransformer'));
+        verify($this->request->getTransformer())->isInstanceOf(TransformerInterface::class);
+        verify($this->request->getTransformer())->isInstanceOf(Transaction::class);
     }
 }

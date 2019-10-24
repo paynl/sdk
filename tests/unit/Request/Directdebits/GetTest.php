@@ -10,6 +10,10 @@ use PayNL\Sdk\Request\{
     RequestInterface,
     AbstractRequest
 };
+use PayNL\Sdk\Transformer\{
+    Directdebit,
+    TransformerInterface
+};
 
 /**
  * Class GetTest
@@ -90,5 +94,15 @@ class GetTest extends UnitTest
         verify($this->request->getMethod())->string();
         verify($this->request->getMethod())->notEmpty();
         verify($this->request->getMethod())->equals(RequestInterface::METHOD_GET);
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanTransform(): void
+    {
+        verify(method_exists($this->request, 'getTransformer'));
+        verify($this->request->getTransformer())->isInstanceOf(TransformerInterface::class);
+        verify($this->request->getTransformer())->isInstanceOf(Directdebit::class);
     }
 }

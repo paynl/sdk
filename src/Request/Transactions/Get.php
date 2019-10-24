@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Request\Transactions;
 
-use PayNL\Sdk\Request\AbstractRequest;
+use PayNL\Sdk\{
+    Request\AbstractRequest,
+    Transformer\TransformerInterface,
+    Transformer\Transaction as TransactionTransformer
+};
 use PayNL\Sdk\Request\Parameter\TransactionIdTrait;
 
 /**
@@ -40,5 +44,13 @@ class Get extends AbstractRequest
     public function getUri(): string
     {
         return 'transactions/' . $this->getTransactionId();
+    }
+
+    /**
+     * @return TransactionTransformer
+     */
+    public function getTransformer(): TransformerInterface
+    {
+        return new TransactionTransformer();
     }
 }

@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace Tests\Unit\PayNL\Sdk\Request\Vouchers;
 
 use Codeception\Test\Unit as UnitTest;
-use PayNL\Sdk\Model\Voucher;
+use PayNL\Sdk\Transformer\{
+    Simple,
+    TransformerInterface
+};
 use PayNL\Sdk\Request\{
     Vouchers\Balance,
     RequestInterface,
@@ -93,5 +96,15 @@ class BalanceTest extends UnitTest
         verify($this->request->getMethod())->string();
         verify($this->request->getMethod())->notEmpty();
         verify($this->request->getMethod())->equals(RequestInterface::METHOD_PATCH);
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanTransform(): void
+    {
+        verify(method_exists($this->request, 'getTransformer'));
+        verify($this->request->getTransformer())->isInstanceOf(TransformerInterface::class);
+        verify($this->request->getTransformer())->isInstanceOf(Simple::class);
     }
 }

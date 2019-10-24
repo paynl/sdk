@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Request\Transactions;
 
-use PayNL\Sdk\Exception\InvalidArgumentException;
-use PayNL\Sdk\Request\AbstractRequest;
+use PayNL\Sdk\{
+    Exception\InvalidArgumentException,
+    Request\AbstractRequest,
+    Transformer\TransformerInterface,
+    Transformer\Transaction as TransactionTransformer
+};
 use PayNL\Sdk\Request\Parameter\TransactionIdTrait;
 
 /**
@@ -78,5 +82,13 @@ abstract class AbstractStatusChange extends AbstractRequest
                 $status
             )
         );
+    }
+
+    /**
+     * @return TransactionTransformer
+     */
+    public function getTransformer(): TransformerInterface
+    {
+        return new TransactionTransformer();
     }
 }

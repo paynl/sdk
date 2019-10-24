@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Request\Directdebits;
 
-use PayNL\Sdk\Model\Mandate;
-use PayNL\Sdk\Request\AbstractRequest;
+use PayNL\Sdk\{
+    Model\Mandate,
+    Request\AbstractRequest,
+    Transformer\Directdebit as DirectdebitTransformer,
+    Transformer\TransformerInterface
+};
 
 /**
  * Class Create
@@ -14,6 +18,11 @@ use PayNL\Sdk\Request\AbstractRequest;
  */
 class Create extends AbstractRequest
 {
+    /**
+     * Create constructor.
+     *
+     * @param Mandate $mandate
+     */
     public function __construct(Mandate $mandate)
     {
         $this->setBody($mandate);
@@ -35,4 +44,11 @@ class Create extends AbstractRequest
         return static::METHOD_POST;
     }
 
+    /**
+     * @return DirectdebitTransformer
+     */
+    public function getTransformer(): TransformerInterface
+    {
+        return new DirectdebitTransformer();
+    }
 }

@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Request\Directdebits;
 
-use PayNL\Sdk\Request\AbstractRequest;
+use PayNL\Sdk\{
+    Request\AbstractRequest,
+    Model\Mandate,
+    Transformer\TransformerInterface,
+    Transformer\Directdebit as DirectdebitTransformer
+};
 use PayNL\Sdk\Request\Parameter\IncassoOrderIdTrait;
-use PayNL\Sdk\Model\Mandate;
 
 /**
  * Class CreateRecurring
@@ -43,5 +47,13 @@ class CreateRecurring extends AbstractRequest
     public function getMethod(): string
     {
         return static::METHOD_POST;
+    }
+
+    /**
+     * @return DirectdebitTransformer
+     */
+    public function getTransformer(): TransformerInterface
+    {
+        return new DirectdebitTransformer();
     }
 }

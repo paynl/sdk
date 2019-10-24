@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Request\Directdebits;
 
-use PayNL\Sdk\Request\AbstractRequest;
+use PayNL\Sdk\{
+    Request\AbstractRequest,
+    Transformer\TransformerInterface,
+    Transformer\NoContent as NoContentTransformer
+};
 use PayNL\Sdk\Request\Parameter\IncassoOrderIdTrait;
 
 /**
@@ -40,5 +44,13 @@ class Delete extends AbstractRequest
     public function getMethod(): string
     {
         return static::METHOD_DELETE;
+    }
+
+    /**
+     * @return NoContentTransformer
+     */
+    public function getTransformer(): TransformerInterface
+    {
+        return new NoContentTransformer();
     }
 }

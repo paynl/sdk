@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Request\Pin;
 
-use PayNL\Sdk\Request\AbstractRequest;
+use PayNL\Sdk\{
+    Request\AbstractRequest,
+    Transformer\TransformerInterface,
+    Transformer\Terminals as TerminalsTransformer
+};
 
 /**
  * Class GetTerminals
@@ -27,5 +31,13 @@ class GetTerminals extends AbstractRequest
     public function getMethod(): string
     {
         return static::METHOD_GET;
+    }
+
+    /**
+     * @return TerminalsTransformer
+     */
+    public function getTransformer(): TransformerInterface
+    {
+        return new TerminalsTransformer();
     }
 }

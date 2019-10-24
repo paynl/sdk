@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Request\Merchants;
 
-use PayNL\Sdk\Model\Trademark;
-use PayNL\Sdk\Request\AbstractRequest;
+use PayNL\Sdk\{
+    Request\AbstractRequest,
+    Model\Trademark,
+    Transformer\TransformerInterface,
+    Transformer\Merchant as MerchantTransformer
+};
 use PayNL\Sdk\Request\Parameter\MerchantIdTrait;
 
 /**
@@ -45,4 +49,11 @@ class AddTrademark extends AbstractRequest
         return static::METHOD_POST;
     }
 
+    /**
+     * @return MerchantTransformer
+     */
+    public function getTransformer(): TransformerInterface
+    {
+        return new MerchantTransformer();
+    }
 }

@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Request\Pin;
 
-use PayNL\Sdk\Model\Terminal;
-use PayNL\Sdk\Request\AbstractRequest;
+use PayNL\Sdk\{
+    Request\AbstractRequest,
+    Model\Terminal,
+    Transformer\TransformerInterface,
+    Transformer\TerminalTransaction as TerminalTransactionTransformer
+};
 use PayNL\Sdk\Request\Parameter\TransactionIdTrait;
 
 /**
@@ -17,6 +21,12 @@ class PayTransaction extends AbstractRequest
 {
     use TransactionIdTrait;
 
+    /**
+     * PayTransaction constructor.
+     *
+     * @param string $transactionId
+     * @param Terminal $terminal
+     */
     public function __construct(string $transactionId, Terminal $terminal)
     {
         $this->setTransactionId($transactionId)
@@ -38,5 +48,13 @@ class PayTransaction extends AbstractRequest
     public function getMethod(): string
     {
         return static::METHOD_POST;
+    }
+
+    /**
+     * @return TerminalTransactionTransformer
+     */
+    public function getTransformer(): TransformerInterface
+    {
+        return new TerminalTransactionTransformer();
     }
 }

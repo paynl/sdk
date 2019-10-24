@@ -5,6 +5,10 @@ declare(strict_types=1);
 namespace Tests\Unit\PayNL\Sdk\Request\Pin;
 
 use Codeception\Test\Unit as UnitTest;
+use PayNL\Sdk\Transformer\{
+    Receipt,
+    TransformerInterface
+};
 use PayNL\Sdk\Request\{
     Pin\GetReceipt,
     RequestInterface,
@@ -94,5 +98,15 @@ class GetReceiptTest extends UnitTest
         verify($this->request->getMethod())->string();
         verify($this->request->getMethod())->notEmpty();
         verify($this->request->getMethod())->equals(RequestInterface::METHOD_GET);
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanTransform(): void
+    {
+        verify(method_exists($this->request, 'getTransformer'));
+        verify($this->request->getTransformer())->isInstanceOf(TransformerInterface::class);
+        verify($this->request->getTransformer())->isInstanceOf(Receipt::class);
     }
 }

@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Request\Refunds;
 
-use PayNL\Sdk\Request\AbstractRequest;
+use PayNL\Sdk\{
+    Request\AbstractRequest,
+    Transformer\TransformerInterface,
+    Transformer\Refund as RefundTransformer
+};
 
 /**
  * Class Get
@@ -18,6 +22,11 @@ class Get extends AbstractRequest
      */
     protected $refundId;
 
+    /**
+     * Get constructor.
+     *
+     * @param string $refundId
+     */
     public function __construct(string $refundId)
     {
         $this->setRefundId($refundId);
@@ -56,5 +65,13 @@ class Get extends AbstractRequest
     public function getMethod(): string
     {
         return static::METHOD_GET;
+    }
+
+    /**
+     * @return RefundTransformer
+     */
+    public function getTransformer(): TransformerInterface
+    {
+        return new RefundTransformer();
     }
 }

@@ -6,6 +6,10 @@ namespace Tests\Unit\PayNL\Sdk\Request\Pin;
 
 use Codeception\Test\Unit as UnitTest;
 use PayNL\Sdk\Model\Terminal;
+use PayNL\Sdk\Transformer\{
+    TerminalTransaction,
+    TransformerInterface
+};
 use PayNL\Sdk\Request\{
     Pin\PayTransaction,
     RequestInterface,
@@ -97,5 +101,15 @@ class PayTransactionTest extends UnitTest
         verify($this->request->getMethod())->string();
         verify($this->request->getMethod())->notEmpty();
         verify($this->request->getMethod())->equals(RequestInterface::METHOD_POST);
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanTransform(): void
+    {
+        verify(method_exists($this->request, 'getTransformer'));
+        verify($this->request->getTransformer())->isInstanceOf(TransformerInterface::class);
+        verify($this->request->getTransformer())->isInstanceOf(TerminalTransaction::class);
     }
 }

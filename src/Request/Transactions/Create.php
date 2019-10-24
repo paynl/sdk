@@ -6,6 +6,8 @@ namespace PayNL\Sdk\Request\Transactions;
 
 use PayNL\Sdk\Model\Transaction;
 use PayNL\Sdk\Request\AbstractRequest;
+use PayNL\Sdk\Transformer\Transaction as TransactionTransformer;
+use PayNL\Sdk\Transformer\TransformerInterface;
 
 /**
  * Class Create
@@ -38,5 +40,13 @@ class Create extends AbstractRequest
     public function getUri(): string
     {
         return 'transactions';
+    }
+
+    /**
+     * @return TransactionTransformer
+     */
+    public function getTransformer(): TransformerInterface
+    {
+        return new TransactionTransformer();
     }
 }

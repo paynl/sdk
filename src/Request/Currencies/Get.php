@@ -4,7 +4,12 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Request\Currencies;
 
-use PayNL\Sdk\Request\AbstractRequest;
+use PayNL\Sdk\{
+    Request\AbstractRequest,
+    Transformer\TransformerInterface,
+    Transformer\Currency as CurrencyTransformer
+};
+
 /**
  * Class Currencies
  *
@@ -61,5 +66,13 @@ class Get extends AbstractRequest
     public function getMethod(): string
     {
         return static::METHOD_GET;
+    }
+
+    /**
+     * @return CurrencyTransformer
+     */
+    public function getTransformer(): TransformerInterface
+    {
+        return new CurrencyTransformer();
     }
 }

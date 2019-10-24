@@ -2,7 +2,7 @@
 
 ---
 
-##Installation
+## Installation
 ### Composer
 Require it from composer. Just run `composer require paynl/sdk` in order to get the latest stable.
 

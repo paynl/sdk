@@ -21,7 +21,7 @@ trait MerchantIdTrait
      */
     public function getMerchantId(): string
     {
-        return $this->merchantId;
+        return (string)$this->merchantId;
     }
 
     /**

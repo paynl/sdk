@@ -19,7 +19,9 @@ use PayNL\Sdk\{
     Model\Errors,
     Response,
     Request\RequestInterface,
-    Request\AbstractRequest
+    Request\AbstractRequest,
+    Transformer\Simple,
+    Transformer\TransformerInterface
 };
 use TypeError, UnitTester, stdClass, RuntimeException;
 
@@ -59,6 +61,11 @@ class AbstractRequestTest extends UnitTest
             public function getUri(): string
             {
                 return 'api/some/endpoint';
+            }
+
+            public function getTransformer(): TransformerInterface
+            {
+                return new Simple();
             }
         };
     }

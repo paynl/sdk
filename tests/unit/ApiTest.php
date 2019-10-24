@@ -6,13 +6,13 @@ namespace Tests\Unit\PayNL\Sdk;
 
 use Codeception\Test\Unit as UnitTest;
 use GuzzleHttp\Client;
-use PayNL\Sdk\{
-    Api,
+use PayNL\Sdk\{Api,
     AuthAdapter\AdapterInterface,
     AuthAdapter\Basic,
     Exception\InvalidArgumentException,
-    Request\AbstractRequest
-};
+    Request\AbstractRequest,
+    Transformer\Simple,
+    Transformer\TransformerInterface};
 use UnitTester, Exception;
 
 /**
@@ -120,6 +120,11 @@ class ApiTest extends UnitTest
             public function getMethod(): string
             {
                 return AbstractRequest::METHOD_GET;
+            }
+
+            public function getTransformer(): TransformerInterface
+            {
+                return new Simple();
             }
         };
         $mockRequest->setFormat(AbstractRequest::FORMAT_XML);

@@ -5,6 +5,10 @@ declare(strict_types=1);
 namespace Tests\Unit\PayNL\Sdk\Request\Transactions;
 
 use Codeception\Test\Unit as UnitTest;
+use PayNL\Sdk\Transformer\{
+    Transaction,
+    TransformerInterface
+};
 use PayNL\Sdk\Request\{
     Transactions\Approve,
     RequestInterface,
@@ -92,5 +96,15 @@ class ApproveTest extends UnitTest
         verify($this->request->getMethod())->string();
         verify($this->request->getMethod())->notEmpty();
         verify($this->request->getMethod())->equals(RequestInterface::METHOD_PATCH);
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanTransform(): void
+    {
+        verify(method_exists($this->request, 'getTransformer'));
+        verify($this->request->getTransformer())->isInstanceOf(TransformerInterface::class);
+        verify($this->request->getTransformer())->isInstanceOf(Transaction::class);
     }
 }

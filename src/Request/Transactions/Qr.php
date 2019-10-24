@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Request\Transactions;
 
-use PayNL\Sdk\Request\AbstractRequest;
+use PayNL\Sdk\{
+    Request\AbstractRequest,
+    Transformer\TransformerInterface,
+    Transformer\Transaction as TransactionTransformer
+};
 use PayNL\Sdk\Request\Parameter\TransactionIdTrait;
 
 /**
@@ -12,7 +16,7 @@ use PayNL\Sdk\Request\Parameter\TransactionIdTrait;
  *
  * @package PayNL\Sdk\Request\Transactions
  */
-class QR extends AbstractRequest
+class Qr extends AbstractRequest
 {
     use TransactionIdTrait;
 
@@ -45,5 +49,13 @@ class QR extends AbstractRequest
     public function getMethod(): string
     {
         return static::METHOD_PATCH;
+    }
+
+    /**
+     * @return TransactionTransformer
+     */
+    public function getTransformer(): TransformerInterface
+    {
+        return new TransactionTransformer();
     }
 }

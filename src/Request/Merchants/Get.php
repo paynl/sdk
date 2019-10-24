@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Request\Merchants;
 
-use PayNL\Sdk\Request\AbstractRequest;
+use PayNL\Sdk\{
+    Request\AbstractRequest,
+    Transformer\TransformerInterface,
+    Transformer\Merchant as MerchantTransformer
+};
 use PayNL\Sdk\Request\Parameter\MerchantIdTrait;
 
 /**
@@ -40,5 +44,13 @@ class Get extends AbstractRequest
     public function getMethod(): string
     {
         return static::METHOD_GET;
+    }
+
+    /**
+     * @return MerchantTransformer
+     */
+    public function getTransformer(): TransformerInterface
+    {
+        return new MerchantTransformer();
     }
 }

@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Request\Directdebits;
 
-use PayNL\Sdk\Model\Mandate;
+use PayNL\Sdk\{
+    Model\Mandate,
+    Request\AbstractRequest,
+    Transformer\TransformerInterface,
+    Transformer\Directdebit as DirectdebitTransformer
+};
 use PayNL\Sdk\Request\Parameter\IncassoOrderIdTrait;
-use PayNL\Sdk\Request\AbstractRequest;
 
 /**
  * Class Update
@@ -17,6 +21,12 @@ class Update extends AbstractRequest
 {
     use IncassoOrderIdTrait;
 
+    /**
+     * Update constructor.
+     *
+     * @param string $incassoOrderId
+     * @param Mandate $mandate
+     */
     public function __construct(string $incassoOrderId, Mandate $mandate)
     {
         $this->setIncassoOrderId($incassoOrderId);
@@ -39,5 +49,11 @@ class Update extends AbstractRequest
         return static::METHOD_PATCH;
     }
 
-
+    /**
+     * @return DirectdebitTransformer
+     */
+    public function getTransformer(): TransformerInterface
+    {
+        return new DirectdebitTransformer();
+    }
 }

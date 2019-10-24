@@ -6,6 +6,10 @@ namespace Tests\Unit\PayNL\Sdk\Request\Transactions;
 
 use Codeception\Test\Unit as UnitTest;
 use PayNL\Sdk\Model\Transaction;
+use PayNL\Sdk\Transformer\{
+    TransformerInterface,
+    Transaction as TransactionTransformer
+};
 use PayNL\Sdk\Request\{
     Transactions\Create,
     RequestInterface,
@@ -68,5 +72,15 @@ class CreateTest extends UnitTest
         verify($this->request->getMethod())->string();
         verify($this->request->getMethod())->notEmpty();
         verify($this->request->getMethod())->equals(RequestInterface::METHOD_POST);
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanTransform(): void
+    {
+        verify(method_exists($this->request, 'getTransformer'));
+        verify($this->request->getTransformer())->isInstanceOf(TransformerInterface::class);
+        verify($this->request->getTransformer())->isInstanceOf(TransactionTransformer::class);
     }
 }

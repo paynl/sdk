@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Request\Pin;
 
-use PayNL\Sdk\Model\TerminalTransaction;
-use PayNL\Sdk\Request\AbstractRequest;
+use PayNL\Sdk\{
+    Request\AbstractRequest,
+    Transformer\TransformerInterface,
+    Transformer\Simple as SimpleTransformer
+};
 use PayNL\Sdk\Request\Parameter\TerminalTransactionIdTrait;
 
 /**
@@ -41,5 +44,13 @@ class ConfirmTerminalTransaction extends AbstractRequest
     public function getMethod(): string
     {
         return static::METHOD_PATCH;
+    }
+
+    /**
+     * @return SimpleTransformer
+     */
+    public function getTransformer(): TransformerInterface
+    {
+        return new SimpleTransformer();
     }
 }

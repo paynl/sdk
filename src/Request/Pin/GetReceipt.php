@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Request\Pin;
 
-use PayNL\Sdk\Request\AbstractRequest;
+use PayNL\Sdk\{
+    Request\AbstractRequest,
+    Transformer\TransformerInterface,
+    Transformer\Receipt as ReceiptTransformer
+};
 use PayNL\Sdk\Request\Parameter\TerminalTransactionIdTrait;
 
 /**
@@ -40,5 +44,13 @@ class GetReceipt extends AbstractRequest
     public function getUri(): string
     {
         return "pin/{$this->getTerminalTransactionId()}/receipt";
+    }
+
+    /**
+     * @return ReceiptTransformer
+     */
+    public function getTransformer(): TransformerInterface
+    {
+        return new ReceiptTransformer();
     }
 }

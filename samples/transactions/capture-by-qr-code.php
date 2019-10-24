@@ -8,7 +8,7 @@ use PayNL\Sdk\{
     Api,
     Config
 };
-use PayNL\Sdk\Request\Transactions\QR as QRTransactionRequest;
+use PayNL\Sdk\Request\Transactions\Qr as QRTransactionRequest;
 
 $authAdapter = getAuthAdapter();
 

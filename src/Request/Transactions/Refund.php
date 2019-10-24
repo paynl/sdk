@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Request\Transactions;
 
-use PayNL\Sdk\Request\AbstractRequest;
+use PayNL\Sdk\{
+    Request\AbstractRequest,
+    Model\Refund as RefundModel,
+    Transformer\TransformerInterface,
+    Transformer\Refund as RefundTransformer
+};
 use PayNL\Sdk\Request\Parameter\TransactionIdTrait;
-use PayNL\Sdk\Model\Refund as RefundModel;
 
 /**
  * Class Refund
@@ -44,5 +48,13 @@ class Refund extends AbstractRequest
     public function getMethod(): string
     {
         return static::METHOD_PATCH;
+    }
+
+    /**
+     * @return RefundTransformer
+     */
+    public function getTransformer(): TransformerInterface
+    {
+        return new RefundTransformer();
     }
 }

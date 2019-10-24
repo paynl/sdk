@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Request\Services;
 
-use PayNL\Sdk\Model\ServicePaymentLink;
-use PayNL\Sdk\Request\AbstractRequest;
+use PayNL\Sdk\{
+    Request\AbstractRequest,
+    Model\ServicePaymentLink,
+    Transformer\TransformerInterface,
+    Transformer\Simple as SimpleTransformer
+};
 use PayNL\Sdk\Request\Parameter\ServiceIdTrait;
 
 /**
@@ -43,5 +47,13 @@ class CreatePaymentLink extends AbstractRequest
     public function getMethod(): string
     {
         return static::METHOD_POST;
+    }
+
+    /**
+     * @return SimpleTransformer
+     */
+    public function getTransformer(): TransformerInterface
+    {
+        return new SimpleTransformer();
     }
 }

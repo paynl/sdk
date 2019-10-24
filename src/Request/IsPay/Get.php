@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Request\IsPay;
 
-use PayNL\Sdk\Exception\InvalidArgumentException;
-use PayNL\Sdk\Request\AbstractRequest;
-use PayNL\Sdk\Validator\InputType;
+use PayNL\Sdk\{
+    Exception\InvalidArgumentException,
+    Request\AbstractRequest,
+    Transformer\TransformerInterface,
+    Transformer\NoContent as NoContentTransformer,
+    Validator\InputType
+};
 
 /**
  * Class Get
@@ -30,6 +34,12 @@ class Get extends AbstractRequest
      */
     protected $value;
 
+    /**
+     * Get constructor.
+     *
+     * @param string $type
+     * @param string|int $value
+     */
     public function __construct(string $type, $value)
     {
         $validator = new InputType();
@@ -96,5 +106,13 @@ class Get extends AbstractRequest
     public function getUri(): string
     {
         return "ispay/{$this->getType()}?value={$this->getValue()}";
+    }
+
+    /**
+     * @return NoContentTransformer
+     */
+    public function getTransformer(): TransformerInterface
+    {
+        return new NoContentTransformer();
     }
 }

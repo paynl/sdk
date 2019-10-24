@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Request\Transactions;
 
-use PayNL\Sdk\Request\AbstractRequest;
+use PayNL\Sdk\{
+    Request\AbstractRequest,
+    Model\RecurringTransaction,
+    Transformer\TransformerInterface,
+    Transformer\NoContent as NoContentTransformer
+};
 use PayNL\Sdk\Request\Parameter\TransactionIdTrait;
-use PayNL\Sdk\Model\RecurringTransaction;
 
 /**
  * Class Recurring
@@ -44,5 +48,13 @@ class Recurring extends AbstractRequest
     public function getMethod(): string
     {
         return static::METHOD_POST;
+    }
+
+    /**
+     * @return NoContentTransformer
+     */
+    public function getTransformer(): TransformerInterface
+    {
+        return new NoContentTransformer();
     }
 }

@@ -21,7 +21,7 @@ trait TransactionIdTrait
      */
     public function getTransactionId(): string
     {
-        return $this->transactionId;
+        return (string)$this->transactionId;
     }
 
     /**

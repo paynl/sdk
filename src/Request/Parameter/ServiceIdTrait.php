@@ -21,7 +21,7 @@ trait ServiceIdTrait
      */
     public function getServiceId(): string
     {
-        return $this->serviceId;
+        return (string)$this->serviceId;
     }
 
     /**

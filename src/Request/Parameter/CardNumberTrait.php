@@ -21,7 +21,7 @@ trait CardNumberTrait
      */
     public function getCardNumber(): string
     {
-        return $this->cardNumber;
+        return (string)$this->cardNumber;
     }
 
     /**

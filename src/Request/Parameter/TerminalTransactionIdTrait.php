@@ -21,7 +21,7 @@ trait TerminalTransactionIdTrait
      */
     public function getTerminalTransactionId(): string
     {
-        return $this->terminalTransactionId;
+        return (string)$this->terminalTransactionId;
     }
 
     /**

@@ -21,7 +21,7 @@ trait IncassoOrderIdTrait
      */
     public function getIncassoOrderId(): string
     {
-        return $this->incassoOrderId;
+        return (string)$this->incassoOrderId;
     }
 
     /**

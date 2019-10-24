@@ -16,7 +16,7 @@ $authAdapter = getAuthAdapter();
 
 /** @var Trademark $tradeMark */
 $tradeMark = (new ClassMethods())->hydrate([
-    'id' => 'TestTrademark' . random_int(10, 9999),
+    'name' => 'TestTrademark' . random_int(10, 9999),
 ], new Trademark());
 
 $request = (new AddTrademarkRequest(Config::getInstance()->get('merchantId'), $tradeMark))

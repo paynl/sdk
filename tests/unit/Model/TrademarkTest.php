@@ -71,22 +71,22 @@ class TrademarkTest extends UnitTest
     /**
      * @return void
      */
-    public function testItCanSetATrademark(): void
+    public function testItCanSetAName(): void
     {
-        expect($this->trademark->setTrademark('Pay.be'))->isInstanceOf(Trademark::class);
+        expect($this->trademark->setName('Pay.be'))->isInstanceOf(Trademark::class);
     }
 
     /**
-     * @depends testItCanSetATrademark
+     * @depends testItCanSetAName
      *
      * @return void
      */
-    public function testItCanGetATrademark(): void
+    public function testItCanGetAName(): void
     {
-        $this->trademark->setTrademark('Pay.be');
+        $this->trademark->setName('Pay.be');
 
-        verify($this->trademark->getTrademark())->string();
-        verify($this->trademark->getTrademark())->notEmpty();
-        verify($this->trademark->getTrademark())->equals('Pay.be');
+        verify($this->trademark->getName())->string();
+        verify($this->trademark->getName())->notEmpty();
+        verify($this->trademark->getName())->equals('Pay.be');
     }
 }

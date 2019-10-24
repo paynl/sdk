@@ -35,6 +35,7 @@ class Customer extends AbstractHydrator
         }
 
         $data['trustLevel'] = $data['trustLevel'] ?? 0;
+        $data['reference'] = $data['reference'] ?? 0;
 
         $optionalKeys = [
             'initials',
@@ -60,10 +61,6 @@ class Customer extends AbstractHydrator
 
         if (true === array_key_exists('birthDate', $data) && null === $data['birthDate']) {
             unset($data['birthDate']);
-        }
-
-        if (true === array_key_exists('reference', $data) && true === empty($data['reference'])) {
-            unset($data['reference']);
         }
 
         /** @var CustomerModel $customer */

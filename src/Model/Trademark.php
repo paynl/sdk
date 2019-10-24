@@ -23,7 +23,7 @@ class Trademark implements ModelInterface, JsonSerializable
     /**
      * @var string
      */
-    protected $trademark;
+    protected $name;
 
     /**
      * @return string
@@ -47,19 +47,19 @@ class Trademark implements ModelInterface, JsonSerializable
     /**
      * @return string
      */
-    public function getTrademark(): string
+    public function getName(): string
     {
-        return $this->trademark;
+        return $this->name;
     }
 
     /**
-     * @param string $trademark
+     * @param string $name
      *
      * @return Trademark
      */
-    public function setTrademark(string $trademark): self
+    public function setName(string $name): self
     {
-        $this->trademark = $trademark;
+        $this->name = $name;
         return $this;
     }
 }

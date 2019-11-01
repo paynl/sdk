@@ -2,12 +2,6 @@ language: php
 
 sudo: false
 
-# whitelist for building branches
-branches:
-  only:
-    - master
-    - stable
-
 matrix:
     include:
         - php: 5.6

@@ -1,9 +1,0 @@
-{
-  "request": {
-    "result": "0",
-    "errorId": "1",
-    "errorMessage": "Refund was not complete"
-  },
-  "refundId": "",
-  "description": "This is the reason for the refund not succeeding"
-}

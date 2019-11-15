@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk;
 
-use GuzzleHttp\Client;
+use PayNL\GuzzleHttp\Client;
 use PayNL\Sdk\AuthAdapter\{
     AdapterInterface,
     Basic

@@ -2424,16 +2424,16 @@
         },
         {
             "name": "ocramius/package-versions",
-            "version": "1.4.1",
+            "version": "1.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Ocramius/PackageVersions.git",
-                "reference": "7ca61c24dc301cc9d47d6fb459b3d39f2d54b7e5"
+                "reference": "44af6f3a2e2e04f2af46bcb302ad9600cba41c7d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Ocramius/PackageVersions/zipball/7ca61c24dc301cc9d47d6fb459b3d39f2d54b7e5",
-                "reference": "7ca61c24dc301cc9d47d6fb459b3d39f2d54b7e5",
+                "url": "https://api.github.com/repos/Ocramius/PackageVersions/zipball/44af6f3a2e2e04f2af46bcb302ad9600cba41c7d",
+                "reference": "44af6f3a2e2e04f2af46bcb302ad9600cba41c7d",
                 "shasum": ""
             },
             "require": {
@@ -2470,7 +2470,7 @@
                 }
             ],
             "description": "Composer plugin that provides efficient querying for installed package versions (no runtime IO)",
-            "time": "2019-11-14T14:22:47+00:00"
+            "time": "2019-11-15T16:17:10+00:00"
         },
         {
             "name": "pdepend/pdepend",

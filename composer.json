@@ -36,7 +36,12 @@
       "PayNL\\GuzzleHttp\\": "build/guzzle/src",
       "PayNL\\GuzzleHttp\\Promise\\": "build/promises/src",
       "PayNL\\GuzzleHttp\\Psr7\\": "build/psr7/src"
-    }
+    },
+    "files": [
+      "./build/guzzle/src/functions_include.php",
+      "./build/promises/src/functions_include.php",
+      "./build/psr7/src/functions_include.php"
+    ]
   },
   "autoload-dev": {
     "psr-4": {
@@ -46,10 +51,7 @@
       "Tests\\Unit\\PayNL\\Sdk\\": "tests/unit"
     },
     "files": [
-      "./samples/init.php",
-      "./build/guzzle/src/functions_include.php",
-      "./build/promises/src/functions_include.php",
-      "./build/psr7/src/functions_include.php"
+      "./samples/init.php"
     ]
   },
   "minimum-stability": "stable",

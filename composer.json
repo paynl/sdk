@@ -13,6 +13,8 @@
     "php": "^7.1",
     "ext-json": "*",
     "ext-curl": "*",
+    "psr/http-message": "~1.0",
+    "ralouphie/getallheaders": "^2.0.5 || ^3.0.0",
     "symfony/serializer": "^4.3",
     "zendframework/zend-filter": "^2.9",
     "zendframework/zend-hydrator": "^2.4",

@@ -59,7 +59,7 @@ class Terminals implements ModelInterface, Countable, ArrayAccess, IteratorAggre
      */
     public function setTerminals(array $terminals): self
     {
-        if (0 === sizeof($terminals)) {
+        if (0 === count($terminals)) {
             return $this;
         }
 

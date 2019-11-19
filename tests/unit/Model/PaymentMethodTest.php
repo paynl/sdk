@@ -7,8 +7,10 @@ namespace Tests\Unit\PayNL\Sdk\Model;
 use Codeception\Test\Unit as UnitTest;
 use PayNL\Sdk\Model\{
     ModelInterface,
-    PaymentMethod
+    PaymentMethod,
+    PaymentMethods
 };
+use PayNL\Sdk\Hydrator\PaymentMethod as PaymentMethodHydrator;
 use JsonSerializable;
 
 /**
@@ -71,6 +73,30 @@ class PaymentMethodTest extends UnitTest
     /**
      * @return void
      */
+    public function testItCanSetASubId(): void
+    {
+        expect($this->paymentMethod->setSubId(8))->isInstanceOf(PaymentMethod::class);
+    }
+
+    /**
+     * @depends testItCanSetASubId
+     *
+     * @return void
+     */
+    public function testItCanGetASubId(): void
+    {
+        verify($this->paymentMethod->getSubId())->null();
+
+        $this->paymentMethod->setSubId(8);
+
+        verify($this->paymentMethod->getSubId())->int();
+        verify($this->paymentMethod->getSubId())->notEmpty();
+        verify($this->paymentMethod->getSubId())->equals(8);
+    }
+
+    /**
+     * @return void
+     */
     public function testItCanSetAName(): void
     {
         expect($this->paymentMethod->setName('iDeal'))->isInstanceOf(PaymentMethod::class);
@@ -93,26 +119,109 @@ class PaymentMethodTest extends UnitTest
     /**
      * @return void
      */
-    public function testItCanSetSettings(): void
+    public function testItCanSetAnImage(): void
     {
-        expect($this->paymentMethod->setSettings([
-            'entryKey' => 'entryValue',
-        ]))->isInstanceOf(PaymentMethod::class);
+        expect($this->paymentMethod->setImage('http://www.pay.nl/link-to-image'))->isInstanceOf(PaymentMethod::class);
     }
 
     /**
-     * @depends testItCanSetSettings
+     * @depends testItCanSetAnImage
      *
      * @return void
      */
-    public function testItCanGetSettings(): void
+    public function testItCanGetAnImage(): void
     {
-        $this->paymentMethod->setSettings([
-            'entryValue',
-        ]);
+        verify($this->paymentMethod->getImage())->string();
+        verify($this->paymentMethod->getImage())->isEmpty();
 
-        verify($this->paymentMethod->getSettings())->array();
-        verify($this->paymentMethod->getSettings())->count(1);
-        verify($this->paymentMethod->getSettings())->contains('entryValue');
+        $this->paymentMethod->setImage('http://www.pay.nl/link-to-image');
+
+        verify($this->paymentMethod->getImage())->string();
+        verify($this->paymentMethod->getImage())->notEmpty();
+        verify($this->paymentMethod->getImage())->equals('http://www.pay.nl/link-to-image');
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanSetCountryCodes(): void
+    {
+        expect($this->paymentMethod->setCountryCodes([]))->isInstanceOf(PaymentMethod::class);
+    }
+
+    /**
+     * @depends testItCanSetCountryCodes
+     *
+     * @return void
+     */
+    public function testItCanGetCountryCodes(): void
+    {
+        verify($this->paymentMethod->getCountryCodes())->array();
+        verify($this->paymentMethod->getCountryCodes())->isEmpty();
+
+        $this->paymentMethod->setCountryCodes([ 'NL', 'BE' ]);
+
+        verify($this->paymentMethod->getCountryCodes())->array();
+        verify($this->paymentMethod->getCountryCodes())->notEmpty();
+        verify($this->paymentMethod->getCountryCodes())->count(2);
+        verify($this->paymentMethod->getCountryCodes())->contains('NL');
+        verify($this->paymentMethod->getCountryCodes())->contains('BE');
+        verify($this->paymentMethod->getCountryCodes())->containsOnly('string');
+    }
+
+    /**
+     * @depends testItCanSetCountryCodes
+     * @depends testItCanGetCountryCodes
+     *
+     * @return void
+     */
+    public function testItCanAddCountryCode(): void
+    {
+        $this->paymentMethod->setCountryCodes([ 'NL', 'BE', 'DE' ]);
+
+        $this->paymentMethod->addCountryCode('FR');
+
+        verify($this->paymentMethod->getCountryCodes())->count(4);
+        verify($this->paymentMethod->getCountryCodes())->contains('FR');
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanGetSubMethods(): void
+    {
+        verify($this->paymentMethod->getSubMethods())->isInstanceOf(PaymentMethods::class);
+        verify($this->paymentMethod->getSubMethods())->count(0);
+    }
+
+    /**
+     * @depends testItCanGetSubMethods
+     *
+     * @return void
+     */
+    public function testItCanSetSubMethods(): void
+    {
+        $methods = $this->paymentMethod->getSubMethods();
+
+        expect($this->paymentMethod->setSubMethods(new PaymentMethods()))->isInstanceOf(PaymentMethod::class);
+
+        verify($this->paymentMethod->getSubMethods())->notSame($methods);
+    }
+
+    /**
+     * @depends testItCanGetSubMethods
+     *
+     * @return void
+     */
+    public function testItCanAddSubMethod(): void
+    {
+        $this->paymentMethod->addSubMethod((new PaymentMethodHydrator())->hydrate([
+            'id'       => '138',
+            'name'     => 'PayPal',
+        ], new PaymentMethod()));
+
+        verify($this->paymentMethod->getSubMethods())->count(1);
+        verify($this->paymentMethod->getSubMethods())->hasKey(138);
+        verify($this->paymentMethod->getSubMethods())->containsOnlyInstancesOf(PaymentMethod::class);
     }
 }

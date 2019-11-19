@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PayNL\Sdk\Request;
 
 use RuntimeException;
-use GuzzleHttp\{
+use PayNL\GuzzleHttp\{
     Client,
     Psr7\Request,
     Exception\RequestException,

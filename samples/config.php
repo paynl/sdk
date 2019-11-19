@@ -17,7 +17,7 @@ return [
 //    'merchantId'            => 'M-6328-7160',
     'merchantId'            => 'M-9040-1000',
     'refundId'              => 'RF-7039-3062-3700',
-    'serviceId'             => 'SL-1066-2020',
+    'serviceId'             => 'SL-3167-1271',
     'terminalId'            => 'TH-3640-7060',
     'terminalTransactionId' => 'TT-9054-1003-5510',
     'transactionId'         => 'EX-3172-0377-7620',

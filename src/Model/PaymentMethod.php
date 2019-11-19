@@ -21,14 +21,34 @@ class PaymentMethod implements ModelInterface, JsonSerializable
     protected $id;
 
     /**
+     * @var integer|null
+     */
+    protected $subId;
+
+    /**
      * @var string
      */
     protected $name;
 
     /**
+     * @var string|null
+     */
+    protected $image;
+
+    /**
      * @var array
      */
-    protected $settings = [];
+    protected $countryCodes = [];
+
+    /**
+     * @var PaymentMethods
+     */
+    protected $subMethods;
+
+    public function __construct()
+    {
+        $this->subMethods = new PaymentMethods();
+    }
 
     /**
      * @return integer
@@ -46,6 +66,25 @@ class PaymentMethod implements ModelInterface, JsonSerializable
     public function setId(int $id): self
     {
         $this->id = $id;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSubId(): ?int
+    {
+        return $this->subId;
+    }
+
+    /**
+     * @param int $subId
+     *
+     * @return PaymentMethod
+     */
+    public function setSubId(int $subId): self
+    {
+        $this->subId = $subId;
         return $this;
     }
 
@@ -69,34 +108,77 @@ class PaymentMethod implements ModelInterface, JsonSerializable
     }
 
     /**
-     * @return array
+     * @return string
      */
-    public function getSettings(): array
+    public function getImage(): string
     {
-        return $this->settings;
+        return (string)$this->image;
     }
 
     /**
-     * @param array $settings
+     * @param string $image
      *
      * @return PaymentMethod
      */
-    public function setSettings(array $settings): self
+    public function setImage(string $image): self
     {
-        foreach ($settings as $setting) {
-            $this->addSetting($setting);
-        }
+        $this->image = $image;
         return $this;
     }
 
     /**
-     * @param string $setting
+     * @return array
+     */
+    public function getCountryCodes(): array
+    {
+        return $this->countryCodes;
+    }
+
+    /**
+     * @param array $countryCodes
      *
      * @return PaymentMethod
      */
-    public function addSetting(string $setting): self
+    public function setCountryCodes(array $countryCodes): self
     {
-        $this->settings[] = $setting;
+        $this->countryCodes = $countryCodes;
+        return $this;
+    }
+
+    /**
+     * @param string $countryCode
+     *
+     * @return $this
+     */
+    public function addCountryCode(string $countryCode): self
+    {
+        $this->countryCodes[] = $countryCode;
+        return $this;
+    }
+
+    /**
+     * @return PaymentMethods
+     */
+    public function getSubMethods(): PaymentMethods
+    {
+        return $this->subMethods;
+    }
+
+    /**
+     * @param PaymentMethods $subMethods
+     *
+     * @return PaymentMethod
+     */
+    public function setSubMethods(PaymentMethods $subMethods): self
+    {
+        $this->subMethods = $subMethods;
+
+        return $this;
+    }
+
+    public function addSubMethod(self $paymentMethod): self
+    {
+        $this->subMethods->addPaymentMethod($paymentMethod);
         return $this;
     }
 }

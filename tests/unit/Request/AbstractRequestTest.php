@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\PayNL\Sdk\Request;
 
 use Codeception\Test\Unit as UnitTest;
-use GuzzleHttp\{
+use PayNL\GuzzleHttp\{
     Client,
     Exception\ClientException,
     Psr7\Request,

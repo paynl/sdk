@@ -6,7 +6,7 @@ namespace Tests\Unit\PayNL\Sdk\Request\Services;
 
 use Codeception\Test\Unit as UnitTest;
 use PayNL\Sdk\Transformer\{
-    PaymentMethod,
+    PaymentMethods,
     TransformerInterface
 };
 use PayNL\Sdk\Request\{
@@ -105,6 +105,6 @@ class GetPaymentMethodsTest extends UnitTest
     {
         verify(method_exists($this->request, 'getTransformer'));
         verify($this->request->getTransformer())->isInstanceOf(TransformerInterface::class);
-        verify($this->request->getTransformer())->isInstanceOf(PaymentMethod::class);
+        verify($this->request->getTransformer())->isInstanceOf(PaymentMethods::class);
     }
 }

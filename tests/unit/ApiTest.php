@@ -5,14 +5,16 @@ declare(strict_types=1);
 namespace Tests\Unit\PayNL\Sdk;
 
 use Codeception\Test\Unit as UnitTest;
-use GuzzleHttp\Client;
-use PayNL\Sdk\{Api,
+use PayNL\GuzzleHttp\Client;
+use PayNL\Sdk\{
+    Api,
     AuthAdapter\AdapterInterface,
     AuthAdapter\Basic,
     Exception\InvalidArgumentException,
     Request\AbstractRequest,
     Transformer\Simple,
-    Transformer\TransformerInterface};
+    Transformer\TransformerInterface
+};
 use UnitTester, Exception;
 
 /**

@@ -7,7 +7,7 @@ namespace PayNL\Sdk\Request\Services;
 use PayNL\Sdk\{
     Request\AbstractRequest,
     Transformer\TransformerInterface,
-    Transformer\PaymentMethod as PaymentMethodTransformer
+    Transformer\PaymentMethods as PaymentMethodTransformer
 };
 use PayNL\Sdk\Request\Parameter\ServiceIdTrait;
 

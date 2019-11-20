@@ -40,6 +40,8 @@
       "PayNL\\GuzzleHttp\\Psr7\\": "build/psr7/src"
     },
     "files": [
+      "./src/Resources/functions/split_address.php",
+      "./src/Resources/functions/vat.php",
       "./build/guzzle/src/functions_include.php",
       "./build/promises/src/functions_include.php",
       "./build/psr7/src/functions_include.php"

@@ -5,13 +5,13 @@ declare(strict_types=1);
 require_once  __DIR__ . '/../vendor/autoload.php';
 
 // vat
-$amountIncludingVat = 121.00;
-$vatAmount = 21.00;
+$amountIncludingVat = 143.34;
+$vatAmount = 23.39;
 
 echo '<pre/>' . PHP_EOL .
     'Amount including VAT: ' . number_format($amountIncludingVat, 2) . PHP_EOL .
     'VAT amount: ' . number_format($vatAmount, 2) . PHP_EOL .
-    'VAT percentage: ' . paynl_calc_vat_percentage($amountIncludingVat, $vatAmount) . PHP_EOL .
+    'VAT percentage: ' . number_format(paynl_calc_vat_percentage($amountIncludingVat, $vatAmount), 2) . PHP_EOL .
     'VAT Class: ' . paynl_determine_vat_class($amountIncludingVat, $vatAmount) . PHP_EOL
 ;
 

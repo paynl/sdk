@@ -27,8 +27,8 @@ class Text
         if (true === empty($street) || true === empty($number)) {
             $addressParts = preg_split('/([A-z]{2,})/', $address, 2, PREG_SPLIT_DELIM_CAPTURE);
 
-            $street = trim(array_shift($addressParts));
-            $number = trim(implode('', $addressParts));
+            $number = trim(array_shift($addressParts));
+            $street = trim(implode('', $addressParts));
         }
 
         $number = substr($number, 0, 45);

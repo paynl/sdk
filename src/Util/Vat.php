@@ -22,6 +22,14 @@ class Vat
     ];
 
     /**
+     * @return array
+     */
+    public function getVatClasses(): array
+    {
+        return $this->vatClasses;
+    }
+
+    /**
      * @param float $amountIncludingVat
      * @param float $vatAmount
      *
@@ -40,38 +48,18 @@ class Vat
         return (float) number_format(($vatAmount / ($amountIncludingVat - $vatAmount)) * 100, 2);
     }
 
+    /**
+     * Gives the nearest VAT class based on the given percentage.
+     *
+     * @param float $vatPercentage
+     *
+     * @return string
+     */
     public function determineVatClass(float $vatPercentage): string
     {
-        /*
-         *  $taxClasses = [
-            0  => 'N',
-            9  => 'L',
-            21 => 'H',
-        ];
-
-        $taxRate = paynl_calc_tax_percentage($amountInclTax, $taxAmount);
-
-        return $taxClasses[(static function ($number, array $set) {
-            $output = 0;
-            $number = (int)$number;
-            if (1 < count($set)) {
-                $NDat = array();
-                foreach ($set as $n) {
-                    $NDat[abs($number - $n)] = $n;
-                }
-                ksort($NDat);
-                $NDat = array_values($NDat);
-                $output = $NDat[0];
-            }
-            return $output;
-        })($taxRate, array_keys($taxClasses))];
-         */
-
+        $vatClasses = $this->getVatClasses();
         return (string) array_search((static function (int $inputNumber, array $numberSet) {
-            if (1 === count($numberSet)) {
-                return 0;
-            }
-
+            // determine the nearest
             $numberData = [];
             foreach ($numberSet as $entry) {
                 $numberData[abs($inputNumber - $entry)] = $entry;
@@ -80,6 +68,6 @@ class Vat
             $numberData = array_values($numberData);
             return array_shift($numberData);
 
-        })((int) $vatPercentage, array_values($this->vatClasses)), $this->vatClasses, true);
+        })((int) $vatPercentage, array_values($vatClasses)), $vatClasses, true);
     }
 }

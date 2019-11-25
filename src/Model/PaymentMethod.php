@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PayNL\Sdk\Model;
 
 use JsonSerializable;
+use PayNL\Sdk\Exception\InvalidArgumentException;
 
 /**
  * Class PaymentMethod
@@ -21,9 +22,9 @@ class PaymentMethod implements ModelInterface, JsonSerializable
     protected $id;
 
     /**
-     * @var integer|null
+     * @var string
      */
-    protected $subId;
+    protected $subId = '';
 
     /**
      * @var string
@@ -70,20 +71,32 @@ class PaymentMethod implements ModelInterface, JsonSerializable
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function getSubId(): ?int
+    public function getSubId(): string
     {
-        return $this->subId;
+        return (string) $this->subId;
     }
 
     /**
-     * @param int $subId
+     * @param mixed $subId
      *
      * @return PaymentMethod
      */
-    public function setSubId(int $subId): self
+    public function setSubId($subId): self
     {
+        if (true === is_int($subId)) {
+            $subId = (string) $subId;
+        } elseif (false === is_string($subId)) {
+            throw new InvalidArgumentException(
+                sprintf(
+                    '%s expects argument given to be a string or integer, %s given',
+                    __METHOD__,
+                    is_object($subId) ? get_class($subId) : gettype($subId)
+                )
+            );
+        }
+
         $this->subId = $subId;
         return $this;
     }

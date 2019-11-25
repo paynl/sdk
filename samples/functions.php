@@ -8,13 +8,15 @@ require_once  __DIR__ . '/../vendor/autoload.php';
 $amountIncludingVat = 143.34;
 $vatAmount = 23.39;
 
-echo '<pre/>' . PHP_EOL .
+echo '<pre/><h3>paynl_calc_vat_percentage & paynl_determine_vat_class</h3>' . PHP_EOL;
+echo  PHP_EOL .
     'Amount including VAT: ' . number_format($amountIncludingVat, 2) . PHP_EOL .
     'VAT amount: ' . number_format($vatAmount, 2) . PHP_EOL .
     'VAT percentage: ' . number_format(paynl_calc_vat_percentage($amountIncludingVat, $vatAmount), 2) . PHP_EOL .
     'VAT Class: ' . paynl_determine_vat_class($amountIncludingVat, $vatAmount) . PHP_EOL
 ;
 
+echo '<h3>paynl_split_address</h3>' . PHP_EOL;
 $address1 = 'Jan Campertlaan 10';
 $address2 = 'SomeLane 14b';
 $address3 = '124 West Avenue';

@@ -47,8 +47,8 @@ declare(strict_types=1);
                     foreach ($samples as $sample) {
                         echo sprintf(
                             '<div>
-                            <a href="%s" target="_blank">%s</a>
-                        </div>' . PHP_EOL,
+                                <a href="%s" target="_blank">%s</a>
+                            </div>' . PHP_EOL,
                             ltrim(str_replace(__DIR__, '', $sample), DIRECTORY_SEPARATOR),
                             str_replace(['-', '.php'], [' ', ''], ucfirst(basename($sample)))
                         );
@@ -57,6 +57,10 @@ declare(strict_types=1);
                 }
             }
             ?>
+            <h2>Functions</h2>
+            <div>
+                <a href="functions.php" target="_blank">overview</a>
+            </div>
         </div>
     </body>
 </html>

@@ -19,6 +19,8 @@ class PaymentMethod extends AbstractHydrator
     {
         $this->validateGivenObject($object, PaymentMethodModel::class);
 
+        $data['image'] = $data['image'] ?? '';
+
         if (true === array_key_exists('subId', $data) && true === empty($data['subId'])) {
             unset($data['subId']);
         }

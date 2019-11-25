@@ -19,6 +19,7 @@ use PayNL\Sdk\Model\{
 use PayNL\Sdk\Hydrator\{
     Address as AddressHydrator,
     Customer as CustomerHydrator,
+    PaymentMethod as PaymentMethodHydrator,
     Product as ProductHydrator,
     Status as StatusHydrator,
     Statistics as StatisticsHydrator
@@ -56,7 +57,7 @@ class Transaction extends AbstractHydrator
         $data['exchangeUrl'] = $data['exchangeUrl'] ?? '';
 
         if (true === array_key_exists('paymentMethod', $data) && true === is_array($data['paymentMethod'])) {
-            $data['paymentMethod'] = (new ClassMethods())->hydrate($data['paymentMethod'], new PaymentMethod());
+            $data['paymentMethod'] = (new PaymentMethodHydrator())->hydrate($data['paymentMethod'], new PaymentMethod());
         }
         foreach (['address', 'billingAddress'] as $addressKey) {
             if (true === array_key_exists($addressKey, $data) && true === is_array($data[$addressKey])) {

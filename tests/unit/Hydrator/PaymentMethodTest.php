@@ -80,8 +80,8 @@ class PaymentMethodTest extends UnitTest
 
         expect($paymentMethod->getId())->int();
         expect($paymentMethod->getId())->equals(10);
-        expect($paymentMethod->getSubId())->int();
-        expect($paymentMethod->getSubId())->equals(1);
+        expect($paymentMethod->getSubId())->string();
+        expect($paymentMethod->getSubId())->equals('1');
         expect($paymentMethod->getName())->string();
         expect($paymentMethod->getName())->equals('iDeal');
         expect($paymentMethod->getImage())->string();
@@ -104,7 +104,7 @@ class PaymentMethodTest extends UnitTest
 
         expect($paymentMethod->getId())->int();
         expect($paymentMethod->getId())->equals(138);
-        expect($paymentMethod->getSubId())->null();
+        expect($paymentMethod->getSubId())->isEmpty();
         expect($paymentMethod->getName())->string();
         expect($paymentMethod->getName())->equals('PayPal');
         expect($paymentMethod->getImage())->string();
@@ -153,8 +153,8 @@ class PaymentMethodTest extends UnitTest
 
         expect($data['id'])->int();
         expect($data['id'])->equals(10);
-        expect($data['subId'])->int();
-        expect($data['subId'])->equals(1);
+        expect($data['subId'])->string();
+        expect($data['subId'])->equals('1');
         expect($data['name'])->string();
         expect($data['name'])->equals('iDeal');
         expect($data['image'])->string();

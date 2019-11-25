@@ -15,14 +15,15 @@ use Zend\Hydrator\ClassMethods;
 
 $transaction = (new Hydrator\Transaction)->hydrate([
     'serviceId' => 'SL-3490-4320',
-    'amount' => (new ClassMethods())->hydrate([
+    'amount' => [
         'amount'   => 34500,
         'currency' => 'USD'
-    ], new Model\Amount()),
+    ],
     'returnUrl' => 'https://www.pay.nl/return-url',
     'exchangeUrl' => 'https://www.pay.nl/exchange-url',
     'paymentMethod' => [
         'id' => 10,
+        'subId' => 2,
         'name' => 'Rabobank',
     ],
     'testMode' => 0,
@@ -35,7 +36,7 @@ $transaction = (new Hydrator\Transaction)->hydrate([
     'description' => 'Test description',
     'orderNumber' => 'ORD000000',
     'endUserId' => 0,
-    'customer' => (new Hydrator\Customer())->hydrate([
+    'customer' => [
         'initials' => 'B',
         'firstName' => 'Bruce',
         'lastName' => 'Wayne',
@@ -45,21 +46,21 @@ $transaction = (new Hydrator\Transaction)->hydrate([
         'phone' => '612121212',
         'email' => 'b.wayne@wayne-enterprises.com',
         'trustLevel' => '-5',
-        'bankAccount' => (new Hydrator\BankAccount())->hydrate([
+        'bankAccount' => [
             'iban' => 'NL91ABNA0417164300',
             'bic' => 'INGBNL2A',
             'owner' => 'Bruce Wayne'
-        ], new Model\BankAccount()),
+        ],
         'reference' => '123456789',
         'language' => 'NL',
-    ], new Model\Customer()),
-    'company' => (new ClassMethods())->hydrate([
+    ],
+    'company' => [
         'name' => 'Wayne Enterprises Inc.',
         'coc' => '12345678',
         'vat' => '24456789B01',
         'countryCode' => 'US'
-    ], new Model\Company()),
-    'address' => (new Hydrator\Address())->hydrate([
+    ],
+    'address' => [
         'streetName' => 'Mountain Drive',
         'streetNumber' => '1007',
         'zipCode' => '24857',
@@ -68,8 +69,8 @@ $transaction = (new Hydrator\Transaction)->hydrate([
         'countryCode' => 'US',
         'initials' => 'B',
         'lastName' => 'Wayne'
-    ], new Model\Address()),
-    'billingAddress' => (new Hydrator\Address())->hydrate([
+    ],
+    'billingAddress' => [
         'streetName' => 'Mountain Drive',
         'streetNumber' => '1007',
         'zipCode' => '24857',
@@ -78,20 +79,20 @@ $transaction = (new Hydrator\Transaction)->hydrate([
         'countryCode' => 'US',
         'initials' => 'B',
         'lastName' => 'Wayne'
-    ], new Model\Address()),
+    ],
     'products' => [
-        (new Hydrator\Product())->hydrate([
+        [
             'id' => 'P-1000-00021',
             'description' => 'Tumbler',
-            'price' => (new ClassMethods())->hydrate([
+            'price' => [
                 'amount' => '2500000',
                 'currency' => 'USD'
-            ], new Model\Amount()),
+            ],
             'quantity' => 1,
             'vat' => 'N'
-        ], new Model\Product())
+        ],
     ],
-    'statistics' => (new Hydrator\Statistics())->hydrate([
+    'statistics' => [
         'promoterId' => 0,
         'info' => 'This is information',
         'tool' => 'I use this tool',
@@ -101,7 +102,7 @@ $transaction = (new Hydrator\Transaction)->hydrate([
         'transferData' => [
             'dataaaaa'
         ]
-    ], new Model\Statistics()),
+    ],
 ], new Model\Transaction());
 
 $authAdapter = getAuthAdapter();

@@ -10,6 +10,7 @@ use PayNL\Sdk\Model\{
     PaymentMethod,
     PaymentMethods
 };
+use PayNL\Sdk\Exception\InvalidArgumentException;
 use PayNL\Sdk\Hydrator\PaymentMethod as PaymentMethodHydrator;
 use JsonSerializable;
 
@@ -85,13 +86,25 @@ class PaymentMethodTest extends UnitTest
      */
     public function testItCanGetASubId(): void
     {
-        verify($this->paymentMethod->getSubId())->null();
+        verify($this->paymentMethod->getSubId())->isEmpty();
 
         $this->paymentMethod->setSubId(8);
 
-        verify($this->paymentMethod->getSubId())->int();
+        verify($this->paymentMethod->getSubId())->string();
         verify($this->paymentMethod->getSubId())->notEmpty();
-        verify($this->paymentMethod->getSubId())->equals(8);
+        verify($this->paymentMethod->getSubId())->equals('8');
+    }
+
+    /**
+     * @depends testItCanSetASubId
+     *
+     * @return void
+     */
+    public function testItThrowsAnExceptionWhenSubIdIsNotAStringNorAnInteger()
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $this->paymentMethod->setSubId(array());
     }
 
     /**

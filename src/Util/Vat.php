@@ -11,10 +11,16 @@ namespace PayNL\Sdk\Util;
  */
 class Vat
 {
+    /*
+     * Class type constant definitions
+     */
     public const CLASS_NONE = 'N';
     public const CLASS_LOW  = 'L';
     public const CLASS_HIGH = 'H';
 
+    /**
+     * @var array
+     */
     protected $vatClasses = [
         self::CLASS_NONE => 0,
         self::CLASS_LOW  => 9,
@@ -37,7 +43,7 @@ class Vat
      */
     public function calculatePercentage(float $amountIncludingVat, float $vatAmount): float
     {
-        if (empty($amountIncludingVat) || empty($vatAmount)) {
+        if (empty($amountIncludingVat) === true || empty($vatAmount) === true) {
             return 0.00;
         }
 
@@ -45,7 +51,7 @@ class Vat
             return 100.00;
         }
 
-        return (float) number_format(($vatAmount / ($amountIncludingVat - $vatAmount)) * 100, 2);
+        return (float)number_format(($vatAmount / ($amountIncludingVat - $vatAmount)) * 100, 2);
     }
 
     /**
@@ -58,7 +64,7 @@ class Vat
     public function determineVatClass(float $vatPercentage): string
     {
         $vatClasses = $this->getVatClasses();
-        return (string) array_search((static function (int $inputNumber, array $numberSet) {
+        return (string)array_search((static function (int $inputNumber, array $numberSet) {
             // determine the nearest
             $numberData = [];
             foreach ($numberSet as $entry) {
@@ -67,7 +73,6 @@ class Vat
             ksort($numberData);
             $numberData = array_values($numberData);
             return array_shift($numberData);
-
-        })((int) $vatPercentage, array_values($vatClasses)), $vatClasses, true);
+        })((int)$vatPercentage, array_values($vatClasses)), $vatClasses, true);
     }
 }

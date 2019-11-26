@@ -30,6 +30,7 @@ use PayNL\Sdk\Model\{
 use Zend\Hydrator\ClassMethods;
 use Zend\Hydrator\HydratorInterface;
 use PayNL\Sdk\DateTime;
+use Exception;
 
 /**
  * Class TransactionTest
@@ -48,6 +49,8 @@ class TransactionTest extends UnitTest
     }
 
     /**
+     * @throws Exception
+     *
      * @return void
      */
     public function testItShouldAcceptATransactionModel(): void
@@ -57,6 +60,8 @@ class TransactionTest extends UnitTest
     }
 
     /**
+     * @throws Exception
+     *
      * @return void
      */
     public function testItThrowsAnExceptionWhenAWrongInstanceGiven(): void
@@ -68,6 +73,8 @@ class TransactionTest extends UnitTest
     }
 
     /**
+     * @throws Exception
+     *
      * @return void
      */
     public function testItShouldCorrectlyFillModel(): void
@@ -76,25 +83,25 @@ class TransactionTest extends UnitTest
         $transaction = $hydrator->hydrate([
             'id' => 484512854,
             'serviceId' => 'SL-1000-0001',
-            'status' => (new StatusHydrator())->hydrate([
+            'status' => [
                 'code'   => 316,
                 'name'   => 'processed',
                 'date'   => DateTime::createFromFormat('Y-m-d', '2019-09-11'),
                 'reason' => 'Just because...'
-            ], new Status()),
+            ],
             'returnUrl' => 'https://www.pay.nl/return-url',
             'exchangeUrl' => 'https://www.pay.nl/exchange-url',
             'reference' => '',
-            'paymentMethod' => (new ClassMethods())->hydrate([
+            'paymentMethod' => [
                 'id' => 10,
                 'name' => 'ideal',
-            ], new PaymentMethod()),
+            ],
             'description' => 'Test description',
             'issuerUrl' => '',
             'orderNumber' => '',
             'invoiceDate' => DateTime::createFromFormat('Y-m-d', '2019-09-11'),
             'deliveryDate' => '2019-09-11T14:57:16+02:00',
-            'address' => (new AddressHydrator())->hydrate([
+            'address' => [
                 'streetName' => 'Mountain Drive',
                 'streetNumber' => '1007',
                 'zipCode' => '24857',
@@ -103,8 +110,8 @@ class TransactionTest extends UnitTest
                 'countryCode' => 'US',
                 'initials' => 'B',
                 'lastName' => 'Wayne'
-            ], new Address()),
-            'billingAddress' => (new AddressHydrator())->hydrate([
+            ],
+            'billingAddress' => [
                 'streetName' => 'Mountain Drive',
                 'streetNumber' => '1007',
                 'zipCode' => '24857',
@@ -113,8 +120,8 @@ class TransactionTest extends UnitTest
                 'countryCode' => 'US',
                 'initials' => 'B',
                 'lastName' => 'Wayne'
-            ], new Address()),
-            'customer' => (new CustomerHydrator())->hydrate([
+            ],
+            'customer' => [
                 'initials' => 'B',
                 'firstName' => 'Bruce',
                 'lastName' => 'Wayne',
@@ -124,43 +131,43 @@ class TransactionTest extends UnitTest
                 'phone' => '612121212',
                 'email' => 'b.wayne@wayne-enterprises.com',
                 'trustLevel' => '-5',
-                'bankAccount' => (new BankAccountHydrator())->hydrate([
+                'bankAccount' => [
                     'iban' => 'NL91ABNA0417164300',
                     'bic' => 'INGBNL2A',
                     'owner' => 'Bruce Wayne'
-                ], new BankAccount()),
+                ],
                 'reference' => '123456789',
                 'language' => 'NL',
-            ], new Customer()),
+            ],
             'products' => [
-                (new ProductHydrator())->hydrate([
+                [
                     'id' => 'P-1000-00021',
                     'description' => 'Tumbler',
-                    'price' => (new ClassMethods())->hydrate([
+                    'price' => [
                         'amount' => '2500000',
                         'currency' => 'USD'
-                    ], new Amount()),
+                    ],
                     'quantity' => 1,
                     'vat' => 0
-                ], new Product())
+                ]
             ],
-            'amount' => (new ClassMethods())->hydrate([
+            'amount' => [
                 'amount'   => 34500,
                 'currency' => 'USD'
-            ], new Amount()),
-            'amountConverted' => (new ClassMethods())->hydrate([
+            ],
+            'amountConverted' => [
                 'amount'   => 28000,
                 'currency' => 'EUR'
-            ], new Amount()),
-            'amountPaid' => (new ClassMethods())->hydrate([
+            ],
+            'amountPaid' => [
                 'amount'   => 28000,
                 'currency' => 'EUR'
-            ], new Amount()),
-            'amountRefunded' => (new ClassMethods())->hydrate([
+            ],
+            'amountRefunded' => [
                 'amount'   => 0,
                 'currency' => 'EUR'
-            ], new Amount()),
-            'statistics' => (new StatisticsHydrator())->hydrate([
+            ],
+            'statistics' => [
                 'promoterId' => 0,
                 'info' => 'This is information',
                 'tool' => 'I use this tool',
@@ -170,19 +177,19 @@ class TransactionTest extends UnitTest
                 'transferData' => [
                     'dataaaaa'
                 ]
-            ], new Statistics()),
+            ],
             'createdAt' => DateTime::createFromFormat('Y-m-d', '2019-09-11'),
             'expiresAt' => '2019-12-31T00:00:00+02:00',
             'testMode' => 0,
             'transferType' => 'merchant',
             'transferValue' => 'M-1000-1000',
             'endUserId' => '0',
-            'company' => (new ClassMethods())->hydrate([
+            'company' => [
                 'name' => 'Wayne Enterprises Inc.',
-                'coc' => '12345678',
+                'coc' => null,
                 'vat' => '24456789B01',
                 'countryCode' => 'US'
-            ], new Company()),
+            ],
         ], new Transaction());
 
         expect($transaction->getId())->string();
@@ -227,9 +234,12 @@ class TransactionTest extends UnitTest
         expect($transaction->getEndUserId())->string();
         expect($transaction->getEndUserId())->equals('0');
         expect($transaction->getCompany())->isInstanceOf(Company::class);
+        expect($transaction->getCompany()->getCoc())->equals('');
     }
 
     /**
+     * @throws Exception
+     *
      * @return void
      */
     public function testItCanExtract(): void

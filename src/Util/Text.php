@@ -18,17 +18,23 @@ class Text
      */
     public function splitAddress(string $address): array
     {
+        $street = $number = '';
+
         $address = trim($address);
         $addressParts = preg_split('/(\s+)(\d+)/', $address, 2, PREG_SPLIT_DELIM_CAPTURE);
 
-        $street = trim(array_shift($addressParts));
-        $number = trim(implode('', $addressParts));
+        if (true === is_array($addressParts)) {
+            $street = trim(array_shift($addressParts) ?? '');
+            $number = trim(implode('', $addressParts));
+        }
 
         if (true === empty($street) || true === empty($number)) {
             $addressParts = preg_split('/([A-z]{2,})/', $address, 2, PREG_SPLIT_DELIM_CAPTURE);
 
-            $number = trim(array_shift($addressParts));
-            $street = trim(implode('', $addressParts));
+            if (true === is_array($addressParts)) {
+                $number = trim(array_shift($addressParts) ?? '');
+                $street = trim(implode('', $addressParts));
+            }
         }
 
         $number = substr($number, 0, 45);

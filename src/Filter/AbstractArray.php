@@ -42,7 +42,7 @@ abstract class AbstractArray implements FilterInterface
     {
         $output = '';
         $values = $this->getValues();
-        array_walk_recursive($values, static function($item, $key) use (&$output) {
+        array_walk_recursive($values, static function ($item, $key) use (&$output) {
             $output .= "{$key}: {$item}, ";
         });
         return trim($output, ', ');

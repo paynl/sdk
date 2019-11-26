@@ -29,15 +29,14 @@ class Tokenize extends AbstractRequest
     public function __construct(string $transactionId, string $cardIdOrAuthToken)
     {
         $body = [
-            'companyCardId'    => 0 === strpos($cardIdOrAuthToken, 'VY-') ? $cardIdOrAuthToken : '',
-            'companyCardToken' => 0 !== strpos($cardIdOrAuthToken, 'VY-') ? $cardIdOrAuthToken : '',
+            'companyCardId'    => strpos($cardIdOrAuthToken, 'VY-') === 0 ? $cardIdOrAuthToken : '',
+            'companyCardToken' => strpos($cardIdOrAuthToken, 'VY-') !== 0 ? $cardIdOrAuthToken : '',
         ];
 
         unset($body[array_search('', $body, true)]);
 
         $this->setTransactionId($transactionId)
             ->setBody((object)$body);
-
     }
 
     /**

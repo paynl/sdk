@@ -53,8 +53,8 @@ trait DebugTrait
             return;
         }
 
-        print '<pre>';
+        echo '<pre>';
         var_dump(...$arguments);
-        print '</pre>' . PHP_EOL;
+        echo '</pre>' . PHP_EOL;
     }
 }

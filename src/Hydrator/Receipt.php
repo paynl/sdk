@@ -35,8 +35,7 @@ class Receipt extends AbstractHydrator
         }
 
         if (true === array_key_exists('paymentMethod', $data) && true === is_array($data['paymentMethod'])) {
-            if (
-                true === array_key_exists('id', $data['paymentMethod'])
+            if (true === array_key_exists('id', $data['paymentMethod'])
                 && true === is_string($data['paymentMethod']['id'])
             ) {
                 $data['paymentMethod']['id'] = 0;

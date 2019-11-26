@@ -32,8 +32,8 @@ abstract class AbstractHydrator extends ClassMethods
     public function __construct($underscoreSeparatedKeys = true, $methodExistsCheck = false)
     {
         // nasty construction to prevent unused parameter notification from PHPStan
-        $underscoreSeparatedKeys = $underscoreSeparatedKeys ? false : $underscoreSeparatedKeys;
-        $methodExistsCheck       = false === $methodExistsCheck ?: true;
+        $underscoreSeparatedKeys = $underscoreSeparatedKeys === true ? false : $underscoreSeparatedKeys;
+        $methodExistsCheck       = $methodExistsCheck === false ?: true;
 
         // override the given params
         parent::__construct($underscoreSeparatedKeys, $methodExistsCheck);

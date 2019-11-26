@@ -56,8 +56,12 @@ class TransactionTest extends UnitTest
     {
         $input = json_encode([
             'transactions' => [
-                [],
-                [],
+                [
+                    'id' => 484512854
+                ],
+                [
+                    'id' => 484512855
+                ],
             ],
         ]);
 

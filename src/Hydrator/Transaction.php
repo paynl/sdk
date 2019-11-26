@@ -74,21 +74,7 @@ class Transaction extends AbstractHydrator
             $data['statistics'] = (new StatisticsHydrator())->hydrate($data['statistics'], new Statistics());
         }
         if (true === array_key_exists('company', $data) && true === is_array($data['company'])) {
-            $companyData = $data['company'];
-            foreach ($data['company'] as $key => $value) {
-                if (null === $value) {
-                    $companyData[$key] = '';
-                }
-            }
-
-            unset($data['company']);
-
-            // check if there is data for company
-            if (0 < count(array_filter($companyData, static function ($value) {
-                return '' !== $value;
-            }))) {
-                $data['company'] = (new ClassMethods())->hydrate($companyData, new Company());
-            }
+            $data['company'] = (new ClassMethods())->hydrate($data['company'], new Company());
         }
 
         $amountFields = [

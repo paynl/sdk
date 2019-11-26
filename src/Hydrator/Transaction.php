@@ -45,6 +45,9 @@ class Transaction extends AbstractHydrator
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     *
+     * @todo split to multiple methods
      */
     public function hydrate(array $data, $object): TransactionModel
     {
@@ -71,7 +74,21 @@ class Transaction extends AbstractHydrator
             $data['statistics'] = (new StatisticsHydrator())->hydrate($data['statistics'], new Statistics());
         }
         if (true === array_key_exists('company', $data) && true === is_array($data['company'])) {
-            $data['company'] = (new ClassMethods())->hydrate($data['company'], new Company());
+            $companyData = $data['company'];
+            foreach ($data['company'] as $key => $value) {
+                if (null === $value) {
+                    $companyData[$key] = '';
+                }
+            }
+
+            unset($data['company']);
+
+            // check if there is data for company
+            if (0 < count(array_filter($companyData, static function ($value) {
+                return '' !== $value;
+            }))) {
+                $data['company'] = (new ClassMethods())->hydrate($companyData, new Company());
+            }
         }
 
         $amountFields = [

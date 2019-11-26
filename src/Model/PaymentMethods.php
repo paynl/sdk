@@ -36,7 +36,7 @@ class PaymentMethods implements ModelInterface, Countable, ArrayAccess, Iterator
     /**
      * @param integer $total
      *
-     * @return Currencies
+     * @return PaymentMethods
      */
     public function setTotal(int $total): self
     {

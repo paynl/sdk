@@ -77,7 +77,7 @@ class Merchant extends AbstractHydrator
             if ($createdAt instanceof DateTime) {
                 $createdAt = $createdAt->format(DateTime::ATOM);
             }
-            $data['createdAt'] = (true === empty($createdAt) ? null : DateTime::createFromFormat(DateTime::ATOM, $createdAt));
+            $data['createdAt'] = (empty($createdAt) === true ? null : DateTime::createFromFormat(DateTime::ATOM, $createdAt));
         }
 
         /** @var MerchantModel $merchant */

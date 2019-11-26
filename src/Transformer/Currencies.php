@@ -9,6 +9,11 @@ use PayNL\Sdk\{
     Hydrator\Currencies as CurrenciesHydrator
 };
 
+/**
+ * Class Currencies
+ *
+ * @package PayNL\Sdk\Transformer
+ */
 class Currencies extends AbstractTransformer
 {
     /**
@@ -22,5 +27,4 @@ class Currencies extends AbstractTransformer
 
         return (new CurrenciesHydrator())->hydrate($inputToTransform, new CurrenciesModel());
     }
-
 }

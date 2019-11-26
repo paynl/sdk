@@ -56,6 +56,8 @@ class Config
     }
 
     /**
+     * @throws LogicException
+     *
      * @return void
      */
     private function __clone()
@@ -66,8 +68,7 @@ class Config
 
     public function load(array $config): void
     {
-        if (
-            false === array_key_exists(self::KEY_API_URL, $config)
+        if (false === array_key_exists(self::KEY_API_URL, $config)
             || false === array_key_exists(self::KEY_USERNAME, $config)
             || false === array_key_exists(self::KEY_PASSWORD, $config)
         ) {

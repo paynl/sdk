@@ -56,5 +56,4 @@ class Directdebit extends AbstractTransformer
 
         return $output;
     }
-
 }

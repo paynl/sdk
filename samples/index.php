@@ -53,7 +53,6 @@ declare(strict_types=1);
                             str_replace(['-', '.php'], [' ', ''], ucfirst(basename($sample)))
                         );
                     }
-
                 }
             }
             ?>

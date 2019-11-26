@@ -30,7 +30,7 @@ class Get extends AbstractRequest
     protected $type;
 
     /**
-     * @var string|int
+     * @var string|integer
      */
     protected $value;
 
@@ -39,6 +39,8 @@ class Get extends AbstractRequest
      *
      * @param string $type
      * @param string|int $value
+     *
+     * @throws InvalidArgumentException
      */
     public function __construct(string $type, $value)
     {

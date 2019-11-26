@@ -43,8 +43,7 @@ class Directdebit extends AbstractHydrator
             $data['bankAccount'] = (new BankAccountHydrator())->hydrate($data['bankAccount'], new BankAccount());
         }
 
-        if (
-            true === array_key_exists('status', $data)
+        if (true === array_key_exists('status', $data)
             && false === ($data['status'] instanceof Status)
             && true === is_array($data['status'])
             && true === array_key_exists('code', $data['status'])
@@ -53,8 +52,7 @@ class Directdebit extends AbstractHydrator
             $data['status'] = (new StatusHydrator())->hydrate($data['status'], new Status());
         }
 
-        if (
-            true === array_key_exists('declined', $data)
+        if (true === array_key_exists('declined', $data)
             && false === ($data['declined'] instanceof Status)
             && true === is_array($data['declined'])
             && true === array_key_exists('code', $data['declined'])

@@ -45,6 +45,7 @@ class Transaction extends AbstractHydrator
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      *
      * @todo split to multiple methods
      */
@@ -79,13 +80,14 @@ class Transaction extends AbstractHydrator
                     $companyData[$key] = '';
                 }
             }
-            unset ($data['company']);
+
+            unset($data['company']);
 
             // check if there is data for company
             if (0 < count(array_filter($companyData, static function ($value) {
                 return '' !== $value;
             }))) {
-                $data['company'] = (new ClassMethods())->hydrate($companyData,  new Company());
+                $data['company'] = (new ClassMethods())->hydrate($companyData, new Company());
             }
         }
 

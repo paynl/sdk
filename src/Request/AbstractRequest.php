@@ -261,6 +261,8 @@ abstract class AbstractRequest implements RequestInterface
     /**
      * @param Response $response
      *
+     * @throws RuntimeException when no HTTP client is set
+     *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.NPathComplexity)
      *
@@ -304,7 +306,6 @@ abstract class AbstractRequest implements RequestInterface
             }
 
             $statusCode = $guzzleResponse->getStatusCode();
-
         } catch (RequestException $re) {
             $rawBody = $errorMessages = '';
             $body = $re->getMessage();
@@ -328,9 +329,8 @@ abstract class AbstractRequest implements RequestInterface
             }
 
             $statusCode = $re->getCode();
-
         } catch (GuzzleException | ExceptionInterface $e) {
-            $statusCode = $e->getCode() ?: 500;
+            $statusCode = $e->getCode() ?? 500;
             $rawBody = $e->getMessage();
             $body = $e->getMessage();
         }
@@ -340,7 +340,7 @@ abstract class AbstractRequest implements RequestInterface
             ->setBody($body)
         ;
 
-        if (true === $this->isDebug()) {
+        if ($this->isDebug() === true) {
             $this->dumpDebugInfo('Response: ', $response);
         }
     }

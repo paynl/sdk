@@ -25,5 +25,4 @@ class Services extends AbstractTransformer
 
         return (new ServicesHydrator)->hydrate($inputToTransform, new ServicesModel());
     }
-
 }

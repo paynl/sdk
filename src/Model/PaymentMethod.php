@@ -75,24 +75,26 @@ class PaymentMethod implements ModelInterface, JsonSerializable
      */
     public function getSubId(): string
     {
-        return (string) $this->subId;
+        return (string)$this->subId;
     }
 
     /**
      * @param mixed $subId
+     *
+     * @throws InvalidArgumentException when given $subId is not a string nor an integer
      *
      * @return PaymentMethod
      */
     public function setSubId($subId): self
     {
         if (true === is_int($subId)) {
-            $subId = (string) $subId;
+            $subId = (string)$subId;
         } elseif (false === is_string($subId)) {
             throw new InvalidArgumentException(
                 sprintf(
                     '%s expects argument given to be a string or integer, %s given',
                     __METHOD__,
-                    is_object($subId) ? get_class($subId) : gettype($subId)
+                    is_object($subId) === true ? get_class($subId) : gettype($subId)
                 )
             );
         }

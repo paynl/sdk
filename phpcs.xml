@@ -35,11 +35,11 @@
     <rule ref="Generic.Arrays.DisallowLongArraySyntax" />
     <rule ref="Generic.Commenting.Todo" />
     <rule ref="Generic.Commenting.Fixme" />
-    <rule ref="Generic.Formatting.SpaceAfterCast">
-        <properties>
-            <property name="spacing" value="0" />
-        </properties>
-    </rule>
+<!--    <rule ref="Generic.Formatting.SpaceAfterCast">-->
+<!--        <properties>-->
+<!--            <property name="spacing" value="0" />-->
+<!--        </properties>-->
+<!--    </rule>-->
     <rule ref="Generic.Formatting.SpaceAfterNot">
         <properties>
             <property name="spacing" value="0" />

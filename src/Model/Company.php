@@ -16,22 +16,22 @@ class Company implements ModelInterface, JsonSerializable
     /**
      * @var string
      */
-    protected $name;
+    protected $name = '';
 
     /**
      * @var string
      */
-    protected $coc;
+    protected $coc = '';
 
     /**
      * @var string
      */
-    protected $vat;
+    protected $vat = '';
 
     /**
      * @var string
      */
-    protected $countryCode;
+    protected $countryCode = '';
 
     /**
      * @return string

@@ -37,6 +37,11 @@ abstract class AbstractRequest implements RequestInterface
 {
     use DebugTrait;
 
+    /*
+     * Tag name declaration for XML request string
+     */
+    public const XML_ROOT_NODE_NAME = 'request';
+
     /**
      * @var string
      */
@@ -250,8 +255,9 @@ abstract class AbstractRequest implements RequestInterface
         $encoder = new JsonEncoder();
         $contentTypeHeader = 'application/json';
         if (static::FORMAT_XML === $this->getFormat()) {
-            $encoder = new XmlEncoder();
-            $encoder->setRootNodeName('request');
+            $encoder = new XmlEncoder([
+                XmlEncoder::ROOT_NODE_NAME => static::XML_ROOT_NODE_NAME,
+            ]);
             $contentTypeHeader = 'application/xml';
         }
         $this->addHeader(static::HEADER_CONTENT_TYPE, $contentTypeHeader);
@@ -340,7 +346,7 @@ abstract class AbstractRequest implements RequestInterface
             ->setBody($body)
         ;
 
-        if ($this->isDebug() === true) {
+        if (true === $this->isDebug()) {
             $this->dumpDebugInfo('Response: ', $response);
         }
     }

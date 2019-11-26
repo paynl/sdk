@@ -186,7 +186,7 @@ class TransactionTest extends UnitTest
             'endUserId' => '0',
             'company' => [
                 'name' => 'Wayne Enterprises Inc.',
-                'coc' => null,
+//                'coc' => null,
                 'vat' => '24456789B01',
                 'countryCode' => 'US'
             ],

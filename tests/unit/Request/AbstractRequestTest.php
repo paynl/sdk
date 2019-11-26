@@ -294,6 +294,7 @@ class AbstractRequestTest extends UnitTest
 
 
         verify(@simplexml_load_string($encodedOutPut))->notEquals(false);
+        verify(@simplexml_load_string($encodedOutPut)->getName())->equals(AbstractRequest::XML_ROOT_NODE_NAME);
         verify($this->anonymousClassFromAbstract->getHeader(AbstractRequest::HEADER_CONTENT_TYPE))->string();
         verify($this->anonymousClassFromAbstract->getHeader(AbstractRequest::HEADER_CONTENT_TYPE))->notEmpty();
         verify($this->anonymousClassFromAbstract->getHeader(AbstractRequest::HEADER_CONTENT_TYPE))

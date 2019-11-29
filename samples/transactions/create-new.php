@@ -28,8 +28,7 @@ $transaction = (new Hydrator\Transaction)->hydrate([
     ],
     'testMode' => 0,
     'transferType' => 'merchant',
-    //TODO, delete for goto live - is production merchant ID!!
-    'transferValue' => 'M-3421-2120',
+    'transferValue' => 'M-0000-0000',
     'invoiceDate' => (new DateTime())->sub(new DateInterval('P3D'))->format(DateTime::ATOM),
     'deliveryDate' => (new DateTime())->format(DateTime::ATOM),
     'expiresAt' => (new DateTime())->add(new DateInterval('P7D'))->format(DateTime::ATOM),

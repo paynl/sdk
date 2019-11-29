@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Model;
 
-use \DateTime;
-use \JsonSerializable;
+use DateTime, JsonSerializable, BadMethodCallException;
+use Zend\Filter\Word\CamelCaseToUnderscore;
 
 /**
  * Class Transaction
@@ -14,6 +14,27 @@ use \JsonSerializable;
  *
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ *
+ * @method bool isCancelled()
+ * @method bool isPartiallyRefunded()
+ * @method bool isRefundedCustomer()
+ * @method bool isExpired()
+ * @method bool isRefunding()
+ * @method bool isChargeback()
+ * @method bool isDenied()
+ * @method bool isFailure()
+ * @method bool isInvalidAmount()
+ * @method bool isInitialized()
+ * @method bool isProcessing()
+ * @method bool isPending()
+ * @method bool isSubscriptionOpen()
+ * @method bool isProcessed()
+ * @method bool isConfirmed()
+ * @method bool isPartiallyPaid()
+ * @method bool isVerify()
+ * @method bool isAuthorized()
+ * @method bool isPartiallyAccepted()
+ * @method bool isPaid()
  */
 class Transaction implements ModelInterface, JsonSerializable
 {
@@ -30,7 +51,7 @@ class Transaction implements ModelInterface, JsonSerializable
     protected $serviceId;
 
     /**
-     * @var Status
+     * @var TransactionStatus
      */
     protected $status;
 
@@ -206,19 +227,19 @@ class Transaction implements ModelInterface, JsonSerializable
     }
 
     /**
-     * @return Status
+     * @return TransactionStatus
      */
-    public function getStatus(): Status
+    public function getStatus(): TransactionStatus
     {
         return $this->status;
     }
 
     /**
-     * @param Status $status
+     * @param TransactionStatus $status
      *
      * @return Transaction
      */
-    public function setStatus(Status $status): self
+    public function setStatus(TransactionStatus $status): self
     {
         $this->status = $status;
         return $this;
@@ -716,5 +737,39 @@ class Transaction implements ModelInterface, JsonSerializable
     {
         $this->company = $company;
         return $this;
+    }
+
+    /**
+     * Magic method to catch all undefined methods.
+     *
+     * Used to check if the transaction status is equal to a given status
+     *
+     * @param string $name
+     * @param array $arguments
+     *
+     * @return bool
+     */
+    public function __call(string $name, array $arguments = [])
+    {
+        if ('isPending' === $name) {
+            return in_array($this->getStatus()->getCode(), [
+                TransactionStatus::STATUS_PENDING1,
+                TransactionStatus::STATUS_PENDING2,
+                TransactionStatus::STATUS_PENDING3,
+            ], true);
+        }
+
+        if (1 === preg_match('/^is(?P<status>[A-z]+)/', $name, $match)) {
+            $statusConstantName = 'STATUS_' . strtoupper((new CamelCaseToUnderscore())->filter($match['status']));
+            return $this->getStatus()->is($statusConstantName);
+        }
+
+        throw new BadMethodCallException(
+            sprintf(
+                'Call to undefined method %s::%s',
+                self::class,
+                $name
+            )
+        );
     }
 }

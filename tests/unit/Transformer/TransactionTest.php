@@ -4,14 +4,16 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PayNL\Sdk\Transformer;
 
+use Exception;
 use Codeception\Test\Unit as UnitTest;
-use PayNL\Sdk\Transformer\{
-    AbstractTransformer,
-    Transaction as TransactionTransformer,
-    TransformerInterface
+use PayNL\Sdk\{
+    DateTime,
+    Model\TransactionStatus,
+    Model\Transaction,
+    Transformer\AbstractTransformer,
+    Transformer\Transaction as TransactionTransformer,
+    Transformer\TransformerInterface
 };
-use PayNL\Sdk\DateTime;
-use PayNL\Sdk\Model\Transaction;
 
 /**
  * Class TransactionTest
@@ -74,6 +76,8 @@ class TransactionTest extends UnitTest
     }
 
     /**
+     * @throws Exception
+     *
      * @return void
      */
     public function testItCanTransformSingle(): void
@@ -82,8 +86,8 @@ class TransactionTest extends UnitTest
             'id' => 484512854,
             'serviceId' => 'SL-1000-0001',
             'status' => [
-                'code'   => 316,
-                'name'   => 'processed',
+                'code'   => TransactionStatus::STATUS_PAID,
+                'name'   => 'Paid',
                 'date'   => DateTime::createFromFormat('Y-m-d', '2019-09-11'),
                 'reason' => 'Just because...'
             ],

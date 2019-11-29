@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Hydrator;
 
+use Exception;
 use PayNL\Sdk\DateTime;
 use PayNL\Sdk\Model\Status as StatusModel;
 
@@ -16,6 +17,8 @@ class Status extends AbstractHydrator
 {
     /**
      * @inheritDoc
+     *
+     * @throws Exception
      *
      * @return StatusModel
      */

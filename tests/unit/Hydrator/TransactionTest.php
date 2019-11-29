@@ -17,7 +17,7 @@ use PayNL\Sdk\Hydrator\{
 };
 use PayNL\Sdk\Model\{
     Transaction,
-    Status,
+    TransactionStatus,
     PaymentMethod,
     BankAccount,
     Address,
@@ -84,7 +84,7 @@ class TransactionTest extends UnitTest
             'id' => 484512854,
             'serviceId' => 'SL-1000-0001',
             'status' => [
-                'code'   => 316,
+                'code'   => TransactionStatus::STATUS_PROCESSED,
                 'name'   => 'processed',
                 'date'   => DateTime::createFromFormat('Y-m-d', '2019-09-11'),
                 'reason' => 'Just because...'
@@ -196,7 +196,7 @@ class TransactionTest extends UnitTest
         expect($transaction->getId())->equals('484512854');
         expect($transaction->getServiceId())->string();
         expect($transaction->getServiceId())->equals('SL-1000-0001');
-        expect($transaction->getStatus())->isInstanceOf(Status::class);
+        expect($transaction->getStatus())->isInstanceOf(TransactionStatus::class);
         expect($transaction->getReturnUrl())->string();
         expect($transaction->getReturnUrl())->equals('https://www.pay.nl/return-url');
         expect($transaction->getExchangeUrl())->string();
@@ -249,11 +249,11 @@ class TransactionTest extends UnitTest
             'id' => 484512854,
             'serviceId' => 'SL-1000-0001',
             'status' => (new StatusHydrator())->hydrate([
-                'code'   => 316,
+                'code'   => TransactionStatus::STATUS_PROCESSED,
                 'name'   => 'processed',
                 'date'   => DateTime::createFromFormat('Y-m-d', '2019-09-11'),
                 'reason' => 'Just because...'
-            ], new Status()),
+            ], new TransactionStatus()),
             'returnUrl' => 'https://www.pay.nl/return-url',
             'exchangeUrl' => 'https://www.pay.nl/exchange-url',
             'reference' => '',
@@ -392,7 +392,7 @@ class TransactionTest extends UnitTest
         expect($data['id'])->equals('484512854');
         expect($data['serviceId'])->string();
         expect($data['serviceId'])->equals('SL-1000-0001');
-        expect($data['status'])->isInstanceOf(Status::class);
+        expect($data['status'])->isInstanceOf(TransactionStatus::class);
         expect($data['returnUrl'])->string();
         expect($data['returnUrl'])->equals('https://www.pay.nl/return-url');
         expect($data['exchangeUrl'])->string();

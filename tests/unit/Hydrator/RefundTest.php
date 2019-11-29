@@ -42,6 +42,8 @@ class RefundTest extends UnitTest
     }
 
     /**
+     * @throws Exception
+     *
      * @return void
      */
     public function testItShouldAcceptARefundModel(): void
@@ -51,6 +53,8 @@ class RefundTest extends UnitTest
     }
 
     /**
+     * @throws Exception
+     *
      * @return void
      */
     public function testItThrowsAnExceptionWhenAWrongInstanceGiven(): void
@@ -82,7 +86,7 @@ class RefundTest extends UnitTest
                 'owner'  => 'S. McDuck',
             ], new BankAccount()),
             'status'           => (new StatusHydrator())->hydrate([
-                'code' => 316,
+                'code' => '316',
                 'name' => 'Processed',
             ], new Status()),
             'products'         => [
@@ -148,7 +152,7 @@ class RefundTest extends UnitTest
                 'owner'  => 'S. McDuck',
             ], new BankAccount()),
             'status'           => (new StatusHydrator())->hydrate([
-                'code' => 316,
+                'code' => '316',
                 'name' => 'Processed',
             ], new Status()),
             'products'         => [

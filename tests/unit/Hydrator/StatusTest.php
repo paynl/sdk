@@ -10,6 +10,7 @@ use PayNL\Sdk\Hydrator\Status as StatusHydrator;
 use PayNL\Sdk\Model\Status;
 use Zend\Hydrator\HydratorInterface;
 use PayNL\Sdk\DateTime;
+use Exception;
 
 /**
  * Class StatusTest
@@ -28,6 +29,8 @@ class StatusTest extends UnitTest
     }
 
     /**
+     * @throws Exception
+     *
      * @return void
      */
     public function testItShouldAcceptAStatusModel(): void
@@ -37,6 +40,8 @@ class StatusTest extends UnitTest
     }
 
     /**
+     * @throws Exception
+     *
      * @return void
      */
     public function testItThrowsAnExceptionWhenAWrongInstanceGiven(): void
@@ -48,20 +53,22 @@ class StatusTest extends UnitTest
     }
 
     /**
+     * @throws Exception
+     *
      * @return void
      */
     public function testItShouldCorrectlyFillModel(): void
     {
         $hydrator = new StatusHydrator();
         $status = $hydrator->hydrate([
-            'code'   => 316,
+            'code'   => '100',
             'name'   => 'Processed',
             'date'   => DateTime::createFromFormat('Y-m-d', '2019-09-11'),
             'reason' => 'Because it can!',
         ], new Status());
 
         expect($status->getCode())->string();
-        expect($status->getCode())->equals('316');
+        expect($status->getCode())->equals('100');
         expect($status->getName())->string();
         expect($status->getName())->equals('Processed');
         expect($status->getDate())->isInstanceOf(DateTime::class);
@@ -70,13 +77,15 @@ class StatusTest extends UnitTest
     }
 
     /**
+     * @throws Exception
+     *
      * @return void
      */
     public function testItCanExtract(): void
     {
         $hydrator = new StatusHydrator();
         $status = $hydrator->hydrate([
-            'code'   => 316,
+            'code'   => '75',
             'name'   => 'Processed',
             'date'   => DateTime::createFromFormat('Y-m-d', '2019-09-11'),
             'reason' => 'Because it can!',
@@ -90,7 +99,7 @@ class StatusTest extends UnitTest
         verify($data)->hasKey('reason');
 
         expect($data['code'])->string();
-        expect($data['code'])->equals('316');
+        expect($data['code'])->equals('75');
         expect($data['name'])->string();
         expect($data['name'])->equals('Processed');
         expect($data['date'])->isInstanceOf(DateTime::class);

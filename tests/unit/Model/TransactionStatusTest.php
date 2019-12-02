@@ -10,7 +10,7 @@ use PayNL\Sdk\Model\{
     ModelInterface,
     TransactionStatus
 };
-use Exception, JsonSerializable, UnitTester;
+use Exception, JsonSerializable, UnitTester, ReflectionException;
 use PayNL\Sdk\Exception\InvalidArgumentException;
 
 /**
@@ -68,6 +68,8 @@ class TransactionStatusTest extends UnitTest
     /**
      * @depends testItCanGetAllowedStatus
      *
+     * @throws ReflectionException
+     *
      * @return void
      */
     public function testItCanSetACode(): void
@@ -76,6 +78,8 @@ class TransactionStatusTest extends UnitTest
     }
 
     /**
+     * @throws ReflectionException
+     *
      * @return void
      */
     public function testItThrowsAnExceptionWhenCodeIsNotAllowed(): void
@@ -87,6 +91,8 @@ class TransactionStatusTest extends UnitTest
     /**
      * @depends testItCanSetACode
      *
+     * @throws ReflectionException
+     *
      * @return void
      */
     public function testItCanGetACode(): void
@@ -96,6 +102,32 @@ class TransactionStatusTest extends UnitTest
         verify($this->status->getCode())->int();
         verify($this->status->getCode())->notEmpty();
         verify($this->status->getCode())->equals(TransactionStatus::STATUS_PAID);
+    }
+
+    /**
+     * @depends testItCanSetACode
+     * @depends testItCanGetACode
+     *
+     * @throws ReflectionException
+     *
+     * @return void
+     */
+    public function testItConvertsCodeToString(): void
+    {
+        $this->status->setCode('100');
+        verify($this->status->getCode())->int();
+        verify($this->status->getCode())->equals(100);
+    }
+
+    /**
+     * @throws ReflectionException
+     *
+     * @return void
+     */
+    public function testItThrowsAnExceptionWhenGivenCodeIsNotAStringNorAnInteger(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->status->setCode([]);
     }
 
     /**
@@ -170,6 +202,8 @@ class TransactionStatusTest extends UnitTest
     /**
      * @depends testItCanSetACode
      *
+     * @throws ReflectionException
+     *
      * @return void
      */
     public function testItCanCheckStatusByString(): void
@@ -182,6 +216,8 @@ class TransactionStatusTest extends UnitTest
 
     /**
      * @depends testItCanSetACode
+     *
+     * @throws ReflectionException
      *
      * @return void
      */

@@ -59,7 +59,7 @@ class TransactionStatus extends Status
      * @param mixed $code
      *
      * @throws InvalidArgumentException
-     * @throws RuntimeException
+     * @throws ReflectionException
      *
      * @return Status
      */
@@ -76,11 +76,7 @@ class TransactionStatus extends Status
             );
         }
 
-        try {
-            $allowedStatus = $this->getAllowedStatus();
-        } catch (ReflectionException $re) {
-            throw new RuntimeException('Can not get allowed status');
-        }
+        $allowedStatus = $this->getAllowedStatus();
 
         if (false === in_array($code, $allowedStatus, true)) {
             throw new InvalidArgumentException(

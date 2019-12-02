@@ -7,6 +7,7 @@ namespace Tests\Unit\PayNL\Sdk;
 use Codeception\Test\Unit as UnitTest;
 use PayNL\Sdk\Exception\InvalidArgumentException;
 use PayNL\Sdk\Response;
+use PayNL\Sdk\Model\Errors;
 
 /**
  * Class ResponseTest
@@ -102,5 +103,66 @@ class ResponseTest extends UnitTest
         $this->response->setBody(Response::HTTP_STATUS_CODES[503]);
         verify($this->response->getBody())->string();
         verify($this->response->getBody())->equals('Service Unavailable');
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanCheckForErrorsBasedOnStatusCode(): void
+    {
+        $this->response->setStatusCode(503);
+        verify($this->response->hasErrors())->true();
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanCheckForErrorsBasedOnBody(): void
+    {
+        $this->response->setStatusCode(200)
+            ->setBody(new Errors())
+        ;
+        verify($this->response->hasErrors())->true();
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanGetErrorsAsString1(): void
+    {
+        $this->response->setStatusCode(200)
+            ->setBody((new Errors())->setErrors([
+                'general' => [
+                    'message' => 'Some error',
+                    'code' => 127,
+                ],
+            ]))
+        ;
+        verify($this->response->getErrors())->string();
+        verify($this->response->getErrors())->notEmpty();
+        verify($this->response->getErrors())->equals('Some error (127)');
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanGetErrorsAsString2(): void
+    {
+        $this->response->setStatusCode(500)
+            ->setBody('Some error (127)');
+        verify($this->response->getErrors())->string();
+        verify($this->response->getErrors())->notEmpty();
+        verify($this->response->getErrors())->equals('Some error (127)');
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanGetErrorsIsEmptyWhenNoErrorsAvailable(): void
+    {
+        $this->response->setStatusCode(200)
+            ->setBody('Some response');
+        verify($this->response->getErrors())->string();
+        verify($this->response->getErrors())->isEmpty();
     }
 }

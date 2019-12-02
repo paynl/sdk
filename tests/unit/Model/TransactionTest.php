@@ -16,7 +16,7 @@ use PayNL\Sdk\Model\Statistics;
 use PayNL\Sdk\Model\TransactionStatus;
 use PayNL\Sdk\Model\Transaction;
 use PayNL\Sdk\Model\ModelInterface;
-use Exception, JsonSerializable;
+use Exception, JsonSerializable, BadMethodCallException;
 
 /**
  * Class TransactionTest
@@ -962,5 +962,14 @@ class TransactionTest extends UnitTest
         $this->transaction->getStatus()->setCode(TransactionStatus::STATUS_PAID);
         verify($this->transaction->isPaid())->bool();
         verify($this->transaction->isPaid())->true();
+    }
+
+    /**
+     * @return void
+     */
+    public function testItThrowsAnExceptionWhenMethodDoesNotExist(): void
+    {
+        $this->expectException(BadMethodCallException::class);
+        $this->transaction->test();
     }
 }

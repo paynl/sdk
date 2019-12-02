@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace PayNL\Sdk\Model;
 
 use PayNL\Sdk\Exception\InvalidArgumentException;
-use PayNL\Sdk\Exception\RuntimeException;
 use ReflectionClass, ReflectionException;
 
 /**

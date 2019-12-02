@@ -26,8 +26,6 @@ class Services extends AbstractHydrator
     {
         $this->validateGivenObject($object, ServicesModel::class);
 
-        // "reset" total
-        $data['total'] = 0;
         foreach ($data['services'] as $key => $currency) {
             $data['services'][$key] = (new ServiceHydrator())->hydrate($currency, new ServiceModel());
         }

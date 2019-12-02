@@ -71,13 +71,13 @@ class DirectdebitTest extends UnitTest
                 'owner' => 'J. the Hutt',
             ],
             'status'           => [
-                'code'   =>  94,
+                'code'   =>  '94',
                 'name'   =>  'Verwerkt',
                 'date'   =>  null,
                 'reason' =>  '',
             ],
             'declined'         => [
-                'code'   => -72,
+                'code'   => '-72',
                 'name'   => 'Blaatschaap',
                 'date'   => null,
                 'reason' => 'zomaar',
@@ -116,7 +116,7 @@ class DirectdebitTest extends UnitTest
                 'owner' => 'J. the Hutt',
             ],
             'status'           => [
-                'code'   =>  94,
+                'code'   =>  '94',
                 'name'   =>  'Verwerkt',
                 'date'   =>  null,
                 'reason' =>  '',

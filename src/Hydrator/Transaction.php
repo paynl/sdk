@@ -13,7 +13,7 @@ use PayNL\Sdk\Model\{
     PaymentMethod,
     Product,
     Statistics,
-    Status,
+    TransactionStatus,
     Transaction as TransactionModel
 };
 use PayNL\Sdk\Hydrator\{
@@ -54,7 +54,7 @@ class Transaction extends AbstractHydrator
         $this->validateGivenObject($object, TransactionModel::class);
 
         if (true === array_key_exists('status', $data) && true === is_array($data['status'])) {
-            $data['status'] =  (new StatusHydrator())->hydrate($data['status'], new Status());
+            $data['status'] =  (new StatusHydrator())->hydrate($data['status'], new TransactionStatus());
         }
 
         $data['exchangeUrl'] = $data['exchangeUrl'] ?? '';

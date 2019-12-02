@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Tests\Unit\PayNL\Sdk\Model;
 
 use Codeception\Test\Unit as UnitTest;
+use PayNL\Sdk\TotalCollection;
 use PayNL\Sdk\Model\{
     ModelInterface,
     Links,
     Currency,
     Currencies
 };
-use PayNL\Sdk\DateTime;
 use PayNL\Sdk\Hydrator\{
     Simple as SimpleHydrator,
     Links as LinksHydrator
@@ -30,6 +30,9 @@ class CurrenciesTest extends UnitTest
      */
     protected $currencies;
 
+    /**
+     * @return void
+     */
     public function _before(): void
     {
         $this->currencies = new Currencies();
@@ -41,6 +44,14 @@ class CurrenciesTest extends UnitTest
     public function testItIsAModel(): void
     {
         verify($this->currencies)->isInstanceOf(ModelInterface::class);
+    }
+
+    /**
+     * @return void
+     */
+    public function testItIsATotalCollection(): void
+    {
+        verify($this->currencies)->isInstanceOf(TotalCollection::class);
     }
 
     /**
@@ -90,10 +101,12 @@ class CurrenciesTest extends UnitTest
     public function testItCanAddCurrency(): void
     {
         verify(method_exists($this->currencies, 'addCurrency'))->true();
-        verify($this->currencies->addCurrency((new SimpleHydrator())->hydrate([
+        /** @var Currency $currency */
+        $currency = (new SimpleHydrator())->hydrate([
             'abbreviation' => 'EUR',
             'description'  => 'Euro',
-        ], new Currency())))->isInstanceOf(Currencies::class);
+        ], new Currency());
+        verify($this->currencies->addCurrency($currency))->isInstanceOf(Currencies::class);
     }
 
     /**
@@ -214,7 +227,7 @@ class CurrenciesTest extends UnitTest
         verify($this->currencies['EUR'])->isInstanceOf(Currency::class);
 
         // offsetSet
-        $this->currencies['EUR'] = (new SimpleHydrator())->hydrate([
+        $this->currencies['AUD'] = (new SimpleHydrator())->hydrate([
             'abbreviation' => 'AUD',
             'description'  => 'Australian Dollar',
         ], new Currency());

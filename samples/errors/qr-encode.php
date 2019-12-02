@@ -32,12 +32,6 @@ $response = (new Api($authAdapter))
 ;
 
 /** @var ErrorsModel $errors */
-$errors = $response->getBody();
-
-echo '<pre/>' . PHP_EOL .
-    'Nr of errors: ' . var_export(count($errors), true) . PHP_EOL
-;
-echo 'Errors: ';
-foreach ($errors as $key => $value) {
-    echo var_export([$key, $value], true) . PHP_EOL;
-}
+echo '<pre/>' . PHP_EOL;
+echo 'Has errors: ' . var_export($response->hasErrors(), true) . PHP_EOL . PHP_EOL;
+echo 'Errors: ' . PHP_EOL . $response->getErrors() . PHP_EOL;

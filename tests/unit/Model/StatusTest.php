@@ -11,6 +11,7 @@ use PayNL\Sdk\Model\{
     Status
 };
 use Exception, JsonSerializable;
+use PayNL\Sdk\Exception\InvalidArgumentException;
 
 /**
  * Class StatusTest
@@ -24,6 +25,9 @@ class StatusTest extends UnitTest
      */
     protected $status;
 
+    /**
+     * @return void
+     */
     public function _before(): void
     {
         $this->status = new Status();
@@ -50,7 +54,16 @@ class StatusTest extends UnitTest
      */
     public function testItCanSetACode(): void
     {
-        expect($this->status->setCode('Paid'))->isInstanceOf(Status::class);
+        expect($this->status->setCode('100'))->isInstanceOf(Status::class);
+    }
+
+    /**
+     * @return void
+     */
+    public function testItThrowsAnExceptionWhenCodeIsNotAString(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->status->setCode(100);
     }
 
     /**
@@ -60,11 +73,11 @@ class StatusTest extends UnitTest
      */
     public function testItCanGetACode(): void
     {
-        $this->status->setCode('Paid');
+        $this->status->setCode('100');
 
         verify($this->status->getCode())->string();
         verify($this->status->getCode())->notEmpty();
-        verify($this->status->getCode())->equals('Paid');
+        verify($this->status->getCode())->equals('100');
     }
 
     /**

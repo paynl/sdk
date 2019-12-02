@@ -11,7 +11,10 @@ use PayNL\Sdk\Model\{
     Service,
     Services
 };
-use PayNL\Sdk\DateTime;
+use PayNL\Sdk\{
+    DateTime,
+    TotalCollection
+};
 use PayNL\Sdk\Hydrator\{
     Service as ServiceHydrator,
     Links as LinksHydrator
@@ -30,6 +33,9 @@ class ServicesTest extends UnitTest
      */
     protected $services;
 
+    /**
+     * @return void
+     */
     public function _before(): void
     {
         $this->services = new Services();
@@ -41,6 +47,14 @@ class ServicesTest extends UnitTest
     public function testItIsAModel(): void
     {
         verify($this->services)->isInstanceOf(ModelInterface::class);
+    }
+
+    /**
+     * @return void
+     */
+    public function testItIsATotalCollection(): void
+    {
+        verify($this->services)->isInstanceOf(TotalCollection::class);
     }
 
     /**

@@ -14,6 +14,7 @@ use PayNL\GuzzleHttp\{
 };
 use PayNL\Sdk\{
     Exception\InvalidArgumentException,
+    Exception\RuntimeException,
     Filter\FilterInterface,
     Filter\Page as PageFilter,
     Model\Errors,
@@ -23,7 +24,7 @@ use PayNL\Sdk\{
     Transformer\Simple,
     Transformer\TransformerInterface
 };
-use TypeError, UnitTester, stdClass, RuntimeException;
+use TypeError, UnitTester, stdClass;
 
 /**
  * Class AbstractRequestTest
@@ -601,16 +602,16 @@ class AbstractRequestTest extends UnitTest
      *
      * @return void
      */
-    public function testItThrowsAnExceptionWhenNoGuzzleClientIsSet(): void
+    public function testItContainsErrorsWhenNoGuzzleClientIsSet(): void
     {
-        $this->expectException(RuntimeException::class);
-
         $response = new Response();
 
         $this->anonymousClassFromAbstract->setFilters([
             new PageFilter(1),
         ])->execute($response)
         ;
+
+        verify($response->hasErrors())->true();
     }
 
     /**

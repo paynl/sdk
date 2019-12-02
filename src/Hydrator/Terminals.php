@@ -26,8 +26,6 @@ class Terminals extends AbstractHydrator
     {
         $this->validateGivenObject($object, TerminalsModel::class);
 
-        // "reset" total
-        $data['total'] = 0;
         foreach ($data['terminals'] as $key => $terminal) {
             if (false === ($terminal instanceof TerminalModel)) {
                 $data['terminals'][$key] = (new TerminalHydrator())->hydrate($terminal, new TerminalModel());

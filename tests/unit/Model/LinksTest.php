@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\PayNL\Sdk\Model;
 
 use Codeception\Test\Unit as UnitTest;
+use Doctrine\Common\Collections\ArrayCollection;
 use PayNL\Sdk\Model\{
     ModelInterface,
     Link,
@@ -25,6 +26,9 @@ class LinksTest extends UnitTest
      */
     protected $links;
 
+    /**
+     * @return void
+     */
     public function _before(): void
     {
         $this->links = new Links();
@@ -36,6 +40,14 @@ class LinksTest extends UnitTest
     public function testItIsAModel(): void
     {
         verify($this->links)->isInstanceOf(ModelInterface::class);
+    }
+
+    /**
+     * @return void
+     */
+    public function testItIsATotalCollection(): void
+    {
+        verify($this->links)->isInstanceOf(ArrayCollection::class);
     }
 
     /**

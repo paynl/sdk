@@ -88,11 +88,13 @@ class ConfigTest extends UnitTest
     {
         Config::getInstance()->load([
             Config::KEY_API_URL  => 'https://rest.somehost.topleveldomain',
+            Config::KEY_VERSION  => 1,
             Config::KEY_USERNAME => 'piet',
             Config::KEY_PASSWORD => 'blaatschaap',
         ]);
 
         verify(Config::getInstance()->get(Config::KEY_API_URL))->notEmpty();
+        verify(Config::getInstance()->get(Config::KEY_VERSION))->notEmpty();
         verify(Config::getInstance()->get(Config::KEY_USERNAME))->notEmpty();
         verify(Config::getInstance()->get(Config::KEY_PASSWORD))->notEmpty();
     }
@@ -104,6 +106,20 @@ class ConfigTest extends UnitTest
     {
         $this->expectException(InvalidArgumentException::class);
         Config::getInstance()->load([
+            Config::KEY_VERSION  => 1,
+            Config::KEY_USERNAME => 'piet',
+            Config::KEY_PASSWORD => 'blaatschaap',
+        ]);
+    }
+
+    /**
+     * @return void
+     */
+    public function testItThrowsAnExceptionWhenVersionIsNotSet(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        Config::getInstance()->load([
+            Config::KEY_API_URL  => 'https://rest.somehost.topleveldomain',
             Config::KEY_USERNAME => 'piet',
             Config::KEY_PASSWORD => 'blaatschaap',
         ]);
@@ -117,6 +133,7 @@ class ConfigTest extends UnitTest
         $this->expectException(InvalidArgumentException::class);
         Config::getInstance()->load([
             Config::KEY_API_URL  => 'https://rest.somehost.topleveldomain',
+            Config::KEY_VERSION  => 1,
             Config::KEY_PASSWORD => 'blaatschaap',
         ]);
     }
@@ -129,6 +146,7 @@ class ConfigTest extends UnitTest
         $this->expectException(InvalidArgumentException::class);
         Config::getInstance()->load([
             Config::KEY_API_URL  => 'https://rest.somehost.topleveldomain',
+            Config::KEY_VERSION  => 1,
             Config::KEY_USERNAME => 'piet',
         ]);
     }
@@ -141,6 +159,7 @@ class ConfigTest extends UnitTest
         $this->expectException(UnexpectedValueException::class);
         Config::getInstance()->load([
             Config::KEY_API_URL  => 'https://rest.somehost.topleveldomain',
+            Config::KEY_VERSION  => 1,
             Config::KEY_USERNAME => 'piet',
             Config::KEY_PASSWORD => 'blaatschaap',
             1 => 'value',
@@ -156,6 +175,7 @@ class ConfigTest extends UnitTest
     {
         Config::getInstance()->load([
             Config::KEY_API_URL  => 'https://rest.somehost.topleveldomain',
+            Config::KEY_VERSION  => 1,
             Config::KEY_USERNAME => 'piet',
             Config::KEY_PASSWORD => 'blaatschaap',
         ]);
@@ -173,10 +193,33 @@ class ConfigTest extends UnitTest
      *
      * @return void
      */
+    public function testItCanContainAVersion(): void
+    {
+        Config::getInstance()->load([
+            Config::KEY_API_URL  => 'https://rest.somehost.topleveldomain',
+            Config::KEY_VERSION  => 1,
+            Config::KEY_USERNAME => 'piet',
+            Config::KEY_PASSWORD => 'blaatschaap',
+        ]);
+
+        verify(Config::getInstance()->getVersion())->equals(1);
+        Config::getInstance()->set(Config::KEY_VERSION, 2);
+        verify(Config::getInstance()->getVersion())->equals(2);
+
+        Config::getInstance()->set('wrong_version_key', 3);
+        verify(Config::getInstance()->getVersion())->equals(2);
+    }
+
+    /**
+     * @depends testItCanLoadAConfigurationArray
+     *
+     * @return void
+     */
     public function testItCanContainAnUsername(): void
     {
         Config::getInstance()->load([
             Config::KEY_API_URL  => 'https://rest.somehost.topleveldomain',
+            Config::KEY_VERSION  => 1,
             Config::KEY_USERNAME => 'piet',
             Config::KEY_PASSWORD => 'blaatschaap',
         ]);
@@ -198,6 +241,7 @@ class ConfigTest extends UnitTest
     {
         Config::getInstance()->load([
             Config::KEY_API_URL  => 'https://rest.somehost.topleveldomain',
+            Config::KEY_VERSION  => 1,
             Config::KEY_USERNAME => 'piet',
             Config::KEY_PASSWORD => 'blaatschaap',
         ]);

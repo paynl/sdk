@@ -66,8 +66,9 @@ class Api
      */
     protected function initClient(): void
     {
+        $cnf = Config::getInstance();
         $config = [
-            'base_uri' => Config::getInstance()->getApiUrl(),
+            'base_uri' => rtrim($cnf->getApiUrl(), '/') . "/v{$cnf->getVersion()}/",
         ];
 
         $this->client = new Client($config);

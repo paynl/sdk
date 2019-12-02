@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Request;
 
-use RuntimeException;
 use PayNL\GuzzleHttp\{
     Client,
     Psr7\Request,
@@ -14,6 +13,7 @@ use PayNL\GuzzleHttp\{
 use PayNL\Sdk\{
     DebugTrait,
     Exception\ExceptionInterface,
+    Exception\RuntimeException,
     Response,
     Exception\InvalidArgumentException,
     Filter\FilterInterface,
@@ -295,7 +295,7 @@ abstract class AbstractRequest implements RequestInterface
         try {
             $guzzleClient = $this->getClient();
             if (false === ($guzzleClient instanceof Client)) {
-                throw new RuntimeException('No HTTP client found');
+                throw new RuntimeException('No HTTP client found', 500);
             }
             $guzzleResponse = $guzzleClient->send($guzzleRequest);
 

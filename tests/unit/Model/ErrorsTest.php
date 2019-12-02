@@ -10,6 +10,7 @@ use PayNL\Sdk\Model\{
     Errors
 };
 use JsonSerializable, Countable, ArrayAccess, IteratorAggregate;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Class ErrorsTest
@@ -34,6 +35,14 @@ class ErrorsTest extends UnitTest
     public function testItIsAModel(): void
     {
         verify($this->errors)->isInstanceOf(ModelInterface::class);
+    }
+
+    /**
+     * @return void
+     */
+    public function testItIsADoctrineArrayCollection(): void
+    {
+        verify($this->errors)->isInstanceOf(ArrayCollection::class);
     }
 
     /**

@@ -5,8 +5,8 @@ declare(strict_types=1);
 use PayNL\Sdk\Config;
 
 return [
-//    Config::KEY_API_URL  => 'https://rest.idefix-rest-api-mike.ian.dev.pay.nl/v1/',
-    Config::KEY_API_URL  => 'https://rest.idefix.mike.dev.pay.nl/v1/',
+    Config::KEY_API_URL  => 'https://rest.idefix.mike.dev.pay.nl/',
+    Config::KEY_VERSION  => 1,
     Config::KEY_USERNAME => 'token',
     Config::KEY_PASSWORD => '68babb1a525f6116b387231af9d2e4413a6c8f61',
 
@@ -20,6 +20,6 @@ return [
     'serviceId'             => 'SL-3167-1271',
     'terminalId'            => 'TH-3640-7060',
     'terminalTransactionId' => 'TT-9054-1003-5510',
-    'transactionId'         => 'EX-3172-0377-7620',
+    'transactionId'         => 'EX-7436-1212-5160',
     'voucherNumber'         => '1234567800273867546',
 ];

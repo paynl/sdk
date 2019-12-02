@@ -4,26 +4,21 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Model;
 
-use Countable, ArrayAccess, IteratorAggregate, ArrayIterator;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Class Links
  *
  * @package PayNL\Sdk\Model
  */
-class Links implements ModelInterface, Countable, ArrayAccess, IteratorAggregate
+class Links extends ArrayCollection implements ModelInterface
 {
-    /**
-     * @var array
-     */
-    protected $links = [];
-
     /**
      * @return array
      */
     public function getLinks(): array
     {
-        return $this->links;
+        return $this->toArray();
     }
 
     /**
@@ -33,6 +28,9 @@ class Links implements ModelInterface, Countable, ArrayAccess, IteratorAggregate
      */
     public function setLinks(array $links): self
     {
+        // reset
+        $this->clear();
+
         if (0 === count($links)) {
             return $this;
         }
@@ -50,57 +48,7 @@ class Links implements ModelInterface, Countable, ArrayAccess, IteratorAggregate
      */
     public function addLink(Link $link): self
     {
-        $this->links[$link->getRel()] = $link;
+        $this->set($link->getRel(), $link);
         return $this;
-    }
-
-    /**
-     * @inheritDoc
-     *
-     * @return ArrayIterator
-     */
-    public function getIterator()
-    {
-        return new ArrayIterator($this->links);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function offsetExists($offset)
-    {
-        return isset($this->links[$offset]);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function offsetGet($offset)
-    {
-        return $this->links[$offset] ?? null;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function offsetSet($offset, $value)
-    {
-        $this->addLink($value);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function offsetUnset($offset)
-    {
-        unset($this->links[$offset]);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function count()
-    {
-        return count($this->links);
     }
 }

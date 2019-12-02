@@ -4,26 +4,21 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Model;
 
-use Countable, ArrayAccess, IteratorAggregate, ArrayIterator;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Class Errors
  *
  * @package PayNL\Sdk\Model
  */
-class Errors implements ModelInterface, Countable, ArrayAccess, IteratorAggregate
+class Errors extends ArrayCollection implements ModelInterface
 {
-    /**
-     * @var array
-     */
-    protected $errors = [];
-
     /**
      * @return array
      */
     public function getErrors(): array
     {
-        return $this->errors;
+        return $this->toArray();
     }
 
     /**
@@ -33,62 +28,10 @@ class Errors implements ModelInterface, Countable, ArrayAccess, IteratorAggregat
      */
     public function setErrors(array $errors): Errors
     {
-        $this->errors = $errors;
-        return $this;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function count(): int
-    {
-        return count($this->errors);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function offsetExists($offset): bool
-    {
-        return isset($this->errors[$offset]);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function offsetGet($offset)
-    {
-        return $this->errors[$offset] ?? null;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function offsetSet($offset, $value): void
-    {
-        if (null === $offset) {
-            $this->errors[] = $value;
-            return;
+        $this->clear();
+        foreach ($errors as $key => $error) {
+            $this->set($key, $error);
         }
-
-        $this->errors[$offset] = $value;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function offsetUnset($offset): void
-    {
-        unset($this->errors[$offset]);
-    }
-
-    /**
-     * @inheritDoc
-     *
-     * @return ArrayIterator
-     */
-    public function getIterator(): ArrayIterator
-    {
-        return new ArrayIterator($this->errors);
+        return $this;
     }
 }

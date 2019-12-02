@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PayNL\Sdk;
 
 use PayNL\Sdk\Exception\InvalidArgumentException;
+use PayNL\Sdk\Model\Errors;
 
 /**
  * Class Response
@@ -164,5 +165,38 @@ class Response
     {
         $this->body = $body;
         return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasErrors(): bool
+    {
+        return (true === in_array($this->getStatusCode(), range(400, 599), true)
+            || $this->getBody() instanceof Errors
+        );
+    }
+
+    /**
+     * Retrieve the current errors as a string for the request if there are any
+     *
+     * @return string
+     */
+    public function getErrors(): string
+    {
+        if (true === $this->hasErrors()) {
+            $body = $this->getBody();
+            if ($body instanceof Errors) {
+                return implode("\n", $body->map(static function ($element) {
+                    return sprintf(
+                        '%s (%d)',
+                        $element['message'],
+                        $element['code']
+                    );
+                })->toArray());
+            }
+            return $body;
+        }
+        return '';
     }
 }

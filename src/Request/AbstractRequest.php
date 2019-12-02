@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Request;
 
-use RuntimeException;
 use PayNL\GuzzleHttp\{
     Client,
     Psr7\Request,
@@ -14,6 +13,7 @@ use PayNL\GuzzleHttp\{
 use PayNL\Sdk\{
     DebugTrait,
     Exception\ExceptionInterface,
+    Exception\RuntimeException,
     Response,
     Exception\InvalidArgumentException,
     Filter\FilterInterface,
@@ -295,7 +295,7 @@ abstract class AbstractRequest implements RequestInterface
         try {
             $guzzleClient = $this->getClient();
             if (false === ($guzzleClient instanceof Client)) {
-                throw new RuntimeException('No HTTP client found');
+                throw new RuntimeException('No HTTP client found', 500);
             }
             $guzzleResponse = $guzzleClient->send($guzzleRequest);
 
@@ -310,7 +310,6 @@ abstract class AbstractRequest implements RequestInterface
                 }
                 $body = $transformer->transform($rawBody);
             }
-
             $statusCode = $guzzleResponse->getStatusCode();
         } catch (RequestException $re) {
             $rawBody = $errorMessages = '';
@@ -328,7 +327,9 @@ abstract class AbstractRequest implements RequestInterface
 
                 $rawBody = trim($re->getResponse()->getReasonPhrase() . ': ' . $errorMessages, ': ');
 
-                if ('' !== $errorMessages) {
+                $body = $rawBody;
+
+                if ('' !== $errorMessages && static::FORMAT_OBJECTS === $this->getFormat()) {
                     $transformer = new ErrorsTransformer();
                     $body = $transformer->transform($errorMessages);
                 }
@@ -338,7 +339,19 @@ abstract class AbstractRequest implements RequestInterface
         } catch (GuzzleException | ExceptionInterface $e) {
             $statusCode = $e->getCode() ?? 500;
             $rawBody = $e->getMessage();
-            $body = $e->getMessage();
+            $body = 'Error: ' . $e->getMessage() . ' (' . $statusCode . ')';
+
+            if (static::FORMAT_OBJECTS === $this->getFormat()) {
+                $transformer = new ErrorsTransformer();
+                $body = $transformer->transform((new JsonEncoder())->encode([
+                    'errors' => (object)[
+                        'general' => (object)[
+                            'code'    => $statusCode,
+                            'message' => $rawBody,
+                        ]
+                    ]
+                ], JsonEncoder::FORMAT));
+            }
         }
 
         $response->setStatusCode($statusCode)

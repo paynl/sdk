@@ -26,7 +26,6 @@ class PaymentMethods extends AbstractHydrator
     {
         $this->validateGivenObject($object, PaymentMethodsModel::class);
 
-        // "reset" total
         foreach ($data['paymentMethods'] as $key => $paymentMethod) {
             $data['paymentMethods'][$key] = (new PaymentMethodHydrator())->hydrate($paymentMethod, new PaymentMethodModel());
         }

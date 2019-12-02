@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PayNL\Sdk\Model;
 
 use DateTime;
+use PayNL\Sdk\Exception\InvalidArgumentException;
 
 /**
  * Class Status
@@ -36,7 +37,7 @@ class Status implements ModelInterface
     /**
      * @return string
      */
-    public function getCode(): string
+    public function getCode()
     {
         return $this->code;
     }
@@ -44,10 +45,21 @@ class Status implements ModelInterface
     /**
      * @param string $code
      *
+     * @throws InvalidArgumentException
+     *
      * @return Status
      */
-    public function setCode(string $code): Status
+    public function setCode($code): Status
     {
+        if (false === is_string($code)) {
+            throw new InvalidArgumentException(
+                sprintf(
+                    'Argument given to %s is not a string',
+                    __METHOD__
+                )
+            );
+        }
+
         $this->code = $code;
         return $this;
     }

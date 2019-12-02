@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\PayNL\Sdk\Model;
 
 use Codeception\Test\Unit as UnitTest;
+use PayNL\Sdk\TotalCollection;
 use PayNL\Sdk\Model\{
     ModelInterface,
     Links,
@@ -29,6 +30,9 @@ class TerminalsTest extends UnitTest
      */
     protected $terminals;
 
+    /**
+     * @return void
+     */
     public function _before(): void
     {
         $this->terminals = new Terminals();
@@ -40,6 +44,14 @@ class TerminalsTest extends UnitTest
     public function testItIsAModel(): void
     {
         verify($this->terminals)->isInstanceOf(ModelInterface::class);
+    }
+
+    /**
+     * @return void
+     */
+    public function testItIsATotalCollection(): void
+    {
+        verify($this->terminals)->isInstanceOf(TotalCollection::class);
     }
 
     /**

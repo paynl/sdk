@@ -13,10 +13,10 @@ use PayNL\Sdk\Model\Customer;
 use PayNL\Sdk\Model\PaymentMethod;
 use PayNL\Sdk\Model\Product;
 use PayNL\Sdk\Model\Statistics;
-use PayNL\Sdk\Model\Status;
+use PayNL\Sdk\Model\TransactionStatus;
 use PayNL\Sdk\Model\Transaction;
 use PayNL\Sdk\Model\ModelInterface;
-use Exception, JsonSerializable;
+use Exception, JsonSerializable, BadMethodCallException;
 
 /**
  * Class TransactionTest
@@ -30,9 +30,13 @@ class TransactionTest extends UnitTest
      */
     protected $transaction;
 
+    /**
+     * @return void
+     */
     public function _before(): void
     {
         $this->transaction = new Transaction();
+        $this->transaction->setStatus(new TransactionStatus());
     }
 
     /**
@@ -102,7 +106,7 @@ class TransactionTest extends UnitTest
      */
     public function testItCanSetASStatus(): void
     {
-        expect($this->transaction->setStatus(new Status()))->isInstanceOf(Transaction::class);
+        expect($this->transaction->setStatus(new TransactionStatus()))->isInstanceOf(Transaction::class);
     }
 
     /**
@@ -112,10 +116,10 @@ class TransactionTest extends UnitTest
      */
     public function testItCanGetASStatus(): void
     {
-        $this->transaction->setStatus(new Status());
+        $this->transaction->setStatus(new TransactionStatus());
 
         verify($this->transaction->getStatus())->notEmpty();
-        verify($this->transaction->getStatus())->isInstanceOf(Status::class);
+        verify($this->transaction->getStatus())->isInstanceOf(TransactionStatus::class);
     }
 
     /**
@@ -738,5 +742,234 @@ class TransactionTest extends UnitTest
 
         verify($this->transaction->getCompany())->notEmpty();
         verify($this->transaction->getCompany())->isInstanceOf(Company::class);
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanCheckIsCancelled(): void
+    {
+        $this->transaction->getStatus()->setCode(TransactionStatus::STATUS_CANCELLED);
+        verify($this->transaction->isCancelled())->bool();
+        verify($this->transaction->isCancelled())->true();
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanCheckIsPartiallyRefunded(): void
+    {
+        $this->transaction->getStatus()->setCode(TransactionStatus::STATUS_PARTIALLY_REFUNDED);
+        verify($this->transaction->isPartiallyRefunded())->bool();
+        verify($this->transaction->isPartiallyRefunded())->true();
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanCheckIsRefundedCustomer(): void
+    {
+        $this->transaction->getStatus()->setCode(TransactionStatus::STATUS_REFUNDED_CUSTOMER);
+        verify($this->transaction->isRefundedCustomer())->bool();
+        verify($this->transaction->isRefundedCustomer())->true();
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanCheckIsExpired(): void
+    {
+        $this->transaction->getStatus()->setCode(TransactionStatus::STATUS_EXPIRED);
+        verify($this->transaction->isExpired())->bool();
+        verify($this->transaction->isExpired())->true();
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanCheckIsRefunding(): void
+    {
+        $this->transaction->getStatus()->setCode(TransactionStatus::STATUS_REFUNDING);
+        verify($this->transaction->isRefunding())->bool();
+        verify($this->transaction->isRefunding())->true();
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanCheckIsChargeback(): void
+    {
+        $this->transaction->getStatus()->setCode(TransactionStatus::STATUS_CHARGEBACK);
+        verify($this->transaction->isChargeback())->bool();
+        verify($this->transaction->isChargeback())->true();
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanCheckIsDenied(): void
+    {
+        $this->transaction->getStatus()->setCode(TransactionStatus::STATUS_DENIED);
+        verify($this->transaction->isDenied())->bool();
+        verify($this->transaction->isDenied())->true();
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanCheckIsFailure(): void
+    {
+        $this->transaction->getStatus()->setCode(TransactionStatus::STATUS_FAILURE);
+        verify($this->transaction->isFailure())->bool();
+        verify($this->transaction->isFailure())->true();
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanCheckIsInvalidAmount(): void
+    {
+        $this->transaction->getStatus()->setCode(TransactionStatus::STATUS_INVALID_AMOUNT);
+        verify($this->transaction->isInvalidAmount())->bool();
+        verify($this->transaction->isInvalidAmount())->true();
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanCheckIsInitialized(): void
+    {
+        $this->transaction->getStatus()->setCode(TransactionStatus::STATUS_INITIALIZED);
+        verify($this->transaction->isInitialized())->bool();
+        verify($this->transaction->isInitialized())->true();
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanCheckIsProcessing(): void
+    {
+        $this->transaction->getStatus()->setCode(TransactionStatus::STATUS_PROCESSING);
+        verify($this->transaction->isProcessing())->bool();
+        verify($this->transaction->isProcessing())->true();
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanCheckIsPending1(): void
+    {
+        $this->transaction->getStatus()->setCode(TransactionStatus::STATUS_PENDING1);
+        verify($this->transaction->isPending())->bool();
+        verify($this->transaction->isPending())->true();
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanCheckIsPending2(): void
+    {
+        $this->transaction->getStatus()->setCode(TransactionStatus::STATUS_PENDING2);
+        verify($this->transaction->isPending())->bool();
+        verify($this->transaction->isPending())->true();
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanCheckIsPending3(): void
+    {
+        $this->transaction->getStatus()->setCode(TransactionStatus::STATUS_PENDING3);
+        verify($this->transaction->isPending())->bool();
+        verify($this->transaction->isPending())->true();
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanCheckIsSubscriptionOpen(): void
+    {
+        $this->transaction->getStatus()->setCode(TransactionStatus::STATUS_SUBSCRIPTION_OPEN);
+        verify($this->transaction->isSubscriptionOpen())->bool();
+        verify($this->transaction->isSubscriptionOpen())->true();
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanCheckIsProcessed(): void
+    {
+        $this->transaction->getStatus()->setCode(TransactionStatus::STATUS_PROCESSED);
+        verify($this->transaction->isProcessed())->bool();
+        verify($this->transaction->isProcessed())->true();
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanCheckIsConfirmed(): void
+    {
+        $this->transaction->getStatus()->setCode(TransactionStatus::STATUS_CONFIRMED);
+        verify($this->transaction->isConfirmed())->bool();
+        verify($this->transaction->isConfirmed())->true();
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanCheckIsPartiallyPaid(): void
+    {
+        $this->transaction->getStatus()->setCode(TransactionStatus::STATUS_PARTIALLY_PAID);
+        verify($this->transaction->isPartiallyPaid())->bool();
+        verify($this->transaction->isPartiallyPaid())->true();
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanCheckIsVerify(): void
+    {
+        $this->transaction->getStatus()->setCode(TransactionStatus::STATUS_VERIFY);
+        verify($this->transaction->isVerify())->bool();
+        verify($this->transaction->isVerify())->true();
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanCheckIsAuthorized(): void
+    {
+        $this->transaction->getStatus()->setCode(TransactionStatus::STATUS_AUTHORIZED);
+        verify($this->transaction->isAuthorized())->bool();
+        verify($this->transaction->isAuthorized())->true();
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanCheckIsPartiallyAccepted(): void
+    {
+        $this->transaction->getStatus()->setCode(TransactionStatus::STATUS_PARTIALLY_ACCEPTED);
+        verify($this->transaction->isPartiallyAccepted())->bool();
+        verify($this->transaction->isPartiallyAccepted())->true();
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanCheckIsPaid(): void
+    {
+        $this->transaction->getStatus()->setCode(TransactionStatus::STATUS_PAID);
+        verify($this->transaction->isPaid())->bool();
+        verify($this->transaction->isPaid())->true();
+    }
+
+    /**
+     * @return void
+     */
+    public function testItThrowsAnExceptionWhenMethodDoesNotExist(): void
+    {
+        $this->expectException(BadMethodCallException::class);
+        $this->transaction->test();
     }
 }

@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk;
 
-use PayNL\Sdk\Exception\InvalidArgumentException;
-use PayNL\Sdk\Exception\LogicException;
-use PayNL\Sdk\Exception\UnexpectedValueException;
+use PayNL\Sdk\Exception\{
+    LogicException,
+    UnexpectedValueException,
+    InvalidArgumentException
+};
 
 /**
  * Class Config
@@ -19,6 +21,7 @@ class Config
      * Configuration key constants definition
      */
     public const KEY_API_URL = 'api_url';
+    public const KEY_VERSION = 'version';
     public const KEY_USERNAME = 'username';
     public const KEY_PASSWORD = 'password';
 
@@ -32,6 +35,7 @@ class Config
      */
     protected $data = [
         self::KEY_API_URL  => '',
+        self::KEY_VERSION  => 1,
         self::KEY_USERNAME => '',
         self::KEY_PASSWORD => '',
     ];
@@ -66,16 +70,23 @@ class Config
         throw new LogicException('Config may not be cloned');
     }
 
+    /**
+     * @param array $config
+     *
+     * @return void
+     */
     public function load(array $config): void
     {
         if (false === array_key_exists(self::KEY_API_URL, $config)
+            || false === array_key_exists(self::KEY_VERSION, $config)
             || false === array_key_exists(self::KEY_USERNAME, $config)
             || false === array_key_exists(self::KEY_PASSWORD, $config)
         ) {
             throw new InvalidArgumentException(
                 sprintf(
-                    '%s, %s and %s need to be defined',
+                    '%s, %s, %s and %s need to be defined',
                     self::KEY_API_URL,
+                    self::KEY_VERSION,
                     self::KEY_USERNAME,
                     self::KEY_PASSWORD
                 )
@@ -123,6 +134,14 @@ class Config
     public function getApiUrl(): string
     {
         return $this->get(self::KEY_API_URL);
+    }
+
+    /**
+     * @return integer
+     */
+    public function getVersion(): int
+    {
+        return (int)$this->get(self::KEY_VERSION);
     }
 
     /**

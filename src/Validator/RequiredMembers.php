@@ -17,8 +17,8 @@ class RequiredMembers extends AbstractValidator
     /*
      * Message type constant definitions
      */
-    protected const MSG_MISSING_MEMBER = 'MissingMember';
-    protected const MSG_EMPTY_MEMBER   = 'EmptyMember';
+    public const MSG_MISSING_MEMBER = 'MissingMember';
+    public const MSG_EMPTY_MEMBER   = 'EmptyMember';
 
     /**
      * @var array

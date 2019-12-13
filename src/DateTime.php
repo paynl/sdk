@@ -4,34 +4,34 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk;
 
-use Exception, DateTime as stdDateTime, DateTimeZone, RuntimeException;
-use PayNL\Sdk\Exception\InvalidArgumentException;
+use Exception, DateTime as stdDateTime, DateTimeZone, JsonSerializable;
 
 /**
  * Class DateTime
  *
  * @package PayNL\Sdk
  */
-class DateTime extends stdDateTime implements \JsonSerializable
+class DateTime extends stdDateTime implements JsonSerializable
 {
     /**
      * @param string $format
      * @param string $time
      * @param DateTimeZone|null $timezone
      *
-     * @throws InvalidArgumentException
-     * @throws Exception
-     *
-     * @return bool|DateTime
+     * @return DateTime
      *
      * @internal Dirty hack to "override" the parents static function because it always returns itself...
      */
-    public static function createFromFormat($format, $time, $timezone = null)
+    public static function createFromFormat($format, $time, $timezone = null): self
     {
         /** @var stdDateTime $dateTime */
         $dateTime = parent::createFromFormat($format, $time, $timezone);
 
-        return (new self())->setTimestamp($dateTime->getTimestamp());
+        try {
+            return (new self())->setTimestamp($dateTime->getTimestamp());
+        } catch (Exception $e) {
+            // does nothing, theoretically this does not occur
+        }
     }
 
     /**
@@ -51,12 +51,14 @@ class DateTime extends stdDateTime implements \JsonSerializable
     }
 
     /**
-     * @throws Exception
-     *
      * @return DateTime
      */
     public static function now(): self
     {
-        return new self();
+        try {
+            return new self();
+        } catch (Exception $e) {
+            // does nothing, theoretically this does not occur
+        }
     }
 }

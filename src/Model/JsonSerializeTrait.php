@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Model;
 
+use JsonSerializable;
 use PayNL\Sdk\Exception\LogicException;
 
 /**
@@ -14,7 +15,7 @@ use PayNL\Sdk\Exception\LogicException;
 trait JsonSerializeTrait
 {
     /**
-     * @see \JsonSerializable::jsonSerialize()
+     * @see JsonSerializable::jsonSerialize()
      *
      * @return array
      */
@@ -41,10 +42,11 @@ trait JsonSerializeTrait
      */
     protected function checkInterfaceImplementation(): void
     {
-        if (false === ($this instanceof \JsonSerializable)) {
+        if (false === ($this instanceof JsonSerializable)) {
             throw new LogicException(sprintf(
-                'Class %s should implement the interface JsonSerializable',
-                __CLASS__
+                'Class %s should implement the interface %s',
+                __CLASS__,
+                JsonSerializable::class
             ));
         }
     }

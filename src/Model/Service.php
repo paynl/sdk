@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PayNL\Sdk\Model;
 
 use PayNL\Sdk\DateTime;
+use PayNL\Sdk\Exception\InvalidArgumentException;
 
 /**
  * Class Service
@@ -16,6 +17,8 @@ class Service implements ModelInterface
     use LinksTrait;
 
     /**
+     * @required
+     *
      * @var string
      */
     protected $id;
@@ -33,7 +36,7 @@ class Service implements ModelInterface
     /**
      * @var integer
      */
-    protected $testMode = 0;
+    protected $testMode = Integration::TEST_MODE_OFF;
 
     /**
      * @var string
@@ -50,7 +53,7 @@ class Service implements ModelInterface
      */
     public function getId(): string
     {
-        return $this->id;
+        return (string)$this->id;
     }
 
     /**
@@ -69,7 +72,7 @@ class Service implements ModelInterface
      */
     public function getName(): string
     {
-        return $this->name;
+        return (string)$this->name;
     }
 
     /**
@@ -88,7 +91,7 @@ class Service implements ModelInterface
      */
     public function getDescription(): string
     {
-        return $this->description;
+        return (string)$this->description;
     }
 
     /**
@@ -113,10 +116,23 @@ class Service implements ModelInterface
     /**
      * @param integer $testMode
      *
+     * @throws InvalidArgumentException when given test mode is invalid
+     *
      * @return Service
      */
     public function setTestMode(int $testMode): Service
     {
+        $allowedMethods = [Integration::TEST_MODE_OFF, Integration::TEST_MODE_ON];
+        if (false === in_array($testMode, $allowedMethods, true)) {
+            throw new InvalidArgumentException(
+                sprintf(
+                    'Test mode "%s" given to %s is not valid, choose one of: "%s"',
+                    $testMode,
+                    __METHOD__,
+                    implode('", "', $allowedMethods)
+                )
+            );
+        }
         $this->testMode = $testMode;
         return $this;
     }
@@ -126,7 +142,7 @@ class Service implements ModelInterface
      */
     public function getSecret(): string
     {
-        return $this->secret;
+        return (string)$this->secret;
     }
 
     /**

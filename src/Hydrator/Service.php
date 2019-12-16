@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Hydrator;
 
-use PayNL\Sdk\DateTime;
 use PayNL\Sdk\Model\Service as ServiceModel;
 
 /**
@@ -23,17 +22,8 @@ class Service extends AbstractHydrator
     {
         $this->validateGivenObject($object, ServiceModel::class);
 
-        $data['description'] = $data['description'] ?? '';
-        $data['testMode']    = $data['testMode'] ?? 0;
-        $data['secret']      = $data['secret'] ?? '';
-
-        $dateField = 'createdAt';
-        if (true === array_key_exists($dateField, $data)) {
-            $createdDate = $data[$dateField];
-            if ($createdDate instanceof DateTime) {
-                $createdDate = $createdDate->format(DateTime::ATOM);
-            }
-            $data[$dateField] = empty($data[$dateField]) === true ? null : DateTime::createFromFormat(DateTime::ATOM, $createdDate);
+        if (true === array_key_exists('createdAt', $data) && null !== $data['createdAt']) {
+            $data['createdAt'] = $this->getSdkDateTime($data['createdAt']);
         }
 
         /** @var ServiceModel $service */

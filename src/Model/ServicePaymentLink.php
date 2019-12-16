@@ -16,9 +16,11 @@ class ServicePaymentLink implements ModelInterface, JsonSerializable
     use JsonSerializeTrait;
 
     /**
+     * @required
+     *
      * @var integer
      */
-    protected $securityMode;
+    protected $securityMode = 0;
 
     /**
      * @var Amount
@@ -58,7 +60,7 @@ class ServicePaymentLink implements ModelInterface, JsonSerializable
      *
      * @return ServicePaymentLink
      */
-    public function setSecurityMode(int $securityMode): ServicePaymentLink
+    public function setSecurityMode(int $securityMode): self
     {
         $this->securityMode = $securityMode;
         return $this;
@@ -77,7 +79,7 @@ class ServicePaymentLink implements ModelInterface, JsonSerializable
      *
      * @return ServicePaymentLink
      */
-    public function setAmount(Amount $amount): ServicePaymentLink
+    public function setAmount(Amount $amount): self
     {
         $this->amount = $amount;
         return $this;
@@ -96,7 +98,7 @@ class ServicePaymentLink implements ModelInterface, JsonSerializable
      *
      * @return ServicePaymentLink
      */
-    public function setAmountMin(Amount $amountMin): ServicePaymentLink
+    public function setAmountMin(Amount $amountMin): self
     {
         $this->amountMin = $amountMin;
         return $this;
@@ -107,7 +109,7 @@ class ServicePaymentLink implements ModelInterface, JsonSerializable
      */
     public function getCountryCode(): string
     {
-        return $this->countryCode;
+        return (string)$this->countryCode;
     }
 
     /**
@@ -115,7 +117,7 @@ class ServicePaymentLink implements ModelInterface, JsonSerializable
      *
      * @return ServicePaymentLink
      */
-    public function setCountryCode(string $countryCode): ServicePaymentLink
+    public function setCountryCode(string $countryCode): self
     {
         $this->countryCode = $countryCode;
         return $this;
@@ -126,7 +128,7 @@ class ServicePaymentLink implements ModelInterface, JsonSerializable
      */
     public function getLanguage(): string
     {
-        return $this->language;
+        return (string)$this->language;
     }
 
     /**
@@ -134,7 +136,7 @@ class ServicePaymentLink implements ModelInterface, JsonSerializable
      *
      * @return ServicePaymentLink
      */
-    public function setLanguage(string $language): ServicePaymentLink
+    public function setLanguage(string $language): self
     {
         $this->language = $language;
         return $this;
@@ -153,7 +155,7 @@ class ServicePaymentLink implements ModelInterface, JsonSerializable
      *
      * @return ServicePaymentLink
      */
-    public function setStatistics(Statistics $statistics): ServicePaymentLink
+    public function setStatistics(Statistics $statistics): self
     {
         $this->statistics = $statistics;
         return $this;

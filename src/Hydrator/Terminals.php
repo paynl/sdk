@@ -7,7 +7,7 @@ namespace PayNL\Sdk\Hydrator;
 use PayNL\Sdk\{
     Model\Terminals as TerminalsModel,
     Model\Terminal as TerminalModel,
-    Hydrator\Terminal as TerminalHydrator
+    Hydrator\Simple as SimpleHydrator
 };
 
 /**
@@ -26,9 +26,16 @@ class Terminals extends AbstractHydrator
     {
         $this->validateGivenObject($object, TerminalsModel::class);
 
+        if (false === array_key_exists('terminals', $data)) {
+            // assume data array given are terminals
+            $data = [
+                'terminals' => $data,
+            ];
+        }
+
         foreach ($data['terminals'] as $key => $terminal) {
-            if (false === ($terminal instanceof TerminalModel)) {
-                $data['terminals'][$key] = (new TerminalHydrator())->hydrate($terminal, new TerminalModel());
+            if (true === is_array($terminal)) {
+                $data['terminals'][$key] = (new SimpleHydrator())->hydrate($terminal, new TerminalModel());
             }
         }
 

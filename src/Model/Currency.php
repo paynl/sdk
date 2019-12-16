@@ -28,7 +28,7 @@ class Currency implements ModelInterface
      */
     public function getAbbreviation(): string
     {
-        return $this->abbreviation;
+        return (string)$this->abbreviation;
     }
 
     /**
@@ -36,7 +36,7 @@ class Currency implements ModelInterface
      *
      * @return Currency
      */
-    public function setAbbreviation(string $abbreviation): Currency
+    public function setAbbreviation(string $abbreviation): self
     {
         $this->abbreviation = $abbreviation;
         return $this;
@@ -47,7 +47,7 @@ class Currency implements ModelInterface
      */
     public function getDescription(): string
     {
-        return $this->description;
+        return (string)$this->description;
     }
 
     /**
@@ -55,7 +55,7 @@ class Currency implements ModelInterface
      *
      * @return Currency
      */
-    public function setDescription(string $description): Currency
+    public function setDescription(string $description): self
     {
         $this->description = $description;
         return $this;

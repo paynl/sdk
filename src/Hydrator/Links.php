@@ -25,14 +25,21 @@ class Links extends AbstractHydrator
     {
         $this->validateGivenObject($object, LinksModel::class);
 
-        foreach ($data as $key => $link) {
-            if (false === ($link instanceof LinkModel)) {
-                $data[$key] = (new Link())->hydrate($link, new LinkModel());
+        if (false === array_key_exists('links', $data)) {
+            // assume given array are links
+            $data = [
+                'links' => $data,
+            ];
+        }
+
+        foreach ($data['links'] as $key => $link) {
+            if (true === is_array($link)) {
+                $data['links'][$key] = (new Link())->hydrate($link, new LinkModel());
             }
         }
 
         /** @var LinksModel $links */
-        $links =  parent::hydrate(['links' => $data], $object);
+        $links =  parent::hydrate($data, $object);
 
         return $links;
     }

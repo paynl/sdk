@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Hydrator;
 
-use PayNL\Sdk\DateTime;
-use PayNL\Sdk\Model\{
-    BankAccount,
-    Customer as CustomerModel
+use PayNL\Sdk\{
+    Model\BankAccount as BankAccountModel,
+    Model\Company as CompanyModel,
+    Model\Customer as CustomerModel,
+    Hydrator\Simple as SimpleHydrator
 };
-use PayNL\Sdk\Hydrator\BankAccount as BankAccountHydrator;
-use Exception;
 
 /**
  * Class Customer
@@ -22,45 +21,24 @@ class Customer extends AbstractHydrator
     /**
      * @inheritDoc
      *
-     * @throws Exception
-     *
      * @return CustomerModel
      */
     public function hydrate(array $data, $object): CustomerModel
     {
         $this->validateGivenObject($object, CustomerModel::class);
 
+        if (true === array_key_exists('birthDate', $data) && null !== $data['birthDate']) {
+            $data['birthDate'] = $this->getSdkDateTime($data['birthDate']);
+        }
+
+        $data['trustLevel'] = (int)($data['trustLevel'] ?? 0);
+
         if (true === array_key_exists('bankAccount', $data) && true === is_array($data['bankAccount'])) {
-            $data['bankAccount'] =  (new BankAccountHydrator())->hydrate($data['bankAccount'], new BankAccount());
+            $data['bankAccount'] = (new SimpleHydrator())->hydrate($data['bankAccount'], new BankAccountModel());
         }
 
-        $data['trustLevel'] = $data['trustLevel'] ?? 0;
-        $data['reference'] = $data['reference'] ?? 0;
-
-        $optionalKeys = [
-            'initials',
-            'lastName',
-            'gender',
-            'phone',
-            'email',
-            'reference',
-            'language',
-            'ip',
-        ];
-        foreach ($optionalKeys as $optionalKey) {
-            $data[$optionalKey] = $data[$optionalKey] ?? '';
-        }
-
-        if (true === array_key_exists('birthDate', $data)) {
-            $birthDate = $data['birthDate'];
-            if ($birthDate instanceof DateTime) {
-                $birthDate = $birthDate->format(DateTime::ATOM);
-            }
-            $data['birthDate'] = (empty($data['birthDate']) === true ? null : DateTime::createFromFormat(DateTime::ATOM, $birthDate));
-        }
-
-        if (true === array_key_exists('birthDate', $data) && null === $data['birthDate']) {
-            unset($data['birthDate']);
+        if (true === array_key_exists('company', $data) && true === is_array($data['company'])) {
+            $data['company'] = (new SimpleHydrator())->hydrate($data['company'], new CompanyModel());
         }
 
         /** @var CustomerModel $customer */

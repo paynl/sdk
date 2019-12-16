@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Hydrator;
 
+use DateTime as stdDateTime;
 use PayNL\Sdk\{
+    DateTime,
     Exception\InvalidArgumentException,
     Validator\ObjectInstance as ObjectInstanceValidator,
     Model\Links as LinksModel
@@ -26,7 +28,6 @@ abstract class AbstractHydrator extends ClassMethods
      * @param bool $underscoreSeparatedKeys
      * @param bool $methodExistsCheck
      *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
      */
     public function __construct($underscoreSeparatedKeys = true, $methodExistsCheck = false)
@@ -39,12 +40,21 @@ abstract class AbstractHydrator extends ClassMethods
         parent::__construct($underscoreSeparatedKeys, $methodExistsCheck);
     }
 
+    /**
+     * @inheritDoc
+     *
+     * @internal also automatically sets links and filters to remove all null values
+     */
     public function hydrate(array $data, $object)
     {
         if (true === array_key_exists('_links', $data) && false === ($data['_links'] instanceof LinksModel)) {
             $data['links'] = (new Links())->hydrate($data['_links'], new LinksModel());
             unset($data['_links']);
         }
+
+        $data = array_filter($data, static function ($item) {
+            return null !== $item;
+        });
 
         return parent::hydrate($data, $object);
     }
@@ -65,5 +75,22 @@ abstract class AbstractHydrator extends ClassMethods
                 implode(PHP_EOL, $instanceValidator->getMessages())
             );
         }
+    }
+
+    /**
+     * @param string|stdDateTime $dateTime
+     *
+     * @return DateTime
+     */
+    protected function getSdkDateTime($dateTime): DateTime
+    {
+        if ($dateTime instanceof DateTime) {
+            return $dateTime;
+        }
+
+        if ($dateTime instanceof stdDateTime) {
+            $dateTime = $dateTime->format(stdDateTime::ATOM);
+        }
+        return DateTime::createFromFormat(DateTime::ATOM, $dateTime);
     }
 }

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Hydrator;
 
-use Zend\Hydrator\ClassMethods;
-use PayNL\Sdk\Model\{
-    Card,
-    PaymentMethod,
-    Receipt as ReceiptModel
+use PayNL\Sdk\{
+    Model\Card as CardModel,
+    Model\PaymentMethod as PaymentMethodModel,
+    Model\Receipt as ReceiptModel,
+    Hydrator\Simple as SimpleHydrator
 };
 
 /**
@@ -27,21 +27,12 @@ class Receipt extends AbstractHydrator
     {
         $this->validateGivenObject($object, ReceiptModel::class);
 
-        $data['approvalId'] = $data['approvalId'] ?? 0;
-        $data['signature'] = $data['signature'] ?? '';
-
         if (true === array_key_exists('card', $data) && true === is_array($data['card'])) {
-            $data['card'] = (new ClassMethods())->hydrate($data['card'], new Card());
+            $data['card'] = (new SimpleHydrator())->hydrate($data['card'], new CardModel());
         }
 
         if (true === array_key_exists('paymentMethod', $data) && true === is_array($data['paymentMethod'])) {
-            if (true === array_key_exists('id', $data['paymentMethod'])
-                && true === is_string($data['paymentMethod']['id'])
-            ) {
-                $data['paymentMethod']['id'] = 0;
-            }
-
-            $data['paymentMethod'] = (new ClassMethods())->hydrate($data['paymentMethod'], new PaymentMethod());
+            $data['paymentMethod'] = (new SimpleHydrator())->hydrate($data['paymentMethod'], new PaymentMethodModel());
         }
 
         /** @var ReceiptModel $receipt */

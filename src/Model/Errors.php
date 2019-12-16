@@ -26,7 +26,7 @@ class Errors extends ArrayCollection implements ModelInterface
      *
      * @return Errors
      */
-    public function setErrors(array $errors): Errors
+    public function setErrors(array $errors): self
     {
         $this->clear();
         foreach ($errors as $key => $error) {

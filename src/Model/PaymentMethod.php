@@ -17,6 +17,8 @@ class PaymentMethod implements ModelInterface, JsonSerializable
     use JsonSerializeTrait;
 
     /**
+     * @required
+     *
      * @var integer
      */
     protected $id;
@@ -32,7 +34,7 @@ class PaymentMethod implements ModelInterface, JsonSerializable
     protected $name;
 
     /**
-     * @var string|null
+     * @var string
      */
     protected $image;
 
@@ -46,6 +48,9 @@ class PaymentMethod implements ModelInterface, JsonSerializable
      */
     protected $subMethods;
 
+    /**
+     * PaymentMethod constructor.
+     */
     public function __construct()
     {
         $this->subMethods = new PaymentMethods();
@@ -56,7 +61,7 @@ class PaymentMethod implements ModelInterface, JsonSerializable
      */
     public function getId(): int
     {
-        return $this->id;
+        return (int)$this->id;
     }
 
     /**
@@ -108,7 +113,7 @@ class PaymentMethod implements ModelInterface, JsonSerializable
      */
     public function getName(): string
     {
-        return $this->name;
+        return (string)$this->name;
     }
 
     /**
@@ -156,7 +161,13 @@ class PaymentMethod implements ModelInterface, JsonSerializable
      */
     public function setCountryCodes(array $countryCodes): self
     {
-        $this->countryCodes = $countryCodes;
+        if (0 === count($countryCodes)) {
+            return $this;
+        }
+
+        foreach ($countryCodes as $countryCode) {
+            $this->addCountryCode($countryCode);
+        }
         return $this;
     }
 
@@ -168,6 +179,7 @@ class PaymentMethod implements ModelInterface, JsonSerializable
     public function addCountryCode(string $countryCode): self
     {
         $this->countryCodes[] = $countryCode;
+        $this->countryCodes = array_unique($this->countryCodes);
         return $this;
     }
 

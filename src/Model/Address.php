@@ -55,7 +55,7 @@ class Address implements ModelInterface, JsonSerializable
     /**
      * @var string
      */
-    protected $initials;
+    protected $name;
 
     /**
      * @var string
@@ -67,7 +67,7 @@ class Address implements ModelInterface, JsonSerializable
      */
     public function getStreetName(): string
     {
-        return $this->streetName;
+        return (string)$this->streetName;
     }
 
     /**
@@ -75,7 +75,7 @@ class Address implements ModelInterface, JsonSerializable
      *
      * @return Address
      */
-    public function setStreetName(string $streetName): Address
+    public function setStreetName(string $streetName): self
     {
         $this->streetName = $streetName;
         return $this;
@@ -86,7 +86,7 @@ class Address implements ModelInterface, JsonSerializable
      */
     public function getStreetNumber(): string
     {
-        return $this->streetNumber;
+        return (string)$this->streetNumber;
     }
 
     /**
@@ -96,7 +96,7 @@ class Address implements ModelInterface, JsonSerializable
      *
      * @return Address
      */
-    public function setStreetNumber($streetNumber): Address
+    public function setStreetNumber($streetNumber): self
     {
         $validator = new InputType();
         if (true === is_int($streetNumber)) {
@@ -124,7 +124,7 @@ class Address implements ModelInterface, JsonSerializable
      *
      * @return Address
      */
-    public function setStreetNumberExtension(string $streetNumberExtension): Address
+    public function setStreetNumberExtension(string $streetNumberExtension): self
     {
         $this->streetNumberExtension = $streetNumberExtension;
         return $this;
@@ -135,7 +135,7 @@ class Address implements ModelInterface, JsonSerializable
      */
     public function getZipCode(): string
     {
-        return $this->zipCode;
+        return (string)$this->zipCode;
     }
 
     /**
@@ -143,7 +143,7 @@ class Address implements ModelInterface, JsonSerializable
      *
      * @return Address
      */
-    public function setZipCode(string $zipCode): Address
+    public function setZipCode(string $zipCode): self
     {
         $this->zipCode = $zipCode;
         return $this;
@@ -154,7 +154,7 @@ class Address implements ModelInterface, JsonSerializable
      */
     public function getCity(): string
     {
-        return $this->city;
+        return (string)$this->city;
     }
 
     /**
@@ -162,7 +162,7 @@ class Address implements ModelInterface, JsonSerializable
      *
      * @return Address
      */
-    public function setCity(string $city): Address
+    public function setCity(string $city): self
     {
         $this->city = $city;
         return $this;
@@ -173,7 +173,7 @@ class Address implements ModelInterface, JsonSerializable
      */
     public function getRegionCode(): string
     {
-        return $this->regionCode;
+        return (string)$this->regionCode;
     }
 
     /**
@@ -181,7 +181,7 @@ class Address implements ModelInterface, JsonSerializable
      *
      * @return Address
      */
-    public function setRegionCode(string $regionCode): Address
+    public function setRegionCode(string $regionCode): self
     {
         $this->regionCode = $regionCode;
         return $this;
@@ -192,7 +192,7 @@ class Address implements ModelInterface, JsonSerializable
      */
     public function getCountryCode(): string
     {
-        return $this->countryCode;
+        return (string)$this->countryCode;
     }
 
     /**
@@ -200,7 +200,7 @@ class Address implements ModelInterface, JsonSerializable
      *
      * @return Address
      */
-    public function setCountryCode(string $countryCode): Address
+    public function setCountryCode(string $countryCode): self
     {
         $this->countryCode = $countryCode;
         return $this;
@@ -209,19 +209,19 @@ class Address implements ModelInterface, JsonSerializable
     /**
      * @return string
      */
-    public function getInitials(): string
+    public function getName(): string
     {
-        return $this->initials;
+        return (string)$this->name;
     }
 
     /**
-     * @param string $initials
+     * @param string $name
      *
      * @return Address
      */
-    public function setInitials(string $initials): Address
+    public function setName(string $name): self
     {
-        $this->initials = $initials;
+        $this->name = $name;
         return $this;
     }
 
@@ -230,7 +230,7 @@ class Address implements ModelInterface, JsonSerializable
      */
     public function getLastName(): string
     {
-        return $this->lastName;
+        return (string)$this->lastName;
     }
 
     /**
@@ -238,7 +238,7 @@ class Address implements ModelInterface, JsonSerializable
      *
      * @return Address
      */
-    public function setLastName(string $lastName): Address
+    public function setLastName(string $lastName): self
     {
         $this->lastName = $lastName;
         return $this;

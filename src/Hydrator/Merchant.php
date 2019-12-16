@@ -4,20 +4,16 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Hydrator;
 
-use PayNL\Sdk\DateTime;
-use Zend\Hydrator\ClassMethods;
-use PayNL\Sdk\Model\Merchant as MerchantModel;
-use PayNL\Sdk\Hydrator\{
-    Address as AddressHydrator,
-    BankAccount as BankAccountHydrator
+use PayNL\Sdk\{
+    Model\Merchant as MerchantModel,
+    Model\Address as AddressModel,
+    Model\BankAccount as BankAccountModel,
+    Model\ContactMethods as ContactMethodsModel,
+    Model\Trademarks as TrademarksModel,
+    Hydrator\Simple as SimpleHydrator,
+    Hydrator\ContactMethods as ContactMethodsHydrator,
+    Hydrator\Trademarks as TrademarksHydrator
 };
-use PayNL\Sdk\Model\{
-    Address,
-    BankAccount,
-    ContactMethod,
-    Trademark
-};
-use Exception;
 
 /**
  * Class Merchant
@@ -29,55 +25,37 @@ class Merchant extends AbstractHydrator
     /**
      * @inheritDoc
      *
-     * @throws Exception
-     *
      * @return MerchantModel
-     *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function hydrate(array $data, $object): MerchantModel
     {
         $this->validateGivenObject($object, MerchantModel::class);
 
-        $data['coc'] = $data['coc'] ?? '';
-        $data['vat'] = $data['vat'] ?? '';
-        $data['website'] = $data['website'] ?? '';
-
         if (true === array_key_exists('bankAccount', $data) && true === is_array($data['bankAccount'])) {
-            $data['bankAccount'] = (new BankAccountHydrator())->hydrate($data['bankAccount'], new BankAccount());
+            $data['bankAccount'] = (new SimpleHydrator())->hydrate($data['bankAccount'], new BankAccountModel());
         }
 
-        $addressFields = [
+        foreach ([
             'postalAddress',
             'visitAddress',
-        ];
-        foreach ($addressFields as $addressField) {
+        ] as $addressField) {
             if (true === array_key_exists($addressField, $data) && true === is_array($data[$addressField])) {
-                $data[$addressField] = (new AddressHydrator())->hydrate($data[$addressField], new Address());
+                $data[$addressField] = (new SimpleHydrator())->hydrate($data[$addressField], new AddressModel());
             }
         }
 
-        if (true === array_key_exists('trademarks', $data) && false === empty($data['trademarks'])) {
-            foreach ($data['trademarks'] as &$tradeName) {
-                $tradeName = (new ClassMethods())->hydrate($tradeName, new Trademark());
-            }
-            unset($tradeName);
+        if (true === array_key_exists('trademarks', $data) && true === is_array($data['trademarks'])) {
+            $data['trademarks'] = (new TrademarksHydrator())->hydrate($data['trademarks'], new TrademarksModel());
         }
 
-        if (true === array_key_exists('contactMethods', $data) && false === empty($data['contactMethods'])) {
-            foreach ($data['contactMethods'] as &$contactMethod) {
-                $contactMethod = (new ClassMethods())->hydrate($contactMethod, new ContactMethod());
-            }
-            unset($contactMethod);
+        if (true === array_key_exists('contactMethods', $data) && true === is_array($data['contactMethods'])) {
+            $data['contactMethods'] = (new ContactMethodsHydrator())
+                ->hydrate($data['contactMethods'], new ContactMethodsModel())
+            ;
         }
 
-        if (true === array_key_exists('createdAt', $data)) {
-            $createdAt = $data['createdAt'];
-            if ($createdAt instanceof DateTime) {
-                $createdAt = $createdAt->format(DateTime::ATOM);
-            }
-            $data['createdAt'] = (empty($createdAt) === true ? null : DateTime::createFromFormat(DateTime::ATOM, $createdAt));
+        if (true === array_key_exists('createdAt', $data) && null !== $data['createdAt']) {
+            $data['createdAt'] = $this->getSdkDateTime($data['createdAt']);
         }
 
         /** @var MerchantModel $merchant */

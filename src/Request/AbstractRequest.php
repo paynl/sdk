@@ -14,6 +14,7 @@ use PayNL\Sdk\{
     DebugTrait,
     Exception\ExceptionInterface,
     Exception\RuntimeException,
+    Model\ModelInterface,
     Response,
     Exception\InvalidArgumentException,
     Filter\FilterInterface,
@@ -147,6 +148,9 @@ abstract class AbstractRequest implements RequestInterface
      */
     public function getBody(): string
     {
+        if (false === is_string($this->body)) {
+            return $this->encodeBody($this->body);
+        }
         return $this->body;
     }
 
@@ -160,10 +164,6 @@ abstract class AbstractRequest implements RequestInterface
      */
     public function setBody($body): self
     {
-        if (false === is_string($body)) {
-            $body = $this->encodeBody($body);
-        }
-
         $this->body = $body;
         return $this;
     }
@@ -254,14 +254,19 @@ abstract class AbstractRequest implements RequestInterface
     {
         $encoder = new JsonEncoder();
         $contentTypeHeader = 'application/json';
+        $context = [
+            'json_encode_options' => JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | (true === $this->isDebug() ? JSON_PRETTY_PRINT : 0),
+        ];
         if (static::FORMAT_XML === $this->getFormat()) {
             $encoder = new XmlEncoder([
                 XmlEncoder::ROOT_NODE_NAME => static::XML_ROOT_NODE_NAME,
             ]);
             $contentTypeHeader = 'application/xml';
+            $context = [];
         }
         $this->addHeader(static::HEADER_CONTENT_TYPE, $contentTypeHeader);
-        return (string)$encoder->encode($body, $this->getFormat());
+
+        return (string)$encoder->encode($body, $this->getFormat(), $context);
     }
 
     /**

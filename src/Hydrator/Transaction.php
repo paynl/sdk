@@ -4,132 +4,80 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Hydrator;
 
-use PayNL\Sdk\DateTime;
-use PayNL\Sdk\Model\{
-    Address,
-    Amount,
-    Company,
-    Customer,
-    PaymentMethod,
-    Product,
-    Statistics,
-    TransactionStatus,
-    Transaction as TransactionModel
-};
-use PayNL\Sdk\Hydrator\{
-    Address as AddressHydrator,
-    Customer as CustomerHydrator,
-    PaymentMethod as PaymentMethodHydrator,
-    Product as ProductHydrator,
-    Status as StatusHydrator,
-    Statistics as StatisticsHydrator
-};
-use Zend\Hydrator\ClassMethods;
 use Exception;
+use PayNL\Sdk\{
+    Model\Amount as AmountModel,
+    Model\PaymentMethod as PaymentMethodModel,
+    Model\Integration as IntegrationModel,
+    Model\Order as OrderModel,
+    Model\Transaction as TransactionModel,
+    Model\TransactionStatus as TransactionStatusModel,
+    Model\Statistics as StatisticsModel,
+    Model\Transfer as TransferModel,
+    Hydrator\Simple as SimpleHydrator,
+    Hydrator\PaymentMethod as PaymentMethodHydrator,
+    Hydrator\Order as OrderHydrator,
+    Hydrator\Status as StatusHydrator
+};
 
 /**
  * Class Transaction
  *
  * @package PayNL\Sdk\Hydrator
- *
- * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class Transaction extends AbstractHydrator
 {
     /**
      * @inheritDoc
      *
-     * @throws Exception
-     *
      * @return TransactionModel
-     *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     * @SuppressWarnings(PHPMD.NPathComplexity)
-     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
-     *
-     * @todo split to multiple methods
      */
     public function hydrate(array $data, $object): TransactionModel
     {
         $this->validateGivenObject($object, TransactionModel::class);
 
-        if (true === array_key_exists('status', $data) && true === is_array($data['status'])) {
-            $data['status'] =  (new StatusHydrator())->hydrate($data['status'], new TransactionStatus());
-        }
-
-        $data['exchangeUrl'] = $data['exchangeUrl'] ?? '';
-
-        if (true === array_key_exists('paymentMethod', $data) && true === is_array($data['paymentMethod'])) {
-            $data['paymentMethod'] = (new PaymentMethodHydrator())->hydrate($data['paymentMethod'], new PaymentMethod());
-        }
-        foreach (['address', 'billingAddress'] as $addressKey) {
-            if (true === array_key_exists($addressKey, $data) && true === is_array($data[$addressKey])) {
-                $data[$addressKey] = (new AddressHydrator())->hydrate($data[$addressKey], new Address());
+        foreach ([
+            'expiresAt',
+            'createdAt',
+        ] as $dateTimeFieldKey) {
+            if (true === array_key_exists($dateTimeFieldKey, $data) && null !== $data[$dateTimeFieldKey]) {
+                $data[$dateTimeFieldKey] = $this->getSdkDateTime($data[$dateTimeFieldKey]);
             }
         }
-        if (true === array_key_exists('customer', $data) && true === is_array($data['customer'])) {
-            $data['customer'] = (new CustomerHydrator())->hydrate($data['customer'], new Customer());
-        }
-        if (true === array_key_exists('statistics', $data) && true === is_array($data['statistics'])) {
-            $data['statistics'] = (new StatisticsHydrator())->hydrate($data['statistics'], new Statistics());
-        }
-        if (true === array_key_exists('company', $data) && true === is_array($data['company'])) {
-            $data['company'] = (new ClassMethods())->hydrate($data['company'], new Company());
-        }
 
-        $amountFields = [
+        foreach ([
             'amount',
             'amountConverted',
             'amountPaid',
             'amountRefunded',
-        ];
-        foreach ($amountFields as $amountField) {
-            if (true === array_key_exists($amountField, $data) && true === is_array($data[$amountField])) {
-                $data[$amountField] = (new ClassMethods())->hydrate($data[$amountField], new Amount());
+        ] as $amountFieldKey) {
+            if (true === array_key_exists($amountFieldKey, $data) && true === is_array($data[$amountFieldKey])) {
+                $data[$amountFieldKey] = (new SimpleHydrator())->hydrate($data[$amountFieldKey], new AmountModel());
             }
         }
 
-        if (true === array_key_exists('products', $data) &&
-            true === is_array($data['products']) &&
-            0 < count($data['products'])
-        ) {
-            foreach ($data['products'] as &$product) {
-                if (false === $product instanceof Product) {
-                    $product = (new ProductHydrator())->hydrate($product, new Product());
-                }
-            }
-            unset($product);
+        if (true === array_key_exists('paymentMethod', $data) && true === is_array($data['paymentMethod'])) {
+            $data['paymentMethod'] = (new PaymentMethodHydrator())->hydrate($data['paymentMethod'], new PaymentMethodModel());
         }
 
-        $dateFields = [
-            'invoiceDate',
-            'deliveryDate',
-            'createdAt',
-            'expiresAt',
-        ];
-        foreach ($dateFields as $dateField) {
-            if (true === array_key_exists($dateField, $data)) {
-                $date = $data[$dateField];
-                if ($date instanceof DateTime) {
-                    $date = $date->format(DateTime::ATOM);
-                }
-                $data[$dateField] = empty($data[$dateField]) === true ? null : DateTime::createFromFormat(DateTime::ATOM, $date);
-
-                if (null === $data[$dateField]) {
-                    unset($data[$dateField]);
-                }
-            }
+        if (true === array_key_exists('integration', $data) && true === is_array($data['integration'])) {
+            $data['integration'] = (new SimpleHydrator())->hydrate($data['integration'], new IntegrationModel());
         }
 
-        $optionalFields = [
-            'returnUrl',
-            'issuerUrl',
-            'reference',
-        ];
-        foreach ($optionalFields as $optionalField) {
-            if (false === array_key_exists($optionalField, $data) || true === empty($data[$optionalField])) {
-                $data[$optionalField] = '';
-            }
+        if (true === array_key_exists('transfer', $data) && true === is_array($data['transfer'])) {
+            $data['transfer'] = (new SimpleHydrator())->hydrate($data['transfer'], new TransferModel());
+        }
+
+        if (true === array_key_exists('order', $data) && true === is_array($data['order'])) {
+            $data['order'] = (new OrderHydrator())->hydrate($data['order'], new OrderModel());
+        }
+
+        if (true === array_key_exists('status', $data) && true === is_array($data['status'])) {
+            $data['status'] = (new StatusHydrator())->hydrate($data['status'], new TransactionStatusModel());
+        }
+
+        if (true === array_key_exists('statistics', $data) && true === is_array($data['statistics'])) {
+            $data['statistics'] = (new SimpleHydrator())->hydrate($data['statistics'], new StatisticsModel());
         }
 
         /** @var TransactionModel $transaction */

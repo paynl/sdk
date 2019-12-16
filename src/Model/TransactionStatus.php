@@ -42,6 +42,14 @@ class TransactionStatus extends Status
     public const STATUS_PAID               = 100;
 
     /**
+     * TransactionStatus constructor.
+     */
+    public function __construct()
+    {
+        $this->setCode(static::STATUS_UNKNOWN);
+    }
+
+    /**
      * @throws ReflectionException
      *
      * @return array
@@ -60,9 +68,9 @@ class TransactionStatus extends Status
      * @throws InvalidArgumentException
      * @throws ReflectionException
      *
-     * @return Status
+     * @return TransactionStatus
      */
-    public function setCode($code): Status
+    public function setCode($code)
     {
         if (true === is_string($code)) {
             $code = (int)$code;

@@ -26,6 +26,13 @@ class PaymentMethods extends AbstractHydrator
     {
         $this->validateGivenObject($object, PaymentMethodsModel::class);
 
+        if (false === array_key_exists('paymentMethods', $data)) {
+            // assume given data is collection of paymentMethods
+            $data = [
+                'paymentMethods' => $data,
+            ];
+        }
+
         foreach ($data['paymentMethods'] as $key => $paymentMethod) {
             $data['paymentMethods'][$key] = (new PaymentMethodHydrator())->hydrate($paymentMethod, new PaymentMethodModel());
         }

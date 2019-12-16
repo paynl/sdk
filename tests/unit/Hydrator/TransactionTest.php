@@ -201,8 +201,8 @@ class TransactionTest extends UnitTest
         expect($transaction->getReturnUrl())->equals('https://www.pay.nl/return-url');
         expect($transaction->getExchangeUrl())->string();
         expect($transaction->getExchangeUrl())->equals('https://www.pay.nl/exchange-url');
-        expect($transaction->getReference())->string();
-        expect($transaction->getReference())->equals('');
+        expect($transaction->getMerchantReference())->string();
+        expect($transaction->getMerchantReference())->equals('');
         expect($transaction->getPaymentMethod())->isInstanceOf(PaymentMethod::class);
         expect($transaction->getDescription())->string();
         expect($transaction->getDescription())->equals('Test description');

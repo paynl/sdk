@@ -16,29 +16,29 @@ class Company implements ModelInterface, JsonSerializable
     /**
      * @var string
      */
-    protected $name = '';
+    protected $name;
 
     /**
      * @var string
      */
-    protected $coc = '';
+    protected $coc;
 
     /**
      * @var string
      */
-    protected $vat = '';
+    protected $vat;
 
     /**
      * @var string
      */
-    protected $countryCode = '';
+    protected $countryCode;
 
     /**
      * @return string
      */
     public function getName(): string
     {
-        return $this->name;
+        return (string)$this->name;
     }
 
     /**
@@ -46,7 +46,7 @@ class Company implements ModelInterface, JsonSerializable
      *
      * @return Company
      */
-    public function setName(string $name): Company
+    public function setName(string $name): self
     {
         $this->name = $name;
         return $this;
@@ -57,7 +57,7 @@ class Company implements ModelInterface, JsonSerializable
      */
     public function getCoc(): string
     {
-        return $this->coc;
+        return (string)$this->coc;
     }
 
     /**
@@ -65,7 +65,7 @@ class Company implements ModelInterface, JsonSerializable
      *
      * @return Company
      */
-    public function setCoc(string $coc): Company
+    public function setCoc(string $coc): self
     {
         $this->coc = $coc;
         return $this;
@@ -76,7 +76,7 @@ class Company implements ModelInterface, JsonSerializable
      */
     public function getVat(): string
     {
-        return $this->vat;
+        return (string)$this->vat;
     }
 
     /**
@@ -84,7 +84,7 @@ class Company implements ModelInterface, JsonSerializable
      *
      * @return Company
      */
-    public function setVat(string $vat): Company
+    public function setVat(string $vat): self
     {
         $this->vat = $vat;
         return $this;
@@ -95,7 +95,7 @@ class Company implements ModelInterface, JsonSerializable
      */
     public function getCountryCode(): string
     {
-        return $this->countryCode;
+        return (string)$this->countryCode;
     }
 
     /**
@@ -103,7 +103,7 @@ class Company implements ModelInterface, JsonSerializable
      *
      * @return Company
      */
-    public function setCountryCode(string $countryCode): Company
+    public function setCountryCode(string $countryCode): self
     {
         $this->countryCode = $countryCode;
         return $this;

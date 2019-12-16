@@ -18,11 +18,15 @@ class Amount implements ModelInterface, JsonSerializable
     /**
      * Amount in cents
      *
+     * @required
+     *
      * @var integer
      */
     protected $amount = 0;
 
     /**
+     * @required
+     *
      * @var string
      */
     protected $currency = 'EUR';

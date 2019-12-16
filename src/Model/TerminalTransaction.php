@@ -65,7 +65,7 @@ class TerminalTransaction implements ModelInterface, JsonSerializable
      */
     public function getState(): string
     {
-        return $this->state;
+        return (string)$this->state;
     }
 
     /**
@@ -84,7 +84,7 @@ class TerminalTransaction implements ModelInterface, JsonSerializable
      */
     public function getTerminalTransactionId(): string
     {
-        return $this->terminalTransactionId;
+        return (string)$this->terminalTransactionId;
     }
 
     /**
@@ -103,7 +103,7 @@ class TerminalTransaction implements ModelInterface, JsonSerializable
      */
     public function getTransactionHash(): string
     {
-        return $this->transactionHash;
+        return (string)$this->transactionHash;
     }
 
     /**
@@ -122,7 +122,7 @@ class TerminalTransaction implements ModelInterface, JsonSerializable
      */
     public function getIssuerUrl(): string
     {
-        return $this->issuerUrl;
+        return (string)$this->issuerUrl;
     }
 
     /**
@@ -141,7 +141,7 @@ class TerminalTransaction implements ModelInterface, JsonSerializable
      */
     public function getStatusUrl(): string
     {
-        return $this->statusUrl;
+        return (string)$this->statusUrl;
     }
 
     /**
@@ -160,7 +160,7 @@ class TerminalTransaction implements ModelInterface, JsonSerializable
      */
     public function getCancelUrl(): string
     {
-        return $this->cancelUrl;
+        return (string)$this->cancelUrl;
     }
 
     /**
@@ -179,7 +179,7 @@ class TerminalTransaction implements ModelInterface, JsonSerializable
      */
     public function getNextUrl(): string
     {
-        return $this->nextUrl;
+        return (string)$this->nextUrl;
     }
 
     /**
@@ -198,7 +198,7 @@ class TerminalTransaction implements ModelInterface, JsonSerializable
      */
     public function getTerminal(): Terminal
     {
-        return $this->terminal;
+        return (string)$this->terminal;
     }
 
     /**

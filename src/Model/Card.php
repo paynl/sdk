@@ -12,12 +12,12 @@ namespace PayNL\Sdk\Model;
 class Card implements ModelInterface
 {
     /**
-     * @var string|null
+     * @var string
      */
     protected $id;
 
     /**
-     * @var string|null
+     * @var string
      */
     protected $name;
 
@@ -34,7 +34,7 @@ class Card implements ModelInterface
      *
      * @return Card
      */
-    public function setId(?string $id): self
+    public function setId(string $id): self
     {
         $this->id = $id;
         return $this;
@@ -53,7 +53,7 @@ class Card implements ModelInterface
      *
      * @return Card
      */
-    public function setName(?string $name): self
+    public function setName(string $name): self
     {
         $this->name = $name;
         return $this;

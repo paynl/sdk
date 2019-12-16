@@ -14,12 +14,17 @@ use PayNL\Sdk\Exception\InvalidArgumentException;
  */
 class Qr implements ModelInterface, JsonSerializable
 {
+    /*
+     * Reference type constant definitions
+     */
     public const REFERENCE_TYPE_STRING = 'string';
     public const REFERENCE_TYPE_HEX    = 'hex';
 
     use JsonSerializeTrait;
 
     /**
+     * @required
+     *
      * @var string
      */
     protected $uuid;
@@ -30,6 +35,8 @@ class Qr implements ModelInterface, JsonSerializable
     protected $serviceId;
 
     /**
+     * @required
+     *
      * @var string
      */
     protected $secret;
@@ -59,7 +66,7 @@ class Qr implements ModelInterface, JsonSerializable
      */
     public function getUuid(): string
     {
-        return $this->uuid;
+        return (string)$this->uuid;
     }
 
     /**
@@ -67,7 +74,7 @@ class Qr implements ModelInterface, JsonSerializable
      *
      * @return Qr
      */
-    public function setUuid(string $uuid): Qr
+    public function setUuid(string $uuid): self
     {
         $this->uuid = $uuid;
         return $this;
@@ -78,7 +85,7 @@ class Qr implements ModelInterface, JsonSerializable
      */
     public function getServiceId(): string
     {
-        return $this->serviceId;
+        return (string)$this->serviceId;
     }
 
     /**
@@ -86,7 +93,7 @@ class Qr implements ModelInterface, JsonSerializable
      *
      * @return Qr
      */
-    public function setServiceId(string $serviceId): Qr
+    public function setServiceId(string $serviceId): self
     {
         $this->serviceId = $serviceId;
         return $this;
@@ -97,7 +104,7 @@ class Qr implements ModelInterface, JsonSerializable
      */
     public function getSecret(): string
     {
-        return $this->secret;
+        return (string)$this->secret;
     }
 
     /**
@@ -105,7 +112,7 @@ class Qr implements ModelInterface, JsonSerializable
      *
      * @return Qr
      */
-    public function setSecret(string $secret): Qr
+    public function setSecret(string $secret): self
     {
         $this->secret = $secret;
         return $this;
@@ -116,7 +123,7 @@ class Qr implements ModelInterface, JsonSerializable
      */
     public function getReference(): string
     {
-        return $this->reference;
+        return (string)$this->reference;
     }
 
     /**
@@ -124,7 +131,7 @@ class Qr implements ModelInterface, JsonSerializable
      *
      * @return Qr
      */
-    public function setReference(string $reference): Qr
+    public function setReference(string $reference): self
     {
         $this->reference = $reference;
         return $this;
@@ -143,7 +150,7 @@ class Qr implements ModelInterface, JsonSerializable
      *
      * @return Qr
      */
-    public function setPadChar(string $padChar): Qr
+    public function setPadChar(string $padChar): self
     {
         $this->padChar = $padChar;
         return $this;
@@ -154,7 +161,7 @@ class Qr implements ModelInterface, JsonSerializable
      */
     public function getReferenceType(): string
     {
-        return $this->referenceType;
+        return (string)$this->referenceType;
     }
 
     /**
@@ -164,7 +171,7 @@ class Qr implements ModelInterface, JsonSerializable
      *
      * @return Qr
      */
-    public function setReferenceType(string $referenceType): Qr
+    public function setReferenceType(string $referenceType): self
     {
         if (false === in_array($referenceType, [ self::REFERENCE_TYPE_STRING, self::REFERENCE_TYPE_HEX ], true)) {
             throw new InvalidArgumentException(
@@ -192,7 +199,7 @@ class Qr implements ModelInterface, JsonSerializable
      *
      * @return Qr
      */
-    public function setPaymentMethod(PaymentMethod $paymentMethod): Qr
+    public function setPaymentMethod(PaymentMethod $paymentMethod): self
     {
         $this->paymentMethod = $paymentMethod;
         return $this;

@@ -39,7 +39,7 @@ class Status implements ModelInterface
      */
     public function getCode()
     {
-        return $this->code;
+        return (string)$this->code;
     }
 
     /**
@@ -49,7 +49,7 @@ class Status implements ModelInterface
      *
      * @return Status
      */
-    public function setCode($code): Status
+    public function setCode($code)
     {
         if (false === is_string($code)) {
             throw new InvalidArgumentException(
@@ -69,7 +69,7 @@ class Status implements ModelInterface
      */
     public function getName(): string
     {
-        return $this->name;
+        return (string)$this->name;
     }
 
     /**
@@ -77,7 +77,7 @@ class Status implements ModelInterface
      *
      * @return Status
      */
-    public function setName(string $name): Status
+    public function setName(string $name): self
     {
         $this->name = $name;
         return $this;
@@ -96,7 +96,7 @@ class Status implements ModelInterface
      *
      * @return Status
      */
-    public function setDate(DateTime $date): Status
+    public function setDate(DateTime $date): self
     {
         $this->date = $date;
         return $this;
@@ -115,7 +115,7 @@ class Status implements ModelInterface
      *
      * @return Status
      */
-    public function setReason(string $reason): Status
+    public function setReason(string $reason): self
     {
         $this->reason = $reason;
         return $this;

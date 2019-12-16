@@ -26,6 +26,13 @@ class Currencies extends AbstractHydrator
     {
         $this->validateGivenObject($object, CurrenciesModel::class);
 
+        if (false === array_key_exists('currencies', $data)) {
+            // assume the given array are currencies
+            $data = [
+                'currencies' => $data,
+            ];
+        }
+
         foreach ($data['currencies'] as $key => $currency) {
             $data['currencies'][$key] = (new SimpleHydrator())->hydrate($currency, new CurrencyModel());
         }

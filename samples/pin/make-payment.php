@@ -9,12 +9,12 @@ use PayNL\Sdk\{
     Config
 };
 use PayNL\Sdk\Request\Pin\PayTransaction as PayTransactionRequest;
-use PayNL\Sdk\Hydrator\Terminal as TerminalHydrator;
+use PayNL\Sdk\Hydrator\Simple as SimpleHydrator;
 use PayNL\Sdk\Model\Terminal;
 
 $authAdapter = getAuthAdapter();
 
-$request = (new PayTransactionRequest(Config::getInstance()->get('transactionId'), (new TerminalHydrator())->hydrate([
+$request = (new PayTransactionRequest(Config::getInstance()->get('transactionId'), (new SimpleHydrator())->hydrate([
     'id' => Config::getInstance()->get('terminalId'),
 ], new Terminal())))
     ->setDebug((bool)Config::getInstance()->get('debug'))

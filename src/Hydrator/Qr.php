@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Hydrator;
 
-use Zend\Hydrator\ClassMethods;
-use PayNL\Sdk\Model\{
-    PaymentMethod,
-    Qr as QrModel
+use PayNL\Sdk\{
+    Model\PaymentMethod as PaymentMethodModel,
+    Model\Qr as QrModel,
+    Hydrator\Simple as SimpleHydrator
 };
 
 /**
@@ -26,8 +26,8 @@ class Qr extends AbstractHydrator
     {
         $this->validateGivenObject($object, QrModel::class);
 
-        if (true === array_key_exists('paymentMethod', $data) && false === $data['paymentMethod'] instanceof PaymentMethod) {
-            $data['paymentMethod'] = (new ClassMethods())->hydrate($data['paymentMethod'], new PaymentMethod());
+        if (true === array_key_exists('paymentMethod', $data) && true === is_array($data['paymentMethod'])) {
+            $data['paymentMethod'] = (new SimpleHydrator())->hydrate($data['paymentMethod'], new PaymentMethodModel());
         }
 
         /** @var QrModel $qr */

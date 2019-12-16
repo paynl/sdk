@@ -26,8 +26,15 @@ class Services extends AbstractHydrator
     {
         $this->validateGivenObject($object, ServicesModel::class);
 
-        foreach ($data['services'] as $key => $currency) {
-            $data['services'][$key] = (new ServiceHydrator())->hydrate($currency, new ServiceModel());
+        if (false === array_key_exists('services', $data)) {
+            // assume data given is an array of services
+            $data = [
+                'services' => $data,
+            ];
+        }
+
+        foreach ($data['services'] as $key => $service) {
+            $data['services'][$key] = (new ServiceHydrator())->hydrate($service, new ServiceModel());
         }
 
         /** @var ServicesModel $services */

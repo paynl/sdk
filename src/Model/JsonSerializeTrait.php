@@ -4,8 +4,15 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Model;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use JsonSerializable;
-use PayNL\Sdk\Exception\LogicException;
+use PayNL\Sdk\{
+    Exception\EmptyRequiredMemberException,
+    Exception\LogicException,
+    Exception\MissingRequiredMemberException,
+    Exception\RuntimeException,
+    Validator\RequiredMembers as RequiredMembersValidator
+};
 
 /**
  * Trait JsonSerializeTrait
@@ -17,30 +24,53 @@ trait JsonSerializeTrait
     /**
      * @see JsonSerializable::jsonSerialize()
      *
+     * @throws RuntimeException when object is not valid based on the required members
+     *
      * @return array
      */
     public function jsonSerialize(): array
     {
         $this->checkInterfaceImplementation();
 
-        $var = array_filter(get_object_vars($this), static function ($var, $key) {
+        // validate object
+        $validator = new RequiredMembersValidator();
+        $isValid = $validator->isValid($this);
+        if (false === $isValid) {
+            // create exception stack
+            $c = 0;
+            $prev = null;
+            foreach ($validator->getMessages() as $type => $message) {
+                $exceptionClass = (true === in_array($type, [RequiredMembersValidator::MSG_EMPTY_MEMBER, RequiredMembersValidator::MSG_EMPTY_MEMBERS], true) ? EmptyRequiredMemberException::class : MissingRequiredMemberException::class);
+                $e = new $exceptionClass($message, 500, ($c++ !== 0 ? $prev : null));
+                $prev = $e;
+            }
+
+            throw new RuntimeException(
+                sprintf(
+                    'Object "%s" is not valid',
+                    __CLASS__
+                ),
+                500,
+                $prev
+            );
+        }
+
+        $vars = get_object_vars($this);
+        if ($this instanceof ArrayCollection) {
+            return $this->toArray();
+        }
+
+        return array_filter($vars, static function (&$var) {
+            if (true === is_object($var) && true === method_exists($var, 'jsonSerialize')) {
+                $var = $var->jsonSerialize();
+            }
+
             if (true === is_array($var)) {
                 return 0 < count($var);
             }
 
-            if (1 === preg_match('/^(?P<idKey>id$|(.*)Id)$/', $key, $match) && 0 === (int)$match['idKey']) {
-                return false;
-            }
-
             return null !== $var && '' !== $var;
-        }, ARRAY_FILTER_USE_BOTH);
-
-        foreach ($var as &$value) {
-            if (is_object($value) === true && method_exists($value, 'jsonSerialize') === true) {
-                $value = $value->jsonSerialize();
-            }
-        }
-        return $var;
+        });
     }
 
     /**

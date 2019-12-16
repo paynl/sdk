@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Hydrator;
 
-use PayNL\Sdk\Exception\InvalidArgumentException;
-use PayNL\Sdk\Model\Amount;
-use Zend\Hydrator\ClassMethods;
-use PayNL\Sdk\Model\Product as ProductModel;
+use PayNL\Sdk\{
+    Model\Amount as AmountModel,
+    Model\Product as ProductModel,
+    Hydrator\Simple as SimpleHydrator
+};
 
 /**
  * Class Product
@@ -26,7 +27,7 @@ class Product extends AbstractHydrator
         $this->validateGivenObject($object, ProductModel::class);
 
         if (true === array_key_exists('price', $data) && true === is_array($data['price'])) {
-            $data['price'] = (new ClassMethods())->hydrate($data['price'], new Amount());
+            $data['price'] = (new SimpleHydrator())->hydrate($data['price'], new AmountModel());
         }
 
         /** @var ProductModel $product */

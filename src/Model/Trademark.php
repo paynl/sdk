@@ -30,7 +30,7 @@ class Trademark implements ModelInterface, JsonSerializable
      */
     public function getId(): string
     {
-        return $this->id;
+        return (string)$this->id;
     }
 
     /**
@@ -49,7 +49,7 @@ class Trademark implements ModelInterface, JsonSerializable
      */
     public function getName(): string
     {
-        return $this->name;
+        return (string)$this->name;
     }
 
     /**

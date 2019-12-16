@@ -4,13 +4,17 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Model;
 
+use JsonSerializable;
+
 /**
- * Class ContactMethod
+ * Class Transfer
  *
  * @package PayNL\Sdk\Model
  */
-class ContactMethod implements ModelInterface
+class Transfer implements ModelInterface, JsonSerializable
 {
+    use JsonSerializeTrait;
+
     /**
      * @var string
      */
@@ -22,22 +26,22 @@ class ContactMethod implements ModelInterface
     protected $value;
 
     /**
-     * @var string
+     * @var array
      */
-    protected $description;
+    protected $data = [];
 
     /**
      * @return string
      */
     public function getType(): string
     {
-        return (string)$this->type;
+        return $this->type;
     }
 
     /**
      * @param string $type
      *
-     * @return ContactMethod
+     * @return Transfer
      */
     public function setType(string $type): self
     {
@@ -50,13 +54,13 @@ class ContactMethod implements ModelInterface
      */
     public function getValue(): string
     {
-        return (string)$this->value;
+        return $this->value;
     }
 
     /**
      * @param string $value
      *
-     * @return ContactMethod
+     * @return Transfer
      */
     public function setValue(string $value): self
     {
@@ -65,21 +69,23 @@ class ContactMethod implements ModelInterface
     }
 
     /**
-     * @return string
+     * @return array
      */
-    public function getDescription(): string
+    public function getData(): array
     {
-        return (string)$this->description;
+        return $this->data;
     }
 
     /**
-     * @param string $description
+     * @param array $data
      *
-     * @return ContactMethod
+     * @return Transfer
      */
-    public function setDescription(string $description): self
+    public function setData(array $data): self
     {
-        $this->description = $description;
+        $this->data = $data;
         return $this;
     }
+
+
 }

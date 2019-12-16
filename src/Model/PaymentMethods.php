@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Model;
 
+use JsonSerializable;
 use PayNL\Sdk\TotalCollection;
 
 /**
@@ -11,9 +12,9 @@ use PayNL\Sdk\TotalCollection;
  *
  * @package PayNL\Sdk\Model
  */
-class PaymentMethods extends TotalCollection implements ModelInterface
+class PaymentMethods extends TotalCollection implements ModelInterface, JsonSerializable
 {
-    use LinksTrait;
+    use LinksTrait, JsonSerializeTrait;
 
     /**
      * @return array

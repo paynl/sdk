@@ -68,7 +68,7 @@ class Mandate implements ModelInterface, JsonSerializable
     /**
      * @var boolean
      */
-    protected $isLastOrder;
+    protected $isLastOrder = false;
 
     /**
      * @var string
@@ -80,7 +80,7 @@ class Mandate implements ModelInterface, JsonSerializable
      */
     public function getId(): string
     {
-        return $this->id;
+        return (string)$this->id;
     }
 
     /**
@@ -99,7 +99,7 @@ class Mandate implements ModelInterface, JsonSerializable
      */
     public function getType(): string
     {
-        return $this->type;
+        return (string)$this->type;
     }
 
     /**
@@ -194,7 +194,7 @@ class Mandate implements ModelInterface, JsonSerializable
      */
     public function getDescription(): string
     {
-        return $this->description;
+        return (string)$this->description;
     }
 
     /**
@@ -255,11 +255,11 @@ class Mandate implements ModelInterface, JsonSerializable
     }
 
     /**
-     * @param Customer|null $customer
+     * @param Customer $customer
      *
      * @return Mandate
      */
-    public function setCustomer(?Customer $customer): Mandate
+    public function setCustomer(Customer $customer): Mandate
     {
         $this->customer = $customer;
         return $this;

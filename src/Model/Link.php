@@ -31,7 +31,7 @@ class Link implements ModelInterface
      */
     public function getRel(): string
     {
-        return $this->rel;
+        return (string)$this->rel;
     }
 
     /**
@@ -50,7 +50,7 @@ class Link implements ModelInterface
      */
     public function getType(): string
     {
-        return $this->type;
+        return (string)$this->type;
     }
 
     /**
@@ -69,7 +69,7 @@ class Link implements ModelInterface
      */
     public function getUrl(): string
     {
-        return $this->url;
+        return (string)$this->url;
     }
 
     /**

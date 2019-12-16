@@ -83,8 +83,8 @@ class CustomerTest extends UnitTest
             'birthDate'   => DateTime::createFromFormat('Y-m-d', '1970-01-01'),
         ], new Customer());
 
-        expect($customer->getInitials())->string();
-        expect($customer->getInitials())->equals('M');
+        expect($customer->getName())->string();
+        expect($customer->getName())->equals('M');
         expect($customer->getLastName())->string();
         expect($customer->getLastName())->equals('Windu');
         expect($customer->getGender())->string();
@@ -127,8 +127,8 @@ class CustomerTest extends UnitTest
             'birthDate'   => null,
         ], new Customer());
 
-        expect($customer->getInitials())->string();
-        expect($customer->getInitials())->equals('M');
+        expect($customer->getName())->string();
+        expect($customer->getName())->equals('M');
         expect($customer->getLastName())->string();
         expect($customer->getLastName())->equals('Windu');
         expect($customer->getGender())->string();

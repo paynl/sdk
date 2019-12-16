@@ -4,21 +4,16 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Hydrator;
 
-use DateTime as stdDateTime, Exception;
-use PayNL\Sdk\DateTime;
-use Zend\Hydrator\ClassMethods;
-use PayNL\Sdk\Hydrator\{
-    BankAccount as BankAccountHydrator,
-    Statistics as StatisticsHydrator,
-    Customer as CustomerHydrator
-};
-use PayNL\Sdk\Model\{
-    Amount,
-    BankAccount,
-    Mandate as MandateModel,
-    Statistics,
-    Interval,
-    Customer
+use DateTime as stdDateTime;
+use PayNL\Sdk\{
+    DateTime,
+    Model\Amount as AmountModel,
+    Model\Mandate as MandateModel,
+    Model\Statistics as StatisticsModel,
+    Model\Interval as IntervalModel,
+    Model\Customer as CustomerModel,
+    Hydrator\Simple as SimpleHydrator,
+    Hydrator\Customer as CustomerHydrator
 };
 
 /**
@@ -31,15 +26,11 @@ class Mandate extends AbstractHydrator
     /**
      * @inheritDoc
      *
-     * @throws Exception
-     *
      * @return MandateModel
      */
     public function hydrate(array $data, $object): MandateModel
     {
         $this->validateGivenObject($object, MandateModel::class);
-
-        $data['description'] = $data['description'] ?? '';
 
         if (true === array_key_exists('processDate', $data) && false === ($data['processDate'] instanceof DateTime)) {
             $processDate = $data['processDate'];
@@ -50,19 +41,19 @@ class Mandate extends AbstractHydrator
         }
 
         if (true === array_key_exists('amount', $data)) {
-            $data['amount'] = (new ClassMethods())->hydrate($data['amount'], new Amount());
+            $data['amount'] = (new SimpleHydrator())->hydrate($data['amount'], new AmountModel());
         }
 
         if (true === array_key_exists('statistics', $data)) {
-            $data['statistics'] = (new StatisticsHydrator())->hydrate($data['statistics'], new Statistics());
+            $data['statistics'] = (new SimpleHydrator())->hydrate($data['statistics'], new StatisticsModel());
         }
 
         if (true === array_key_exists('interval', $data)) {
-            $data['interval'] = (new ClassMethods())->hydrate($data['interval'], new Interval());
+            $data['interval'] = (new SimpleHydrator())->hydrate($data['interval'], new IntervalModel());
         }
 
         if (true === array_key_exists('customer', $data)) {
-            $data['customer'] = (new CustomerHydrator())->hydrate($data['customer'], new Customer());
+            $data['customer'] = (new CustomerHydrator())->hydrate($data['customer'], new CustomerModel());
         }
 
         /** @var MandateModel $mandate */

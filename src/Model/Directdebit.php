@@ -42,7 +42,7 @@ class Directdebit implements ModelInterface
     protected $status;
 
     /**
-     * @var Status
+     * @var Status|null
      */
     protected $declined;
 
@@ -51,7 +51,7 @@ class Directdebit implements ModelInterface
      */
     public function getId(): string
     {
-        return $this->id;
+        return (string)$this->id;
     }
 
     /**
@@ -70,7 +70,7 @@ class Directdebit implements ModelInterface
      */
     public function getPaymentSessionId(): string
     {
-        return $this->paymentSessionId;
+        return (string)$this->paymentSessionId;
     }
 
     /**
@@ -161,7 +161,7 @@ class Directdebit implements ModelInterface
     }
 
     /**
-     * @return Status
+     * @return Status|null
      */
     public function getDeclined(): ?Status
     {

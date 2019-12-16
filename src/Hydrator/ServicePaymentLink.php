@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Hydrator;
 
-use PayNL\Sdk\Model\{
-    Amount,
-    Statistics,
-    ServicePaymentLink as ServicePaymentLinkModel
+use PayNL\Sdk\{
+    Model\Amount as AmountModel,
+    Model\Statistics as StatisticsModel,
+    Model\ServicePaymentLink as ServicePaymentLinkModel,
+    Hydrator\Simple as SimpleHydrator
 };
-use PayNL\Sdk\Hydrator\Statistics as StatisticsHydrator;
-use Zend\Hydrator\ClassMethods;
 
 /**
  * Class ServicePaymentLink
@@ -28,19 +27,16 @@ class ServicePaymentLink extends AbstractHydrator
     {
         $this->validateGivenObject($object, ServicePaymentLinkModel::class);
 
-        if (true === array_key_exists('amount', $data)) {
-            $data['amount'] = (new ClassMethods())->hydrate($data['amount'], new Amount());
+        if (true === array_key_exists('amount', $data) && true === is_array($data['amount'])) {
+            $data['amount'] = (new SimpleHydrator())->hydrate($data['amount'], new AmountModel());
         }
 
-        if (true === array_key_exists('amountMin', $data)) {
-            $data['amountMin'] = (new ClassMethods())->hydrate($data['amountMin'], new Amount());
+        if (true === array_key_exists('amountMin', $data) && true === is_array($data['amountMin'])) {
+            $data['amountMin'] = (new SimpleHydrator())->hydrate($data['amountMin'], new AmountModel());
         }
 
-        $data['countryCode'] = $data['countryCode'] ?? '';
-        $data['language'] = $data['language'] ?? '';
-
-        if (true === array_key_exists('statistics', $data)) {
-            $data['statistics'] = (new StatisticsHydrator())->hydrate($data['statistics'], new Statistics());
+        if (true === array_key_exists('statistics', $data) && true === is_array($data['statistics'])) {
+            $data['statistics'] = (new SimpleHydrator())->hydrate($data['statistics'], new StatisticsModel());
         }
 
         /** @var ServicePaymentLinkModel $servicePaymentLink */

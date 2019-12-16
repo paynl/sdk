@@ -67,8 +67,8 @@ class AddressTest extends UnitTest
             'countryCode'           => 'NL',
         ], new Address());
 
-        expect($address->getInitials())->string();
-        expect($address->getInitials())->equals('I');
+        expect($address->getName())->string();
+        expect($address->getName())->equals('I');
         expect($address->getLastName())->string();
         expect($address->getLastName())->equals('Sneep');
         expect($address->getStreetName())->string();

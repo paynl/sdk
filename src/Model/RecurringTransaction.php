@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Model;
 
-use \JsonSerializable;
+use JsonSerializable;
 
 /**
  * Class RecurringTransaction
@@ -62,7 +62,7 @@ class RecurringTransaction implements ModelInterface, JsonSerializable
      */
     public function getDescription(): string
     {
-        return $this->description;
+        return (string)$this->description;
     }
 
     /**
@@ -81,7 +81,7 @@ class RecurringTransaction implements ModelInterface, JsonSerializable
      */
     public function getExtra1(): string
     {
-        return $this->extra1;
+        return (string)$this->extra1;
     }
 
     /**
@@ -100,7 +100,7 @@ class RecurringTransaction implements ModelInterface, JsonSerializable
      */
     public function getExtra2(): string
     {
-        return $this->extra2;
+        return (string)$this->extra2;
     }
 
     /**
@@ -119,7 +119,7 @@ class RecurringTransaction implements ModelInterface, JsonSerializable
      */
     public function getExtra3(): string
     {
-        return $this->extra3;
+        return (string)$this->extra3;
     }
 
     /**

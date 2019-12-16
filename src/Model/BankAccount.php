@@ -21,6 +21,8 @@ class BankAccount implements ModelInterface, JsonSerializable
     protected $bank;
 
     /**
+     * @required
+     *
      * @var string
      */
     protected $iban;
@@ -31,6 +33,8 @@ class BankAccount implements ModelInterface, JsonSerializable
     protected $bic;
 
     /**
+     * @required
+     *
      * @var string
      */
     protected $owner;
@@ -53,7 +57,7 @@ class BankAccount implements ModelInterface, JsonSerializable
      *
      * @return BankAccount
      */
-    public function setBank(string $bank): BankAccount
+    public function setBank(string $bank): self
     {
         $this->bank = $bank;
         return $this;
@@ -64,7 +68,7 @@ class BankAccount implements ModelInterface, JsonSerializable
      */
     public function getIban(): string
     {
-        return $this->iban;
+        return (string)$this->iban;
     }
 
     /**
@@ -72,7 +76,7 @@ class BankAccount implements ModelInterface, JsonSerializable
      *
      * @return BankAccount
      */
-    public function setIban(string $iban): BankAccount
+    public function setIban(string $iban): self
     {
         $this->iban = $iban;
         return $this;
@@ -83,7 +87,7 @@ class BankAccount implements ModelInterface, JsonSerializable
      */
     public function getBic(): string
     {
-        return $this->bic;
+        return (string)$this->bic;
     }
 
     /**
@@ -91,7 +95,7 @@ class BankAccount implements ModelInterface, JsonSerializable
      *
      * @return BankAccount
      */
-    public function setBic(string $bic): BankAccount
+    public function setBic(string $bic): self
     {
         $this->bic = $bic;
         return $this;
@@ -102,7 +106,7 @@ class BankAccount implements ModelInterface, JsonSerializable
      */
     public function getOwner(): string
     {
-        return $this->owner;
+        return (string)$this->owner;
     }
 
     /**
@@ -110,7 +114,7 @@ class BankAccount implements ModelInterface, JsonSerializable
      *
      * @return BankAccount
      */
-    public function setOwner(string $owner): BankAccount
+    public function setOwner(string $owner): self
     {
         $this->owner = $owner;
         return $this;
@@ -129,7 +133,7 @@ class BankAccount implements ModelInterface, JsonSerializable
      *
      * @return BankAccount
      */
-    public function setReturnUrl(string $returnUrl): BankAccount
+    public function setReturnUrl(string $returnUrl): self
     {
         $this->returnUrl = $returnUrl;
         return $this;

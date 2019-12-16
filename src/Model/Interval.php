@@ -19,19 +19,19 @@ class Interval implements ModelInterface
     /**
      * @var integer
      */
-    protected $quantity;
+    protected $quantity = 0;
 
     /**
      * @var integer
      */
-    protected $value;
+    protected $value = 0;
 
     /**
      * @return string
      */
     public function getPeriod(): string
     {
-        return $this->period;
+        return (string)$this->period;
     }
 
     /**

@@ -171,7 +171,7 @@ class TransactionTest extends UnitTest
      */
     public function testItCanSetAReference(): void
     {
-        expect($this->transaction->setReference('consumer reference'))->isInstanceOf(Transaction::class);
+        expect($this->transaction->setMerchantReference('consumer reference'))->isInstanceOf(Transaction::class);
     }
 
     /**
@@ -181,11 +181,11 @@ class TransactionTest extends UnitTest
      */
     public function testItCanGetAReference(): void
     {
-        $this->transaction->setReference('consumer reference');
+        $this->transaction->setMerchantReference('consumer reference');
 
-        verify($this->transaction->getReference())->string();
-        verify($this->transaction->getReference())->notEmpty();
-        verify($this->transaction->getReference())->equals('consumer reference');
+        verify($this->transaction->getMerchantReference())->string();
+        verify($this->transaction->getMerchantReference())->notEmpty();
+        verify($this->transaction->getMerchantReference())->equals('consumer reference');
     }
 
     /**

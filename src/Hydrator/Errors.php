@@ -22,6 +22,13 @@ class Errors extends AbstractHydrator
     {
         $this->validateGivenObject($object, ErrorsModel::class);
 
+        if (false === array_key_exists('errors', $data)) {
+            // assume data is an array of errors
+            $data = [
+                'errors' => $data,
+            ];
+        }
+
         /** @var ErrorsModel $errors */
         $errors = parent::hydrate($data, $object);
         return $errors;

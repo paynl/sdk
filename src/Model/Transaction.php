@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Model;
 
-use DateTime, JsonSerializable, BadMethodCallException;
+use DateTime as stdDateTime, JsonSerializable, BadMethodCallException;
 use Zend\Filter\Word\CamelCaseToUnderscore;
+use PayNL\Sdk\DateTime;
 
 /**
  * Class Transaction
@@ -46,34 +47,11 @@ class Transaction implements ModelInterface, JsonSerializable
     protected $id;
 
     /**
+     * @required
+     *
      * @var string
      */
     protected $serviceId;
-
-    /**
-     * @var TransactionStatus
-     */
-    protected $status;
-
-    /**
-     * @var string
-     */
-    protected $returnUrl;
-
-    /**
-     * @var string
-     */
-    protected $exchangeUrl;
-
-    /**
-     * @var string
-     */
-    protected $reference;
-
-    /**
-     * @var PaymentMethod
-     */
-    protected $paymentMethod;
 
     /**
      * @var string
@@ -83,52 +61,21 @@ class Transaction implements ModelInterface, JsonSerializable
     /**
      * @var string
      */
-    protected $issuerUrl;
+    protected $merchantReference;
 
     /**
      * @var string
      */
-    protected $orderId;
-
-    /**
-     * @var string
-     */
-    protected $orderNumber;
+    protected $language;
 
     /**
      * @var DateTime
      */
-    protected $invoiceDate;
+    protected $expiresAt;
 
     /**
-     * @var DateTime
-     */
-    protected $deliveryDate;
-
-    /**
-     * @var Address
-     */
-    protected $address;
-
-    /**
-     * @var Address
-     */
-    protected $billingAddress;
-
-    /**
-     * @var Customer
-     */
-    protected $customer;
-
-    /**
-     * @var array
+     * @required
      *
-     * Collections of Products
-     * @see Product
-     */
-    protected $products = [];
-
-    /**
      * @var Amount
      */
     protected $amount;
@@ -149,6 +96,53 @@ class Transaction implements ModelInterface, JsonSerializable
     protected $amountRefunded;
 
     /**
+     * @var PaymentMethod
+     */
+    protected $paymentMethod;
+
+    /**
+     * @required
+     *
+     * @var string
+     */
+    protected $returnUrl;
+
+    /**
+     * @var string
+     */
+    protected $exchangeUrl;
+
+    /**
+     * @var string
+     */
+    protected $issuerUrl;
+
+    /**
+     * @var Transfer
+     */
+    protected $transfer;
+
+    /**
+     * @var string
+     */
+    protected $domainId;
+
+    /**
+     * @var Integration
+     */
+    protected $integration;
+
+    /**
+     * @var Order
+     */
+    protected $order;
+
+    /**
+     * @var TransactionStatus
+     */
+    protected $status;
+
+    /**
      * @var Statistics
      */
     protected $statistics;
@@ -159,41 +153,11 @@ class Transaction implements ModelInterface, JsonSerializable
     protected $createdAt;
 
     /**
-     * @var DateTime
-     */
-    protected $expiresAt;
-
-    /**
-     * @var integer
-     */
-    protected $testMode = 0;
-
-    /**
-     * @var string
-     */
-    protected $transferType;
-
-    /**
-     * @var string
-     */
-    protected $transferValue;
-
-    /**
-     * @var string
-     */
-    protected $endUserId;
-
-    /**
-     * @var Company
-     */
-    protected $company;
-
-    /**
      * @return string
      */
     public function getId(): string
     {
-        return $this->id;
+        return (string)$this->id;
     }
 
     /**
@@ -212,7 +176,7 @@ class Transaction implements ModelInterface, JsonSerializable
      */
     public function getServiceId(): string
     {
-        return $this->serviceId;
+        return (string)$this->serviceId;
     }
 
     /**
@@ -227,106 +191,11 @@ class Transaction implements ModelInterface, JsonSerializable
     }
 
     /**
-     * @return TransactionStatus
-     */
-    public function getStatus(): TransactionStatus
-    {
-        return $this->status;
-    }
-
-    /**
-     * @param TransactionStatus $status
-     *
-     * @return Transaction
-     */
-    public function setStatus(TransactionStatus $status): self
-    {
-        $this->status = $status;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getReturnUrl(): string
-    {
-        return $this->returnUrl;
-    }
-
-    /**
-     * @param string $returnUrl
-     *
-     * @return Transaction
-     */
-    public function setReturnUrl(string $returnUrl): self
-    {
-        $this->returnUrl = $returnUrl;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getExchangeUrl(): ?string
-    {
-        return $this->exchangeUrl;
-    }
-
-    /**
-     * @param string $exchangeUrl
-     *
-     * @return Transaction
-     */
-    public function setExchangeUrl(string $exchangeUrl): self
-    {
-        $this->exchangeUrl = $exchangeUrl;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getReference(): string
-    {
-        return $this->reference;
-    }
-
-    /**
-     * @param string $reference
-     *
-     * @return Transaction
-     */
-    public function setReference(string $reference): self
-    {
-        $this->reference = $reference;
-        return $this;
-    }
-
-    /**
-     * @return PaymentMethod
-     */
-    public function getPaymentMethod(): PaymentMethod
-    {
-        return $this->paymentMethod;
-    }
-
-    /**
-     * @param PaymentMethod $paymentMethod
-     *
-     * @return Transaction
-     */
-    public function setPaymentMethod(PaymentMethod $paymentMethod): self
-    {
-        $this->paymentMethod = $paymentMethod;
-        return $this;
-    }
-
-    /**
      * @return string
      */
     public function getDescription(): string
     {
-        return $this->description;
+        return (string)$this->description;
     }
 
     /**
@@ -343,171 +212,57 @@ class Transaction implements ModelInterface, JsonSerializable
     /**
      * @return string
      */
-    public function getIssuerUrl(): string
+    public function getMerchantReference(): string
     {
-        return $this->issuerUrl;
+        return (string)$this->merchantReference;
     }
 
     /**
-     * @param string $issuerUrl
+     * @param string $merchantReference
      *
      * @return Transaction
      */
-    public function setIssuerUrl(string $issuerUrl): self
+    public function setMerchantReference(string $merchantReference): self
     {
-        $this->issuerUrl = $issuerUrl;
+        $this->merchantReference = $merchantReference;
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getOrderId(): string
+    public function getLanguage(): string
     {
-        return (string)$this->orderId;
+        return (string)$this->language;
     }
 
     /**
-     * @param string $orderId
+     * @param string $language
      *
      * @return Transaction
      */
-    public function setOrderId(string $orderId): self
+    public function setLanguage(string $language): self
     {
-        $this->orderId = $orderId;
+        $this->language = $language;
         return $this;
     }
 
     /**
-     * @return string
+     * @return DateTime|null
      */
-    public function getOrderNumber(): string
+    public function getExpiresAt(): ?DateTime
     {
-        return $this->orderNumber;
+        return $this->expiresAt;
     }
 
     /**
-     * @param string $orderNumber
+     * @param DateTime $expiresAt
      *
      * @return Transaction
      */
-    public function setOrderNumber(string $orderNumber): self
+    public function setExpiresAt(DateTime $expiresAt): self
     {
-        $this->orderNumber = $orderNumber;
-        return $this;
-    }
-
-    /**
-     * @return DateTime
-     */
-    public function getInvoiceDate(): DateTime
-    {
-        return $this->invoiceDate;
-    }
-
-    /**
-     * @param DateTime $invoiceDate
-     *
-     * @return Transaction
-     */
-    public function setInvoiceDate(DateTime $invoiceDate): self
-    {
-        $this->invoiceDate = $invoiceDate;
-        return $this;
-    }
-
-    /**
-     * @return DateTime
-     */
-    public function getDeliveryDate(): DateTime
-    {
-        return $this->deliveryDate;
-    }
-
-    /**
-     * @param DateTime $deliveryDate
-     *
-     * @return Transaction
-     */
-    public function setDeliveryDate(DateTime $deliveryDate): self
-    {
-        $this->deliveryDate = $deliveryDate;
-        return $this;
-    }
-
-    /**
-     * @return Address
-     */
-    public function getAddress(): Address
-    {
-        return $this->address;
-    }
-
-    /**
-     * @param Address $address
-     *
-     * @return Transaction
-     */
-    public function setAddress(Address $address): self
-    {
-        $this->address = $address;
-        return $this;
-    }
-
-    /**
-     * @return Address
-     */
-    public function getBillingAddress(): Address
-    {
-        return $this->billingAddress;
-    }
-
-    /**
-     * @param Address $billingAddress
-     *
-     * @return Transaction
-     */
-    public function setBillingAddress(Address $billingAddress): self
-    {
-        $this->billingAddress = $billingAddress;
-        return $this;
-    }
-
-    /**
-     * @return Customer
-     */
-    public function getCustomer(): Customer
-    {
-        return $this->customer;
-    }
-
-    /**
-     * @param Customer $customer
-     *
-     * @return Transaction
-     */
-    public function setCustomer(Customer $customer): self
-    {
-        $this->customer = $customer;
-        return $this;
-    }
-
-    /**
-     * @return array
-     */
-    public function getProducts(): array
-    {
-        return $this->products;
-    }
-
-    /**
-     * @param array $products
-     *
-     * @return Transaction
-     */
-    public function setProducts(array $products): self
-    {
-        $this->products = $products;
+        $this->expiresAt = $expiresAt;
         return $this;
     }
 
@@ -531,9 +286,9 @@ class Transaction implements ModelInterface, JsonSerializable
     }
 
     /**
-     * @return Amount
+     * @return Amount|null
      */
-    public function getAmountConverted(): Amount
+    public function getAmountConverted(): ?Amount
     {
         return $this->amountConverted;
     }
@@ -550,9 +305,9 @@ class Transaction implements ModelInterface, JsonSerializable
     }
 
     /**
-     * @return Amount
+     * @return Amount|null
      */
-    public function getAmountPaid(): Amount
+    public function getAmountPaid(): ?Amount
     {
         return $this->amountPaid;
     }
@@ -569,9 +324,9 @@ class Transaction implements ModelInterface, JsonSerializable
     }
 
     /**
-     * @return Amount
+     * @return Amount|null
      */
-    public function getAmountRefunded(): Amount
+    public function getAmountRefunded(): ?Amount
     {
         return $this->amountRefunded;
     }
@@ -588,9 +343,180 @@ class Transaction implements ModelInterface, JsonSerializable
     }
 
     /**
-     * @return Statistics
+     * @return PaymentMethod|null
      */
-    public function getStatistics(): Statistics
+    public function getPaymentMethod(): ?PaymentMethod
+    {
+        return $this->paymentMethod;
+    }
+
+    /**
+     * @param PaymentMethod $paymentMethod
+     *
+     * @return Transaction
+     */
+    public function setPaymentMethod(PaymentMethod $paymentMethod): self
+    {
+        $this->paymentMethod = $paymentMethod;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getReturnUrl(): string
+    {
+        return (string)$this->returnUrl;
+    }
+
+    /**
+     * @param string $returnUrl
+     *
+     * @return Transaction
+     */
+    public function setReturnUrl(string $returnUrl): self
+    {
+        $this->returnUrl = $returnUrl;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getExchangeUrl(): ?string
+    {
+        return (string)$this->exchangeUrl;
+    }
+
+    /**
+     * @param string $exchangeUrl
+     *
+     * @return Transaction
+     */
+    public function setExchangeUrl(string $exchangeUrl): self
+    {
+        $this->exchangeUrl = $exchangeUrl;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIssuerUrl(): string
+    {
+        return (string)$this->issuerUrl;
+    }
+
+    /**
+     * @param string $issuerUrl
+     *
+     * @return Transaction
+     */
+    public function setIssuerUrl(string $issuerUrl): self
+    {
+        $this->issuerUrl = $issuerUrl;
+        return $this;
+    }
+
+    /**
+     * @return Transfer|null
+     */
+    public function getTransfer(): ?Transfer
+    {
+        return $this->transfer;
+    }
+
+    /**
+     * @param Transfer $transfer
+     *
+     * @return Transaction
+     */
+    public function setTransfer(Transfer $transfer): self
+    {
+        $this->transfer = $transfer;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDomainId(): string
+    {
+        return (string)$this->domainId;
+    }
+
+    /**
+     * @param string $domainId
+     *
+     * @return Transaction
+     */
+    public function setDomainId(string $domainId): self
+    {
+        $this->domainId = $domainId;
+        return $this;
+    }
+
+    /**
+     * @return Integration|null
+     */
+    public function getIntegration(): ?Integration
+    {
+        return $this->integration;
+    }
+
+    /**
+     * @param Integration $integration
+     *
+     * @return Transaction
+     */
+    public function setIntegration(Integration $integration): self
+    {
+        $this->integration = $integration;
+        return $this;
+    }
+
+    /**
+     * @return Order|null
+     */
+    public function getOrder(): ?Order
+    {
+        return $this->order;
+    }
+
+    /**
+     * @param Order $order
+     *
+     * @return Transaction
+     */
+    public function setOrder(Order $order): self
+    {
+        $this->order = $order;
+        return $this;
+    }
+
+    /**
+     * @return TransactionStatus|null
+     */
+    public function getStatus(): ?TransactionStatus
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param TransactionStatus $status
+     *
+     * @return Transaction
+     */
+    public function setStatus(TransactionStatus $status): self
+    {
+        $this->status = $status;
+        return $this;
+    }
+
+    /**
+     * @return Statistics|null
+     */
+    public function getStatistics(): ?Statistics
     {
         return $this->statistics;
     }
@@ -611,6 +537,10 @@ class Transaction implements ModelInterface, JsonSerializable
      */
     public function getCreatedAt(): DateTime
     {
+        if (null === $this->createdAt) {
+            $this->createdAt = DateTime::now();
+        }
+
         return $this->createdAt;
     }
 
@@ -622,120 +552,6 @@ class Transaction implements ModelInterface, JsonSerializable
     public function setCreatedAt(DateTime $createdAt): self
     {
         $this->createdAt = $createdAt;
-        return $this;
-    }
-
-    /**
-     * @return DateTime
-     */
-    public function getExpiresAt(): DateTime
-    {
-        return $this->expiresAt;
-    }
-
-    /**
-     * @param DateTime $expiresAt
-     *
-     * @return Transaction
-     */
-    public function setExpiresAt(DateTime $expiresAt): self
-    {
-        $this->expiresAt = $expiresAt;
-        return $this;
-    }
-
-    /**
-     * @return integer
-     */
-    public function getTestMode(): int
-    {
-        return $this->testMode;
-    }
-
-    /**
-     * @param integer $testMode
-     *
-     * @return Transaction
-     */
-    public function setTestMode(int $testMode): self
-    {
-        $this->testMode = $testMode;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getTransferType(): string
-    {
-        return $this->transferType;
-    }
-
-    /**
-     * @param string $transferType
-     *
-     * @return Transaction
-     */
-    public function setTransferType(string $transferType): self
-    {
-        $this->transferType = $transferType;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getTransferValue(): string
-    {
-        return $this->transferValue;
-    }
-
-    /**
-     * @param string $transferValue
-     *
-     * @return Transaction
-     */
-    public function setTransferValue(string $transferValue): self
-    {
-        $this->transferValue = $transferValue;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getEndUserId(): string
-    {
-        return $this->endUserId;
-    }
-
-    /**
-     * @param string $endUserId
-     *
-     * @return Transaction
-     */
-    public function setEndUserId(string $endUserId): self
-    {
-        $this->endUserId = $endUserId;
-        return $this;
-    }
-
-    /**
-     * @return Company
-     */
-    public function getCompany(): Company
-    {
-        return $this->company;
-    }
-
-    /**
-     * @param Company $company
-     *
-     * @return Transaction
-     */
-    public function setCompany(Company $company): self
-    {
-        $this->company = $company;
         return $this;
     }
 

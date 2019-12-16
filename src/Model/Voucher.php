@@ -54,7 +54,7 @@ class Voucher implements ModelInterface, JsonSerializable
      */
     public function getPinCode(): string
     {
-        return $this->pinCode;
+        return (string)$this->pinCode;
     }
 
     /**
@@ -73,7 +73,7 @@ class Voucher implements ModelInterface, JsonSerializable
      */
     public function getPosId(): string
     {
-        return $this->posId;
+        return (string)$this->posId;
     }
 
     /**

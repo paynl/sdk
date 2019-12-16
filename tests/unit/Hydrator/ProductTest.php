@@ -74,8 +74,8 @@ class ProductTest extends UnitTest
         expect($product->getDescription())->equals('Tumbler');
         expect($product->getQuantity())->float();
         expect($product->getQuantity())->equals(1);
-        expect($product->getVat())->string();
-        expect($product->getVat())->equals('N');
+        expect($product->getVatCode())->string();
+        expect($product->getVatCode())->equals('N');
         expect($product->getPrice())->isInstanceOf(Amount::class);
         expect($product->getPrice()->getAmount())->equals(2500000);
         expect($product->getPrice()->getCurrency())->equals('USD');

@@ -40,7 +40,7 @@ class Terminal implements ModelInterface, JsonSerializable
      */
     public function getId(): string
     {
-        return $this->id;
+        return (string)$this->id;
     }
 
     /**
@@ -59,7 +59,7 @@ class Terminal implements ModelInterface, JsonSerializable
      */
     public function getName(): string
     {
-        return $this->name;
+        return (string)$this->name;
     }
 
     /**
@@ -78,7 +78,7 @@ class Terminal implements ModelInterface, JsonSerializable
      */
     public function getEcrProtocol(): string
     {
-        return $this->ecrProtocol;
+        return (string)$this->ecrProtocol;
     }
 
     /**
@@ -97,7 +97,7 @@ class Terminal implements ModelInterface, JsonSerializable
      */
     public function getState(): string
     {
-        return $this->state;
+        return (string)$this->state;
     }
 
     /**

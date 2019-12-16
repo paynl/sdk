@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Hydrator;
 
-use Zend\Hydrator\ClassMethods;
-use PayNL\Sdk\Model\{
-    Amount,
-    Voucher as VoucherModel
+use PayNL\Sdk\{
+    Model\Amount as AmountModel,
+    Model\Voucher as VoucherModel,
+    Hydrator\Simple as SimpleHydrator
 };
 
 /**
@@ -27,7 +27,7 @@ class Voucher extends AbstractHydrator
         $this->validateGivenObject($object, VoucherModel::class);
 
         if (true === array_key_exists('amount', $data)) {
-            $data['amount'] = (new ClassMethods())->hydrate($data['amount'], new Amount());
+            $data['amount'] = (new SimpleHydrator())->hydrate($data['amount'], new AmountModel());
         }
 
         /** @var VoucherModel $voucher */

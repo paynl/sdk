@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Hydrator;
 
-use Zend\Hydrator\ClassMethods;
-use PayNL\Sdk\Model\{
-    RecurringTransaction as RecurringTransactionModel,
-    Amount
+use PayNL\Sdk\{
+    Model\RecurringTransaction as RecurringTransactionModel,
+    Model\Amount as AmountModel,
+    Hydrator\Simple as SimpleHydrator
 };
 
 /**
@@ -27,7 +27,7 @@ class RecurringTransaction extends AbstractHydrator
         $this->validateGivenObject($object, RecurringTransactionModel::class);
 
         if (true === array_key_exists('amount', $data) && true === is_array($data['amount'])) {
-            $data['amount'] = (new ClassMethods())->hydrate($data['amount'], new Amount());
+            $data['amount'] = (new SimpleHydrator())->hydrate($data['amount'], new AmountModel());
         }
 
         /** @var RecurringTransactionModel $recurringTransaction */

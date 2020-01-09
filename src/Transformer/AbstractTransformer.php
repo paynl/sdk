@@ -5,8 +5,12 @@ declare(strict_types=1);
 namespace PayNL\Sdk\Transformer;
 
 use PayNL\Sdk\Exception\UnexpectedValueException;
+use PayNL\Sdk\Model\ModelAwareInterface;
+use PayNL\Sdk\Model\ModelAwareTrait;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Exception\NotEncodableValueException;
+use Zend\Hydrator\HydratorAwareInterface;
+use Zend\Hydrator\HydratorAwareTrait;
 
 /**
  * Class AbstractTransformer
@@ -15,8 +19,10 @@ use Symfony\Component\Serializer\Exception\NotEncodableValueException;
  *
  * @SuppressWarnings(PHPMD.NumberOfChildren)
  */
-abstract class AbstractTransformer implements TransformerInterface
+abstract class AbstractTransformer implements TransformerInterface, ModelAwareInterface, HydratorAwareInterface
 {
+    use ModelAwareTrait, HydratorAwareTrait;
+
     /**
      * @param string $jsonEncodedString
      *

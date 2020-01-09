@@ -2,12 +2,11 @@
 
 declare(strict_types=1);
 
-namespace PayNL\Sdk;
+namespace PayNL\Sdk\Config;
 
-use PayNL\Sdk\Exception\{
-    LogicException,
-    UnexpectedValueException,
-    InvalidArgumentException
+use PayNL\Sdk\{
+    Exception\LogicException,
+    Exception\UnexpectedValueException
 };
 
 /**
@@ -17,14 +16,6 @@ use PayNL\Sdk\Exception\{
  */
 class Config
 {
-    /*
-     * Configuration key constants definition
-     */
-    public const KEY_API_URL = 'api_url';
-    public const KEY_VERSION = 'version';
-    public const KEY_USERNAME = 'username';
-    public const KEY_PASSWORD = 'password';
-
     /**
      * @var Config
      */
@@ -33,12 +24,7 @@ class Config
     /**
      * @var array
      */
-    protected $data = [
-        self::KEY_API_URL  => '',
-        self::KEY_VERSION  => 1,
-        self::KEY_USERNAME => '',
-        self::KEY_PASSWORD => '',
-    ];
+    protected $data = [];
 
     /**
      * @return Config
@@ -77,22 +63,6 @@ class Config
      */
     public function load(array $config): void
     {
-        if (false === array_key_exists(self::KEY_API_URL, $config)
-            || false === array_key_exists(self::KEY_VERSION, $config)
-            || false === array_key_exists(self::KEY_USERNAME, $config)
-            || false === array_key_exists(self::KEY_PASSWORD, $config)
-        ) {
-            throw new InvalidArgumentException(
-                sprintf(
-                    '%s, %s, %s and %s need to be defined',
-                    self::KEY_API_URL,
-                    self::KEY_VERSION,
-                    self::KEY_USERNAME,
-                    self::KEY_PASSWORD
-                )
-            );
-        }
-
         foreach ($config as $key => $value) {
             if (false === is_string($key)) {
                 throw new UnexpectedValueException(
@@ -129,34 +99,10 @@ class Config
     }
 
     /**
-     * @return string
+     * @return array
      */
-    public function getApiUrl(): string
+    public function toArray(): array
     {
-        return $this->get(self::KEY_API_URL);
-    }
-
-    /**
-     * @return integer
-     */
-    public function getVersion(): int
-    {
-        return (int)$this->get(self::KEY_VERSION);
-    }
-
-    /**
-     * @return string
-     */
-    public function getUserName(): string
-    {
-        return $this->get(self::KEY_USERNAME);
-    }
-
-    /**
-     * @return string
-     */
-    public function getPassword(): string
-    {
-        return $this->get(self::KEY_PASSWORD);
+        return $this->data;
     }
 }

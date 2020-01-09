@@ -2,16 +2,14 @@
 
 declare(strict_types=1);
 
-namespace PayNL\Sdk;
-
-use Doctrine\Common\Collections\ArrayCollection;
+namespace PayNL\Sdk\Common;
 
 /**
  * Class TotalCollection
  *
  * @package PayNL\Sdk
  */
-class TotalCollection extends ArrayCollection
+class TotalCollection extends Collection
 {
     /**
      * @var integer

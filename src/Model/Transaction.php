@@ -6,7 +6,7 @@ namespace PayNL\Sdk\Model;
 
 use DateTime as stdDateTime, JsonSerializable, BadMethodCallException;
 use Zend\Filter\Word\CamelCaseToUnderscore;
-use PayNL\Sdk\DateTime;
+use PayNL\Sdk\Common\DateTime;
 
 /**
  * Class Transaction

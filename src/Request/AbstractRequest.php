@@ -11,16 +11,15 @@ use PayNL\GuzzleHttp\{
     Exception\GuzzleException
 };
 use PayNL\Sdk\{
-    DebugTrait,
+    Common\DebugAwareInterface,
+    Common\DebugAwareTrait,
     Exception\ExceptionInterface,
     Exception\RuntimeException,
-    Model\ModelInterface,
-    Response,
+    Response\Response,
     Exception\InvalidArgumentException,
     Filter\FilterInterface,
-    Transformer\Errors as ErrorsTransformer,
-    Validator\ObjectInstance
-};
+    Transformer\Manager as TransformerManager,
+    Validator\ObjectInstance};
 use Symfony\Component\Serializer\Encoder\{
     JsonEncoder,
     XmlEncoder
@@ -34,9 +33,9 @@ use Symfony\Component\Serializer\Encoder\{
  * @SuppressWarnings(PHPMD.NumberOfChildren)
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
-abstract class AbstractRequest implements RequestInterface
+abstract class AbstractRequest implements RequestInterface, DebugAwareInterface
 {
-    use DebugTrait;
+    use DebugAwareTrait;
 
     /*
      * Tag name declaration for XML request string
@@ -67,6 +66,21 @@ abstract class AbstractRequest implements RequestInterface
      * @var array
      */
     protected $filters = [];
+
+//    /**
+//     * @var ModelInterface
+//     */
+//    protected $model;
+
+    /**
+     * @var TransformerManager
+     */
+    protected $transformerManager;
+
+    public function __construct(TransformerManager $transformerManager)
+    {
+        $this->transformerManager = $transformerManager;
+    }
 
     /**
      * @return string
@@ -103,7 +117,7 @@ abstract class AbstractRequest implements RequestInterface
      *
      * @return AbstractRequest
      */
-    public function addHeader(string $name, string $value): self
+    public function setHeader(string $name, string $value): self
     {
         $this->headers[$name] = $value;
         return $this;
@@ -117,7 +131,7 @@ abstract class AbstractRequest implements RequestInterface
     public function setHeaders(array $headers): self
     {
         foreach ($headers as $name => $header) {
-            $this->addHeader($name, $header);
+            $this->setHeader($name, $header);
         }
         return $this;
     }
@@ -257,6 +271,7 @@ abstract class AbstractRequest implements RequestInterface
         $context = [
             'json_encode_options' => JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | (true === $this->isDebug() ? JSON_PRETTY_PRINT : 0),
         ];
+
         if (static::FORMAT_XML === $this->getFormat()) {
             $encoder = new XmlEncoder([
                 XmlEncoder::ROOT_NODE_NAME => static::XML_ROOT_NODE_NAME,
@@ -264,7 +279,7 @@ abstract class AbstractRequest implements RequestInterface
             $contentTypeHeader = 'application/xml';
             $context = [];
         }
-        $this->addHeader(static::HEADER_CONTENT_TYPE, $contentTypeHeader);
+        $this->setHeader(static::HEADER_CONTENT_TYPE, $contentTypeHeader);
 
         return (string)$encoder->encode($body, $this->getFormat(), $context);
     }
@@ -308,13 +323,14 @@ abstract class AbstractRequest implements RequestInterface
 
             $body = $rawBody;
             // initiate transformer (... more than meets the eye ;-) )
-            if (static::FORMAT_OBJECTS === $this->getFormat()) {
-                $transformer = $this->getTransformer();
-                if (true === $this->isDebug()) {
-                    $this->dumpDebugInfo('Use transformer: ' . get_class($transformer));
-                }
-                $body = $transformer->transform($rawBody);
-            }
+//            if (static::FORMAT_OBJECTS === $this->getFormat()) {
+//                $transformer = $this->transformerManager->getByRequest(static::class);
+//
+//                if (true === $this->isDebug()) {
+//                    $this->dumpDebugInfo('Use transformer: ' . get_class($transformer));
+//                }
+//                $body = $transformer->transform($rawBody);
+//            }
             $statusCode = $guzzleResponse->getStatusCode();
         } catch (RequestException $re) {
             $rawBody = $errorMessages = '';
@@ -335,7 +351,7 @@ abstract class AbstractRequest implements RequestInterface
                 $body = $rawBody;
 
                 if ('' !== $errorMessages && static::FORMAT_OBJECTS === $this->getFormat()) {
-                    $transformer = new ErrorsTransformer();
+                    $transformer = $this->transformerManager->get('errors');
                     $body = $transformer->transform($errorMessages);
                 }
             }
@@ -347,7 +363,7 @@ abstract class AbstractRequest implements RequestInterface
             $body = 'Error: ' . $e->getMessage() . ' (' . $statusCode . ')';
 
             if (static::FORMAT_OBJECTS === $this->getFormat()) {
-                $transformer = new ErrorsTransformer();
+                $transformer = $this->transformerManager->get('errors');
                 $body = $transformer->transform((new JsonEncoder())->encode([
                     'errors' => (object)[
                         'general' => (object)[
@@ -368,4 +384,42 @@ abstract class AbstractRequest implements RequestInterface
             $this->dumpDebugInfo('Response: ', $response);
         }
     }
+
+//    /**
+//     * @return ModelInterface
+//     */
+//    public function getModel(): ModelInterface
+//    {
+//        return $this->model;
+//    }
+//
+//    /**
+//     * @param ModelInterface $model
+//     *
+//     * @return AbstractRequest
+//     */
+//    public function setModel(ModelInterface $model): self
+//    {
+//        $this->model = $model;
+//        return $this;
+//    }
+
+//    /**
+//     * @return TransformerInterface
+//     */
+//    public function getTransformer(): TransformerInterface
+//    {
+//        return $this->transformer;
+//    }
+//
+//    /**
+//     * @param TransformerInterface $transformer
+//     *
+//     * @return AbstractRequest
+//     */
+//    public function setTransformer(TransformerInterface $transformer): self
+//    {
+//        $this->transformer = $transformer;
+//        return $this;
+//    }
 }

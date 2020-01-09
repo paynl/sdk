@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PayNL\Sdk;
+namespace PayNL\Sdk\Common;
 
 use Exception, DateTime as stdDateTime, DateTimeZone, JsonSerializable;
 

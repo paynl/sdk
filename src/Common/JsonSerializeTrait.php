@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PayNL\Sdk\Model;
+namespace PayNL\Sdk\Common;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use JsonSerializable;
@@ -40,7 +40,10 @@ trait JsonSerializeTrait
             $c = 0;
             $prev = null;
             foreach ($validator->getMessages() as $type => $message) {
-                $exceptionClass = (true === in_array($type, [RequiredMembersValidator::MSG_EMPTY_MEMBER, RequiredMembersValidator::MSG_EMPTY_MEMBERS], true) ? EmptyRequiredMemberException::class : MissingRequiredMemberException::class);
+                $exceptionClass = MissingRequiredMemberException::class;
+                if (true === in_array($type, [RequiredMembersValidator::MSG_EMPTY_MEMBER, RequiredMembersValidator::MSG_EMPTY_MEMBERS], true)) {
+                    $exceptionClass = EmptyRequiredMemberException::class;
+                }
                 $e = new $exceptionClass($message, 500, ($c++ !== 0 ? $prev : null));
                 $prev = $e;
             }

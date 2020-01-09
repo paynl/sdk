@@ -23,25 +23,34 @@ class Basic implements AdapterInterface
      */
     protected $password;
 
-    /**
-     * Basic constructor.
-     *
-     * @param string $username
-     * @param string $password
-     *
-     * @throws InvalidArgumentException
-     */
-    public function __construct(string $username, string $password)
-    {
-        if (true === empty($username) || true === empty($password)) {
-            throw new InvalidArgumentException(
-                'Username and/ or password can not be empty'
-            );
-        }
-
-        $this->setUsername($username);
-        $this->setPassword($password);
-    }
+//    /**
+//     * Basic constructor.
+//     *
+//     * @param array $config
+//     *
+//     * @throws InvalidArgumentException
+//     */
+//    public function __construct(array $config)
+//    {
+//        $username = $password = '';
+//
+//        if (true === array_key_exists('username', $config)) {
+//            $username = $config['username'];
+//        }
+//
+//        if (true === array_key_exists('password', $config)) {
+//            $password = $config['password'];
+//        }
+//
+//        if (true === empty($username) || true === empty($password)) {
+//            throw new InvalidArgumentException(
+//                'Username and/ or password can not be empty'
+//            );
+//        }
+//
+//        $this->setUsername($username);
+//        $this->setPassword($password);
+//    }
 
     /**
      * @return string
@@ -56,7 +65,7 @@ class Basic implements AdapterInterface
      *
      * @return Basic
      */
-    protected function setUsername(string $username): self
+    public function setUsername(string $username): AdapterInterface
     {
         $this->username = $username;
         return $this;
@@ -75,7 +84,7 @@ class Basic implements AdapterInterface
      *
      * @return Basic
      */
-    protected function setPassword(string $password): self
+    public function setPassword(string $password): AdapterInterface
     {
         $this->password = $password;
         return $this;

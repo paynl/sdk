@@ -6,7 +6,7 @@ namespace PayNL\Sdk\Hydrator;
 
 use DateTime as stdDateTime;
 use PayNL\Sdk\{
-    DateTime,
+    Common\DateTime,
     Model\Amount as AmountModel,
     Model\Mandate as MandateModel,
     Model\Statistics as StatisticsModel,

@@ -6,7 +6,7 @@ namespace PayNL\Sdk\Hydrator;
 
 use DateTime as stdDateTime;
 use PayNL\Sdk\{
-    DateTime,
+    Common\DateTime,
     Exception\InvalidArgumentException,
     Validator\ObjectInstance as ObjectInstanceValidator,
     Model\Links as LinksModel

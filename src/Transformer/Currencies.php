@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Transformer;
 
-use PayNL\Sdk\{
+use PayNL\Sdk\{Config,
     Model\Currencies as CurrenciesModel,
-    Hydrator\Currencies as CurrenciesHydrator
-};
+    Hydrator\Currencies as CurrenciesHydrator,
+    Hydrator\Collection as CollectionHydrator};
 
 /**
  * Class Currencies

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Request;
 
-use PayNL\Sdk\Response;
+use PayNL\Sdk\Response\Response;
 use PayNL\Sdk\Transformer\TransformerInterface;
 
 /**
@@ -63,5 +63,5 @@ interface RequestInterface
      *
      * @return TransformerInterface
      */
-    public function getTransformer(): TransformerInterface;
+//    public function getTransformer(): TransformerInterface;
 }

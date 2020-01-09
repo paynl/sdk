@@ -7,7 +7,7 @@ namespace PayNL\Sdk\Request\Currencies;
 use PayNL\Sdk\{
     Request\AbstractRequest,
     Transformer\TransformerInterface,
-    Transformer\Currencies as CurrenciesTransformer
+    Transformer\Collection as CollectionTransformer
 };
 
 /**
@@ -34,10 +34,10 @@ class GetAll extends AbstractRequest
     }
 
     /**
-     * @return CurrenciesTransformer
+     * @return CollectionTransformer
      */
-    public function getTransformer(): TransformerInterface
-    {
-        return new CurrenciesTransformer();
-    }
+//    public function getTransformer(): TransformerInterface
+//    {
+//        return new CollectionTransformer('currencies');
+//    }
 }

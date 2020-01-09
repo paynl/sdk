@@ -2,17 +2,14 @@
 
 declare(strict_types=1);
 
-namespace PayNL\Sdk;
-
-use Symfony\Component\VarDumper\Cloner\VarCloner;
-use Symfony\Component\VarDumper\Dumper\CliDumper;
+namespace PayNL\Sdk\Common;
 
 /**
  * Trait DebugTrait
  *
  * @package PayNL\Sdk
  */
-trait DebugTrait
+trait DebugAwareTrait
 {
     /**
      * @var boolean
@@ -22,9 +19,9 @@ trait DebugTrait
     /**
      * @param boolean $debug
      *
-     * @return self
+     * @return static
      */
-    public function setDebug(bool $debug): self
+    public function setDebug(bool $debug)
     {
         $this->debug = $debug;
         return $this;

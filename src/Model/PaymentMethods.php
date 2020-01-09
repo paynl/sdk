@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PayNL\Sdk\Model;
 
 use JsonSerializable;
-use PayNL\Sdk\TotalCollection;
+use PayNL\Sdk\Common\{JsonSerializeTrait, TotalCollection};
 
 /**
  * Class PaymentMethods

@@ -7,6 +7,7 @@ namespace PayNL\Sdk\Model;
 use JsonSerializable;
 use PayNL\Sdk\Exception\InvalidArgumentException;
 use PayNL\Sdk\Validator\InputType;
+use PayNL\Sdk\Common\JsonSerializeTrait;
 
 /**
  * Class Address

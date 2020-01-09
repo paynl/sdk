@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Model;
 
-use \JsonSerializable;
+use JsonSerializable;
+use PayNL\Sdk\Common\JsonSerializeTrait;
 
 /**
  * Class Product

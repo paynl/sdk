@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Request;
 
-use PayNL\Sdk\{
+use PayNL\Sdk\{Common\DebugAwareInitializer,
     Config\ProviderInterface as ConfigProviderInterface,
-    Common\ManagerFactory
-};
+    Common\ManagerFactory};
 
 /**
  * Class Manager
@@ -54,9 +53,12 @@ class ConfigProvider implements ConfigProviderInterface
     public function getRequests(): array
     {
         return [
+            'initializers' => [
+                DebugAwareInitializer::class,
+            ],
             'aliases' => [
                 'GetAllCurrencies'              => Currencies\GetAll::class,
-                'GetCurrencies'                 => Currencies\Get::class,
+                'GetCurrency'                   => Currencies\Get::class,
                 'CreateDirectdebit'             => Directdebits\Create::class,
                 'CreateRecurringDirectdebit'    => Directdebits\CreateRecurring::class,
                 'DeleteDirectdebit'             => Directdebits\Delete::class,

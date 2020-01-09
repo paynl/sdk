@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Mapper;
 
+use PayNL\Sdk\Exception\ServiceNotFoundException;
 use PayNL\Sdk\Service\AbstractPluginManager;
 use Zend\Stdlib\ArrayUtils;
 use PayNL\Sdk\Service\Manager as ServiceManager;
@@ -66,15 +67,19 @@ class Manager extends AbstractPluginManager
                 foreach ($map as $source => $target) {
                     $source = $sourceManager->resolvedAliases[$source] ?? $source;
                     if (false === class_exists($source)) {
-                        throw new \Exception(
+                        throw new ServiceNotFoundException(
                             'Source does not exist'
                         );
                     }
 
                     $target = $targetManager->resolvedAliases[$target] ?? $target;
                     if (false === class_exists($target)) {
-                        throw new \Exception(
-                            'Target does not exist'
+                        throw new ServiceNotFoundException(
+                            sprintf(
+                                'Service with name "%s" not found in %s',
+                                $target,
+                                $targetManagerName
+                            )
                         );
                     }
 

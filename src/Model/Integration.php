@@ -6,6 +6,7 @@ namespace PayNL\Sdk\Model;
 
 use JsonSerializable;
 use PayNL\Sdk\Exception\InvalidArgumentException;
+use PayNL\Sdk\Common\JsonSerializeTrait;
 
 /**
  * Class Integration

@@ -6,6 +6,7 @@ namespace PayNL\Sdk\Model;
 
 use JsonSerializable;
 use Doctrine\Common\Collections\ArrayCollection;
+use PayNL\Sdk\Common\JsonSerializeTrait;
 
 /**
  * Class Products

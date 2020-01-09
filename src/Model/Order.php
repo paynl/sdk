@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PayNL\Sdk\Model;
 
 use JsonSerializable, DateTime;
+use PayNL\Sdk\Common\JsonSerializeTrait;
 
 /**
  * Class Order

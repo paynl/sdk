@@ -7,7 +7,7 @@ require_once __DIR__ . '/../init.php';
 use PayNL\Sdk\{
     Api,
     Config,
-    DateTime
+    Common\DateTime
 };
 use PayNL\Sdk\Request\Directdebits\Create as CreateDirectdebitRequest;
 use PayNL\Sdk\Hydrator\Mandate as MandateHydrator;

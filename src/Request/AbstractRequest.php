@@ -67,11 +67,6 @@ abstract class AbstractRequest implements RequestInterface, DebugAwareInterface
      */
     protected $filters = [];
 
-//    /**
-//     * @var ModelInterface
-//     */
-//    protected $model;
-
     /**
      * @var TransformerManager
      */
@@ -322,15 +317,6 @@ abstract class AbstractRequest implements RequestInterface, DebugAwareInterface
             $rawBody = $guzzleResponse->getBody()->getContents();
 
             $body = $rawBody;
-            // initiate transformer (... more than meets the eye ;-) )
-//            if (static::FORMAT_OBJECTS === $this->getFormat()) {
-//                $transformer = $this->transformerManager->getByRequest(static::class);
-//
-//                if (true === $this->isDebug()) {
-//                    $this->dumpDebugInfo('Use transformer: ' . get_class($transformer));
-//                }
-//                $body = $transformer->transform($rawBody);
-//            }
             $statusCode = $guzzleResponse->getStatusCode();
         } catch (RequestException $re) {
             $rawBody = $errorMessages = '';
@@ -363,6 +349,7 @@ abstract class AbstractRequest implements RequestInterface, DebugAwareInterface
             $body = 'Error: ' . $e->getMessage() . ' (' . $statusCode . ')';
 
             if (static::FORMAT_OBJECTS === $this->getFormat()) {
+                die('adjust');
                 $transformer = $this->transformerManager->get('errors');
                 $body = $transformer->transform((new JsonEncoder())->encode([
                     'errors' => (object)[
@@ -384,42 +371,4 @@ abstract class AbstractRequest implements RequestInterface, DebugAwareInterface
             $this->dumpDebugInfo('Response: ', $response);
         }
     }
-
-//    /**
-//     * @return ModelInterface
-//     */
-//    public function getModel(): ModelInterface
-//    {
-//        return $this->model;
-//    }
-//
-//    /**
-//     * @param ModelInterface $model
-//     *
-//     * @return AbstractRequest
-//     */
-//    public function setModel(ModelInterface $model): self
-//    {
-//        $this->model = $model;
-//        return $this;
-//    }
-
-//    /**
-//     * @return TransformerInterface
-//     */
-//    public function getTransformer(): TransformerInterface
-//    {
-//        return $this->transformer;
-//    }
-//
-//    /**
-//     * @param TransformerInterface $transformer
-//     *
-//     * @return AbstractRequest
-//     */
-//    public function setTransformer(TransformerInterface $transformer): self
-//    {
-//        $this->transformer = $transformer;
-//        return $this;
-//    }
 }

@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Model;
 
-use \DateTime;
-use \JsonSerializable;
+use DateTime;
+use JsonSerializable;
+use PayNL\Sdk\Common\JsonSerializeTrait;
 
 /**
  * Class Refund

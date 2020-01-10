@@ -9,6 +9,6 @@ namespace PayNL\Sdk\Exception;
  *
  * @package PayNL\Sdk\Exception
  */
-class MissingParamException extends RuntimeException
+class MissingParamException extends InvalidArgumentException
 {
 }

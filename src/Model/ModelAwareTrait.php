@@ -13,7 +13,7 @@ trait ModelAwareTrait
 {
     protected $model;
 
-    public function getModel(): ModelInterface
+    public function getModel(): ?ModelInterface
     {
         return $this->model;
     }

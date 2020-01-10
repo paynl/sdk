@@ -112,7 +112,7 @@ class Response implements ResponseInterface, TransformerAwareInterface
     public function getBody()
     {
         if (true === empty($this->body) && true === array_key_exists($this->getStatusCode(), self::HTTP_STATUS_CODES)) {
-            $this->setBody(self::HTTP_STATUS_CODES[$this->getStatusCode()]);
+            $this->body = self::HTTP_STATUS_CODES[$this->getStatusCode()];
         }
         return $this->body;
     }

@@ -98,16 +98,21 @@ class Service
         $response = $this->getResponse();
         if (ResponseInterface::FORMAT_OBJECTS === $response->getFormat()) {
             $mapperManager = $this->serviceManager->get('mapperManager');
-            $modelName = $mapperManager->get('RequestModelMapper')->getTarget($request);
-            $hydratorName = $mapperManager->get('ModelHydratorMapper')->getTarget($modelName);
-
-            $model = $this->serviceManager->get('modelManager')->build($modelName);
-            $hydrator = $this->serviceManager->get('hydratorManager')->build($hydratorName);
 
             /** @var \PayNL\Sdk\Transformer\Response $transformer */
             $transformer = $this->serviceManager->get('transformerManager')->get('Response');
-            $transformer->setModel($model)
-                ->setHydrator($hydrator);
+
+            $modelName = $mapperManager->get('RequestModelMapper')->getTarget($request);
+            if (null !== $modelName) {
+                $hydratorName = $mapperManager->get('ModelHydratorMapper')->getTarget($modelName);
+
+                $model = $this->serviceManager->get('modelManager')->build($modelName);
+                $hydrator = $this->serviceManager->get('hydratorManager')->build($hydratorName);
+
+                $transformer->setModel($model)
+                    ->setHydrator($hydrator)
+                ;
+            }
 
             $response->setTransformer($transformer);
         }

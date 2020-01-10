@@ -6,9 +6,8 @@ namespace PayNL\Sdk\Request\IsPay;
 
 use PayNL\Sdk\{
     Exception\InvalidArgumentException,
+    Exception\MissingParamException,
     Request\AbstractRequest,
-    Transformer\TransformerInterface,
-    Transformer\NoContent as NoContentTransformer,
     Validator\InputType
 };
 
@@ -27,7 +26,7 @@ class Get extends AbstractRequest
     /**
      * @var string
      */
-    protected $type;
+    protected $type = self::TYPE_IP;
 
     /**
      * @var string|integer
@@ -35,25 +34,32 @@ class Get extends AbstractRequest
     protected $value;
 
     /**
-     * Get constructor.
-     *
-     * @param string $type
-     * @param string|int $value
-     *
-     * @throws InvalidArgumentException
+     * @inheritDoc
      */
-    public function __construct(string $type, $value)
+    public function init(): void
     {
+        $type = (string)$this->getParam('type');
+        if (false === empty($type)) {
+            $this->setType($type);
+        }
+
+        $value = $this->getParam($this->getType());
+        if (true === empty($value)) {
+            throw new MissingParamException(
+                sprintf(
+                    'Missing %s',
+                    $this->getType()
+                )
+            );
+        }
+
         $validator = new InputType();
         if (false === $validator->isValid($value, 'string') && false === $validator->isValid($value, 'int')) {
             throw new InvalidArgumentException(
                 implode(PHP_EOL, $validator->getMessages())
             );
         }
-
-        $this->setType($type)
-            ->setValue($value)
-        ;
+        $this->setValue($value);
     }
 
     /**
@@ -108,13 +114,5 @@ class Get extends AbstractRequest
     public function getUri(): string
     {
         return "ispay/{$this->getType()}?value={$this->getValue()}";
-    }
-
-    /**
-     * @return NoContentTransformer
-     */
-    public function getTransformer(): TransformerInterface
-    {
-        return new NoContentTransformer();
     }
 }

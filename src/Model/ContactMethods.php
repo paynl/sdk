@@ -48,7 +48,8 @@ class ContactMethods extends ArrayCollection implements ModelInterface
      */
     public function addContactMethod(ContactMethod $contactMethod): self
     {
-        $this->set($contactMethod->getId(), $contactMethod);
+        // TODO: ask Mike if contact type is unique in the set
+        $this->set($contactMethod->getType(), $contactMethod);
         return $this;
     }
 }

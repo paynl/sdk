@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Model;
 
-use PayNL\Sdk\DateTime;
+use PayNL\Sdk\Common\DateTime;
 
 /**
  * Class Merchant

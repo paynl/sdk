@@ -34,8 +34,9 @@ class ContactMethods extends AbstractHydrator
         }
 
         foreach ($data['contactMethods'] as $key => $contactMethod) {
-            if (false === ($contactMethod instanceof ContactMethodModel)) {
-                $data['contactMethods'][$key] = (new SimpleHydrator())->hydrate($contactMethod, new ContactMethodModel());
+            $contactMethodModel = $this->modelManager->build('ContactMethod');
+            if (false === ($contactMethod instanceof $contactMethodModel)) {
+                $data['contactMethods'][$key] = $this->hydratorManager->get('Simple')->hydrate($contactMethod, $contactMethodModel);
             }
         }
 

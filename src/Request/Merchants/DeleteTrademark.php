@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Request\Merchants;
 
-use PayNL\Sdk\{
+use PayNL\Sdk\{Exception\MissingParamException,
     Request\AbstractRequest,
     Transformer\TransformerInterface,
-    Transformer\Merchant as MerchantTransformer
-};
+    Transformer\Merchant as MerchantTransformer};
 use PayNL\Sdk\Request\Parameter\MerchantIdTrait;
 
 /**
@@ -26,14 +25,24 @@ class DeleteTrademark extends AbstractRequest
     protected $trademarkId;
 
     /**
-     * DeleteTrademark constructor.
-     *
-     * @param string $merchantId
-     * @param string $trademarkId
+     * @inheritDoc
      */
-    public function __construct(string $merchantId, string $trademarkId)
+    public function init():void
     {
+        $merchantId = (string)$this->getParam('merchantId');
+        if (true === empty($merchantId)) {
+            throw new MissingParamException(
+                'Missing merchant id'
+            );
+        }
         $this->setMerchantId($merchantId);
+
+        $trademarkId = (string)$this->getParam('trademarkId');
+        if (true === empty($trademarkId)) {
+            throw new MissingParamException(
+                'Missing trademark id'
+            );
+        }
         $this->setTrademarkId($trademarkId);
     }
 
@@ -70,13 +79,5 @@ class DeleteTrademark extends AbstractRequest
     public function getMethod(): string
     {
         return static::METHOD_DELETE;
-    }
-
-    /**
-     * @return MerchantTransformer
-     */
-    public function getTransformer(): TransformerInterface
-    {
-        return new MerchantTransformer();
     }
 }

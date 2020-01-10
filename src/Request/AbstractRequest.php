@@ -10,9 +10,10 @@ use PayNL\GuzzleHttp\{
     Exception\RequestException,
     Exception\GuzzleException
 };
-use PayNL\Sdk\{
-    Common\DebugAwareInterface,
+use PayNL\Sdk\{Common\DebugAwareInterface,
     Common\DebugAwareTrait,
+    Common\OptionsAwareInterface,
+    Common\OptionsAwareTrait,
     Exception\ExceptionInterface,
     Exception\RuntimeException,
     Response\Response,
@@ -33,9 +34,9 @@ use Symfony\Component\Serializer\Encoder\{
  * @SuppressWarnings(PHPMD.NumberOfChildren)
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
-abstract class AbstractRequest implements RequestInterface, DebugAwareInterface
+abstract class AbstractRequest implements RequestInterface, DebugAwareInterface, OptionsAwareInterface
 {
-    use DebugAwareTrait;
+    use DebugAwareTrait, OptionsAwareTrait;
 
     /*
      * Tag name declaration for XML request string
@@ -72,9 +73,53 @@ abstract class AbstractRequest implements RequestInterface, DebugAwareInterface
      */
     protected $transformerManager;
 
-    public function __construct(TransformerManager $transformerManager)
+    /**
+     * @var array
+     */
+    protected $params = [];
+
+    public function __construct(TransformerManager $transformerManager, array $options = [])
     {
         $this->transformerManager = $transformerManager;
+        $this->setOptions($options);
+
+        if ($this->hasOption('params')) {
+            $this->setParams($this->getOption('params'));
+        }
+
+        if ($this->hasOption('body') && null !== $this->getOption('body')) {
+            $this->setBody($this->getOption('body'));
+        }
+
+        $this->init();
+    }
+
+    public function init(): void
+    {
+    }
+
+    public function getParams(): array
+    {
+        return $this->params;
+    }
+
+    public function getParam($name)
+    {
+        if (false === $this->hasParam($name)) {
+            return null;
+        }
+        return $this->params[$name];
+    }
+
+    public function hasParam(string $name): bool
+    {
+        return array_key_exists($name, $this->params);
+    }
+
+    public function setParams(array $params): self
+    {
+        $this->params = $params;
+        return $this;
     }
 
     /**
@@ -298,13 +343,7 @@ abstract class AbstractRequest implements RequestInterface, DebugAwareInterface
         }
 
         if (true === $this->isDebug()) {
-            $this->dumpDebugInfo('Body: ' . $this->getBody());
-        }
-
-        // create a Guzzle PSR 7 Request
-        $guzzleRequest = new Request($this->getMethod(), $uri, $this->getHeaders(), $this->getBody());
-        if (true === $this->isDebug()) {
-            $this->dumpDebugInfo('Requested URL: ' . $guzzleRequest->getUri());
+            $this->dumpDebugInfo('Request body: ' . $this->getBody());
         }
 
         try {
@@ -312,6 +351,13 @@ abstract class AbstractRequest implements RequestInterface, DebugAwareInterface
             if (false === ($guzzleClient instanceof Client)) {
                 throw new RuntimeException('No HTTP client found', 500);
             }
+
+            // create a Guzzle PSR 7 Request
+            $guzzleRequest = new Request($this->getMethod(), $uri, $this->getHeaders(), $this->getBody());
+            if (true === $this->isDebug()) {
+                $this->dumpDebugInfo('Requested URL: ' . rtrim((string)$guzzleClient->getConfig('base_uri'), '/') . '/' . $guzzleRequest->getUri());
+            }
+
             $guzzleResponse = $guzzleClient->send($guzzleRequest);
 
             $rawBody = $guzzleResponse->getBody()->getContents();

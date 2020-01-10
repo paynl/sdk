@@ -28,7 +28,7 @@ class Collection extends AbstractTransformer implements OptionsAwareInterface
 
     public function transform($inputToTransform)
     {
-        if (false === $this->hasOptions('collection_key')) {
+        if (false === $this->hasOption('collection_key')) {
             throw new \Exception('Blegh!');
         }
 

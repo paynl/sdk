@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Application;
 
-use PayNL\Sdk\{
-    Api\Service as ApiService,
+use PayNL\Sdk\{Api\Service as ApiService,
     Common\DebugAwareInterface,
     Common\DebugAwareTrait,
+    Exception\InvalidArgumentException,
+    Hydrator\AbstractHydrator,
+    Model\ModelInterface,
     Response\Response,
     Request\AbstractRequest,
     Service\Manager as ServiceManager,
-    Service\ManagerConfig as ServiceManagerConfig
-};
+    Service\ManagerConfig as ServiceManagerConfig};
 
 class Application implements DebugAwareInterface
 {
@@ -94,13 +95,45 @@ class Application implements DebugAwareInterface
         return $this->request;
     }
 
-    public function setRequest($request, ...$params): self
+    public function setRequest($request, array $params = [], $body = null): self
     {
+        if (null !== $body) {
+            if (true === is_array($body)) {
+                $modelType = current(array_keys($body));
+                /** @var ModelInterface $model */
+                $model = $this->getServiceManager()->get('modelManager')->build($modelType);
+                $hydratorName = $this->getServiceManager()->get('mapperManager')
+                    ->get('ModelHydratorMapper')
+                    ->getTarget($modelType);
+                /** @var AbstractHydrator $hydrator */
+                $hydrator = $this->getServiceManager()->get('hydratorManager')->build($hydratorName);
+                $body = $hydrator->hydrate($body[$modelType], $model);
+            } elseif (false === is_string($body) && false === ($body instanceof ModelInterface)) {
+                throw new InvalidArgumentException(
+                    sprintf(
+                        'Given body should be a string, an array or an instance of %s, %s given',
+                        ModelInterface::class,
+                        is_object($body) ? get_class($body) : gettype($body)
+                    )
+                );
+            }
+        }
+
         if (true === is_string($request)) {
-            $request = $this->serviceManager->get('requestManager')->get($request, $params);
+            $request = $this->serviceManager->get('requestManager')
+                ->build($request, [
+                    'params' => $params,
+                    'body'   => $body,
+                ])
+            ;
         } elseif (false === ($request instanceof AbstractRequest)) {
-            throw new \Exception(
-                'Wrong!'
+            throw new InvalidArgumentException(
+                sprintf(
+                    'Given request should correspond to a request class name or alias, or should be an ' .
+                    'instance of %s, %s given',
+                    AbstractRequest::class,
+                    is_object($request) ? get_class($request) : gettype($request)
+                )
             );
         }
 

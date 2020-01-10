@@ -9,10 +9,10 @@ use PayNL\Sdk\{
     Config\Config
 };
 
-$app = Application::init(Config::getInstance()->toArray());
-$app->setRequest('GetAllCurrencies');
-
-$response = $app->run();
+$response = Application::init(Config::getInstance()->toArray())
+    ->setRequest('GetAllCurrencies')
+    ->run()
+;
 
 echo '<pre/>' . PHP_EOL .
     var_export($response->getBody(), true)

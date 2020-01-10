@@ -32,7 +32,7 @@ class Merchant extends AbstractHydrator
         $this->validateGivenObject($object, MerchantModel::class);
 
         if (true === array_key_exists('bankAccount', $data) && true === is_array($data['bankAccount'])) {
-            $data['bankAccount'] = (new SimpleHydrator())->hydrate($data['bankAccount'], new BankAccountModel());
+            $data['bankAccount'] = $this->hydratorManager->build('Simple')->hydrate($data['bankAccount'], $this->modelManager->build('BankAccount'));
         }
 
         foreach ([
@@ -40,17 +40,17 @@ class Merchant extends AbstractHydrator
             'visitAddress',
         ] as $addressField) {
             if (true === array_key_exists($addressField, $data) && true === is_array($data[$addressField])) {
-                $data[$addressField] = (new SimpleHydrator())->hydrate($data[$addressField], new AddressModel());
+                $data[$addressField] = $this->hydratorManager->build('Simple')->hydrate($data[$addressField], $this->modelManager->build('Address'));
             }
         }
 
         if (true === array_key_exists('trademarks', $data) && true === is_array($data['trademarks'])) {
-            $data['trademarks'] = (new TrademarksHydrator())->hydrate($data['trademarks'], new TrademarksModel());
+            $data['trademarks'] = $this->hydratorManager->build('Trademarks')->hydrate($data['trademarks'], $this->modelManager->build('Trademarks'));
         }
 
         if (true === array_key_exists('contactMethods', $data) && true === is_array($data['contactMethods'])) {
-            $data['contactMethods'] = (new ContactMethodsHydrator())
-                ->hydrate($data['contactMethods'], new ContactMethodsModel())
+            $data['contactMethods'] = $this->hydratorManager->build('ContactMethods')
+                ->hydrate($data['contactMethods'], $this->modelManager->build('ContactMethods'))
             ;
         }
 

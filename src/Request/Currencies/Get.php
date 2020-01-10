@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PayNL\Sdk\Request\Currencies;
 
 use PayNL\Sdk\{
+    Exception\MissingParamException,
     Request\AbstractRequest,
     Transformer\TransformerInterface,
     Transformer\Currency as CurrencyTransformer
@@ -22,14 +23,14 @@ class Get extends AbstractRequest
      */
     protected $abbreviation;
 
-    /**
-     * Get constructor.
-     *
-     * @param string $abbreviation
-     */
-    public function __construct(string $abbreviation)
+    public function init(): void
     {
-        $this->setAbbreviation($abbreviation);
+        $currencyId = (string)$this->getParam('currencyId');
+        if (null === $currencyId) {
+            throw new MissingParamException('Missing param!');
+        }
+
+        $this->setAbbreviation($currencyId);
     }
 
     /**
@@ -68,11 +69,11 @@ class Get extends AbstractRequest
         return static::METHOD_GET;
     }
 
-    /**
-     * @return CurrencyTransformer
-     */
-    public function getTransformer(): TransformerInterface
-    {
-        return new CurrencyTransformer();
-    }
+//    /**
+//     * @return CurrencyTransformer
+//     */
+//    public function getTransformer(): TransformerInterface
+//    {
+//        return new CurrencyTransformer();
+//    }
 }

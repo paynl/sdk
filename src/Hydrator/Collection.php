@@ -14,58 +14,62 @@ use PayNL\Sdk\Model;
  */
 class Collection extends AbstractHydrator
 {
-    /**
-     * @var string
-     */
-    protected $collectionKey;
+//    /**
+//     * @var string
+//     */
+//    protected $collectionKey;
+//
+//    /**
+//     * @inheritDoc
+//     *
+//     * @param string $collectionKey
+//     */
+//    public function __construct(array $options = [], $underscoreSeparatedKeys = true, $methodExistsCheck = false)
+//    {
+//        $this->setCollectionKey($options['key'] ?? '');
+//
+//        parent::__construct($underscoreSeparatedKeys, $methodExistsCheck);
+//    }
 
-    /**
-     * @inheritDoc
-     *
-     * @param string $collectionKey
-     */
-    public function __construct(array $options = [], $underscoreSeparatedKeys = true, $methodExistsCheck = false)
-    {
-        $this->setCollectionKey($options['key']);
-
-        parent::__construct($underscoreSeparatedKeys, $methodExistsCheck);
-    }
-
-    /**
-     * @return string
-     */
-    public function getCollectionKey(): string
-    {
-        return $this->collectionKey;
-    }
-
-    /**
-     * @param string $collectionKey
-     *
-     * @return Collection
-     */
-    protected function setCollectionKey(string $collectionKey): self
-    {
-        $this->collectionKey = $collectionKey;
-        return $this;
-    }
+//    /**
+//     * @return string
+//     */
+//    public function getCollectionKey(): string
+//    {
+//        return $this->collectionKey;
+//    }
+//
+//    /**
+//     * @param string $collectionKey
+//     *
+//     * @return Collection
+//     */
+//    protected function setCollectionKey(string $collectionKey): self
+//    {
+//        $this->collectionKey = $collectionKey;
+//        return $this;
+//    }
 
     /**
      * @inheritDoc
      */
     public function hydrate(array $data, $object)
     {
-        $collectionKey   = $this->getCollectionKey();
-        $entityClassName = $this->getEntityClassName(get_class($object));
+        dump($data);die;
+
+
+//        $collectionKey   = $this->getCollectionKey();
+//        dump($object);die;
+//        $entityClassName = $this->getEntityClassName(get_class($object));
 
 //        $this->validateGivenObject($object, $this->getCollectionClassName());
 
-        if (false === array_key_exists($collectionKey, $data)) {
+//        if (false === array_key_exists($collectionKey, $data)) {
             // the key is not given, assume the data belongs to the requested key
-            $data = [
-                $collectionKey => $data,
-            ];
-        }
+//            $data = [
+//                $collectionKey => $data,
+//            ];
+//        }
 
 //        $hydrators = Config::getInstance()->getMapping(Config::KEY_HYDRATOR_MAPPING);
 //        /** @var AbstractHydrator $entityHydrator */

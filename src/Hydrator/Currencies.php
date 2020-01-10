@@ -34,7 +34,7 @@ class Currencies extends AbstractHydrator
         }
 
         foreach ($data['currencies'] as $key => $currency) {
-            $data['currencies'][$key] = (new SimpleHydrator())->hydrate($currency, new CurrencyModel());
+            $data['currencies'][$key] = $this->hydratorManager->build('simple')->hydrate($currency, $this->modelManager->build('currency'));
         }
 
         /** @var CurrenciesModel $currencies */

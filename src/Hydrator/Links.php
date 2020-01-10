@@ -34,7 +34,7 @@ class Links extends AbstractHydrator
 
         foreach ($data['links'] as $key => $link) {
             if (true === is_array($link)) {
-                $data['links'][$key] = (new Link())->hydrate($link, new LinkModel());
+                $data['links'][$key] = $this->hydratorManager->build('Link')->hydrate($link, $this->modelManager->build('Link'));
             }
         }
 

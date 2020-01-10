@@ -102,7 +102,6 @@ class Service
             $hydratorName = $mapperManager->get('ModelHydratorMapper')->getTarget($modelName);
 
             $model = $this->serviceManager->get('modelManager')->get($modelName);
-
             $hydrator = $this->serviceManager->get('hydratorManager')->get($hydratorName);
 
             /** @var \PayNL\Sdk\Transformer\Response $transformer */

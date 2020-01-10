@@ -9,7 +9,9 @@ use PayNL\Sdk\{
     Common\DateTime,
     Exception\InvalidArgumentException,
     Validator\ObjectInstance as ObjectInstanceValidator,
-    Model\Links as LinksModel
+    Model\Links as LinksModel,
+    Hydrator\Manager as HydratorManager,
+    Model\Manager as ModelManager
 };
 use Zend\Hydrator\ClassMethods;
 
@@ -23,15 +25,30 @@ use Zend\Hydrator\ClassMethods;
 abstract class AbstractHydrator extends ClassMethods
 {
     /**
+     * @var HydratorManager
+     */
+    protected $hydratorManager;
+
+    /**
+     * @var ModelManager
+     */
+    protected $modelManager;
+
+    /**
      * AbstractHydrator constructor.
      *
+     * @param HydratorManager $hydratorManager
+     * @param ModelManager $modelManager
      * @param bool $underscoreSeparatedKeys
      * @param bool $methodExistsCheck
      *
      * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
      */
-    public function __construct($underscoreSeparatedKeys = true, $methodExistsCheck = false)
+    public function __construct(HydratorManager $hydratorManager, ModelManager $modelManager, $underscoreSeparatedKeys = true, $methodExistsCheck = false)
     {
+        $this->hydratorManager = $hydratorManager;
+        $this->modelManager = $modelManager;
+
         // nasty construction to prevent unused parameter notification from PHPStan
         $underscoreSeparatedKeys = $underscoreSeparatedKeys === true ? false : $underscoreSeparatedKeys;
         $methodExistsCheck       = $methodExistsCheck === false ?: true;
@@ -47,8 +64,10 @@ abstract class AbstractHydrator extends ClassMethods
      */
     public function hydrate(array $data, $object)
     {
-        if (true === array_key_exists('_links', $data) && false === ($data['_links'] instanceof LinksModel)) {
-            $data['links'] = (new Links())->hydrate($data['_links'], new LinksModel());
+        $linksModel = $this->modelManager->build('Links');
+
+        if (true === array_key_exists('_links', $data) && false === ($data['_links'] instanceof $linksModel)) {
+            $data['links'] = $this->hydratorManager->build('Links')->hydrate($data['_links'], $linksModel);
             unset($data['_links']);
         }
 

@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Common;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 /**
  * Class TotalCollection
  *
  * @package PayNL\Sdk
  */
-class TotalCollection extends Collection
+class TotalCollection extends ArrayCollection
 {
     /**
      * @var integer

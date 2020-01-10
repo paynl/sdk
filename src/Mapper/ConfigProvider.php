@@ -55,8 +55,8 @@ class ConfigProvider implements ProviderInterface
     {
         return [
             'RequestModelMapper' => [
-                'GetAllCurrencies' => 'Currencies',
-                'GetCurrency'                 => 'Currency',
+                'GetAllCurrencies'              => 'Currencies',
+                'GetCurrency'                   => 'Currency',
                 'CreateDirectdebit'             => 'Directdebit',
                 'CreateRecurringDirectdebit'    => 'Directdebit',
                 'DeleteDirectdebit'             => 'Directdebit',

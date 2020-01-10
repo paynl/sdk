@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace PayNL\Sdk\Request\Merchants;
 
 use PayNL\Sdk\{
+    Exception\MissingParamException,
     Request\AbstractRequest,
-    Transformer\TransformerInterface,
-    Transformer\Merchant as MerchantTransformer
+    Request\Parameter\MerchantIdTrait
 };
-use PayNL\Sdk\Request\Parameter\MerchantIdTrait;
 
 /**
  * Class Get
@@ -21,12 +20,17 @@ class Get extends AbstractRequest
     use MerchantIdTrait;
 
     /**
-     * Get constructor.
-     *
-     * @param string $merchantId
+     * @inheritDoc
      */
-    public function __construct(string $merchantId)
+    public function init(): void
     {
+        $merchantId = (string)$this->getParam('merchantId');
+        if (true === empty($merchantId)) {
+            throw new MissingParamException(
+                'missing merchant Id'
+            );
+        }
+
         $this->setMerchantId($merchantId);
     }
 
@@ -44,13 +48,5 @@ class Get extends AbstractRequest
     public function getMethod(): string
     {
         return static::METHOD_GET;
-    }
-
-    /**
-     * @return MerchantTransformer
-     */
-    public function getTransformer(): TransformerInterface
-    {
-        return new MerchantTransformer();
     }
 }

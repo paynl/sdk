@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace PayNL\Sdk\Request\Merchants;
 
 use PayNL\Sdk\{
+    Exception\MissingParamException,
     Request\AbstractRequest,
+    Request\Parameter\MerchantIdTrait,
     Model\Trademark,
     Transformer\TransformerInterface,
     Transformer\Merchant as MerchantTransformer
 };
-use PayNL\Sdk\Request\Parameter\MerchantIdTrait;
 
 /**
  * Class AddTrademark
@@ -22,15 +23,18 @@ class AddTrademark extends AbstractRequest
     use MerchantIdTrait;
 
     /**
-     * AddTrademark constructor.
-     *
-     * @param string $merchantId
-     * @param Trademark $trademark
+     * @inheritDoc
      */
-    public function __construct(string $merchantId, Trademark $trademark)
+    public function init(): void
     {
+        $merchantId = (string)$this->getParam('merchantId');
+        if (true === empty($merchantId)) {
+            throw new MissingParamException(
+                'missing merchant Id'
+            );
+        }
+
         $this->setMerchantId($merchantId);
-        $this->setBody($trademark);
     }
 
     /**
@@ -47,13 +51,5 @@ class AddTrademark extends AbstractRequest
     public function getMethod(): string
     {
         return static::METHOD_POST;
-    }
-
-    /**
-     * @return MerchantTransformer
-     */
-    public function getTransformer(): TransformerInterface
-    {
-        return new MerchantTransformer();
     }
 }

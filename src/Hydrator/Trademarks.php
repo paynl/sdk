@@ -34,8 +34,9 @@ class Trademarks extends AbstractHydrator
         }
 
         foreach ($data['trademarks'] as $key => $trademark) {
-            if (false === ($trademark instanceof TrademarkModel)) {
-                $data['trademarks'][$key] = (new SimpleHydrator())->hydrate($trademark, new TrademarkModel());
+            $trademarkModel = $this->modelManager->build('Trademark');
+            if (false === ($trademark instanceof $trademarkModel)) {
+                $data['trademarks'][$key] = $this->hydratorManager->build('Simple')->hydrate($trademark, $trademarkModel);
             }
         }
 

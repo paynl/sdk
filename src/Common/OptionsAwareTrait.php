@@ -39,7 +39,7 @@ trait OptionsAwareTrait
      *
      * @return bool
      */
-    public function hasOptions(string $name): bool
+    public function hasOption(string $name): bool
     {
         return array_key_exists($name, $this->options);
     }

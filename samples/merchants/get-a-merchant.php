@@ -5,21 +5,17 @@ declare(strict_types=1);
 require_once __DIR__ . '/../init.php';
 
 use PayNL\Sdk\{
-    Api,
-    Config
+    Application\Application,
+    Config\Config
 };
-use PayNL\Sdk\Request\Merchants\Get as GetMerchantRequest;
 
-$authAdapter = getAuthAdapter();
-
-$request = (new GetMerchantRequest(Config::getInstance()->get('merchantId')))
-    ->setDebug((bool)Config::getInstance()->get('debug'))
-;
-
-$response = (new Api($authAdapter))
-    ->handleCall($request)
+$response = Application::init(Config::getInstance()->toArray())
+    ->setRequest('GetMerchant', [
+        'merchantId' => Config::getInstance()->get('merchantId')
+    ])
+    ->run()
 ;
 
 echo '<pre/>' . PHP_EOL .
-    var_export($response, true)
+    var_export($response->getBody(), true)
 ;

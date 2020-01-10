@@ -23,7 +23,7 @@ class Factory implements FactoryInterface
         $requestFormat = $config['request']['format'] ?? RequestInterface::FORMAT_OBJECTS;
 
         /** @var AbstractRequest $request */
-        $request = new $requestedName($container->get('transformerManager'));
+        $request = new $requestedName($container->get('transformerManager'), $options ?: []);
         $request->setFormat($requestFormat);
 
         return $request;

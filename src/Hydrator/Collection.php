@@ -12,7 +12,7 @@ use PayNL\Sdk\Model;
  *
  * @package PayNL\Sdk\Hydrator
  */
-class Collection extends AbstractHydrator
+class _Collection extends AbstractHydrator
 {
 //    /**
 //     * @var string

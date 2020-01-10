@@ -11,6 +11,10 @@ class Response extends AbstractTransformer
     {
         $inputToTransform = $this->getDecodedInput($inputToTransform);
 
+        if (null === $this->getModel()) {
+            return [];
+        }
+
         return $this->hydrator->hydrate($inputToTransform, $this->getModel());
     }
 }

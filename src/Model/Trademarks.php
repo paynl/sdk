@@ -51,4 +51,9 @@ class Trademarks extends ArrayCollection implements ModelInterface
         $this->set($trademark->getId(), $trademark);
         return $this;
     }
+
+    public function getCollectionName(): string
+    {
+        return 'trademarks';
+    }
 }

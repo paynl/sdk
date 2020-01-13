@@ -14,7 +14,7 @@ use PayNL\Sdk\Model\{
  *
  * @package PayNL\Sdk\Hydrator
  */
-class Links extends AbstractHydrator
+class _Links extends AbstractHydrator
 {
     /**
      * @inheritDoc

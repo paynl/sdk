@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Model;
 
+use PayNL\Sdk\Common\DateTime;
 use PayNL\Sdk\Config\ProviderInterface as ConfigProviderInterface;
 use PayNL\Sdk\Common\ManagerFactory;
 

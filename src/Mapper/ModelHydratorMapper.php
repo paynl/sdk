@@ -9,6 +9,6 @@ namespace PayNL\Sdk\Mapper;
  *
  * @package PayNL\Sdk\Mapper
  */
-class ModelHydratorMapper extends AbstractMapper
+class _ModelHydratorMapper extends AbstractMapper
 {
 }

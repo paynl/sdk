@@ -12,7 +12,7 @@ use PayNL\Sdk\Model\Terminals as TerminalsModel;
  *
  * @package PayNL\Sdk\Transformer
  */
-class Terminals extends AbstractTransformer
+class _Terminals extends AbstractTransformer
 {
     /**
      * @inheritDoc

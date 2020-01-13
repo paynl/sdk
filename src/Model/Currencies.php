@@ -54,4 +54,9 @@ class Currencies extends TotalCollection implements ModelInterface
         $this->set($currency->getAbbreviation(), $currency);
         return $this;
     }
+
+    public function getCollectionName(): string
+    {
+        return 'currencies';
+    }
 }

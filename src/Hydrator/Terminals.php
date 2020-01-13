@@ -4,18 +4,14 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Hydrator;
 
-use PayNL\Sdk\{
-    Model\Terminals as TerminalsModel,
-    Model\Terminal as TerminalModel,
-    Hydrator\Simple as SimpleHydrator
-};
+use PayNL\Sdk\Model\Terminals as TerminalsModel;
 
 /**
  * Class Terminals
  *
  * @package PayNL\Sdk\Hydrator
  */
-class Terminals extends AbstractHydrator
+class _Terminals extends AbstractHydrator
 {
     /**
      * @inheritDoc
@@ -35,7 +31,7 @@ class Terminals extends AbstractHydrator
 
         foreach ($data['terminals'] as $key => $terminal) {
             if (true === is_array($terminal)) {
-                $data['terminals'][$key] = (new SimpleHydrator())->hydrate($terminal, new TerminalModel());
+                $data['terminals'][$key] = $this->hydratorManager->get('Simple')->hydrate($terminal, $this->modelManager->build('Terminal'));
             }
         }
 

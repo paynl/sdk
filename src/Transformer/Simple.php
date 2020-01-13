@@ -11,7 +11,7 @@ use stdClass;
  *
  * @package PayNL\Sdk\Transformer
  */
-class Simple extends AbstractTransformer
+class _Simple extends AbstractTransformer
 {
     public function transform($inputToTransform): stdClass
     {

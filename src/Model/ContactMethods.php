@@ -52,4 +52,9 @@ class ContactMethods extends ArrayCollection implements ModelInterface
         $this->set($contactMethod->getType(), $contactMethod);
         return $this;
     }
+
+    public function getCollectionName(): string
+    {
+        return 'contactMethods';
+    }
 }

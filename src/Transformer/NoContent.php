@@ -9,7 +9,7 @@ namespace PayNL\Sdk\Transformer;
  *
  * @package PayNL\Sdk\Transformer
  */
-class NoContent implements TransformerInterface
+class _NoContent implements TransformerInterface
 {
     public function transform($inputToTransform)
     {

@@ -15,7 +15,7 @@ use Exception;
  *
  * @package PayNL\Sdk\Transformer
  */
-class Merchant extends AbstractTransformer
+class _Merchant extends AbstractTransformer
 {
     /**
      * @inheritDoc

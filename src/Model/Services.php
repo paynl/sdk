@@ -54,4 +54,9 @@ class Services extends TotalCollection implements ModelInterface
         $this->set($service->getId(), $service);
         return $this;
     }
+
+    public function getCollectionName(): string
+    {
+        return 'services';
+    }
 }

@@ -12,7 +12,7 @@ use PayNL\Sdk\Common\OptionsAwareTrait;
  *
  * @package PayNL\Sdk\Transformer
  */
-class Collection extends AbstractTransformer implements OptionsAwareInterface
+class _Collection extends AbstractTransformer implements OptionsAwareInterface
 {
     use OptionsAwareTrait;
 

@@ -20,7 +20,7 @@ use PayNL\Sdk\{
  *
  * @package PayNL\Sdk\Hydrator
  */
-class Refund extends AbstractHydrator
+class _Refund extends AbstractHydrator
 {
     /**
      * @inheritDoc

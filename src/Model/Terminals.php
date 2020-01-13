@@ -54,4 +54,9 @@ class Terminals extends TotalCollection implements ModelInterface
         $this->set($terminal->getId(), $terminal);
         return $this;
     }
+
+    public function getCollectionName(): string
+    {
+        return 'terminals';
+    }
 }

@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace PayNL\Sdk\Hydrator;
 
 use DateTime as stdDateTime;
-use PayNL\Sdk\{
-    Common\DateTime,
+use PayNL\Sdk\{Common\DateTime,
+    Common\DebugAwareInterface,
+    Common\DebugAwareTrait,
     Exception\InvalidArgumentException,
     Validator\ObjectInstance as ObjectInstanceValidator,
     Model\Links as LinksModel,
     Hydrator\Manager as HydratorManager,
-    Model\Manager as ModelManager
-};
+    Model\Manager as ModelManager};
 use Zend\Hydrator\ClassMethods;
 
 /**
@@ -22,8 +22,10 @@ use Zend\Hydrator\ClassMethods;
  *
  * @SuppressWarnings(PHPMD.NumberOfChildren)
  */
-abstract class AbstractHydrator extends ClassMethods
+abstract class AbstractHydrator extends ClassMethods implements DebugAwareInterface
 {
+    use DebugAwareTrait;
+
     /**
      * @var HydratorManager
      */
@@ -64,12 +66,12 @@ abstract class AbstractHydrator extends ClassMethods
      */
     public function hydrate(array $data, $object)
     {
-        $linksModel = $this->modelManager->build('Links');
-
-        if (true === array_key_exists('_links', $data) && false === ($data['_links'] instanceof $linksModel)) {
-            $data['links'] = $this->hydratorManager->build('Links')->hydrate($data['_links'], $linksModel);
-            unset($data['_links']);
-        }
+//        $linksModel = $this->modelManager->build('Links');
+//
+//        if (true === array_key_exists('_links', $data) && false === ($data['_links'] instanceof $linksModel)) {
+//            $data['links'] = $this->hydratorManager->build('Links')->hydrate($data['_links'], $linksModel);
+//            unset($data['_links']);
+//        }
 
         $data = array_filter($data, static function ($item) {
             return null !== $item;

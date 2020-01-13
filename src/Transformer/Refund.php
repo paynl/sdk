@@ -12,7 +12,7 @@ use PayNL\Sdk\Hydrator\Refund as RefundHydrator;
  *
  * @package PayNL\Sdk\Transformer
  */
-class Refund extends AbstractTransformer
+class _Refund extends AbstractTransformer
 {
     /**
      * @inheritDoc

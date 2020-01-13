@@ -60,4 +60,9 @@ class Products extends ArrayCollection implements ModelInterface, JsonSerializab
 //    {
 //        return array_values(parent::toArray());
 //    }
+
+    public function getCollectionName(): string
+    {
+        return 'products';
+    }
 }

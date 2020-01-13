@@ -34,4 +34,9 @@ class Errors extends ArrayCollection implements ModelInterface
         }
         return $this;
     }
+
+    public function getCollectionName(): string
+    {
+        return 'errors';
+    }
 }

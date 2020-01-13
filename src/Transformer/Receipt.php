@@ -12,7 +12,7 @@ use PayNL\Sdk\Hydrator\Receipt as ReceiptHydrator;
  *
  * @package PayNL\Sdk\Transformer
  */
-class Receipt extends AbstractTransformer
+class _Receipt extends AbstractTransformer
 {
     /**
      * @inheritDoc

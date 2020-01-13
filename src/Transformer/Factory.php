@@ -20,13 +20,7 @@ class Factory implements FactoryInterface
      */
     public function __invoke(ContainerInterface $container, string $requestedName, array $options = null)
     {
-
-        // need model, need hydrator
-
-        $model = $container->get('modelManager')->get('currencies');
-        $hydrator = $container->get('hydratorManager')->get('currencies');
-
-        $transformer = new $requestedName($model, $hydrator);
+        $transformer = new $requestedName();
 
         if ($transformer instanceof OptionsAwareInterface) {
             $transformer->setOptions($options ?: []);

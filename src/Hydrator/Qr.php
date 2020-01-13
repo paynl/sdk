@@ -15,7 +15,7 @@ use PayNL\Sdk\{
  *
  * @package PayNL\Sdk\Hydrator
  */
-class Qr extends AbstractHydrator
+class _Qr extends AbstractHydrator
 {
     /**
      * @inheritDoc

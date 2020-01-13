@@ -11,7 +11,7 @@ use PayNL\Sdk\Model\Link as LinkModel;
  *
  * @package PayNL\Sdk\Hydrator
  */
-class Link extends AbstractHydrator
+class _Link extends AbstractHydrator
 {
     /**
      * @inheritDoc

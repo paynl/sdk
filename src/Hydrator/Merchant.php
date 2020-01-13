@@ -20,7 +20,7 @@ use PayNL\Sdk\{
  *
  * @package PayNL\Sdk\Hydrator
  */
-class Merchant extends AbstractHydrator
+class _Merchant extends AbstractHydrator
 {
     /**
      * @inheritDoc

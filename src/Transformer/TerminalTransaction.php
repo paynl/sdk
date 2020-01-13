@@ -12,7 +12,7 @@ use PayNL\Sdk\Model\TerminalTransaction as TerminalTransactionModel;
  *
  * @package PayNL\Sdk\Transformer
  */
-class TerminalTransaction extends AbstractTransformer
+class _TerminalTransaction extends AbstractTransformer
 {
     public function transform($inputToTransform): TerminalTransactionModel
     {

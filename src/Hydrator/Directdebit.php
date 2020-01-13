@@ -18,7 +18,7 @@ use PayNL\Sdk\{
  *
  * @package PayNL\Sdk\Hydrator
  */
-class Directdebit extends AbstractHydrator
+class _Directdebit extends AbstractHydrator
 {
     /**
      * @inheritDoc

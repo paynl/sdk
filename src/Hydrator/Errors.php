@@ -11,7 +11,7 @@ use PayNL\Sdk\Model\Errors as ErrorsModel;
  *
  * @package PayNL\Sdk\Hydrator
  */
-class Errors extends AbstractHydrator
+class _Errors extends AbstractHydrator
 {
     /**
      * @inheritDoc

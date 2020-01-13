@@ -51,4 +51,9 @@ class Links extends ArrayCollection implements ModelInterface
         $this->set($link->getRel(), $link);
         return $this;
     }
+
+    public function getCollectionName(): string
+    {
+        return 'links';
+    }
 }

@@ -54,4 +54,9 @@ class PaymentMethods extends TotalCollection implements ModelInterface, JsonSeri
         $this->set($paymentMethod->getId(), $paymentMethod);
         return $this;
     }
+
+    public function getCollectionName(): string
+    {
+        return 'paymentMethods';
+    }
 }

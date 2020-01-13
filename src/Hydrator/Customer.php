@@ -16,7 +16,7 @@ use PayNL\Sdk\{
  *
  * @package PayNL\Sdk\Hydrator
  */
-class Customer extends AbstractHydrator
+class _Customer extends AbstractHydrator
 {
     /**
      * @inheritDoc

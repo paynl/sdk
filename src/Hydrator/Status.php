@@ -11,7 +11,7 @@ use PayNL\Sdk\Model\Status as StatusModel;
  *
  * @package PayNL\Sdk\Hydrator
  */
-class Status extends AbstractHydrator
+class _Status extends AbstractHydrator
 {
     /**
      * @inheritDoc

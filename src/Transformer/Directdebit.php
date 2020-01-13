@@ -21,7 +21,7 @@ use Exception;
  *
  * @package PayNL\Sdk\Transformer
  */
-class Directdebit extends AbstractTransformer
+class _Directdebit extends AbstractTransformer
 {
     /**
      * @inheritDoc

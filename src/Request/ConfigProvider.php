@@ -26,7 +26,7 @@ class ConfigProvider implements ConfigProviderInterface
                 'requestManager' => [
                     'service_manager' => 'requestManager',
                     'config_key'      => 'requests',
-                    'class_method'    => 'getRequests'
+                    'class_method'    => 'getRequestConfig'
                 ],
             ],
         ];
@@ -50,7 +50,7 @@ class ConfigProvider implements ConfigProviderInterface
     /**
      * @return array
      */
-    public function getRequests(): array
+    public function getRequestConfig(): array
     {
         return [
             'initializers' => [

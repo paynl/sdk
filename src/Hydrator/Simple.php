@@ -9,6 +9,6 @@ namespace PayNL\Sdk\Hydrator;
  *
  * @package PayNL\Sdk\Hydrator
  */
-class Simple extends AbstractHydrator
+class _Simple extends AbstractHydrator
 {
 }

@@ -15,7 +15,7 @@ use PayNL\Sdk\{
  *
  * @package PayNL\Sdk\Hydrator
  */
-class PaymentMethods extends AbstractHydrator
+class _PaymentMethods extends AbstractHydrator
 {
     /**
      * @inheritDoc

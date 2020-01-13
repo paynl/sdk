@@ -104,10 +104,8 @@ class Service
 
             $modelName = $mapperManager->get('RequestModelMapper')->getTarget($request);
             if (null !== $modelName) {
-                $hydratorName = $mapperManager->get('ModelHydratorMapper')->getTarget($modelName);
-
                 $model = $this->serviceManager->get('modelManager')->build($modelName);
-                $hydrator = $this->serviceManager->get('hydratorManager')->build($hydratorName);
+                $hydrator = $this->serviceManager->get('hydratorManager')->build('Entity');
 
                 $transformer->setModel($model)
                     ->setHydrator($hydrator)

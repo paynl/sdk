@@ -12,7 +12,7 @@ use PayNL\Sdk\Hydrator\Transaction as TransactionHydrator;
  *
  * @package PayNL\Sdk\Transformer
  */
-class Transaction extends AbstractTransformer
+class _Transaction extends AbstractTransformer
 {
     /**
      * @inheritDoc

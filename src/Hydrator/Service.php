@@ -11,7 +11,7 @@ use PayNL\Sdk\Model\Service as ServiceModel;
  *
  * @package PayNL\Sdk\Hydrator
  */
-class Service extends AbstractHydrator
+class _Service extends AbstractHydrator
 {
     /**
      * @inheritDoc

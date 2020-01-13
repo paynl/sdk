@@ -14,7 +14,7 @@ use PayNL\Sdk\{
  *
  * @package PayNL\Sdk\Transformer
  */
-class Services extends AbstractTransformer
+class _Services extends AbstractTransformer
 {
     /**
      * @inheritDoc

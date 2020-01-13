@@ -21,7 +21,7 @@ use PayNL\Sdk\{
  *
  * @package PayNL\Sdk\Hydrator
  */
-class Mandate extends AbstractHydrator
+class _Mandate extends AbstractHydrator
 {
     /**
      * @inheritDoc

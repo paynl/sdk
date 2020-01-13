@@ -14,7 +14,7 @@ use PayNL\Sdk\{Config,
  *
  * @package PayNL\Sdk\Transformer
  */
-class Currencies extends AbstractTransformer
+class _Currencies extends AbstractTransformer
 {
     /**
      * @inheritDoc

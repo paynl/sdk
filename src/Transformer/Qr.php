@@ -12,7 +12,7 @@ use PayNL\Sdk\Model\Qr as QrModel;
  *
  * @package PayNL\Sdk\Transformer
  */
-class Qr extends AbstractTransformer
+class _Qr extends AbstractTransformer
 {
     /**
      * @inheritDoc

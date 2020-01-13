@@ -20,7 +20,7 @@ class Factory implements FactoryInterface
      */
     public function __invoke(ContainerInterface $container, string $requestedName, array $options = null)
     {
-        $transformer = new $requestedName();
+        $transformer = new $requestedName($container);
 
         if ($transformer instanceof OptionsAwareInterface) {
             $transformer->setOptions($options ?: []);

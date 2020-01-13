@@ -362,11 +362,12 @@ abstract class AbstractRequest implements RequestInterface, DebugAwareInterface,
 
             $rawBody = $guzzleResponse->getBody()->getContents();
 
-            $body = $rawBody;
             $statusCode = $guzzleResponse->getStatusCode();
+            $body = $rawBody;
         } catch (RequestException $re) {
-            $rawBody = $errorMessages = '';
-            $body = $re->getMessage();
+            $errorMessages = '';
+            $rawBody = $re->getMessage();
+
             if (true === method_exists($re, 'getResponse') && null !== $re->getResponse()) {
                 $guzzleExceptionBody = $re->getResponse()->getBody();
                 $size = $guzzleExceptionBody->isSeekable() === true ? (int)$guzzleExceptionBody->getSize() : 0;
@@ -379,33 +380,14 @@ abstract class AbstractRequest implements RequestInterface, DebugAwareInterface,
                 }
 
                 $rawBody = trim($re->getResponse()->getReasonPhrase() . ': ' . $errorMessages, ': ');
-
-                $body = $rawBody;
-
-                if ('' !== $errorMessages && static::FORMAT_OBJECTS === $this->getFormat()) {
-                    $transformer = $this->transformerManager->get('errors');
-                    $body = $transformer->transform($errorMessages);
-                }
             }
 
             $statusCode = $re->getCode();
+            $body = $this->getErrorsString((int)$statusCode, $rawBody);
         } catch (GuzzleException | ExceptionInterface $e) {
             $statusCode = $e->getCode() ?? 500;
-            $rawBody = $e->getMessage();
-            $body = 'Error: ' . $e->getMessage() . ' (' . $statusCode . ')';
-
-            if (static::FORMAT_OBJECTS === $this->getFormat()) {
-                die('adjust');
-                $transformer = $this->transformerManager->get('errors');
-                $body = $transformer->transform((new JsonEncoder())->encode([
-                    'errors' => (object)[
-                        'general' => (object)[
-                            'code'    => $statusCode,
-                            'message' => $rawBody,
-                        ]
-                    ]
-                ], JsonEncoder::FORMAT));
-            }
+            $rawBody = 'Error: ' . $e->getMessage() . ' (' . $statusCode . ')';
+            $body = $this->getErrorsString((int)$statusCode, $rawBody);
         }
 
         $response->setStatusCode($statusCode)
@@ -416,5 +398,17 @@ abstract class AbstractRequest implements RequestInterface, DebugAwareInterface,
         if (true === $this->isDebug()) {
             $this->dumpDebugInfo('Response: ', $response);
         }
+    }
+
+    private function getErrorsString(int $statusCode, string $rawBody): string
+    {
+        return (new JsonEncoder())->encode([
+           'errors' => (object)[
+               'general' => (object)[
+                   'code'    => $statusCode,
+                   'message' => $rawBody,
+               ]
+           ]
+        ], JsonEncoder::FORMAT);
     }
 }

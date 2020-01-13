@@ -66,7 +66,7 @@ class ConfigProvider implements ProviderInterface
                 'DeleteTrademark'               => 'Merchant',
                 'GetMerchant'                   => 'Merchant',
 //                'ConfirmTerminalTransaction'    => '',
-//                'GetReceipt'                    => '',
+                'GetReceipt'                    => 'Receipt',
                 'GetTerminals'                  => 'Terminals',
 //                'GetTerminalTransactionStatus'  => '',
 //                'PayTransaction'                => '',

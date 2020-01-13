@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace PayNL\Sdk\Request\Pin;
 
 use PayNL\Sdk\{
+    Exception\MissingParamException,
     Request\AbstractRequest,
-    Transformer\TransformerInterface,
-    Transformer\Receipt as ReceiptTransformer
+    Request\Parameter\TerminalTransactionIdTrait
 };
-use PayNL\Sdk\Request\Parameter\TerminalTransactionIdTrait;
 
 /**
  * Class Get
@@ -21,12 +20,17 @@ class GetReceipt extends AbstractRequest
     use TerminalTransactionIdTrait;
 
     /**
-     * GetReceipt constructor.
-     *
-     * @param string $terminalTransactionId
+     * @inheritDoc
      */
-    public function __construct(string $terminalTransactionId)
+    public function init(): void
     {
+        $terminalTransactionId = (string)$this->getParam('terminalTransactionId');
+        if (true === empty($terminalTransactionId)) {
+            throw new MissingParamException(
+                'Missing terminal transaction id'
+            );
+        }
+
         $this->setTerminalTransactionId($terminalTransactionId);
     }
 
@@ -44,13 +48,5 @@ class GetReceipt extends AbstractRequest
     public function getUri(): string
     {
         return "pin/{$this->getTerminalTransactionId()}/receipt";
-    }
-
-    /**
-     * @return ReceiptTransformer
-     */
-    public function getTransformer(): TransformerInterface
-    {
-        return new ReceiptTransformer();
     }
 }

@@ -11,6 +11,7 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Exception\NotEncodableValueException;
 use Zend\Hydrator\HydratorAwareInterface;
 use Zend\Hydrator\HydratorAwareTrait;
+use PayNL\Sdk\Service\Manager as ServiceManager;
 
 /**
  * Class AbstractTransformer
@@ -22,6 +23,16 @@ use Zend\Hydrator\HydratorAwareTrait;
 abstract class AbstractTransformer implements TransformerInterface, ModelAwareInterface, HydratorAwareInterface
 {
     use ModelAwareTrait, HydratorAwareTrait;
+
+    /**
+     * @var ServiceManager
+     */
+    protected $serviceManager;
+
+    public function __construct(ServiceManager $serviceManager)
+    {
+        $this->serviceManager = $serviceManager;
+    }
 
     /**
      * @param string $jsonEncodedString

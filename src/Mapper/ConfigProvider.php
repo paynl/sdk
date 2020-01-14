@@ -41,11 +41,9 @@ class ConfigProvider implements ProviderInterface
         return [
             'aliases' => [
                 'RequestModelMapper' => RequestModelMapper::class,
-                'ModelHydratorMapper' => ModelHydratorMapper::class,
             ],
             'factories' => [
                 RequestModelMapper::class => Factory::class,
-                ModelHydratorMapper::class => Factory::class,
             ],
             'mapping' => $this->getMap(),
         ];

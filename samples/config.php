@@ -7,7 +7,7 @@ use PayNL\Sdk\Request\RequestInterface;
 use PayNL\Sdk\Response\ResponseInterface;
 
 return [
-
+// TODO: put to env file?
     'api' => [
         'url'  => 'https://rest.idefix.mike.dev.pay.nl/',
         'version'  => 1,

@@ -32,12 +32,4 @@ class GetAll extends AbstractRequest
     {
         return static::METHOD_GET;
     }
-
-    /**
-     * @return CollectionTransformer
-     */
-//    public function getTransformer(): TransformerInterface
-//    {
-//        return new CollectionTransformer('currencies');
-//    }
 }

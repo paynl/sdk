@@ -185,7 +185,7 @@ class Manager implements ContainerInterface
     /**
      * @param array $aliases
      *
-     * @throws stdException
+     * @throws Exception\CyclicAliasException
      *
      * @return void
      */
@@ -201,7 +201,12 @@ class Manager implements ContainerInterface
 
             while (true === isset($this->aliases[$name])) {
                 if (true === isset($visited[$name])) {
-                    throw new stdException('todo bla bla bla');
+                    throw new Exception\CyclicAliasException(
+                        sprintf(
+                            'Cycle(s) were detected in provided aliases for %s',
+                            $name
+                        )
+                    );
                 }
 
                 $visited[$name] = true;
@@ -388,11 +393,11 @@ class Manager implements ContainerInterface
     /**
      * @param string $name
      *
-     * @throws stdException
+     * @throws Exception\ServiceNotFoundException
      *
-     * @return mixed|null
+     * @return callable
      */
-    public function getFactory(string $name)
+    public function getFactory(string $name): callable
     {
         $factory = $this->factories[$name] ?? null;
 
@@ -409,7 +414,7 @@ class Manager implements ContainerInterface
             return $factory;
         }
 
-        throw new stdException(
+        throw new Exception\ServiceNotFoundException(
             sprintf(
                 'Unable to resolve service "%s" to a factory',
                 $name
@@ -460,6 +465,11 @@ class Manager implements ContainerInterface
         $this->configure(['initializers' => [$initializer]]);
     }
 
+    /**
+     * @param array $config
+     *
+     * @return void
+     */
     protected function validateOverrides(array $config): void
     {
         if (true === $this->allowOverride || false === $this->configured) {
@@ -483,7 +493,15 @@ class Manager implements ContainerInterface
         }
     }
 
-    protected function validateOverrideSet(array $services, $type): void
+    /**
+     * @param array $services
+     * @param string $type
+     *
+     * @throws Exception\ContainerModificationsNotAllowedException
+     *
+     * @return void
+     */
+    protected function validateOverrideSet(array $services, string $type): void
     {
         $detected = [];
         foreach ($services as $service) {

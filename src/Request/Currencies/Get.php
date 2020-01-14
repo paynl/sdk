@@ -68,12 +68,4 @@ class Get extends AbstractRequest
     {
         return static::METHOD_GET;
     }
-
-//    /**
-//     * @return CurrencyTransformer
-//     */
-//    public function getTransformer(): TransformerInterface
-//    {
-//        return new CurrencyTransformer();
-//    }
 }

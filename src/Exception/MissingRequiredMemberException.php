@@ -9,6 +9,6 @@ namespace PayNL\Sdk\Exception;
  *
  * @package PayNL\Sdk\Exception
  */
-class MissingRequiredMemberException extends RuntimeException
+class MissingRequiredMemberException extends RuntimeException implements ExceptionInterface
 {
 }

@@ -15,7 +15,6 @@ class Response extends AbstractTransformer
     {
         $inputToTransform = $this->getDecodedInput($inputToTransform);
 
-        $model = $this->getModel();
         if (true === array_key_exists('errors', $inputToTransform)) {
             $this->setModel($this->serviceManager->get('modelManager')->build('Errors'));
         }

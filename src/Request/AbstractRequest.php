@@ -78,9 +78,8 @@ abstract class AbstractRequest implements RequestInterface, DebugAwareInterface,
      */
     protected $params = [];
 
-    public function __construct(TransformerManager $transformerManager, array $options = [])
+    public function __construct(array $options = [])
     {
-        $this->transformerManager = $transformerManager;
         $this->setOptions($options);
 
         if ($this->hasOption('params')) {

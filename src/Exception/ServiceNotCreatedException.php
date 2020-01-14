@@ -11,6 +11,6 @@ use Psr\Container\ContainerExceptionInterface;
  *
  * @package PayNL\Sdk\Exception
  */
-class ServiceNotCreatedException extends RuntimeException implements ContainerExceptionInterface
+class ServiceNotCreatedException extends RuntimeException implements ContainerExceptionInterface, ExceptionInterface
 {
 }

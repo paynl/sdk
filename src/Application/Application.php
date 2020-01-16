@@ -64,9 +64,9 @@ class Application implements DebugAwareInterface
      */
     public static function init($configuration = []): self
     {
-        if (true === is_array($configuration)) {
-            $configuration = new Config($configuration);
-        } elseif (false === ($configuration instanceof Config)) {
+        if (true === ($configuration instanceof Config)) {
+            $configuration = $configuration->toArray();
+        } elseif (false === is_array($configuration)) {
             throw new InvalidArgumentException(
                 sprintf(
                     '%s expects given configuration to be an array or an instance of ' .
@@ -78,11 +78,11 @@ class Application implements DebugAwareInterface
             );
         }
 
-        $smConfig = new ServiceManagerConfig($configuration->toArray()['service_manager'] ?? []);
+        $smConfig = new ServiceManagerConfig($configuration['service_manager'] ?? []);
 
         $serviceManager = new ServiceManager();
         $smConfig->configureServiceManager($serviceManager);
-        $serviceManager->setService('ApplicationConfig', $configuration);
+        $serviceManager->setService('ApplicationConfig', new Config($configuration));
 
         // load components
         $serviceManager->get('serviceLoader')->load();

@@ -6,8 +6,6 @@ namespace PayNL\Sdk\Request\Transactions;
 
 use PayNL\Sdk\Model\Transaction;
 use PayNL\Sdk\Request\AbstractRequest;
-use PayNL\Sdk\Transformer\Transaction as TransactionTransformer;
-use PayNL\Sdk\Transformer\TransformerInterface;
 
 /**
  * Class Create
@@ -16,16 +14,6 @@ use PayNL\Sdk\Transformer\TransformerInterface;
  */
 class Create extends AbstractRequest
 {
-    /**
-     * Create constructor.
-     *
-     * @param Transaction $transaction
-     */
-    public function __construct(Transaction $transaction)
-    {
-        $this->setBody($transaction);
-    }
-
     /**
      * @inheritDoc
      */
@@ -40,13 +28,5 @@ class Create extends AbstractRequest
     public function getUri(): string
     {
         return 'transactions';
-    }
-
-    /**
-     * @return TransactionTransformer
-     */
-    public function getTransformer(): TransformerInterface
-    {
-        return new TransactionTransformer();
     }
 }

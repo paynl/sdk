@@ -33,17 +33,10 @@ class Config implements Countable, Iterator, ArrayAccess
                 );
             }
 
-//            if (true === is_array($value)) {
-//                $value = new self($value);
-//            }
-//            $this->data[$key] = $value;
-
             if (true === is_array($value)) {
-                $this->data[$key] = new self($value);
-            } else {
-                $this->data[$key] = $value;
+                $value = new self($value);
             }
-
+            $this->data[$key] = $value;
         }
     }
 
@@ -56,12 +49,9 @@ class Config implements Countable, Iterator, ArrayAccess
 
         foreach ($this->data as $key => $value) {
             if ($value instanceof self) {
-                $data[$key] = clone $value;
-//                $value = clone $value;
-            } else {
-                $data[$key] = $value;
+                $value = clone $value;
             }
-//            $data[$key] = $value;
+            $data[$key] = $value;
         }
         
         $this->data = $data;
@@ -148,19 +138,14 @@ class Config implements Countable, Iterator, ArrayAccess
     {
         $array = [];
         $data = $this->data;
-//        $dataArray = [];
 
         foreach ($data as $key => $value) {
             if ($value instanceof self) {
-                $array[$key] = $value->toArray();
-//                $value = $value->toArray();
-            } else {
-                $array[$key] = $value;
+                $value = $value->toArray();
             }
-//            $dataArray[$key] = $value;
+            $array[$key] = $value;
         }
 
-//        return $dataArray;
         return $array;
     }
 
@@ -269,43 +254,14 @@ class Config implements Countable, Iterator, ArrayAccess
      */
     public function merge(Config $mergeConfig): self
     {
-        /**
-         * @var Config $value
-         */
         foreach ($mergeConfig as $key => $value) {
-            if (true === array_key_exists($key, $this->data)) {
-                if (true === is_int($key)) {
-                    $this->data[] = $value;
-                } elseif ($value instanceof self && $this->data[$key] instanceof self) {
-                    $this->data[$key]->merge($value);
-                } else {
-                    if ($value instanceof self) {
-                        $this->data[$key] = new self($value->toArray());
-                    } else {
-                        $this->data[$key] = $value;
-                    }
-                }
-            } else {
-                if ($value instanceof self) {
-                    $this->data[$key] = new self($value->toArray());
-                } else {
-                    $this->data[$key] = $value;
-                }
+            $currentValue = $this->get($key);
+            if ($value instanceof self && $currentValue instanceof self) {
+                $value = $currentValue->merge($value);
             }
+            $this->set($key, $value);
         }
 
         return $this;
-
-
-
-//        foreach ($config as $key => $value) {
-//            $currentValue = $this->get($key);
-//            if ($value instanceof self && $currentValue instanceof self) {
-//                $value = $currentValue->merge($value);
-//            }
-//            $this->set($key, $value);
-//        }
-//
-//        return $this;
     }
 }

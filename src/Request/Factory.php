@@ -19,12 +19,18 @@ class Factory implements FactoryInterface
      */
     public function __invoke(ContainerInterface $container, string $requestedName, array $options = null)
     {
+        if (null === $options) {
+            $options = [];
+        }
+
         $config = $container->get('config');
-        $requestFormat = $config['request']['format'] ?? RequestInterface::FORMAT_OBJECTS;
+        $options['format'] = $config['request']['format'] ?? RequestInterface::FORMAT_OBJECTS;
 
         /** @var AbstractRequest $request */
-        $request = new $requestedName($options ?: []);
-        $request->setFormat($requestFormat);
+        $request = new $requestedName(
+            $container->get('validatorManager')->get('RequiredMembers'),
+            $options
+        );
 
         return $request;
     }

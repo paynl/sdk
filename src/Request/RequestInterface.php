@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace PayNL\Sdk\Request;
 
 use PayNL\Sdk\Response\Response;
-use PayNL\Sdk\Transformer\TransformerInterface;
 
 /**
  * Interface RequestInterface
@@ -58,10 +57,4 @@ interface RequestInterface
      * @return void
      */
     public function execute(Response $response): void;
-
-    /**
-     *
-     * @return TransformerInterface
-     */
-//    public function getTransformer(): TransformerInterface;
 }

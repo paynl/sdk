@@ -29,6 +29,9 @@ class ConfigProvider implements ConfigProviderInterface
                     'class_method'    => 'getRequestConfig'
                 ],
             ],
+            'request' => [
+                'format' => RequestInterface::FORMAT_OBJECTS,
+            ],
         ];
     }
 

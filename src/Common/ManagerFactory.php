@@ -10,6 +10,8 @@ use PayNL\Sdk\Model\Manager as ModelManager;
 use PayNL\Sdk\AuthAdapter\Manager as AuthAdapterManager;
 use PayNL\Sdk\Transformer\Manager as TransformerManager;
 use PayNL\Sdk\Mapper\Manager as MapperManager;
+use PayNL\Sdk\Validator\Manager as ValidatorManager;
+//use PayNL\Sdk\Filter\Manager as FilterManager;
 use Psr\Container\ContainerInterface;
 use PayNL\Sdk\Service\Config as ServiceConfig;
 
@@ -36,6 +38,12 @@ class ManagerFactory implements FactoryInterface
             case MapperManager::class:
                 $configKey = 'mappers';
                 break;
+            case ValidatorManager::class:
+                $configKey = 'validators';
+                break;
+//            case FilterManager::class:
+//                $configKey = 'filters';
+//                break;
             default:
                 throw new \Exception('Manager not supported');
         }

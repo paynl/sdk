@@ -20,6 +20,10 @@ class ConfigProvider implements ConfigProviderInterface
     {
         return [
             'service_manager' => $this->getDependencyConfig(),
+            'api' => [
+                'url'     => '',
+                'version' => 1,
+            ],
         ];
     }
 

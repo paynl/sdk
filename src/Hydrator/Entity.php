@@ -37,14 +37,6 @@ class Entity extends AbstractHydrator
         }
 
         $properties = $ref->getProperties();
-//        if (0 === count($properties)) {
-//            throw new LogicException(
-//                sprintf(
-//                    'Object "%s" has no properties',
-//                    get_class($model)
-//                )
-//            );
-//        }
 
         $propertyInfo = [];
         /** @var ReflectionProperty $property */
@@ -77,7 +69,7 @@ class Entity extends AbstractHydrator
 
         $propertyInfo = $this->load($object);
         if (true === $this->isDebug()) {
-//                $this->dumpDebugInfo('Property info of ' . get_class($object), $propertyInfo);
+//            $this->dumpDebugInfo('Property info of ' . get_class($object), $propertyInfo);
         }
 
         $scalarTypes = [

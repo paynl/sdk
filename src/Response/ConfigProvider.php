@@ -20,6 +20,9 @@ class ConfigProvider implements ConfigProviderInterface
     {
         return [
             'service_manager' => $this->getDependencyConfig(),
+            'response' => [
+                'format' => ResponseInterface::FORMAT_OBJECTS,
+            ],
         ];
     }
 

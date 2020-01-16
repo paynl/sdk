@@ -7,6 +7,7 @@ namespace PayNL\Sdk\Application;
 use PayNL\Sdk\{Api\Service as ApiService,
     Common\DebugAwareInterface,
     Common\DebugAwareTrait,
+    Config\Config,
     Exception\InvalidArgumentException,
     Hydrator\AbstractHydrator,
     Model\ModelInterface,
@@ -57,18 +58,33 @@ class Application implements DebugAwareInterface
     }
 
     /**
-     * @param array $configuration
+     * @param array|Config $configuration
      *
      * @return Application
      */
-    public static function init(array $configuration = []): self
+    public static function init($configuration = []): self
     {
-        $smConfig = new ServiceManagerConfig($configuration);
+        if (true === is_array($configuration)) {
+            $configuration = new Config($configuration);
+        } elseif (false === ($configuration instanceof Config)) {
+            throw new InvalidArgumentException(
+                sprintf(
+                    '%s expects given configuration to be an array or an instance of ' .
+                    '%s, %s given',
+                    __METHOD__,
+                    Config::class,
+                    is_object($configuration) ? get_class($configuration) : gettype($configuration)
+                )
+            );
+        }
+
+        $smConfig = new ServiceManagerConfig($configuration->toArray()['service_manager'] ?? []);
 
         $serviceManager = new ServiceManager();
         $smConfig->configureServiceManager($serviceManager);
         $serviceManager->setService('ApplicationConfig', $configuration);
 
+        // load components
         $serviceManager->get('serviceLoader')->load();
 
         return $serviceManager->get(static::class)->bootstrap();
@@ -102,11 +118,8 @@ class Application implements DebugAwareInterface
                 $modelType = current(array_keys($body));
                 /** @var ModelInterface $model */
                 $model = $this->getServiceManager()->get('modelManager')->build($modelType);
-                $hydratorName = $this->getServiceManager()->get('mapperManager')
-                    ->get('ModelHydratorMapper')
-                    ->getTarget($modelType);
                 /** @var AbstractHydrator $hydrator */
-                $hydrator = $this->getServiceManager()->get('hydratorManager')->build($hydratorName);
+                $hydrator = $this->getServiceManager()->get('hydratorManager')->build('Entity');
                 $body = $hydrator->hydrate($body[$modelType], $model);
             } elseif (false === is_string($body) && false === ($body instanceof ModelInterface)) {
                 throw new InvalidArgumentException(
@@ -143,6 +156,7 @@ class Application implements DebugAwareInterface
 
     public function run(): Response
     {
+//        dump($this->getServiceManager());die;
         $this->apiService->setRequest($this->request)
             ->setResponse($this->response)
             ->handle();

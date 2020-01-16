@@ -18,7 +18,7 @@ class ConfigProvider implements ProviderInterface
                 'mapperManager' => [
                     'service_manager' => 'mapperManager',
                     'config_key'    => 'mappers',
-                    'class_method'  => 'getMappers',
+                    'class_method'  => 'getMapperConfig',
                 ],
             ],
         ];
@@ -36,7 +36,7 @@ class ConfigProvider implements ProviderInterface
         ];
     }
 
-    public function getMappers(): array
+    public function getMapperConfig(): array
     {
         return [
             'aliases' => [

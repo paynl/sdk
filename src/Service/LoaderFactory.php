@@ -4,19 +4,33 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Service;
 
-
 use PayNL\Sdk\Application;
 use PayNL\Sdk\Common\DebugAwareInitializer;
-use PayNL\Sdk\Common\ManagerMappingInitializer;
 use PayNL\Sdk\Service\Manager as ServiceManager;
 use PayNL\Sdk\Service\Loader as ServiceLoader;
+use PayNL\Sdk\Service\Config as ServiceConfig;
+use PayNL\Sdk\Config\Config;
 use PayNL\Sdk\Exception;
 use Psr\Container\ContainerInterface;
 use PayNL\Sdk\Common\FactoryInterface;
 use PayNL\Sdk\Config\Factory as ConfigFactory;
 
+/**
+ * Class LoaderFactory
+ *
+ * @package PayNL\Sdk\Service
+ */
 class LoaderFactory implements FactoryInterface
 {
+    /*
+     * Error message constant definitions
+     */
+    private const MISSING_KEY_ERROR = 'Invalid service loader options detected, %s config must contain %s key.';
+    private const VALUE_TYPE_ERROR  = 'Invalid service loader options detected, %s must be a string, %s given.';
+
+    /**
+     * @var array
+     */
     protected $defaultServiceConfig = [
         'aliases' => [
             'Application' => Application\Application::class,
@@ -35,19 +49,29 @@ class LoaderFactory implements FactoryInterface
         ],
     ];
 
-    public function __invoke(ContainerInterface $container, string $requestedName, array $options = null)
+    /**
+     * @inheritDoc
+     *
+     * @return ServiceLoader
+     */
+    public function __invoke(ContainerInterface $container, string $requestedName, array $options = null): ServiceLoader
     {
+        /**
+         * @var ServiceManager $container
+         * @var Config $configuration
+         */
         $configuration = $container->get('configLoader')->getMergedConfig();
 
-        /** @var ServiceManager $container */
+//        $serviceLoader = $container->has('serviceLoaderInterface') ? $container->get('serviceLoaderInterface') : new ServiceLoader($container);
+
         $serviceLoader = new ServiceLoader($container);
 
-        $serviceLoader->setDefaultServiceConfig($this->defaultServiceConfig);
+        $serviceLoader->setDefaultServiceConfig(new ServiceConfig($this->defaultServiceConfig));
 
         $serviceLoader->addServiceManager($container, 'service_manager', 'getServiceConfig');
 
-        if (true === isset($configuration['service_loader_options'])) {
-            $this->injectServiceLoaderOptions($configuration['service_loader_options'], $serviceLoader);
+        if (true === $configuration->has('service_loader_options')) {
+            $this->injectServiceLoaderOptions($configuration->get('service_loader_options'), $serviceLoader);
         }
 
         $serviceLoader->preLoad();
@@ -56,7 +80,7 @@ class LoaderFactory implements FactoryInterface
     }
 
     /**
-     * @param array $options
+     * @param Config $options
      * @param ServiceLoader $serviceLoader
      *
      * @throws Exception\ServiceNotCreatedException
@@ -65,24 +89,138 @@ class LoaderFactory implements FactoryInterface
      */
     protected function injectServiceLoaderOptions($options, ServiceLoader $serviceLoader): void
     {
-        if (false === is_array($options)) {
+        if (false === ($options instanceof Config)) {
             throw new Exception\ServiceNotCreatedException(
                 sprintf(
-                    'The given options to %s must be an array, %s given',
+                    'The given options to %s must be an array or an instance of %s, %s given',
                     __METHOD__,
+                    Config::class,
                     (is_object($options) ? get_class($options) : gettype($options))
                 )
             );
         }
 
-        foreach ($options as $key => $serviceManager) {
-            // TODO: validate
+        /**
+         * @var Config $newServiceManager
+         */
+        foreach ($options as $key => $newServiceManager) {
+            $this->validatePluginManagerOptions($newServiceManager, $key);
 
             $serviceLoader->addServiceManager(
-                $serviceManager['service_manager'],
-                $serviceManager['config_key'],
-                $serviceManager['class_method']
+                $newServiceManager->get('service_manager'),
+                $newServiceManager->get('config_key'),
+                $newServiceManager->get('class_method')
             );
         }
+    }
+
+    /**
+     * @param Config $options
+     * @param string $name
+     *
+     * @return void
+     */
+    private function validatePluginManagerOptions($options, $name): void
+    {
+        if (false === ($options instanceof Config)) {
+            throw new Exception\ServiceNotCreatedException(
+                sprintf(
+                    'Plugin manager %s config is invalid, must be an instance of %s, got %s',
+                    $name,
+                    Config::class,
+                    is_object($options) ? get_class($options) : gettype($options)
+                )
+            );
+        }
+
+        $mandatoryManagerConfigKeys = [
+            'service_manager',
+            'config_key',
+            'class_method',
+        ];
+
+        /** @var Config $options */
+        foreach ($mandatoryManagerConfigKeys as $managerConfigKey) {
+            if (false === $options->has($managerConfigKey)) {
+                throw new Exception\ServiceNotCreatedException(
+                    sprintf(
+                        self::MISSING_KEY_ERROR,
+                        $name,
+                        $managerConfigKey
+                    )
+                );
+            }
+
+            if (false === is_string($options->get($managerConfigKey))) {
+                throw new Exception\ServiceNotCreatedException(
+                    sprintf(
+                        self::VALUE_TYPE_ERROR,
+                        $managerConfigKey,
+                        gettype($options->get($managerConfigKey))
+                    )
+                );
+            }
+        }
+
+
+//        if (false === $options->has('service_manager')) {
+//            throw new Exception\ServiceNotCreatedException(
+//                sprintf(
+//                    self::MISSING_KEY_ERROR,
+//                    $name,
+//                    'service_manager'
+//                )
+//            );
+//        }
+//
+//        if (false === is_string($options->get('service_manager'))) {
+//            throw new Exception\ServiceNotCreatedException(
+//                sprintf(
+//                    self::VALUE_TYPE_ERROR,
+//                    'service_manager',
+//                    gettype($options->get('service_manager'))
+//                )
+//            );
+//        }
+//
+//        if (false === $options->has('config_key')) {
+//            throw new Exception\ServiceNotCreatedException(
+//                sprintf(
+//                    self::MISSING_KEY_ERROR,
+//                    $name,
+//                    'config_key'
+//                )
+//            );
+//        }
+//
+//        if (false === is_string($options->get('config_key'))) {
+//            throw new Exception\ServiceNotCreatedException(
+//                sprintf(
+//                    self::VALUE_TYPE_ERROR,
+//                    'service_manager',
+//                    gettype($options->get('config_key'))
+//                )
+//            );
+//        }
+//
+//        if (false === $options->has('class_method')) {
+//            throw new Exception\ServiceNotCreatedException(
+//                sprintf(
+//                    self::MISSING_KEY_ERROR,
+//                    $name,
+//                    'class_method'
+//                )
+//            );
+//        }
+//
+//        if (false === is_string($options->get('class_method'))) {
+//            throw new Exception\ServiceNotCreatedException(
+//                sprintf(
+//                    self::VALUE_TYPE_ERROR,
+//                    'service_manager',
+//                    gettype($options->get('class_method'))
+//                )
+//            );
+//        }
     }
 }

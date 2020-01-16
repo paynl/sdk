@@ -10,17 +10,22 @@ use PayNL\GuzzleHttp\{
     Exception\RequestException,
     Exception\GuzzleException
 };
-use PayNL\Sdk\{Common\DebugAwareInterface,
+use PayNL\Sdk\{
+    Common\DebugAwareInterface,
     Common\DebugAwareTrait,
     Common\OptionsAwareInterface,
     Common\OptionsAwareTrait,
+    Exception\EmptyRequiredMemberException,
     Exception\ExceptionInterface,
+    Exception\MissingRequiredMemberException,
     Exception\RuntimeException,
+    Model\ModelInterface,
     Response\Response,
     Exception\InvalidArgumentException,
     Filter\FilterInterface,
-    Transformer\Manager as TransformerManager,
-    Validator\ObjectInstance};
+    Validator\ObjectInstance,
+    Validator\RequiredMembers as RequiredMemberValidator
+};
 use Symfony\Component\Serializer\Encoder\{
     JsonEncoder,
     XmlEncoder
@@ -69,17 +74,19 @@ abstract class AbstractRequest implements RequestInterface, DebugAwareInterface,
     protected $filters = [];
 
     /**
-     * @var TransformerManager
+     * @var RequiredMemberValidator
      */
-    protected $transformerManager;
+    protected $requiredMembersValidator;
 
     /**
      * @var array
      */
     protected $params = [];
 
-    public function __construct(array $options = [])
+    public function __construct(RequiredMemberValidator $requiredMembersValidator, array $options = [])
     {
+        $this->requiredMembersValidator = $requiredMembersValidator;
+
         $this->setOptions($options);
 
         if ($this->hasOption('params')) {
@@ -88,6 +95,10 @@ abstract class AbstractRequest implements RequestInterface, DebugAwareInterface,
 
         if ($this->hasOption('body') && null !== $this->getOption('body')) {
             $this->setBody($this->getOption('body'));
+        }
+
+        if ($this->hasOption('format') && true === is_string($this->getOption('format'))) {
+            $this->setFormat($this->getOption('format'));
         }
 
         $this->init();
@@ -202,7 +213,11 @@ abstract class AbstractRequest implements RequestInterface, DebugAwareInterface,
     public function getBody(): string
     {
         if (false === is_string($this->body)) {
-            return $this->encodeBody($this->body);
+            /** @var ModelInterface $body */
+            $body = $this->body;
+            // validate the given body (model) for the required members
+            $this->validateBody($body);
+            return $this->encodeBody($body);
         }
         return $this->body;
     }
@@ -399,6 +414,12 @@ abstract class AbstractRequest implements RequestInterface, DebugAwareInterface,
         }
     }
 
+    /**
+     * @param int $statusCode
+     * @param string $rawBody
+     *
+     * @return string
+     */
     private function getErrorsString(int $statusCode, string $rawBody): string
     {
         return (new JsonEncoder())->encode([
@@ -409,5 +430,34 @@ abstract class AbstractRequest implements RequestInterface, DebugAwareInterface,
                ]
            ]
         ], JsonEncoder::FORMAT);
+    }
+
+    protected function validateBody(ModelInterface $body): void
+    {
+        $validator = $this->requiredMembersValidator;
+
+        $isValid = $validator->isValid($this);
+        if (false === $isValid) {
+            // create exception stack
+            $c = 0;
+            $prev = null;
+            foreach ($validator->getMessages() as $type => $message) {
+                $exceptionClass = MissingRequiredMemberException::class;
+                if (true === in_array($type, [RequiredMemberValidator::MSG_EMPTY_MEMBER, RequiredMemberValidator::MSG_EMPTY_MEMBERS], true)) {
+                    $exceptionClass = EmptyRequiredMemberException::class;
+                }
+                $e = new $exceptionClass($message, 500, ($c++ !== 0 ? $prev : null));
+                $prev = $e;
+            }
+
+            throw new RuntimeException(
+                sprintf(
+                    'Object "%s" is not valid',
+                    __CLASS__
+                ),
+                500,
+                $prev
+            );
+        }
     }
 }

@@ -2,27 +2,23 @@
 
 declare(strict_types=1);
 
-use PayNL\Sdk\Config;
-use PayNL\Sdk\Request\RequestInterface;
-use PayNL\Sdk\Response\ResponseInterface;
-
 return [
 // TODO: put to env file?
     'api' => [
         'url'  => 'https://rest.idefix.mike.dev.pay.nl/',
-        'version'  => 1,
+//        'version'  => 1,
     ],
     'authentication' => [
-        'type'     => 'Basic',
+//        'type'     => 'Basic',
         'username' => 'token',
         'password' => '68babb1a525f6116b387231af9d2e4413a6c8f61',
     ],
-    'request' => [
-        'format' => RequestInterface::FORMAT_OBJECTS
-    ],
-    'response' => [
-        'format' => ResponseInterface::FORMAT_OBJECTS
-    ],
+//    'request' => [
+//        'format' => 'objects'
+//    ],
+//    'response' => [
+//        'format' => 'objects'
+//    ],
 
     'debug'         => true,
 

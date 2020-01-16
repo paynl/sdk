@@ -20,13 +20,18 @@ class ConfigProvider implements ConfigProviderInterface
     public function __invoke(): array
     {
         return [
-            'service_manager' => $this->getDependencyConfig(),
+            'service_manager'        => $this->getDependencyConfig(),
             'service_loader_options' => [
                 'authAdapterManager' => [
                     'service_manager' => 'authAdapterManager',
-                    'config_key'    => 'authAdapters',
-                    'class_method'  => 'getAuthAdapters',
+                    'config_key'      => 'authAdapters',
+                    'class_method'    => 'getAuthAdapterConfig',
                 ],
+            ],
+            'authentication'         => [
+                'type'     => 'Basic',
+                'username' => '',
+                'password' => '',
             ],
         ];
     }
@@ -49,7 +54,7 @@ class ConfigProvider implements ConfigProviderInterface
     /**
      * @return array
      */
-    public function getAuthAdapters(): array
+    public function getAuthAdapterConfig(): array
     {
         return [
             'aliases' => [

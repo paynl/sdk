@@ -17,7 +17,7 @@ use PayNL\Sdk\{
 /**
  * Trait JsonSerializeTrait
  *
- * @package PayNL\Sdk\Model
+ * @package PayNL\Sdk\Common
  */
 trait JsonSerializeTrait
 {
@@ -33,30 +33,30 @@ trait JsonSerializeTrait
         $this->checkInterfaceImplementation();
 
         // validate object
-        $validator = new RequiredMembersValidator();
-        $isValid = $validator->isValid($this);
-        if (false === $isValid) {
-            // create exception stack
-            $c = 0;
-            $prev = null;
-            foreach ($validator->getMessages() as $type => $message) {
-                $exceptionClass = MissingRequiredMemberException::class;
-                if (true === in_array($type, [RequiredMembersValidator::MSG_EMPTY_MEMBER, RequiredMembersValidator::MSG_EMPTY_MEMBERS], true)) {
-                    $exceptionClass = EmptyRequiredMemberException::class;
-                }
-                $e = new $exceptionClass($message, 500, ($c++ !== 0 ? $prev : null));
-                $prev = $e;
-            }
-
-            throw new RuntimeException(
-                sprintf(
-                    'Object "%s" is not valid',
-                    __CLASS__
-                ),
-                500,
-                $prev
-            );
-        }
+//        $validator = new RequiredMembersValidator();
+//        $isValid = $validator->isValid($this);
+//        if (false === $isValid) {
+//            // create exception stack
+//            $c = 0;
+//            $prev = null;
+//            foreach ($validator->getMessages() as $type => $message) {
+//                $exceptionClass = MissingRequiredMemberException::class;
+//                if (true === in_array($type, [RequiredMembersValidator::MSG_EMPTY_MEMBER, RequiredMembersValidator::MSG_EMPTY_MEMBERS], true)) {
+//                    $exceptionClass = EmptyRequiredMemberException::class;
+//                }
+//                $e = new $exceptionClass($message, 500, ($c++ !== 0 ? $prev : null));
+//                $prev = $e;
+//            }
+//
+//            throw new RuntimeException(
+//                sprintf(
+//                    'Object "%s" is not valid',
+//                    __CLASS__
+//                ),
+//                500,
+//                $prev
+//            );
+//        }
 
         $vars = get_object_vars($this);
         if ($this instanceof ArrayCollection) {

@@ -26,22 +26,33 @@ class Loader
      */
     protected $paths = [];
 
+    protected $applicationConfig;
+
     /**
-     * @var array
+     * @var Config
      */
-    protected $mergedConfig = [];
+    protected $mergedConfig;
 
     /**
      * Loader constructor.
      *
-     * @param array $config
+     * @param array|Config $applicationConfig
      */
-    public function __construct(array $config = [])
+    public function __construct($applicationConfig = [])
     {
-        if (true === array_key_exists('config_paths', $config) && true === is_array($config['config_paths'])) {
-            $this->addPaths($config['config_paths']);
+        if (true === is_array($applicationConfig)) {
+            $applicationConfig = new Config($applicationConfig);
+        } elseif (false === ($applicationConfig instanceof Config)) {
+            throw new Exception\InvalidArgumentException('Config not correct');
         }
-        $this->mergedConfig = $config;
+
+        if (true === $applicationConfig->has('config_paths')) {
+            $this->addPaths($applicationConfig->get('config_paths'));
+        }
+
+//        $this->mergedConfig = $applicationConfig;
+        $this->mergedConfig = new Config();
+        $this->applicationConfig = $applicationConfig;
     }
 
     /**
@@ -49,8 +60,12 @@ class Loader
      *
      * @return Loader
      */
-    public function addPaths(array $paths): self
+    public function addPaths($paths): self
     {
+        if ($paths instanceof \Traversable) {
+            $paths = $paths->toArray();
+        }
+
         foreach ($paths as $path) {
             $this->addPath($path);
         }
@@ -123,21 +138,30 @@ class Loader
         }
 
         foreach ($this->configs as $config) {
-            $this->mergedConfig = ArrayUtils::merge($this->mergedConfig, $config());
+            $providerConfig = $config();
+
+            if (false === $providerConfig instanceof Config) {
+                $providerConfig = new Config($providerConfig);
+            }
+            $this->mergedConfig->merge($providerConfig);
         }
+
+        $this->mergedConfig->merge($this->applicationConfig);
 
         return $this;
     }
 
     /**
-     * @return array
+     * @return Config
      */
-    public function getMergedConfig(): array
+    public function getMergedConfig(): Config
     {
         return $this->mergedConfig;
     }
 
     /**
+     * Collection of the
+     *
      * @return array
      */
     public function getConfigs(): array

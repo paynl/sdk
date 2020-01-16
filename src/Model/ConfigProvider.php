@@ -26,7 +26,7 @@ class ConfigProvider implements ConfigProviderInterface
                 'modelManager' => [
                     'service_manager' => 'modelManager',
                     'config_key' => 'models',
-                    'class_method' => 'getModels'
+                    'class_method' => 'getModelConfig'
                 ],
             ],
         ];
@@ -50,7 +50,7 @@ class ConfigProvider implements ConfigProviderInterface
     /**
      * @return array
      */
-    public function getModels(): array
+    public function getModelConfig(): array
     {
         return [
             'aliases' => [

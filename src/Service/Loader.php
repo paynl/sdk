@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace PayNL\Sdk\Service;
 
 use PayNL\Sdk\Service\Manager as ServiceManager;
-use Zend\Stdlib\ArrayUtils;
 use PayNL\Sdk\Service\Config as ServiceConfig;
+use PayNL\Sdk\Config\Config;
+use Zend\Stdlib\ArrayUtils;
 use PayNL\Sdk\Exception;
 use PayNL\Sdk\Config\Loader as ConfigLoader;
 use Traversable;
@@ -37,9 +38,9 @@ class Loader
      * Loader constructor.
      *
      * @param Manager $defaultServiceManager
-     * @param array|null $configuration
+     * @param ServiceConfig|null $configuration
      */
-    public function __construct(ServiceManager $defaultServiceManager, array $configuration = null)
+    public function __construct(ServiceManager $defaultServiceManager, ServiceConfig $configuration = null)
     {
         $this->defaultServiceManager = $defaultServiceManager;
 
@@ -49,11 +50,11 @@ class Loader
     }
 
     /**
-     * @param array $configuration
+     * @param ServiceConfig $configuration
      *
      * @return Loader
      */
-    public function setDefaultServiceConfig(array $configuration): self
+    public function setDefaultServiceConfig(ServiceConfig $configuration): self
     {
         $this->defaultServiceConfig = $configuration;
         return $this;
@@ -106,6 +107,8 @@ class Loader
         /** @var ConfigLoader $configLoader */
         $configLoader = $this->defaultServiceManager->get('configLoader');
 
+//        dump($configLoader->getConfigs(), $this->serviceManagers);die;
+
         foreach ($this->serviceManagers as $key => $sm) {
             // search for config provider
             foreach ($configLoader->getConfigs() as $className => $provider) {
@@ -124,6 +127,7 @@ class Loader
                 }
 
                 if (false === is_array($config)) {
+                    // If we do not have an array by this point, nothing left to do.
                     continue 2;
                 }
 
@@ -139,13 +143,14 @@ class Loader
      */
     public function load(): void
     {
-        $config = $this->defaultServiceManager->get('configLoader')->getMergedConfig();
+        $config = $this->defaultServiceManager->get('configLoader')->getMergedConfig()->toArray();
 
         foreach ($this->serviceManagers as $key => $sm) {
             $smConfig = $this->mergeServiceConfig($key, $sm, $config);
 
             if (false === ($sm['service_manager'] instanceof ServiceManager)) {
                 if (false === $this->defaultServiceManager->has($sm['service_manager'])) {
+                    // No plugin manager registered by that name; nothing to configure.
                     continue;
                 }
 
@@ -173,13 +178,6 @@ class Loader
         }
     }
 
-//    public function postLoad(): void
-//    {
-//        foreach ($this->serviceManagers as $key => $sm) {
-//
-//        }
-//    }
-
     /**
      * @param string $key
      * @param array $metadata
@@ -203,7 +201,8 @@ class Loader
                     $configs = ArrayUtils::merge($configs, $this->serviceConfigToArray($class));
                 }
             }
-            $serviceConfig = ArrayUtils::merge($serviceConfig, $configs);
+
+            $serviceConfig = ArrayUtils::merge($serviceConfig, $configs instanceof Config ? $configs->toArray() : $configs);
         }
 
         return $serviceConfig;

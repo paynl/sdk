@@ -286,12 +286,13 @@ class Manager implements ContainerInterface
                 sprintf(
                     'Given name to "%s" must be a string, %s given',
                     __METHOD__,
-                    (is_object($name) ? get_class($name) : gettype($name))
+                    gettype($name)
                 )
             );
         }
 
         $name = $this->resolvedAliases[$name] ?? $name;
+//        dump($this->services);
         return isset($this->services[$name]) || isset($this->factories[$name]);
     }
 

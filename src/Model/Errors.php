@@ -13,6 +13,8 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class Errors extends ArrayCollection implements ModelInterface
 {
+    use LinksTrait;
+
     /**
      * @return array
      */

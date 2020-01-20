@@ -9,7 +9,7 @@ namespace PayNL\Sdk\Model;
  *
  * @package PayNL\Sdk\Model
  */
-class Directdebits implements ModelInterface
+class DirectdebitOverview implements ModelInterface
 {
     use LinksTrait;
 
@@ -34,7 +34,7 @@ class Directdebits implements ModelInterface
     /**
      * @param Mandate $mandate
      *
-     * @return Directdebits
+     * @return DirectdebitOverview
      */
     public function setMandate(Mandate $mandate): self
     {
@@ -53,7 +53,7 @@ class Directdebits implements ModelInterface
     /**
      * @param array $directdebits
      *
-     * @return Directdebits
+     * @return DirectdebitOverview
      */
     public function setDirectdebits(array $directdebits): self
     {
@@ -67,7 +67,7 @@ class Directdebits implements ModelInterface
     /**
      * @param Directdebit $directdebit
      *
-     * @return Directdebits
+     * @return DirectdebitOverview
      */
     public function addDirectdebit(Directdebit $directdebit): self
     {

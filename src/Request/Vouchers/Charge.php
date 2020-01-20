@@ -5,12 +5,10 @@ declare(strict_types=1);
 namespace PayNL\Sdk\Request\Vouchers;
 
 use PayNL\Sdk\{
+    Exception\MissingParamException,
     Request\AbstractRequest,
-    Model\Voucher,
-    Transformer\TransformerInterface,
-    Transformer\NoContent as NoContentTransformer
+    Request\Parameter\CardNumberTrait
 };
-use PayNL\Sdk\Request\Parameter\CardNumberTrait;
 
 /**
  * Class Charge
@@ -22,16 +20,15 @@ class Charge extends AbstractRequest
     use CardNumberTrait;
 
     /**
-     * Charge constructor.
-     *
-     * @param string $cardNumber
-     * @param Voucher $voucher
+     * @inheritDoc
      */
-    public function __construct(string $cardNumber, Voucher $voucher)
+    public function init(): void
     {
-        $this->setCardNumber($cardNumber)
-            ->setBody($voucher)
-        ;
+        $cardNumber = (string)$this->getParam('cardNumber');
+        if (null === $cardNumber) {
+            throw new MissingParamException('Missing param!');
+        }
+        $this->setCardNumber($cardNumber);
     }
 
     /**
@@ -48,13 +45,5 @@ class Charge extends AbstractRequest
     public function getMethod(): string
     {
         return static::METHOD_PATCH;
-    }
-
-    /**
-     * @return NoContentTransformer
-     */
-    public function getTransformer(): TransformerInterface
-    {
-        return new NoContentTransformer();
     }
 }

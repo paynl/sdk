@@ -5,12 +5,10 @@ declare(strict_types=1);
 namespace PayNL\Sdk\Request\Transactions;
 
 use PayNL\Sdk\{
+    Exception\MissingParamException,
     Request\AbstractRequest,
-    Model\Refund as RefundModel,
-    Transformer\TransformerInterface,
-    Transformer\Refund as RefundTransformer
+    Request\Parameter\TransactionIdTrait
 };
-use PayNL\Sdk\Request\Parameter\TransactionIdTrait;
 
 /**
  * Class Refund
@@ -22,16 +20,15 @@ class Refund extends AbstractRequest
     use TransactionIdTrait;
 
     /**
-     * Refund constructor.
-     *
-     * @param string $transactionId
-     * @param RefundModel $refund
+     * @inheritDoc
      */
-    public function __construct(string $transactionId, RefundModel $refund)
+    public function init(): void
     {
-        $this->setTransactionId($transactionId)
-            ->setBody($refund)
-        ;
+        $transactionId = (string)$this->getParam('transactionId');
+        if (null === $transactionId) {
+            throw new MissingParamException('Missing param!');
+        }
+        $this->setTransactionId($transactionId);
     }
 
     /**
@@ -48,13 +45,5 @@ class Refund extends AbstractRequest
     public function getMethod(): string
     {
         return static::METHOD_PATCH;
-    }
-
-    /**
-     * @return RefundTransformer
-     */
-    public function getTransformer(): TransformerInterface
-    {
-        return new RefundTransformer();
     }
 }

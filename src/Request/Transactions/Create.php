@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Request\Transactions;
 
-use PayNL\Sdk\Model\Transaction;
 use PayNL\Sdk\Request\AbstractRequest;
 
 /**

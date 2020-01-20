@@ -84,7 +84,7 @@ class Qr implements ModelInterface, JsonSerializable
     /**
      * @var string
      */
-    protected $imageContents = '';
+    protected $contents = '';
 
     /**
      * @return string
@@ -290,19 +290,19 @@ class Qr implements ModelInterface, JsonSerializable
     /**
      * @return string
      */
-    public function getImageContents(): string
+    public function getContents(): string
     {
-        return $this->imageContents;
+        return $this->contents;
     }
 
     /**
-     * @param string $imageContents
+     * @param string $contents
      *
      * @return Qr
      */
-    public function setImageContents(string $imageContents): self
+    public function setContents(string $contents): self
     {
-        $this->imageContents = $imageContents;
+        $this->contents = $contents;
         return $this;
     }
 }

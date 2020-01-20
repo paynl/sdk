@@ -6,11 +6,10 @@ namespace PayNL\Sdk\Request\Transactions;
 
 use PayNL\Sdk\{
     Exception\InvalidArgumentException,
+    Exception\MissingParamException,
     Request\AbstractRequest,
-    Transformer\TransformerInterface,
-    Transformer\Transaction as TransactionTransformer
+    Request\Parameter\TransactionIdTrait
 };
-use PayNL\Sdk\Request\Parameter\TransactionIdTrait;
 
 /**
  * Class StatusChange
@@ -30,6 +29,18 @@ abstract class AbstractStatusChange extends AbstractRequest
      * @var string
      */
     protected $status;
+
+    /**
+     * @inheritDoc
+     */
+    public function init(): void
+    {
+        $transactionId = (string)$this->getParam('transactionId');
+        if (null === $transactionId) {
+            throw new MissingParamException('Missing param!');
+        }
+        $this->setTransactionId($transactionId);
+    }
 
     /**
      * @inheritDoc
@@ -82,13 +93,5 @@ abstract class AbstractStatusChange extends AbstractRequest
                 $status
             )
         );
-    }
-
-    /**
-     * @return TransactionTransformer
-     */
-    public function getTransformer(): TransformerInterface
-    {
-        return new TransactionTransformer();
     }
 }

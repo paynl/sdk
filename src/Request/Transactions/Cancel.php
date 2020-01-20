@@ -12,14 +12,11 @@ namespace PayNL\Sdk\Request\Transactions;
 class Cancel extends AbstractStatusChange
 {
     /**
-     * Approve constructor.
-     *
-     * @param string $transactionId
-     *
+     * @inheritDoc
      */
-    public function __construct(string $transactionId)
+    public function init(): void
     {
-        $this->setTransactionId($transactionId);
+        parent::init();
         $this->setStatus(static::STATUS_VOID);
     }
 }

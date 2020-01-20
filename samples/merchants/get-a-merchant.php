@@ -2,20 +2,16 @@
 
 declare(strict_types=1);
 
-require_once __DIR__ . '/../init.php';
+$app = require __DIR__ . '/../init_application.php';
 
-use PayNL\Sdk\{
-    Application\Application,
-    Config\Config
-};
-
-$response = Application::init(Config::getInstance()->toArray())
-    ->setRequest('GetMerchant', [
-        'merchantId' => Config::getInstance()->get('merchantId')
-    ])
+$response = $app
+    ->setRequest(
+        'GetMerchant',
+        [
+            'merchantId' => $config->get('merchantId')
+        ]
+    )
     ->run()
 ;
 
-echo '<pre/>' . PHP_EOL .
-    var_export($response->getBody(), true)
-;
+print_response($response);

@@ -32,7 +32,7 @@ class Mandate implements ModelInterface, JsonSerializable
     protected $serviceId;
 
     /**
-     * @var DateTime|null
+     * @var DateTime
      */
     protected $processDate;
 
@@ -62,7 +62,7 @@ class Mandate implements ModelInterface, JsonSerializable
     protected $interval;
 
     /**
-     * @var Customer|null
+     * @var Customer
      */
     protected $customer;
 

@@ -58,7 +58,7 @@ declare(strict_types=1);
             ?>
             <h2>Functions</h2>
             <div>
-                <a href="functions.php" target="_blank">overview</a>
+                <a href="functions_example.php" target="_blank">overview</a>
             </div>
         </div>
     </body>

@@ -156,8 +156,8 @@ class Response implements ResponseInterface, TransformerAwareInterface
                 return implode("\n", $body->map(static function ($element) {
                     return sprintf(
                         '%s (%d)',
-                        $element['message'],
-                        $element['code']
+                        $element->getMessage(),
+                        $element->getCode()
                     );
                 })->toArray());
             }
@@ -165,9 +165,4 @@ class Response implements ResponseInterface, TransformerAwareInterface
         }
         return '';
     }
-
-//    public function __toString(): string
-//    {
-//        return (string)$this->getBody();
-//    }
 }

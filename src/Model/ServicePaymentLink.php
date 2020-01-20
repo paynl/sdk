@@ -6,6 +6,7 @@ namespace PayNL\Sdk\Model;
 
 use JsonSerializable;
 use PayNL\Sdk\Common\JsonSerializeTrait;
+use PayNL\Sdk\Exception\InvalidArgumentException;
 
 /**
  * Class ServicePaymentLink
@@ -15,6 +16,14 @@ use PayNL\Sdk\Common\JsonSerializeTrait;
 class ServicePaymentLink implements ModelInterface, JsonSerializable
 {
     use JsonSerializeTrait;
+
+    /*
+     * Security mode constant definitions
+     */
+    public const SECURITY_MODE_0 = 0;
+    public const SECURITY_MODE_1 = 1;
+    public const SECURITY_MODE_2 = 2;
+    public const SECURITY_MODE_3 = 3;
 
     /**
      * @required
@@ -49,6 +58,24 @@ class ServicePaymentLink implements ModelInterface, JsonSerializable
     protected $statistics;
 
     /**
+     * @var string
+     */
+    protected $url = '';
+
+    /**
+     * @return array
+     */
+    protected function getSecurityModes(): array
+    {
+        return [
+            self::SECURITY_MODE_0,
+            self::SECURITY_MODE_1,
+            self::SECURITY_MODE_2,
+            self::SECURITY_MODE_3,
+        ];
+    }
+
+    /**
      * @return int
      */
     public function getSecurityMode(): int
@@ -59,10 +86,21 @@ class ServicePaymentLink implements ModelInterface, JsonSerializable
     /**
      * @param int $securityMode
      *
+     * @throws InvalidArgumentException when given security mode is not supported
+     *
      * @return ServicePaymentLink
      */
     public function setSecurityMode(int $securityMode): self
     {
+        if (false === in_array($securityMode, $this->getSecurityModes(), true)) {
+            throw new InvalidArgumentException(
+                sprintf(
+                    'Security mode "%s" is not supported, choose one of the following: %s',
+                    $securityMode,
+                    implode(', ', $this->getSecurityModes())
+                )
+            );
+        }
         $this->securityMode = $securityMode;
         return $this;
     }
@@ -159,6 +197,25 @@ class ServicePaymentLink implements ModelInterface, JsonSerializable
     public function setStatistics(Statistics $statistics): self
     {
         $this->statistics = $statistics;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUrl(): string
+    {
+        return $this->url;
+    }
+
+    /**
+     * @param string $url
+     *
+     * @return ServicePaymentLink
+     */
+    public function setUrl(string $url): self
+    {
+        $this->url = $url;
         return $this;
     }
 }

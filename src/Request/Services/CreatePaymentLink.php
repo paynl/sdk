@@ -5,12 +5,10 @@ declare(strict_types=1);
 namespace PayNL\Sdk\Request\Services;
 
 use PayNL\Sdk\{
+    Exception\MissingParamException,
     Request\AbstractRequest,
-    Model\ServicePaymentLink,
-    Transformer\TransformerInterface,
-    Transformer\Simple as SimpleTransformer
+    Request\Parameter\ServiceIdTrait
 };
-use PayNL\Sdk\Request\Parameter\ServiceIdTrait;
 
 /**
  * Class CreatePaymentLink
@@ -22,15 +20,16 @@ class CreatePaymentLink extends AbstractRequest
     use ServiceIdTrait;
 
     /**
-     * CreatePaymentLink constructor.
-     *
-     * @param string $serviceId
-     * @param ServicePaymentLink $servicePaymentLink
+     * @inheritDoc
      */
-    public function __construct(string $serviceId, ServicePaymentLink $servicePaymentLink)
+    public function init(): void
     {
+        $serviceId = (string)$this->getParam('serviceId');
+        if (null === $serviceId) {
+            throw new MissingParamException('Missing param!');
+        }
+
         $this->setServiceId($serviceId);
-        $this->setBody($servicePaymentLink);
     }
 
     /**
@@ -47,13 +46,5 @@ class CreatePaymentLink extends AbstractRequest
     public function getMethod(): string
     {
         return static::METHOD_POST;
-    }
-
-    /**
-     * @return SimpleTransformer
-     */
-    public function getTransformer(): TransformerInterface
-    {
-        return new SimpleTransformer();
     }
 }

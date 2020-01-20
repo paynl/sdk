@@ -15,6 +15,7 @@ use PayNL\Sdk\Request\{
     AbstractRequest,
     RequestInterface
 };
+use PayNL\Sdk\Response\ResponseInterface;
 
 /**
  * Class Api
@@ -109,6 +110,15 @@ class Api implements OptionsAwareInterface, DebugAwareInterface
             $request->setHeader(RequestInterface::HEADER_ACCEPT, $acceptHeader)
                 ->setHeader(RequestInterface::HEADER_AUTHORIZATION, $this->getAuthAdapter()->getHeaderString()) // TODO move these to service??
             ;
+        }
+
+        $format = $response->getFormat();
+        $contentTypeHeader = 'application/json';
+        if (ResponseInterface::FORMAT_XML === $format) {
+            $contentTypeHeader = 'application/xml';
+        }
+        if ($request instanceof AbstractRequest) {
+            $request->setHeader(RequestInterface::HEADER_CONTENT_TYPE, $contentTypeHeader);
         }
 
         $request->execute($response);

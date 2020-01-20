@@ -4,11 +4,7 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Request\Qr;
 
-use PayNL\Sdk\{
-    Request\AbstractRequest,
-    Transformer\TransformerInterface,
-    Transformer\NoContent as NoContentTransformer
-};
+use PayNL\Sdk\Request\AbstractRequest;
 
 /**
  * Class Validate
@@ -17,20 +13,6 @@ use PayNL\Sdk\{
  */
 class Validate extends AbstractRequest
 {
-    /**
-     * Validate constructor.
-     *
-     * @param string $uuid
-     * @param string $secret
-     */
-    public function __construct(string $uuid, string $secret)
-    {
-        $this->setBody((object)[
-            'uuid' => $uuid,
-            'secret' => $secret,
-        ]);
-    }
-
     /**
      * @inheritDoc
      */
@@ -45,13 +27,5 @@ class Validate extends AbstractRequest
     public function getMethod(): string
     {
         return static::METHOD_POST;
-    }
-
-    /**
-     * @return NoContentTransformer
-     */
-    public function getTransformer(): TransformerInterface
-    {
-        return new NoContentTransformer();
     }
 }

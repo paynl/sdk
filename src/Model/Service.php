@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Model;
 
-use PayNL\Sdk\DateTime;
-use PayNL\Sdk\Exception\InvalidArgumentException;
+use PayNL\Sdk\{
+    Common\DateTime,
+    Exception\InvalidArgumentException
+};
 
 /**
  * Class Service
@@ -34,7 +36,7 @@ class Service implements ModelInterface
     protected $description = '';
 
     /**
-     * @var integer
+     * @var boolean
      */
     protected $testMode = Integration::TEST_MODE_OFF;
 
@@ -44,7 +46,7 @@ class Service implements ModelInterface
     protected $secret = '';
 
     /**
-     * @var DateTime|null
+     * @var DateTime
      */
     protected $createdAt;
 
@@ -61,7 +63,7 @@ class Service implements ModelInterface
      *
      * @return Service
      */
-    public function setId(string $id): Service
+    public function setId(string $id): self
     {
         $this->id = $id;
         return $this;
@@ -80,7 +82,7 @@ class Service implements ModelInterface
      *
      * @return Service
      */
-    public function setName(string $name): Service
+    public function setName(string $name): self
     {
         $this->name = $name;
         return $this;
@@ -99,28 +101,28 @@ class Service implements ModelInterface
      *
      * @return Service
      */
-    public function setDescription(string $description): Service
+    public function setDescription(string $description): self
     {
         $this->description = $description;
         return $this;
     }
 
     /**
-     * @return integer
+     * @return boolean
      */
-    public function getTestMode(): int
+    public function getTestMode(): bool
     {
         return $this->testMode;
     }
 
     /**
-     * @param integer $testMode
+     * @param boolean $testMode
      *
      * @throws InvalidArgumentException when given test mode is invalid
      *
      * @return Service
      */
-    public function setTestMode(int $testMode): Service
+    public function setTestMode(bool $testMode): self
     {
         $allowedMethods = [Integration::TEST_MODE_OFF, Integration::TEST_MODE_ON];
         if (false === in_array($testMode, $allowedMethods, true)) {
@@ -150,7 +152,7 @@ class Service implements ModelInterface
      *
      * @return Service
      */
-    public function setSecret(string $secret): Service
+    public function setSecret(string $secret): self
     {
         $this->secret = $secret;
         return $this;
@@ -169,7 +171,7 @@ class Service implements ModelInterface
      *
      * @return Service
      */
-    public function setCreatedAt(DateTime $createdAt): Service
+    public function setCreatedAt(DateTime $createdAt): self
     {
         $this->createdAt = $createdAt;
         return $this;

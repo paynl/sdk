@@ -36,6 +36,12 @@ class Service
      */
     protected $serviceManager;
 
+    /**
+     * Service constructor.
+     *
+     * @param Api $api
+     * @param ServiceManager $serviceManager
+     */
     public function __construct(Api $api, ServiceManager $serviceManager)
     {
         $this->api = $api;

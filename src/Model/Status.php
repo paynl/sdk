@@ -43,7 +43,7 @@ class Status implements ModelInterface
     }
 
     /**
-     * @param string $code
+     * @param string|int $code
      *
      * @throws InvalidArgumentException
      *
@@ -51,10 +51,12 @@ class Status implements ModelInterface
      */
     public function setCode($code)
     {
-        if (false === is_string($code)) {
+        if (true === is_int($code)) {
+            $code = (string)$code;
+        } elseif (false === is_string($code)) {
             throw new InvalidArgumentException(
                 sprintf(
-                    'Argument given to %s is not a string',
+                    'Argument given to %s is not a string nor an integer',
                     __METHOD__
                 )
             );

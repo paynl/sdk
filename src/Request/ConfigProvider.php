@@ -79,7 +79,7 @@ class ConfigProvider implements ConfigProviderInterface
                 'DecodeQr'                      => Qr\Decode::class,
                 'EncodeQr'                      => Qr\Encode::class,
                 'ValidateQr'                    => Qr\Validate::class,
-                'GetRefunds'                    => Refunds\Get::class,
+                'GetRefund'                     => Refunds\Get::class,
                 'CreatePaymentLink'             => Services\CreatePaymentLink::class,
                 'GetService'                    => Services\Get::class,
                 'GetAllServices'                => Services\GetAll::class,

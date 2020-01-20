@@ -4,20 +4,22 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Response;
 
-use PayNL\Sdk\Exception\InvalidArgumentException;
-use PayNL\Sdk\Model\Errors;
-use PayNL\Sdk\Model\ModelInterface;
-use PayNL\Sdk\Transformer\TransformerAwareInterface;
-use PayNL\Sdk\Transformer\TransformerAwareTrait;
+use PayNL\Sdk\{Common\DebugAwareInterface,
+    Common\DebugAwareTrait,
+    Exception\InvalidArgumentException,
+    Model\Error,
+    Model\Errors,
+    Transformer\TransformerAwareInterface,
+    Transformer\TransformerAwareTrait};
 
 /**
  * Class Response
  *
  * @package PayNL\Sdk
  */
-class Response implements ResponseInterface, TransformerAwareInterface
+class Response implements ResponseInterface, TransformerAwareInterface, DebugAwareInterface
 {
-    use TransformerAwareTrait;
+    use TransformerAwareTrait, DebugAwareTrait;
 
     /**
      * @var string
@@ -102,6 +104,9 @@ class Response implements ResponseInterface, TransformerAwareInterface
      */
     public function setRawBody(string $rawBody): Response
     {
+        if ($this->isDebug()) {
+            $this->dumpDebugInfo('Raw response body: ' . $rawBody);
+        }
         $this->rawBody = $rawBody;
         return $this;
     }
@@ -154,6 +159,7 @@ class Response implements ResponseInterface, TransformerAwareInterface
             $body = $this->getBody();
             if ($body instanceof Errors) {
                 return implode("\n", $body->map(static function ($element) {
+                    /** @var Error $element */
                     return sprintf(
                         '%s (%d)',
                         $element->getMessage(),

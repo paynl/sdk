@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 $app = require __DIR__ . '/../init_application.php';
 
+use PayNL\Sdk\Response\ResponseInterface;
+
 $response = $app
     ->setRequest(
         'ValidateQr',
@@ -18,10 +20,12 @@ $response = $app
     ->run()
 ;
 
-echo '<pre>';
-if (201 === $response->getStatusCode()) {
-    echo 'OK';
+if (true === in_array($response->getStatusCode(), range(200, 299), true)) {
+    $message = ResponseInterface::HTTP_STATUS_CODES[200];
 } else {
-    echo 'Not OK';
+    $message = ResponseInterface::HTTP_STATUS_CODES[422];
 }
-echo '</pre>';
+echo sprintf(
+    "<pre>\n'%s'\n</pre>\n",
+    $message
+);

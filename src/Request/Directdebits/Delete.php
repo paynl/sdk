@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace PayNL\Sdk\Request\Directdebits;
 
 use PayNL\Sdk\{
+    Exception\MissingParamException,
     Request\AbstractRequest,
-    Transformer\TransformerInterface,
-    Transformer\NoContent as NoContentTransformer
+    Request\Parameter\IncassoOrderIdTrait
 };
-use PayNL\Sdk\Request\Parameter\IncassoOrderIdTrait;
 
 /**
  * Class Delete
@@ -21,12 +20,14 @@ class Delete extends AbstractRequest
     use IncassoOrderIdTrait;
 
     /**
-     * Delete constructor.
-     *
-     * @param string $incassoOrderId
+     * @inheritDoc
      */
-    public function __construct(string $incassoOrderId)
+    public function init(): void
     {
+        $incassoOrderId = (string)$this->getParam('incassoOrderId');
+        if (null === $incassoOrderId) {
+            throw new MissingParamException('Missing param!');
+        }
         $this->setIncassoOrderId($incassoOrderId);
     }
 
@@ -44,13 +45,5 @@ class Delete extends AbstractRequest
     public function getMethod(): string
     {
         return static::METHOD_DELETE;
-    }
-
-    /**
-     * @return NoContentTransformer
-     */
-    public function getTransformer(): TransformerInterface
-    {
-        return new NoContentTransformer();
     }
 }

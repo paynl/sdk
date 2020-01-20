@@ -17,6 +17,7 @@ class Entity extends AbstractHydrator
 {
     protected $collectionMap = [
         'currencies' => 'currency',
+        'directdebits' => 'directdebit',
         'errors' => 'error',
         'terminals' => 'terminal',
         'links' => 'link',

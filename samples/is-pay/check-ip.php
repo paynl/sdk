@@ -14,5 +14,4 @@ $response = $app
     ->run()
 ;
 
-// NOTE: only approved trademarks are given to the response merchant object, the new trademark isn't instantly approved
 print_response($response);

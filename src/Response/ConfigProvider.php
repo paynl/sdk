@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Response;
 
+use PayNL\Sdk\Common\DebugAwareInitializer;
 use PayNL\Sdk\Config\ProviderInterface as ConfigProviderInterface;
 
 /**
@@ -32,6 +33,9 @@ class ConfigProvider implements ConfigProviderInterface
     public function getDependencyConfig(): array
     {
         return [
+            'initializers' => [
+                DebugAwareInitializer::class,
+            ],
             'aliases' => [
                 'Response' => Response::class,
                 'response' => Response::class,

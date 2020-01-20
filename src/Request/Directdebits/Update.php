@@ -5,12 +5,10 @@ declare(strict_types=1);
 namespace PayNL\Sdk\Request\Directdebits;
 
 use PayNL\Sdk\{
-    Model\Mandate,
+    Exception\MissingParamException,
     Request\AbstractRequest,
-    Transformer\TransformerInterface,
-    Transformer\Directdebit as DirectdebitTransformer
+    Request\Parameter\IncassoOrderIdTrait
 };
-use PayNL\Sdk\Request\Parameter\IncassoOrderIdTrait;
 
 /**
  * Class Update
@@ -22,15 +20,15 @@ class Update extends AbstractRequest
     use IncassoOrderIdTrait;
 
     /**
-     * Update constructor.
-     *
-     * @param string $incassoOrderId
-     * @param Mandate $mandate
+     * @inheritDoc
      */
-    public function __construct(string $incassoOrderId, Mandate $mandate)
+    public function init(): void
     {
+        $incassoOrderId = (string)$this->getParam('incassoOrderId');
+        if (null === $incassoOrderId) {
+            throw new MissingParamException('Missing param!');
+        }
         $this->setIncassoOrderId($incassoOrderId);
-        $this->setBody($mandate);
     }
 
     /**
@@ -47,13 +45,5 @@ class Update extends AbstractRequest
     public function getMethod(): string
     {
         return static::METHOD_PATCH;
-    }
-
-    /**
-     * @return DirectdebitTransformer
-     */
-    public function getTransformer(): TransformerInterface
-    {
-        return new DirectdebitTransformer();
     }
 }

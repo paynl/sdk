@@ -6,49 +6,35 @@
 
 declare(strict_types=1);
 
-require_once __DIR__ . '/../init_application.php';
+$app = require __DIR__ . '/../init_application.php';
 
-use PayNL\Sdk\{
-    Api,
-    Config,
-    DateTime
-};
-use PayNL\Sdk\Model\Mandate;
-use PayNL\Sdk\Request\Directdebits\CreateRecurring as CreateRecurringDirectdebitRequest;
-use PayNL\Sdk\Hydrator\Mandate as MandateHydrator;
-
-$authAdapter = getAuthAdapter();
-
-$request = (new CreateRecurringDirectdebitRequest(
-    Config::getInstance()->get('incassoOrderId'),
-    (new MandateHydrator())->hydrate([
-        'isLastOrder' => true,
-        'description' => 'Test recurring',
-        'processDate' => DateTime::now(),
-        'amount' => [
-            'amount' => 200,
-            'currency' => 'EUR',
+$response = $app
+    ->setRequest(
+        'CreateRecurringDirectdebit',
+        [
+            'incassoOrderId' => $config->get('incassoOrderId'),
         ],
-        'statistics' => [
-            'promoterId' => 0,
-            'info' => 'Test recurring',
-            'tool' => 'Some other tooling',
-            'extra1' => '',
-            'extra2' => '',
-            'extra3' => '',
-            'transferData' => [
-                'Recurring transfer data',
+        [
+            'Mandate' => [
+                'isLastOrder' => true,
+                'description' => 'Test recurring',
+                'processDate' => \PayNL\Sdk\Common\DateTime::now(),
+                'amount' => [
+                    'amount' => 200,
+                    'currency' => 'EUR',
+                ],
+                'statistics' => [
+                    'info' => 'Test recurring',
+                    'tool' => 'Some other tooling',
+                    'object' => '',
+                    'extra1' => '',
+                    'extra2' => '',
+                    'extra3' => '',
+                ],
             ],
-        ],
-    ], new Mandate())
-))
-    ->setDebug((bool)Config::getInstance()->get('debug'))
+        ]
+    )
+    ->run()
 ;
 
-$response = (new Api($authAdapter))
-    ->handleCall($request)
-;
-
-echo '<pre/>' . PHP_EOL .
-    var_export($response, true)
-;
+print_response($response);

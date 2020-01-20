@@ -19,9 +19,9 @@ class DirectdebitOverview implements ModelInterface
     protected $mandate;
 
     /**
-     * @var array
+     * @var Directdebits
      */
-    protected $directdebits = [];
+    protected $directdebits;
 
     /**
      * @return Mandate
@@ -45,33 +45,19 @@ class DirectdebitOverview implements ModelInterface
     /**
      * @return array
      */
-    public function getDirectdebits(): array
+    public function getDirectdebits(): Directdebits
     {
         return $this->directdebits;
     }
 
     /**
-     * @param array $directdebits
+     * @param Directdebits $directdebits
      *
      * @return DirectdebitOverview
      */
-    public function setDirectdebits(array $directdebits): self
+    public function setDirectdebits(Directdebits $directdebits): self
     {
-        $this->directdebits = [];
-        foreach ($directdebits as $directdebit) {
-            $this->addDirectdebit($directdebit);
-        }
-        return $this;
-    }
-
-    /**
-     * @param Directdebit $directdebit
-     *
-     * @return DirectdebitOverview
-     */
-    public function addDirectdebit(Directdebit $directdebit): self
-    {
-        $this->directdebits[] = $directdebit;
+        $this->directdebits = $directdebits;
         return $this;
     }
 }

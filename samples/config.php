@@ -3,28 +3,24 @@
 declare(strict_types=1);
 
 return [
-// TODO: put to env file?
     'api' => [
         'url'  => 'https://rest.idefix.mike.dev.pay.nl/',
-//        'version'  => 1,
     ],
     'authentication' => [
-//        'type'     => 'Basic',
         'username' => 'token',
         'password' => '68babb1a525f6116b387231af9d2e4413a6c8f61',
     ],
 //    'request' => [
-//        'format' => 'objects'
+//        'format' => 'objects' // choose one of the formats declared in \PayNL\Sdk\Request\RequestInterface
 //    ],
 //    'response' => [
-//        'format' => 'objects'
+//        'format' => 'objects' // choose one of the formats declared in \PayNL\Sdk\Response\ResponseInterface
 //    ],
 
     'debug'         => true,
 
     // sample data
-    'incassoOrderId'        => 'IO-8284-8371-9550',
-//    'merchantId'            => 'M-6328-7160',
+    'incassoOrderId'        => 'IO-6880-7472-0100',
     'merchantId'            => 'M-9040-1000',
     'refundId'              => 'RF-7039-3062-3700',
     'serviceId'             => 'SL-3167-1271',

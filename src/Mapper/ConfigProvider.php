@@ -4,12 +4,21 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Mapper;
 
+use PayNL\Sdk\{
+    Config\ProviderInterface,
+    Common\ManagerFactory
+};
 
-use PayNL\Sdk\Common\ManagerFactory;
-use PayNL\Sdk\Config\ProviderInterface;
-
+/**
+ * Class ConfigProvider
+ *
+ * @package PayNL\Sdk\Mapper
+ */
 class ConfigProvider implements ProviderInterface
 {
+    /**
+     * @inheritDoc
+     */
     public function __invoke(): array
     {
         return [
@@ -24,6 +33,9 @@ class ConfigProvider implements ProviderInterface
         ];
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getDependencyConfig(): array
     {
         return [
@@ -36,6 +48,11 @@ class ConfigProvider implements ProviderInterface
         ];
     }
 
+    /**
+     * Service manager definition for the models of this component
+     *
+     * @return array
+     */
     public function getMapperConfig(): array
     {
         return [
@@ -49,14 +66,21 @@ class ConfigProvider implements ProviderInterface
         ];
     }
 
+    /**
+     * Mapping for setting the correct model for the corresponding request. If a
+     * request is not in the list the text for the corresponding status code will
+     * be shown.
+     *
+     * @return array
+     */
     public function getMap(): array
     {
         return [
             'RequestModelMapper' => [
                 'GetAllCurrencies'              => 'Currencies',
                 'GetCurrency'                   => 'Currency',
-                'CreateDirectdebit'             => 'Directdebits',
-                'CreateRecurringDirectdebit'    => 'Directdebits',
+                'CreateDirectdebit'             => 'DirectdebitOverview',
+                'CreateRecurringDirectdebit'    => 'DirectdebitOverview',
                 'DeleteDirectdebit'             => 'Directdebit',
                 'GetDirectdebit'                => 'Directdebit',
                 'UpdateDirectdebit'             => 'Directdebit',
@@ -70,74 +94,21 @@ class ConfigProvider implements ProviderInterface
                 'PayTransaction'                => 'TerminalTransaction',
                 'DecodeQr'                      => 'Qr',
                 'EncodeQr'                      => 'Qr',
-//                'ValidateQr'                    => 'Qr',
                 'GetRefund'                     => 'Refund',
                 'CreatePaymentLink'             => 'ServicePaymentLink',
                 'GetService'                    => 'Service',
                 'GetAllServices'                => 'Services',
                 'GetPaymentMethods'             => 'PaymentMethods',
-//                'ApproveTransaction'            => '',
-//                'CancelTransaction'             => '',
-//                'CaptureTransaction'            => '',
+                'ApproveTransaction'            => 'Transaction',
+                'CancelTransaction'             => 'Transaction',
+                'CaptureTransaction'            => 'Transaction',
                 'CreateTransaction'             => 'Transaction',
-//                'DeclineTransaction'            => '',
-//                'GetTransaction'                => '',
-//                'CaptureTransactionByQr'        => '',
-//                'MakeTransactionRecurring'      => '',
-//                'RefundTransaction'             => '',
-//                'TokenizeTransaction'           => '',
-//                'ActivateVoucher'               => '',
-//                'CheckVoucherBalance'           => '',
-//                'ChargeVoucher'                 => '',
+                'DeclineTransaction'            => 'Transaction',
+                'GetTransaction'                => 'Transaction',
+                'CaptureTransactionByQr'        => 'Transaction',
+                'RefundTransaction'             => 'RefundOverview',
+                'TokenizeTransaction'           => 'Transaction',
             ],
-//            'ModelHydratorMapper' => [
-//                'Address'               => 'Entity',
-//                'Amount'                => 'Entity',
-//                'BankAccount'           => 'Entity',
-//                'Card'                  => 'Entity',
-//                'Company'               => 'Entity',
-//                'ContactMethod'         => 'Entity',
-//                'ContactMethods'        => 'Entity',
-////                'Currencies'            => 'Currencies',
-//                'Currencies'            => 'Entity',
-////                'Currency'              => 'Simple',
-//                'Currency'              => 'Entity',
-//                'Customer'              => 'Entity',
-//                'Directdebit'           => 'Entity',
-//                'Error'                 => 'Entity',
-////                'Errors'                => 'Errors',
-//                'Errors'                => 'Entity',
-//                'Integration'           => 'Entity',
-//                'Interval'              => 'Entity',
-//                'Link'                  => 'Entity',
-//                'Links'                 => 'Entity',
-//                'Mandate'               => 'Entity',
-//                'Merchant'              => 'Entity',
-//                'Order'                 => 'Entity',
-//                'PaymentMethod'         => 'Entity',
-//                'PaymentMethods'        => 'Entity',
-//                'Product'               => 'Entity',
-//                'Products'              => 'Entity',
-//                'Progress'              => 'Entity',
-//                'Qr'                    => 'Entity',
-//                'Receipt'               => 'Entity',
-//                'RecurringTransaction'  => 'Entity',
-//                'Refund'                => 'Entity',
-//                'Service'               => 'Entity',
-//                'ServicePaymentLink'    => 'Entity',
-//                'Services'              => 'Entity',
-//                'Statistics'            => 'Entity',
-//                'Status'                => 'Entity',
-//                'Terminal'              => 'Entity',
-//                'Terminals'             => 'Entity',
-//                'TerminalTransaction'   => 'Entity',
-//                'Trademark'             => 'Entity',
-//                'Trademarks'            => 'Entity',
-//                'Transaction'           => 'Entity',
-//                'TransactionStatus'     => 'Entity',
-//                'Transfer'              => 'Entity',
-//                'Voucher'               => 'Entity',
-//            ],
         ];
     }
 }

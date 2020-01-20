@@ -20,6 +20,11 @@ class Refund implements ModelInterface, JsonSerializable
     /**
      * @var string
      */
+    protected $id;
+
+    /**
+     * @var string
+     */
     protected $paymentSessionId;
 
     /**
@@ -56,6 +61,25 @@ class Refund implements ModelInterface, JsonSerializable
      * @var DateTime
      */
     protected $processDate;
+
+    /**
+     * @return string
+     */
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param string $id
+     *
+     * @return Refund
+     */
+    public function setId(string $id): Refund
+    {
+        $this->id = $id;
+        return $this;
+    }
 
     /**
      * @return string

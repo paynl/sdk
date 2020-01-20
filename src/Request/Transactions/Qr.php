@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace PayNL\Sdk\Request\Transactions;
 
 use PayNL\Sdk\{
+    Exception\MissingParamException,
     Request\AbstractRequest,
-    Transformer\TransformerInterface,
-    Transformer\Transaction as TransactionTransformer
+    Request\Parameter\TransactionIdTrait
 };
-use PayNL\Sdk\Request\Parameter\TransactionIdTrait;
 
 /**
  * Class QR
@@ -21,18 +20,15 @@ class Qr extends AbstractRequest
     use TransactionIdTrait;
 
     /**
-     * QR constructor.
-     *
-     * @param string $transactionId
-     * @param string $scanDataQRCode
+     * @inheritDoc
      */
-    public function __construct(string $transactionId, string $scanDataQRCode)
+    public function init(): void
     {
-        $this->setTransactionId($transactionId)
-            ->setBody((object)[
-                'scanData' => $scanDataQRCode,
-            ])
-        ;
+        $transactionId = (string)$this->getParam('transactionId');
+        if (null === $transactionId) {
+            throw new MissingParamException('Missing param!');
+        }
+        $this->setTransactionId($transactionId);
     }
 
     /**
@@ -49,13 +45,5 @@ class Qr extends AbstractRequest
     public function getMethod(): string
     {
         return static::METHOD_PATCH;
-    }
-
-    /**
-     * @return TransactionTransformer
-     */
-    public function getTransformer(): TransformerInterface
-    {
-        return new TransactionTransformer();
     }
 }

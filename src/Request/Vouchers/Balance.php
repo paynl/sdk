@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace PayNL\Sdk\Request\Vouchers;
 
 use PayNL\Sdk\{
+    Exception\MissingParamException,
     Request\AbstractRequest,
-    Transformer\TransformerInterface,
-    Transformer\Simple as SimpleTransformer
+    Request\Parameter\CardNumberTrait
 };
-use PayNL\Sdk\Request\Parameter\CardNumberTrait;
 
 /**
  * Class Balance
@@ -21,17 +20,15 @@ class Balance extends AbstractRequest
     use CardNumberTrait;
 
     /**
-     * Balance constructor.
-     *
-     * @param string $cardNumber
-     * @param string $pinCode
+     * @inheritDoc
      */
-    public function __construct(string $cardNumber, string $pinCode)
+    public function init(): void
     {
-        $this->setCardNumber($cardNumber)
-            ->setBody((object)[
-                'pinCode' => $pinCode
-            ]);
+        $cardNumber = (string)$this->getParam('cardNumber');
+        if (null === $cardNumber) {
+            throw new MissingParamException('Missing param!');
+        }
+        $this->setCardNumber($cardNumber);
     }
 
     /**
@@ -48,13 +45,5 @@ class Balance extends AbstractRequest
     public function getMethod(): string
     {
         return static::METHOD_PATCH;
-    }
-
-    /**
-     * @return SimpleTransformer
-     */
-    public function getTransformer(): TransformerInterface
-    {
-        return new SimpleTransformer();
     }
 }

@@ -30,6 +30,6 @@ return [
     'serviceId'             => 'SL-3167-1271',
     'terminalId'            => 'TH-3640-7060',
     'terminalTransactionId' => 'TT-9288-4049-2210',
-    'transactionId'         => 'EX-7436-1212-5160',
+    'transactionId'         => 'EX-3338-5372-0550',
     'voucherNumber'         => '1234567800273867546',
 ];

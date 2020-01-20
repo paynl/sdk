@@ -23,6 +23,7 @@ class TransactionStatus extends Status
     public const STATUS_EXPIRED            = -80;
     public const STATUS_REFUNDING          = -72;
     public const STATUS_CHARGEBACK         = -71;
+    public const STATUS_MANUALLY_DECLINED  = -64;
     public const STATUS_DENIED             = -63;
     public const STATUS_FAILURE            = -60;
     public const STATUS_INVALID_AMOUNT     = -51;

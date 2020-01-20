@@ -8,6 +8,7 @@ use PayNL\Sdk\Request\RequestInterface;
 use PayNL\Sdk\Response\Response;
 use PayNL\Sdk\Response\ResponseInterface;
 use PayNL\Sdk\Service\Manager as ServiceManager;
+use PayNL\Sdk\Transformer\Response as ResponseTransformer;
 
 /**
  * Class Service
@@ -90,7 +91,6 @@ class Service
     {
         $request = $this->getRequest();
 
-        // TODO: move header handling to service
         $headers = $request->getHeaders();
 
         // unset the headers which are set by the api
@@ -105,17 +105,16 @@ class Service
         if (ResponseInterface::FORMAT_OBJECTS === $response->getFormat()) {
             $mapperManager = $this->serviceManager->get('mapperManager');
 
-            /** @var \PayNL\Sdk\Transformer\Response $transformer */
+            /** @var ResponseTransformer $transformer */
             $transformer = $this->serviceManager->get('transformerManager')->get('Response');
 
             $modelName = $mapperManager->get('RequestModelMapper')->getTarget($request);
+            $transformer->setHydrator($this->serviceManager->get('hydratorManager')->build('Entity'));
+
             if (null !== $modelName) {
                 $model = $this->serviceManager->get('modelManager')->build($modelName);
-                $hydrator = $this->serviceManager->get('hydratorManager')->build('Entity');
 
-                $transformer->setModel($model)
-                    ->setHydrator($hydrator)
-                ;
+                $transformer->setModel($model);
             }
 
             $response->setTransformer($transformer);

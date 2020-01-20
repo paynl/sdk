@@ -2,7 +2,33 @@
 
 declare(strict_types=1);
 
-require_once __DIR__ . '/../init_application.php';
+$app = require __DIR__ . '/../init_application.php';
+
+$response = $app
+    ->setRequest(
+        'MakeTransactionRecurring',
+        [
+            'transactionId' => $config->get('transactionId'),
+        ],
+        [
+            'RecurringTransaction' => [
+                'amount' => [
+                    'amount' => 10,
+                    'currency' => 'EUR'
+                ],
+                'description' => 'Test recurring',
+                'extra1' => 'Extra 1',
+                'extra2' => 'Extra 2',
+                'extra3' => 'Extra 3',
+            ],
+        ]
+    )
+    ->run()
+;
+
+print_response($response);
+
+/*require_once __DIR__ . '/../init_application.php';
 
 use PayNL\Sdk\{
     Api,
@@ -36,4 +62,4 @@ $response = (new Api($authAdapter))
 
 echo '<pre/>' . PHP_EOL .
     var_export($response, true)
-;
+;*/

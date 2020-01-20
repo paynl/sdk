@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace PayNL\Sdk\Request\Transactions;
 
 use PayNL\Sdk\{
+    Exception\MissingParamException,
     Request\AbstractRequest,
-    Transformer\TransformerInterface,
-    Transformer\Transaction as TransactionTransformer
+    Request\Parameter\TransactionIdTrait
 };
-use PayNL\Sdk\Request\Parameter\TransactionIdTrait;
 
 /**
  * Class Tokenize
@@ -21,22 +20,15 @@ class Tokenize extends AbstractRequest
     use TransactionIdTrait;
 
     /**
-     * Tokenize constructor.
-     *
-     * @param string $transactionId
-     * @param string $cardIdOrAuthToken
+     * @inheritDoc
      */
-    public function __construct(string $transactionId, string $cardIdOrAuthToken)
+    public function init(): void
     {
-        $body = [
-            'companyCardId'    => strpos($cardIdOrAuthToken, 'VY-') === 0 ? $cardIdOrAuthToken : '',
-            'companyCardToken' => strpos($cardIdOrAuthToken, 'VY-') !== 0 ? $cardIdOrAuthToken : '',
-        ];
-
-        unset($body[array_search('', $body, true)]);
-
-        $this->setTransactionId($transactionId)
-            ->setBody((object)$body);
+        $transactionId = (string)$this->getParam('transactionId');
+        if (null === $transactionId) {
+            throw new MissingParamException('Missing param!');
+        }
+        $this->setTransactionId($transactionId);
     }
 
     /**
@@ -53,13 +45,5 @@ class Tokenize extends AbstractRequest
     public function getMethod(): string
     {
         return static::METHOD_PATCH;
-    }
-
-    /**
-     * @return TransactionTransformer
-     */
-    public function getTransformer(): TransformerInterface
-    {
-        return new TransactionTransformer();
     }
 }

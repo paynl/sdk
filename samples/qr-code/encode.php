@@ -68,7 +68,7 @@ foreach (['qrUuid', 'qrIdeal', 'qrBancontact'] as $requestType) {
                     </tr>
                     <tr>
                         <td>QR code from base64 encoded string</td>
-                        <td><img src=\"data:image/png;base64,{$qr->getImageContents()}\" title=\"Base64 encoded QR code\" /></td>
+                        <td><img src=\"data:image/png;base64,{$qr->getContents()}\" title=\"Base64 encoded QR code\" /></td>
                     </tr>
                     <tr>
                         <td>Link to QR code</td>

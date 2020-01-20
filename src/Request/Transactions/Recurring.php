@@ -5,12 +5,10 @@ declare(strict_types=1);
 namespace PayNL\Sdk\Request\Transactions;
 
 use PayNL\Sdk\{
+    Exception\MissingParamException,
     Request\AbstractRequest,
-    Model\RecurringTransaction,
-    Transformer\TransformerInterface,
-    Transformer\NoContent as NoContentTransformer
+    Request\Parameter\TransactionIdTrait
 };
-use PayNL\Sdk\Request\Parameter\TransactionIdTrait;
 
 /**
  * Class Recurring
@@ -22,16 +20,15 @@ class Recurring extends AbstractRequest
     use TransactionIdTrait;
 
     /**
-     * Recurring constructor.
-     *
-     * @param string $transactionId
-     * @param RecurringTransaction $recurringTransaction
+     * @inheritDoc
      */
-    public function __construct(string $transactionId, RecurringTransaction $recurringTransaction)
+    public function init(): void
     {
-        $this->setTransactionId($transactionId)
-            ->setBody($recurringTransaction)
-        ;
+        $transactionId = (string)$this->getParam('transactionId');
+        if (null === $transactionId) {
+            throw new MissingParamException('Missing param!');
+        }
+        $this->setTransactionId($transactionId);
     }
 
     /**
@@ -48,13 +45,5 @@ class Recurring extends AbstractRequest
     public function getMethod(): string
     {
         return static::METHOD_POST;
-    }
-
-    /**
-     * @return NoContentTransformer
-     */
-    public function getTransformer(): TransformerInterface
-    {
-        return new NoContentTransformer();
     }
 }

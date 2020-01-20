@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Request;
 
-use PayNL\Sdk\{Common\DebugAwareInitializer,
+use PayNL\Sdk\{
     Config\ProviderInterface as ConfigProviderInterface,
-    Common\ManagerFactory};
+    Common\ManagerFactory,
+    Common\DebugAwareInitializer
+};
 
 /**
  * Class Manager

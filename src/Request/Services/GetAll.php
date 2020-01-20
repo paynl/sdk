@@ -4,11 +4,7 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Request\Services;
 
-use PayNL\Sdk\{
-    Request\AbstractRequest,
-    Transformer\TransformerInterface,
-    Transformer\Services as ServicesTransformer
-};
+use PayNL\Sdk\Request\AbstractRequest;
 
 /**
  * Class GetAll
@@ -31,13 +27,5 @@ class GetAll extends AbstractRequest
     public function getMethod(): string
     {
         return static::METHOD_GET;
-    }
-
-    /**
-     * @return ServicesTransformer
-     */
-    public function getTransformer(): TransformerInterface
-    {
-        return new ServicesTransformer();
     }
 }

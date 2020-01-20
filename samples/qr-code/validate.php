@@ -2,22 +2,26 @@
 
 declare(strict_types=1);
 
-require_once __DIR__ . '/../init_application.php';
+$app = require __DIR__ . '/../init_application.php';
 
-use PayNL\Sdk\{
-    Api,
-    Config
-};
-use PayNL\Sdk\Request\Qr\Validate as ValidateQrRequest;
-
-$authAdapter = getAuthAdapter();
-
-$request = (new ValidateQrRequest('bd4a29ba-1066-2020-4142-434430313233', '0123456789abcdef0123456789abcdef01234567'))
-    ->setDebug((bool)Config::getInstance()->get('debug'));
-
-$response = (new Api($authAdapter))
-    ->handleCall($request);
-
-echo '<pre/>' . PHP_EOL .
-    var_export($response, true)
+$response = $app
+    ->setRequest(
+        'ValidateQr',
+        [],
+        [
+            'Qr' => [
+                'uuid'          => '310021cb-3167-1271-4142-434430313233',
+                'secret'        => '0123456789ABCDEF0123456789ABCDEF01234567',
+            ],
+        ]
+    )
+    ->run()
 ;
+
+echo '<pre>';
+if (201 === $response->getStatusCode()) {
+    echo 'OK';
+} else {
+    echo 'Not OK';
+}
+echo '</pre>';

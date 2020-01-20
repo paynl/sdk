@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace PayNL\Sdk\Request\Services;
 
 use PayNL\Sdk\{
+    Exception\MissingParamException,
     Request\AbstractRequest,
-    Transformer\TransformerInterface,
-    Transformer\PaymentMethods as PaymentMethodTransformer
+    Request\Parameter\ServiceIdTrait
 };
-use PayNL\Sdk\Request\Parameter\ServiceIdTrait;
 
 /**
  * Class GetPaymentMethods
@@ -21,12 +20,15 @@ class GetPaymentMethods extends AbstractRequest
     use ServiceIdTrait;
 
     /**
-     * GetPaymentMethods constructor.
-     *
-     * @param string $serviceId
+     * @inheritDoc
      */
-    public function __construct(string $serviceId)
+    public function init(): void
     {
+        $serviceId = (string)$this->getParam('serviceId');
+        if (null === $serviceId) {
+            throw new MissingParamException('Missing param!');
+        }
+
         $this->setServiceId($serviceId);
     }
 
@@ -44,13 +46,5 @@ class GetPaymentMethods extends AbstractRequest
     public function getMethod(): string
     {
         return static::METHOD_GET;
-    }
-
-    /**
-     * @return PaymentMethodTransformer
-     */
-    public function getTransformer(): TransformerInterface
-    {
-        return new PaymentMethodTransformer();
     }
 }

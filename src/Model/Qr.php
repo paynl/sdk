@@ -43,6 +43,15 @@ class Qr implements ModelInterface, JsonSerializable
     protected $secret;
 
     /**
+     * @required
+     *
+     * @var Amount
+     */
+    protected $amount;
+
+    /**
+     * @required
+     *
      * @var string
      */
     protected $reference;
@@ -58,9 +67,24 @@ class Qr implements ModelInterface, JsonSerializable
     protected $referenceType = self::REFERENCE_TYPE_STRING;
 
     /**
-     * @var PaymentMethod|null
+     * @var PaymentMethod
      */
     protected $paymentMethod;
+
+    /**
+     * @var string
+     */
+    protected $externalPaymentLink = '';
+
+    /**
+     * @var string
+     */
+    protected $paymentLink = '';
+
+    /**
+     * @var string
+     */
+    protected $imageContents = '';
 
     /**
      * @return string
@@ -116,6 +140,25 @@ class Qr implements ModelInterface, JsonSerializable
     public function setSecret(string $secret): self
     {
         $this->secret = $secret;
+        return $this;
+    }
+
+    /**
+     * @return Amount
+     */
+    public function getAmount(): Amount
+    {
+        return $this->amount;
+    }
+
+    /**
+     * @param Amount $amount
+     *
+     * @return Qr
+     */
+    public function setAmount(Amount $amount): self
+    {
+        $this->amount = $amount;
         return $this;
     }
 
@@ -203,6 +246,63 @@ class Qr implements ModelInterface, JsonSerializable
     public function setPaymentMethod(PaymentMethod $paymentMethod): self
     {
         $this->paymentMethod = $paymentMethod;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getExternalPaymentLink(): string
+    {
+        return $this->externalPaymentLink;
+    }
+
+    /**
+     * @param string $externalPaymentLink
+     *
+     * @return Qr
+     */
+    public function setExternalPaymentLink(string $externalPaymentLink): self
+    {
+        $this->externalPaymentLink = $externalPaymentLink;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPaymentLink(): string
+    {
+        return $this->paymentLink;
+    }
+
+    /**
+     * @param string $paymentLink
+     *
+     * @return Qr
+     */
+    public function setPaymentLink(string $paymentLink): self
+    {
+        $this->paymentLink = $paymentLink;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getImageContents(): string
+    {
+        return $this->imageContents;
+    }
+
+    /**
+     * @param string $imageContents
+     *
+     * @return Qr
+     */
+    public function setImageContents(string $imageContents): self
+    {
+        $this->imageContents = $imageContents;
         return $this;
     }
 }

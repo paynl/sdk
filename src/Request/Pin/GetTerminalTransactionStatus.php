@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Request\Pin;
 
-use PayNL\Sdk\{Exception\MissingParamException,
+use PayNL\Sdk\{
+    Exception\MissingParamException,
     Request\AbstractRequest,
-    Transformer\TransformerInterface,
-    Transformer\TerminalTransaction as TerminalTransactionTransformer};
-use PayNL\Sdk\Request\Parameter\TerminalTransactionIdTrait;
+    Request\Parameter\TerminalTransactionIdTrait
+};
 
 /**
  * Class GetStatus
@@ -46,13 +46,5 @@ class GetTerminalTransactionStatus extends AbstractRequest
     public function getMethod(): string
     {
         return static::METHOD_GET;
-    }
-
-    /**
-     * @return TerminalTransactionTransformer
-     */
-    public function getTransformer(): TransformerInterface
-    {
-        return new TerminalTransactionTransformer();
     }
 }

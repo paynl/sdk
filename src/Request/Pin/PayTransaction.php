@@ -5,12 +5,10 @@ declare(strict_types=1);
 namespace PayNL\Sdk\Request\Pin;
 
 use PayNL\Sdk\{
+    Exception\MissingParamException,
     Request\AbstractRequest,
-    Model\Terminal,
-    Transformer\TransformerInterface,
-    Transformer\TerminalTransaction as TerminalTransactionTransformer
+    Request\Parameter\TransactionIdTrait
 };
-use PayNL\Sdk\Request\Parameter\TransactionIdTrait;
 
 /**
  * Class CreatePayment
@@ -22,16 +20,18 @@ class PayTransaction extends AbstractRequest
     use TransactionIdTrait;
 
     /**
-     * PayTransaction constructor.
-     *
-     * @param string $transactionId
-     * @param Terminal $terminal
+     * @inheritDoc
      */
-    public function __construct(string $transactionId, Terminal $terminal)
+    public function init(): void
     {
-        $this->setTransactionId($transactionId)
-            ->setBody($terminal)
-        ;
+        $transactionId = (string)$this->getParam('transactionId');
+        if (true === empty($transactionId)) {
+            throw new MissingParamException(
+                'Missing transaction id'
+            );
+        }
+
+        $this->setTransactionId($transactionId);
     }
 
     /**
@@ -48,13 +48,5 @@ class PayTransaction extends AbstractRequest
     public function getMethod(): string
     {
         return static::METHOD_POST;
-    }
-
-    /**
-     * @return TerminalTransactionTransformer
-     */
-    public function getTransformer(): TransformerInterface
-    {
-        return new TerminalTransactionTransformer();
     }
 }

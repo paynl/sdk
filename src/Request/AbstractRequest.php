@@ -397,7 +397,7 @@ abstract class AbstractRequest implements RequestInterface, DebugAwareInterface,
             }
 
             $statusCode = $re->getCode();
-            $body = $this->getErrorsString((int)$statusCode, $rawBody);
+            $body = $this->getErrorsString((int)$statusCode, $errorMessages);
         } catch (GuzzleException | ExceptionInterface $e) {
             $statusCode = $e->getCode() ?? 500;
             $rawBody = 'Error: ' . $e->getMessage() . ' (' . $statusCode . ')';
@@ -422,6 +422,12 @@ abstract class AbstractRequest implements RequestInterface, DebugAwareInterface,
      */
     private function getErrorsString(int $statusCode, string $rawBody): string
     {
+        // if given raw body already is Json return that
+        if (false !== strpos($rawBody, '{"errors":')) {
+            return $rawBody;
+        }
+
+
         return (new JsonEncoder())->encode([
            'errors' => (object)[
                'general' => (object)[

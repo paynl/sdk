@@ -4,12 +4,7 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Request\Qr;
 
-use PayNL\Sdk\{
-    Request\AbstractRequest,
-    Model\Qr as QrModel,
-    Transformer\TransformerInterface,
-    Transformer\Simple as SimpleTransformer
-};
+use PayNL\Sdk\Request\AbstractRequest;
 
 /**
  * Class Encode
@@ -18,11 +13,6 @@ use PayNL\Sdk\{
  */
 class Encode extends AbstractRequest
 {
-    public function __construct(QrModel $qr)
-    {
-        $this->setBody($qr);
-    }
-
     /**
      * @inheritDoc
      */
@@ -37,13 +27,5 @@ class Encode extends AbstractRequest
     public function getMethod(): string
     {
         return static::METHOD_POST;
-    }
-
-    /**
-     * @return SimpleTransformer
-     */
-    public function getTransformer(): TransformerInterface
-    {
-        return new SimpleTransformer();
     }
 }

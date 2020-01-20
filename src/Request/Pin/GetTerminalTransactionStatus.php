@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Request\Pin;
 
-use PayNL\Sdk\{
+use PayNL\Sdk\{Exception\MissingParamException,
     Request\AbstractRequest,
     Transformer\TransformerInterface,
-    Transformer\TerminalTransaction as TerminalTransactionTransformer
-};
+    Transformer\TerminalTransaction as TerminalTransactionTransformer};
 use PayNL\Sdk\Request\Parameter\TerminalTransactionIdTrait;
 
 /**
@@ -21,12 +20,15 @@ class GetTerminalTransactionStatus extends AbstractRequest
     use TerminalTransactionIdTrait;
 
     /**
-     * GetTerminalTransactionStatus constructor.
-     *
-     * @param string $terminalTransactionId
+     * @inheritDoc
      */
-    public function __construct(string $terminalTransactionId)
+    public function init(): void
     {
+        $terminalTransactionId = (string)$this->getParam('terminalTransactionId');
+        if (null === $terminalTransactionId) {
+            throw new MissingParamException('Missing param!');
+        }
+
         $this->setTerminalTransactionId($terminalTransactionId);
     }
 

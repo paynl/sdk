@@ -2,7 +2,18 @@
 
 declare(strict_types=1);
 
-require_once __DIR__ . '/../init.php';
+$app = require __DIR__ . '/../init_application.php';
+
+$response = $app
+    ->setRequest('GetReceipt', [
+        'terminalTransactionId' => $config->get('terminalTransactionId'),
+    ])
+    ->run()
+;
+
+print_response($response);
+
+/*require_once __DIR__ . '/../init_application.php';
 
 use PayNL\Sdk\{
     Application\Application,
@@ -19,7 +30,7 @@ $response = Application::init(Config::getInstance()->toArray())
 // NOTE: only approved trademarks are given to the response merchant object, the new trademark isn't instantly approved
 echo '<pre/>' . PHP_EOL .
     var_export($response->getBody(), true)
-;
+;*/
 
 //use PayNL\Sdk\{
 //    Api,

@@ -57,7 +57,7 @@
       "Tests\\Unit\\PayNL\\Sdk\\": "tests/unit"
     },
     "files": [
-      "./samples/init.php"
+      "samples/init_application.php"
     ]
   },
   "minimum-stability": "stable",

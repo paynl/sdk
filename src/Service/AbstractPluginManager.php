@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace PayNL\Sdk\Service;
 
 use Psr\Container\ContainerInterface;
-use PayNL\Sdk\Common\InvokableFactory;
-use Zend\Stdlib\ArrayUtils;
+use PayNL\Sdk\{
+    Common\InvokableFactory,
+    Exception\InvalidServiceException,
+    Exception\ServiceNotFoundException
+};
 
 /**
  * Class AbstractPluginManager
@@ -16,6 +19,8 @@ use Zend\Stdlib\ArrayUtils;
 abstract class AbstractPluginManager extends Manager
 {
     /**
+     * Class name that the created instance must be instanced of
+     *
      * @var string
      */
     protected $instanceOf = '';
@@ -28,15 +33,19 @@ abstract class AbstractPluginManager extends Manager
      */
     public function __construct($parentLocator = null, array $config = [])
     {
-        if (true === array_key_exists('instance_of', $config) && true === is_string($config['instance_of'])) {
-            $this->instanceOf = $config['instance_of'];
-        }
-
         parent::__construct($config);
 
         $this->creationContext = $parentLocator instanceof ContainerInterface ? $parentLocator : $this;
     }
 
+    /**
+     * Override configure method so it can validate the service instances.
+     *
+     * If an instance passed to the services configuration is invalid for the plugin manager it will
+     *  throw an InvalidServiceException
+     *
+     * @inheritDoc
+     */
     public function configure(array $config): Manager
     {
         if (true === isset($config['services'])) {
@@ -50,13 +59,29 @@ abstract class AbstractPluginManager extends Manager
         return $this;
     }
 
+    /**
+     * Validate the given instance if its suffices the set "instanceOf" property
+     *
+     * @param $instance
+     *
+     * @throws InvalidServiceException when the plugin created is invalid for the plugin context
+     *
+     * @return void
+     */
     public function validate($instance): void
     {
         if (true === empty($this->instanceOf) || $instance instanceof $this->instanceOf) {
             return;
         }
 
-        throw new \Exception('Wrong class');
+        throw new InvalidServiceException(
+            sprintf(
+                'Plugin manager "%s" expects an instance of "%s", but "%s" was given',
+                __CLASS__,
+                $this->instanceOf,
+                true === is_object($instance) ? get_class($instance) : gettype($instance)
+            )
+        );
     }
 
     /**
@@ -68,13 +93,32 @@ abstract class AbstractPluginManager extends Manager
     {
         if (false === $this->has($name)) {
             if (false === class_exists($name)) {
-                throw new \Exception(sprintf('Plugin with name "%s" not found', $name));
+                throw new ServiceNotFoundException(
+                    sprintf(
+                        'Plugin with name "%s" not found in plugin manager "%s"',
+                        $name,
+                        static::class
+                    )
+                );
             }
 
             $this->setFactory($name, InvokableFactory::class);
         }
 
-        $instance = true === empty($options) ? parent::get($name) : $this->build($name, $options);
+        $instance = (true === empty($options) ? parent::get($name) : $this->build($name, $options));
+        $this->validate($instance);
+        return $instance;
+    }
+
+    /**
+     * Extend the parent so it can validate that the created instance validates the
+     *  set "instanceOf"
+     *
+     * @inheritDoc
+     */
+    public function build(string $name, array $options = null)
+    {
+        $instance =  parent::build($name, $options);
         $this->validate($instance);
         return $instance;
     }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Model;
 
-use PayNL\Sdk\Request\RequestInterface;
 use PayNL\Sdk\Service\AbstractPluginManager;
 
 /**
@@ -14,6 +13,11 @@ use PayNL\Sdk\Service\AbstractPluginManager;
  */
 class Manager extends AbstractPluginManager
 {
+    /**
+     * @var string
+     *
+     * @see AbstractPluginManager::$instanceOf
+     */
     protected $instanceOf = ModelInterface::class;
 
 }

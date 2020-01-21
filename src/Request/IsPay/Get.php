@@ -7,8 +7,7 @@ namespace PayNL\Sdk\Request\IsPay;
 use PayNL\Sdk\{
     Exception\InvalidArgumentException,
     Exception\MissingParamException,
-    Request\AbstractRequest,
-    Validator\InputType
+    Request\AbstractRequest
 };
 
 /**
@@ -53,7 +52,7 @@ class Get extends AbstractRequest
             );
         }
 
-        $validator = new InputType();
+        $validator = $this->getValidatorManager()->get('InputType');
         if (false === $validator->isValid($value, 'string') && false === $validator->isValid($value, 'int')) {
             throw new InvalidArgumentException(
                 implode(PHP_EOL, $validator->getMessages())

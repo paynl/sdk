@@ -23,8 +23,8 @@ use PayNL\Sdk\{
     Response\Response,
     Exception\InvalidArgumentException,
     Filter\FilterInterface,
-    Validator\ObjectInstance,
-    Validator\RequiredMembers as RequiredMemberValidator
+    Validator\ValidatorManagerAwareInterface,
+    Validator\ValidatorManagerAwareTrait
 };
 use Symfony\Component\Serializer\Encoder\{
     JsonEncoder,
@@ -39,9 +39,13 @@ use Symfony\Component\Serializer\Encoder\{
  * @SuppressWarnings(PHPMD.NumberOfChildren)
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
-abstract class AbstractRequest implements RequestInterface, DebugAwareInterface, OptionsAwareInterface
+abstract class AbstractRequest implements
+    RequestInterface,
+    DebugAwareInterface,
+    OptionsAwareInterface,
+    ValidatorManagerAwareInterface
 {
-    use DebugAwareTrait, OptionsAwareTrait;
+    use DebugAwareTrait, OptionsAwareTrait, ValidatorManagerAwareTrait;
 
     /*
      * Tag name declaration for XML request string
@@ -74,19 +78,17 @@ abstract class AbstractRequest implements RequestInterface, DebugAwareInterface,
     protected $filters = [];
 
     /**
-     * @var RequiredMemberValidator
-     */
-    protected $requiredMembersValidator;
-
-    /**
      * @var array
      */
     protected $params = [];
 
-    public function __construct(RequiredMemberValidator $requiredMembersValidator, array $options = [])
+    /**
+     * AbstractRequest constructor.
+     *
+     * @param array $options
+     */
+    public function __construct(array $options = [])
     {
-        $this->requiredMembersValidator = $requiredMembersValidator;
-
         $this->setOptions($options);
 
         if ($this->hasOption('params')) {
@@ -100,8 +102,6 @@ abstract class AbstractRequest implements RequestInterface, DebugAwareInterface,
         if ($this->hasOption('format') && true === is_string($this->getOption('format'))) {
             $this->setFormat($this->getOption('format'));
         }
-
-        $this->init();
     }
 
     public function init(): void
@@ -288,7 +288,7 @@ abstract class AbstractRequest implements RequestInterface, DebugAwareInterface,
         // reset the filters
         $this->filters = [];
 
-        $validator = new ObjectInstance();
+        $validator = $this->getValidatorManager()->get('ObjectInstance');
         foreach ($filters as $filter) {
             if (false === $validator->isValid($filter, FilterInterface::class)) {
                 throw new InvalidArgumentException(
@@ -350,6 +350,7 @@ abstract class AbstractRequest implements RequestInterface, DebugAwareInterface,
      */
     public function execute(Response $response): void
     {
+        $this->init();
         $uri = $this->getUri();
         $filters = $this->getFilters();
         if (0 < count($filters)) {
@@ -440,7 +441,7 @@ abstract class AbstractRequest implements RequestInterface, DebugAwareInterface,
 
     protected function validateBody(ModelInterface $body): void
     {
-        $validator = $this->requiredMembersValidator;
+        $validator = $this->getValidatorManager()->get('RequiredMembers');
 
         $isValid = $validator->isValid($this);
         if (false === $isValid) {
@@ -449,7 +450,7 @@ abstract class AbstractRequest implements RequestInterface, DebugAwareInterface,
             $prev = null;
             foreach ($validator->getMessages() as $type => $message) {
                 $exceptionClass = MissingRequiredMemberException::class;
-                if (true === in_array($type, [RequiredMemberValidator::MSG_EMPTY_MEMBER, RequiredMemberValidator::MSG_EMPTY_MEMBERS], true)) {
+                if (true === in_array($type, [$validator::MSG_EMPTY_MEMBER, $validator::MSG_EMPTY_MEMBERS], true)) {
                     $exceptionClass = EmptyRequiredMemberException::class;
                 }
                 $e = new $exceptionClass($message, 500, ($c++ !== 0 ? $prev : null));

@@ -27,10 +27,7 @@ class Factory implements FactoryInterface
         $options['format'] = $config['request']['format'] ?? RequestInterface::FORMAT_OBJECTS;
 
         /** @var AbstractRequest $request */
-        $request = new $requestedName(
-            $container->get('validatorManager')->get('RequiredMembers'),
-            $options
-        );
+        $request = new $requestedName($options);
 
         return $request;
     }

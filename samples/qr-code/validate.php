@@ -9,7 +9,8 @@ use PayNL\Sdk\Response\ResponseInterface;
 $response = $app
     ->setRequest(
         'ValidateQr',
-        [],
+        null,
+        null,
         [
             'Qr' => [
                 'uuid'          => '310021cb-3167-1271-4142-434430313233',

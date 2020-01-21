@@ -48,7 +48,8 @@ foreach (['qrUuid', 'qrIdeal', 'qrBancontact'] as $requestType) {
     $response = $app
         ->setRequest(
             'EncodeQr',
-            [],
+            null,
+            null,
             [
                 'Qr' => $requests[$requestType],
             ]

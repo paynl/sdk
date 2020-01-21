@@ -12,6 +12,7 @@ $response = $app
         [
             'serviceId' => 'SL-1066-2020',
         ],
+        null,
         [
             'ServicePaymentLink' => [
                 'securityMode' => ServicePaymentLink::SECURITY_MODE_0,

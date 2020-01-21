@@ -5,14 +5,17 @@ declare(strict_types=1);
 namespace PayNL\Sdk\Filter;
 
 /**
- * Class ServiceId
+ * Class State
  *
  * @package PayNL\Sdk\Filter
  */
-class ServiceId extends AbstractScalar
+class State extends AbstractScalar
 {
+    /**
+     * @inheritDoc
+     */
     public function getName(): string
     {
-        return 'serviceId';
+        return 'state';
     }
 }

@@ -7,7 +7,8 @@ $app = require __DIR__ . '/../init_application.php';
 $response = $app
     ->setRequest(
         'CreateDirectdebit',
-        [],
+        null,
+        null,
         [
             'Mandate' => [
                 'serviceId' => 'SL-3490-4320',

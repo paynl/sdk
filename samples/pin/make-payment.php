@@ -10,6 +10,7 @@ $response = $app
         [
             'transactionId' => $config->get('transactionId'),
         ],
+        null,
         [
             'Terminal' => [
                 'id' => $config->get('terminalId'),

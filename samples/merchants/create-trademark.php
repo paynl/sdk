@@ -10,6 +10,7 @@ $response = $app
         [
             'merchantId' => $config->get('merchantId'),
         ],
+        null,
         [
             'Trademark' => [
                 'name' => 'TestTrademark' . random_int(10, 9999),

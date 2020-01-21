@@ -12,7 +12,8 @@ use PayNL\Sdk\Model\{
 $response = $app
     ->setRequest(
         'CreateTransaction',
-        [],
+        null,
+        null,
         [
             'Transaction' => [
                 'serviceId' => 'SL-3490-4320',

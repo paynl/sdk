@@ -111,7 +111,7 @@ class Application implements DebugAwareInterface
         return $this->request;
     }
 
-    public function setRequest($request, array $params = [], $body = null): self
+    public function setRequest($request, array $params = null, array $filters = null, $body = null): self
     {
         if (null !== $body) {
             if (true === is_array($body)) {
@@ -135,8 +135,9 @@ class Application implements DebugAwareInterface
         if (true === is_string($request)) {
             $request = $this->serviceManager->get('requestManager')
                 ->build($request, [
-                    'params' => $params,
-                    'body'   => $body,
+                    'params'  => $params ?: [],
+                    'filters' => $filters ?: [],
+                    'body'    => $body,
                 ])
             ;
         } elseif (false === ($request instanceof AbstractRequest)) {

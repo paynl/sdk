@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PayNL\Sdk\Hydrator;
 
 use PayNL\Sdk\Common\FactoryInterface;
+use PayNL\Sdk\Validator\ValidatorManagerAwareInterface;
 use Psr\Container\ContainerInterface;
 
 /**
@@ -16,6 +17,10 @@ class Factory implements FactoryInterface
 {
     public function __invoke(ContainerInterface $container, string $requestedName, array $options = null)
     {
-        return new $requestedName($container->get('hydratorManager'), $container->get('modelManager'));
+        $hydrator = new $requestedName($container->get('hydratorManager'), $container->get('modelManager'));
+        if ($hydrator instanceof ValidatorManagerAwareInterface) {
+            $hydrator->setValidatorManager($container->get('validatorManager'));
+        }
+        return $hydrator;
     }
 }

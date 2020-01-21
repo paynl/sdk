@@ -4,20 +4,34 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Common;
 
-use PayNL\Sdk\Hydrator\Manager as HydratorManager;
-use PayNL\Sdk\Request\Manager as RequestManager;
-use PayNL\Sdk\Model\Manager as ModelManager;
-use PayNL\Sdk\AuthAdapter\Manager as AuthAdapterManager;
-use PayNL\Sdk\Transformer\Manager as TransformerManager;
-use PayNL\Sdk\Mapper\Manager as MapperManager;
-use PayNL\Sdk\Validator\Manager as ValidatorManager;
-//use PayNL\Sdk\Filter\Manager as FilterManager;
 use Psr\Container\ContainerInterface;
-use PayNL\Sdk\Service\Config as ServiceConfig;
+use PayNL\Sdk\{
+    Service\AbstractPluginManager,
+    Service\Config as ServiceConfig,
+    Exception\ServiceNotCreatedException,
+    Hydrator\Manager as HydratorManager,
+    Request\Manager as RequestManager,
+    Model\Manager as ModelManager,
+    AuthAdapter\Manager as AuthAdapterManager,
+    Transformer\Manager as TransformerManager,
+    Mapper\Manager as MapperManager,
+    Validator\Manager as ValidatorManager,
+    Filter\Manager as FilterManager
+};
 
+/**
+ * Class ManagerFactory
+ *
+ * @package PayNL\Sdk\Common
+ */
 class ManagerFactory implements FactoryInterface
 {
-    public function __invoke(ContainerInterface $container, string $requestedName, array $options = null)
+    /**
+     * @inheritDoc
+     *
+     * @return AbstractPluginManager
+     */
+    public function __invoke(ContainerInterface $container, string $requestedName, array $options = null): AbstractPluginManager
     {
         switch ($requestedName) {
             case HydratorManager::class:
@@ -41,14 +55,29 @@ class ManagerFactory implements FactoryInterface
             case ValidatorManager::class:
                 $configKey = 'validators';
                 break;
-//            case FilterManager::class:
-//                $configKey = 'filters';
-//                break;
+            case FilterManager::class:
+                $configKey = 'filters';
+                break;
             default:
-                throw new \Exception('Manager not supported');
+                throw new ServiceNotCreatedException(
+                    sprintf(
+                        'Manager "%s" is not supported',
+                        $requestedName
+                    )
+                );
         }
 
         $manager = new $requestedName($container, $options ?? []);
+
+        if (false === ($manager instanceof AbstractPluginManager)) {
+            throw new ServiceNotCreatedException(
+                sprintf(
+                    'Manager "%s" must extend %s',
+                    $requestedName,
+                    AbstractPluginManager::class
+                )
+            );
+        }
 
         if (true === $container->has('serviceLoader')) {
             return $manager;

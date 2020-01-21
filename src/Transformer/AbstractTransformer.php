@@ -67,7 +67,7 @@ abstract class AbstractTransformer implements TransformerInterface, ModelAwareIn
                 return is_array($item) === true ? $context->filterNotNull($item) : $item;
             }, $input),
             static function ($item) {
-                return $item !== '' && $item !== null && (is_array($item) === false || 0 < count($item));
+                return $item !== '' && $item !== null;// && (is_array($item) === false || 0 < count($item));
             }
         );
     }

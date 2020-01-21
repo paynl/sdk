@@ -10,7 +10,8 @@ use PayNL\Sdk\Response\Response;
 $response = $app
     ->setRequest(
         'EncodeQr',
-        [],
+        null,
+        null,
         [
             'Qr' => [
                 'serviceId' => 'SL-0000-0000',

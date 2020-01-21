@@ -10,6 +10,7 @@ $response = $app
         [
             'transactionId' => $config->get('transactionId'),
         ],
+        null,
         [
             'CompanyCard' => [
                 // Choose one of the following keys to fill the correct data:

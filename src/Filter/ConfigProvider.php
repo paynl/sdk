@@ -46,32 +46,21 @@ class ConfigProvider implements ConfigProviderInterface
         ];
     }
 
+    /**
+     * @return array
+     */
     public function getFilterConfig(): array
     {
         return [
             'aliases' => [
-                'currency'        => 'Currency',
-                'endDate'         => 'EndDate',
-                'filters'         => 'Filters',
-                'groupBy'         => 'GroupBy',
-                'page'            => 'Page',
-                'paymentMethodId' => 'PaymentMethodId',
-                'serviceId'       => 'ServiceId',
-                'staffels'        => 'Staffels',
-                'startDate'       => 'StartDate',
-                'transactionId'   => 'TransactionId',
+                'country'         => Country::class,
+                'Country'         => Country::class,
+                'state'           => State::class,
+                'State'           => State::class,
             ],
-            'invokables' => [
-                'Currency'        => Currency::class,
-                'EndDate'         => EndDate::class,
-                'Filters'         => Filters::class,
-                'GroupBy'         => GroupBy::class,
-                'Page'            => Page::class,
-                'PaymentMethodId' => PaymentMethodId::class,
-                'ServiceId'       => ServiceId::class,
-                'Staffels'        => Staffels::class,
-                'StartDate'       => StartDate::class,
-                'TransactionId'   => TransactionId::class,
+            'factories' => [
+                Country::class         => Factory::class,
+                State::class           => Factory::class,
             ],
         ];
     }

@@ -10,6 +10,7 @@ $response = $app
         [
             'transactionId' => $config->get('transactionId'),
         ],
+        null,
         [
             'Qr' => [
                 'contents' => 'iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAMAAACahl6sAAADAFBMVEX///////////////////////' .

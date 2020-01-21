@@ -18,26 +18,8 @@ abstract class AbstractScalar implements FilterInterface
      */
     protected $value;
 
-    /**
-     * AbstractFilter constructor.
-     *
-     * @param mixed $value
-     *
-     * @throws InvalidArgumentException when given argument is not a string nor an integer
-     */
     public function __construct($value)
     {
-        if (true === is_int($value)) {
-            $value = (string)$value;
-        } elseif (false === is_string($value)) {
-            throw new InvalidArgumentException(
-                sprintf(
-                    '%s expects argument given to be a string or an integer, %s given',
-                    __METHOD__,
-                    is_object($value) === true ? get_class($value) : gettype($value)
-                )
-            );
-        }
         $this->setValue($value);
     }
 
@@ -50,12 +32,23 @@ abstract class AbstractScalar implements FilterInterface
     }
 
     /**
-     * @param string $value
+     * @inheritDoc
      *
-     * @return AbstractScalar
+     * @throws InvalidArgumentException when given argument is not a string nor an integer
      */
-    protected function setValue(string $value): self
+    public function setValue($value)
     {
+        if (true === is_int($value)) {
+            $value = (string)$value;
+        } elseif (false === is_string($value)) {
+            throw new InvalidArgumentException(
+                sprintf(
+                    '%s expects argument given to be a string or an integer, %s given',
+                    __METHOD__,
+                    is_object($value) === true ? get_class($value) : gettype($value)
+                )
+            );
+        }
         $this->value = $value;
         return $this;
     }

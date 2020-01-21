@@ -16,16 +16,17 @@ use ReflectionClass, ReflectionProperty, ReflectionException;
 class Entity extends AbstractHydrator
 {
     protected $collectionMap = [
-        'currencies' => 'currency',
-        'directdebits' => 'directdebit',
-        'errors' => 'error',
-        'terminals' => 'terminal',
-        'links' => 'link',
-        'paymentMethods' => 'paymentMethod',
-        'products' => 'product',
-        'services' => 'service',
-        'trademarks' => 'trademark',
+        // CollectionEntity(Alias) => EntryEntity(Alias)
         'contactMethods' => 'contactMethod',
+        'currencies'     => 'currency',
+        'directdebits'   => 'directdebit',
+        'errors'         => 'error',
+        'links'          => 'link',
+        'paymentMethods' => 'paymentMethod',
+        'products'       => 'product',
+        'services'       => 'service',
+        'terminals'      => 'terminal',
+        'trademarks'     => 'trademark',
     ];
 
     public function load($model)
@@ -100,16 +101,17 @@ class Entity extends AbstractHydrator
         if ($object instanceof ArrayCollection) {
             $collectionKey = $object->getCollectionName();
             if (false === array_key_exists($collectionKey, $data)) {
-                // assume the given array are currencies
+                // assume the given array are necessary single entities
                 $data = [
                     $collectionKey => $data,
                 ];
             }
 
             $singleName = $this->collectionMap[$collectionKey];
-            foreach ($data[$collectionKey] as $key => $currency) {
+            $collection = $data[$collectionKey] ?? [];
+            foreach ($collection as $key => $entryData) {
                 $data[$collectionKey][$key] = $this->hydratorManager->build(static::class)
-                    ->hydrate($currency, $this->modelManager->build($singleName))
+                    ->hydrate($entryData, $this->modelManager->build($singleName))
                 ;
             }
 

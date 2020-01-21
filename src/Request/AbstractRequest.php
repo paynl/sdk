@@ -35,9 +35,6 @@ use Symfony\Component\Serializer\Encoder\{
  * Class AbstractRequest
  *
  * @package PayNL\Sdk\Request
- *
- * @SuppressWarnings(PHPMD.NumberOfChildren)
- * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 abstract class AbstractRequest implements
     RequestInterface,
@@ -95,6 +92,10 @@ abstract class AbstractRequest implements
             $this->setParams($this->getOption('params'));
         }
 
+        if ($this->hasOption('filters')) {
+            $this->setFilters($this->getOption('filters'));
+        }
+
         if ($this->hasOption('body') && null !== $this->getOption('body')) {
             $this->setBody($this->getOption('body'));
         }
@@ -104,15 +105,28 @@ abstract class AbstractRequest implements
         }
     }
 
+    /**
+     * Method to execute custom code just before the request execute
+     *
+     * @return void
+     */
     public function init(): void
     {
     }
 
+    /**
+     * @return array
+     */
     public function getParams(): array
     {
         return $this->params;
     }
 
+    /**
+     * @param string|int $name
+     *
+     * @return mixed|null
+     */
     public function getParam($name)
     {
         if (false === $this->hasParam($name)) {
@@ -121,11 +135,21 @@ abstract class AbstractRequest implements
         return $this->params[$name];
     }
 
-    public function hasParam(string $name): bool
+    /**
+     * @param string|int $name
+     *
+     * @return bool
+     */
+    public function hasParam($name): bool
     {
         return array_key_exists($name, $this->params);
     }
 
+    /**
+     * @param array $params
+     *
+     * @return static
+     */
     public function setParams(array $params): self
     {
         $this->params = $params;
@@ -279,8 +303,6 @@ abstract class AbstractRequest implements
     /**
      * @param array $filters
      *
-     * @throws InvalidArgumentException when the given filters contain an invalid filter
-     *
      * @return AbstractRequest
      */
     public function setFilters(array $filters): self
@@ -288,13 +310,7 @@ abstract class AbstractRequest implements
         // reset the filters
         $this->filters = [];
 
-        $validator = $this->getValidatorManager()->get('ObjectInstance');
         foreach ($filters as $filter) {
-            if (false === $validator->isValid($filter, FilterInterface::class)) {
-                throw new InvalidArgumentException(
-                    implode(PHP_EOL, $validator->getMessages())
-                );
-            }
             $this->addFilter($filter);
         }
         return $this;
@@ -439,32 +455,45 @@ abstract class AbstractRequest implements
         ], JsonEncoder::FORMAT);
     }
 
-    protected function validateBody(ModelInterface $body): void
+    /**
+     * Validates the given body, when it contains a ModelInterface object, if it contains all
+     *  the required properties
+     *
+     * @param mixed $body
+     *
+     * @return void
+     */
+    protected function validateBody($body): void
     {
+        if (true === is_string($body)) {
+            return;
+        }
+
         $validator = $this->getValidatorManager()->get('RequiredMembers');
 
-        $isValid = $validator->isValid($this);
-        if (false === $isValid) {
-            // create exception stack
-            $c = 0;
-            $prev = null;
-            foreach ($validator->getMessages() as $type => $message) {
-                $exceptionClass = MissingRequiredMemberException::class;
-                if (true === in_array($type, [$validator::MSG_EMPTY_MEMBER, $validator::MSG_EMPTY_MEMBERS], true)) {
-                    $exceptionClass = EmptyRequiredMemberException::class;
-                }
-                $e = new $exceptionClass($message, 500, ($c++ !== 0 ? $prev : null));
-                $prev = $e;
-            }
-
-            throw new RuntimeException(
-                sprintf(
-                    'Object "%s" is not valid',
-                    __CLASS__
-                ),
-                500,
-                $prev
-            );
+        if (true === $validator->isValid($body)) {
+            return;
         }
+
+        // create exception stack
+        $c = 0;
+        $prev = null;
+        foreach ($validator->getMessages() as $type => $message) {
+            $exceptionClass = MissingRequiredMemberException::class;
+            if (true === in_array($type, [$validator::MSG_EMPTY_MEMBER, $validator::MSG_EMPTY_MEMBERS], true)) {
+                $exceptionClass = EmptyRequiredMemberException::class;
+            }
+            $e = new $exceptionClass($message, 500, ($c++ !== 0 ? $prev : null));
+            $prev = $e;
+        }
+
+        throw new RuntimeException(
+            sprintf(
+                'Object "%s" is not valid',
+                __CLASS__
+            ),
+            500,
+            $prev
+        );
     }
 }

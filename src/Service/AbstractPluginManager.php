@@ -118,7 +118,7 @@ abstract class AbstractPluginManager extends Manager
      */
     public function build(string $name, array $options = null)
     {
-        $instance =  parent::build($name, $options);
+        $instance = parent::build($name, $options);
         $this->validate($instance);
         return $instance;
     }

@@ -6,6 +6,7 @@ namespace PayNL\Sdk\Model;
 
 use JsonSerializable;
 use PayNL\Sdk\Common\JsonSerializeTrait;
+use PayNL\Sdk\Exception\InvalidServiceException;
 
 /**
  * Class Terminal
@@ -15,6 +16,24 @@ use PayNL\Sdk\Common\JsonSerializeTrait;
 class Terminal implements ModelInterface, JsonSerializable
 {
     use JsonSerializeTrait;
+
+    public const STATE_ALL      = 'all';
+    public const STATE_NEW      = 'new';
+    public const STATE_ORDERED  = 'ordered';
+    public const STATE_STOCKED  = 'stocked';
+    public const STATE_ACTIVE   = 'active';
+    public const STATE_INACTIVE = 'inactive';
+    public const STATE_RMA      = 'rma';
+
+    public const STATES = [
+        self::STATE_ALL,
+        self::STATE_NEW,
+        self::STATE_ORDERED,
+        self::STATE_STOCKED,
+        self::STATE_ACTIVE,
+        self::STATE_INACTIVE,
+        self::STATE_RMA
+    ];
 
     /**
      * @var string
@@ -108,6 +127,15 @@ class Terminal implements ModelInterface, JsonSerializable
      */
     public function setState(string $state): self
     {
+        if (false === in_array($state, self::STATES, true)) {
+            throw new InvalidServiceException(
+                sprintf(
+                    'State "%s" is not allowed, choose one of "%s"',
+                    $state,
+                    implode('", "', self::STATES)
+                )
+            );
+        }
         $this->state = $state;
         return $this;
     }

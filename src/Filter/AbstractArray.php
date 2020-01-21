@@ -16,14 +16,9 @@ abstract class AbstractArray implements FilterInterface
      */
     protected $values = [];
 
-    /**
-     * AbstractArray constructor.
-     *
-     * @param array $values
-     */
-    public function __construct(array $values)
+    public function __construct($value)
     {
-        $this->setValues($values);
+        $this->setValue($value);
     }
 
     /**
@@ -49,11 +44,22 @@ abstract class AbstractArray implements FilterInterface
     }
 
     /**
+     * @inheritDoc
+     */
+    public function setValue($value)
+    {
+        if (false === is_array($value)) {
+            $value = [$value];
+        }
+        return $this->setValues($value);
+    }
+
+    /**
      * @param array $values
      *
      * @return AbstractArray
      */
-    protected function setValues(array $values): self
+    public function setValues(array $values): self
     {
         $this->values = $values;
         return $this;

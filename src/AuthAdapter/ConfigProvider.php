@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\AuthAdapter;
 
-use PayNL\Sdk\Config\ProviderInterface as ConfigProviderInterface;
-use PayNL\Sdk\Common\ManagerFactory;
+use PayNL\Sdk\{
+    Config\ProviderInterface as ConfigProviderInterface,
+    Common\ManagerFactory
+};
 
 /**
  * Class ConfigProvider
@@ -52,6 +54,11 @@ class ConfigProvider implements ConfigProviderInterface
     }
 
     /**
+     * Declaration of the available adapters
+     *
+     * Method is used by the service loader to retrieve the configuration for the
+     *  corresponding service manager
+     *
      * @return array
      */
     public function getAuthAdapterConfig(): array

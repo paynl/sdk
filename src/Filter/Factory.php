@@ -14,6 +14,11 @@ use Psr\Container\ContainerInterface;
  */
 class Factory implements FactoryInterface
 {
+    /**
+     * @inheritDoc
+     *
+     * @return FilterInterface
+     */
     public function __invoke(ContainerInterface $container, string $requestedName, array $options = null): FilterInterface
     {
         $value = $options['value'] ?? null;

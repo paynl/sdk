@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Common;
 
-use PayNL\Sdk\Exception\ServiceNotCreatedException;
-use PayNL\Sdk\Exception\ServiceNotFoundException;
 use Psr\Container\ContainerInterface;
+use PayNL\Sdk\{
+    Exception\ServiceNotCreatedException,
+    Exception\ServiceNotFoundException
+};
 
 /**
  * Interface FactoryInterface

@@ -14,6 +14,11 @@ use Zend\Stdlib\ArrayUtils;
  */
 class Manager extends AbstractPluginManager
 {
+    /**
+     * @var string
+     *
+     * @see AbstractPluginManager::$instanceOf
+     */
     protected $instanceOf = TransformerInterface::class;
 
     public function getByRequest($requestName, array $options = []): TransformerInterface

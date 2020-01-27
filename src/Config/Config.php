@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Config;
 
+use Countable,
+    Iterator,
+    ArrayAccess
+;
 use PayNL\Sdk\Exception\UnexpectedValueException;
-use Countable, Iterator, ArrayAccess;
 
 /**
  * Class Config
@@ -58,8 +61,7 @@ class Config implements Countable, Iterator, ArrayAccess
     }
 
     /**
-     * @param $key
-     *
+     * @param string|int $key
      * @param null $default
      *
      * @return mixed
@@ -69,13 +71,18 @@ class Config implements Countable, Iterator, ArrayAccess
         return $this->data[$key] ?? $default;
     }
 
+    /**
+     * @param string|int $key
+     *
+     * @return mixed
+     */
     public function __get($key)
     {
         return $this->get($key);
     }
 
     /**
-     * @param $key
+     * @param string|int $key
      * @param mixed $value
      *
      * @return void
@@ -89,13 +96,19 @@ class Config implements Countable, Iterator, ArrayAccess
         $this->data[$key] = $value;
     }
 
+    /**
+     * @param string|int $key
+     * @param mixed $value
+     *
+     * @return void
+     */
     public function __set($key, $value): void
     {
         $this->set($key, $value);
     }
 
     /**
-     * @param $key
+     * @param string|int $key
      *
      * @return void
      */
@@ -106,13 +119,18 @@ class Config implements Countable, Iterator, ArrayAccess
         }
     }
 
+    /**
+     * @param string|int $key
+     *
+     * @return void
+     */
     public function __unset($key): void
     {
         $this->remove($key);
     }
 
     /**
-     * @param $key
+     * @param string|int $key
      *
      * @return bool
      */
@@ -122,7 +140,7 @@ class Config implements Countable, Iterator, ArrayAccess
     }
 
     /**
-     * @param $key
+     * @param string|int $key
      *
      * @return bool
      */
@@ -248,6 +266,8 @@ class Config implements Countable, Iterator, ArrayAccess
     }
 
     /**
+     * Merge the current config object with the given one
+     *
      * @param Config $mergeConfig
      *
      * @return Config

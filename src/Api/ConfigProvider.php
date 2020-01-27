@@ -21,6 +21,7 @@ class ConfigProvider implements ConfigProviderInterface
         return [
             'service_manager' => $this->getDependencyConfig(),
             'api' => [
+                // defaults:
                 'url'     => '',
                 'version' => 1,
             ],
@@ -34,8 +35,8 @@ class ConfigProvider implements ConfigProviderInterface
     {
         return [
             'aliases' => [
-                'Api'       => Api::class,
-                'api'       => Api::class,
+                'Api'        => Api::class,
+                'api'        => Api::class,
                 'ApiService' => Service::class,
                 'apiService' => Service::class,
             ],

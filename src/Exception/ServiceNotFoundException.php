@@ -11,6 +11,6 @@ use Psr\Container\NotFoundExceptionInterface;
  *
  * @package PayNL\Sdk\Exception
  */
-class ServiceNotFoundException extends InvalidArgumentException implements NotFoundExceptionInterface, ExceptionInterface
+class ServiceNotFoundException extends InvalidArgumentException implements NotFoundExceptionInterface
 {
 }

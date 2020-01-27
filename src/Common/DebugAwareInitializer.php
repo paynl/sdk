@@ -9,6 +9,9 @@ use Psr\Container\ContainerInterface;
 /**
  * Class DebugAwareInitializer
  *
+ * Check for the given instance if it's aware of the debug mode and set
+ *  the flag if that is the case
+ *
  * @package PayNL\Sdk\Common
  */
 class DebugAwareInitializer implements InitializerInterface

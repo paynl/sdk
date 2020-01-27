@@ -144,9 +144,9 @@ class Qr implements ModelInterface, JsonSerializable
     }
 
     /**
-     * @return Amount
+     * @return Amount|null
      */
-    public function getAmount(): Amount
+    public function getAmount(): ?Amount
     {
         return $this->amount;
     }

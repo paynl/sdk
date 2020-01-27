@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Filter;
 
-use PayNL\Sdk\Common\ManagerFactory;
-use PayNL\Sdk\Config\ProviderInterface as ConfigProviderInterface;
+use PayNL\Sdk\{
+    Config\ProviderInterface as ConfigProviderInterface,
+    Common\ManagerFactory
+};
 
 /**
  * Class ConfigProvider
@@ -47,20 +49,23 @@ class ConfigProvider implements ConfigProviderInterface
     }
 
     /**
+     * Declaration of the available classes for the filter manager, this method
+     * is used by the service loader to get the configuration for its manager
+     *
      * @return array
      */
     public function getFilterConfig(): array
     {
         return [
             'aliases' => [
-                'country'         => Country::class,
-                'Country'         => Country::class,
-                'state'           => State::class,
-                'State'           => State::class,
+                'country' => Country::class,
+                'Country' => Country::class,
+                'state'   => State::class,
+                'State'   => State::class,
             ],
             'factories' => [
-                Country::class         => Factory::class,
-                State::class           => Factory::class,
+                Country::class => Factory::class,
+                State::class   => Factory::class,
             ],
         ];
     }

@@ -9,6 +9,6 @@ namespace PayNL\Sdk\Exception;
  *
  * @package PayNL\Sdk\Exception
  */
-class InvalidServiceException extends RuntimeException implements ExceptionInterface
+class InvalidServiceException extends RuntimeException
 {
 }

@@ -18,6 +18,11 @@ abstract class AbstractScalar implements FilterInterface
      */
     protected $value;
 
+    /**
+     * AbstractScalar constructor.
+     *
+     * @param int|string $value
+     */
     public function __construct($value)
     {
         $this->setValue($value);

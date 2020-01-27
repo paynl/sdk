@@ -4,14 +4,18 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Api;
 
-use PayNL\Sdk\Request\RequestInterface;
-use PayNL\Sdk\Response\Response;
-use PayNL\Sdk\Response\ResponseInterface;
-use PayNL\Sdk\Service\Manager as ServiceManager;
-use PayNL\Sdk\Transformer\Response as ResponseTransformer;
+use PayNL\Sdk\{
+    Request\RequestInterface,
+    Response\Response,
+    Response\ResponseInterface,
+    Service\Manager as ServiceManager,
+    Transformer\Response as ResponseTransformer
+};
 
 /**
  * Class Service
+ *
+ * Api Services class which is used to handle the API by "servicing" it
  *
  * @package PayNL\Sdk\Api
  */
@@ -87,6 +91,11 @@ class Service
         return $this;
     }
 
+    /**
+     * Make the call to the endpoint by using the Api instance
+     *
+     * @return void
+     */
     public function handle(): void
     {
         $request = $this->getRequest();
@@ -102,6 +111,7 @@ class Service
 
         /** @var Response $response */
         $response = $this->getResponse();
+        // set the transformer for the response if needed!
         if (ResponseInterface::FORMAT_OBJECTS === $response->getFormat()) {
             $mapperManager = $this->serviceManager->get('mapperManager');
 
@@ -116,7 +126,7 @@ class Service
 
                 $transformer->setModel($model);
             }
-
+            // ... roll out!
             $response->setTransformer($transformer);
         }
 

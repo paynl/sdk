@@ -9,6 +9,6 @@ namespace PayNL\Sdk\Exception;
  *
  * @package PayNL\Sdk\Exception
  */
-class CyclicAliasException extends InvalidArgumentException implements ExceptionInterface
+class CyclicAliasException extends InvalidArgumentException
 {
 }

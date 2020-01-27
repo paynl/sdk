@@ -6,10 +6,7 @@ namespace PayNL\Sdk\Common;
 
 use JsonSerializable;
 use Doctrine\Common\Collections\ArrayCollection;
-use PayNL\Sdk\Exception\{
-    LogicException,
-    RuntimeException
-};
+use PayNL\Sdk\Exception\LogicException;
 
 /**
  * Trait JsonSerializeTrait
@@ -19,9 +16,9 @@ use PayNL\Sdk\Exception\{
 trait JsonSerializeTrait
 {
     /**
-     * @see JsonSerializable::jsonSerialize()
+     * Makes it possible to json serialize an object recursively
      *
-     * @throws RuntimeException when object is not valid based on the required members
+     * @see JsonSerializable::jsonSerialize()
      *
      * @return array
      */
@@ -34,6 +31,7 @@ trait JsonSerializeTrait
             return $this->toArray();
         }
 
+        // remove the empty properties
         return array_filter($vars, static function (&$var) {
             if (true === is_object($var) && true === method_exists($var, 'jsonSerialize')) {
                 /** @var JsonSerializable $var */
@@ -49,12 +47,12 @@ trait JsonSerializeTrait
     }
 
     /**
-     * Internal method to check if the current object which
-     * uses the trait and tries to json serialize implement
-     * the correct interface
+     * Internal method to check if the current object which uses the trait and tries to
+     *  json serialize implements the correct interface
+     *
+     * @throws LogicException
      *
      * @return void
-     * @throws LogicException
      */
     protected function checkInterfaceImplementation(): void
     {

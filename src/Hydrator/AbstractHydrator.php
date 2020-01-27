@@ -21,8 +21,6 @@ use Zend\Hydrator\ClassMethods;
  * Class AbstractHydrator
  *
  * @package PayNL\Sdk\Hydrator
- *
- * @SuppressWarnings(PHPMD.NumberOfChildren)
  */
 abstract class AbstractHydrator extends ClassMethods implements DebugAwareInterface, ValidatorManagerAwareInterface
 {
@@ -45,8 +43,6 @@ abstract class AbstractHydrator extends ClassMethods implements DebugAwareInterf
      * @param ModelManager $modelManager
      * @param bool $underscoreSeparatedKeys
      * @param bool $methodExistsCheck
-     *
-     * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
      */
     public function __construct(HydratorManager $hydratorManager, ModelManager $modelManager, $underscoreSeparatedKeys = true, $methodExistsCheck = false)
     {
@@ -73,24 +69,6 @@ abstract class AbstractHydrator extends ClassMethods implements DebugAwareInterf
         });
 
         return parent::hydrate($data, $object);
-    }
-
-    /**
-     * @param object $object
-     * @param string $shouldBeInstanceOf
-     *
-     * @throws InvalidArgumentException
-     *
-     * @return void
-     */
-    protected function validateGivenObject($object, string $shouldBeInstanceOf): void
-    {
-        $instanceValidator = $this->getValidatorManager()->get('ObjectInstanceValidator');
-        if (false === $instanceValidator->isValid($object, $shouldBeInstanceOf)) {
-            throw new InvalidArgumentException(
-                implode(PHP_EOL, $instanceValidator->getMessages())
-            );
-        }
     }
 
     /**

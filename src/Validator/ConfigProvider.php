@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Validator;
 
-use PayNL\Sdk\Common\InvokableFactory;
 use PayNL\Sdk\Common\ManagerFactory;
 use PayNL\Sdk\Config\ProviderInterface as ConfigProviderInterface;
 
@@ -15,6 +14,9 @@ use PayNL\Sdk\Config\ProviderInterface as ConfigProviderInterface;
  */
 class ConfigProvider implements ConfigProviderInterface
 {
+    /**
+     * @inheritDoc
+     */
     public function __invoke(): array
     {
         return [
@@ -29,6 +31,9 @@ class ConfigProvider implements ConfigProviderInterface
         ];
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getDependencyConfig(): array
     {
         return [
@@ -50,9 +55,9 @@ class ConfigProvider implements ConfigProviderInterface
                 'RequiredMembers' => RequiredMembers::class,
             ],
             'factories' => [
-                InputType::class => InvokableFactory::class,
-                ObjectInstance::class => InvokableFactory::class,
-                RequiredMembers::class => InvokableFactory::class,
+                InputType::class       => Factory::class,
+                ObjectInstance::class  => Factory::class,
+                RequiredMembers::class => Factory::class,
             ],
         ];
     }

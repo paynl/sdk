@@ -11,7 +11,17 @@ namespace PayNL\Sdk\Config;
  */
 interface ProviderInterface
 {
+    /**
+     * Makes the config provider object callable
+     *
+     * @return array
+     */
     public function __invoke(): array;
 
+    /**
+     * Integrate this method to declare the classes necessary
+     *
+     * @return array
+     */
     public function getDependencyConfig(): array;
 }

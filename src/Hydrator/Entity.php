@@ -6,7 +6,12 @@ namespace PayNL\Sdk\Hydrator;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use PayNL\Sdk\Exception\LogicException;
-use ReflectionClass, ReflectionProperty, ReflectionException;
+use PayNL\Sdk\Exception\RuntimeException;
+use PayNL\Sdk\Model\ModelInterface;
+use ReflectionClass,
+    ReflectionProperty,
+    ReflectionException
+;
 
 /**
  * Class Entity
@@ -15,6 +20,9 @@ use ReflectionClass, ReflectionProperty, ReflectionException;
  */
 class Entity extends AbstractHydrator
 {
+    /**
+     * @var array
+     */
     protected $collectionMap = [
         // CollectionEntity(Alias) => EntryEntity(Alias)
         'contactMethods' => 'contactMethod',
@@ -29,7 +37,27 @@ class Entity extends AbstractHydrator
         'trademarks'     => 'trademark',
     ];
 
-    public function load($model)
+    protected $scalarTypes = [
+        'string',
+        'int',
+        'integer',
+        'float',
+        'bool',
+        'boolean',
+        'array',
+    ];
+
+    /**
+     * Get the property info for the given model based on the
+     *  annotation tag "@var"
+     *
+     * @param ModelInterface $model
+     *
+     * @throws LogicException when a property within the object does not have a DocBlock
+     *
+     * @return array
+     */
+    public function load(ModelInterface $model)
     {
         $ref = null;
         try {
@@ -58,35 +86,38 @@ class Entity extends AbstractHydrator
         return $propertyInfo;
     }
 
+    /**
+     * @param array $data
+     * @param object $object
+     *
+     * @throws RuntimeException when given object isn't an instance of ModelInterface
+     *
+     * @return object
+     */
     public function hydrate(array $data, $object)
     {
+        if (false === ($object instanceof ModelInterface)) {
+            throw new RuntimeException(
+                sprintf(
+                    'Given object "%s" to "%s" is not an instance of "%s"',
+                    get_class($object),
+                    __METHOD__,
+                    ModelInterface::class
+                )
+            );
+        }
+
         if (true === array_key_exists('_links', $data)) {
             $data['links'] = $data['_links'];
             unset($data['_links']);
         }
 
-        if (true === $this->isDebug()) {
-//            $this->dumpDebugInfo('Given data for ' . get_class($object), $data);
-        }
-
+        /** @var ModelInterface $object */
         $propertyInfo = $this->load($object);
-        if (true === $this->isDebug()) {
-//            $this->dumpDebugInfo('Property info of ' . get_class($object), $propertyInfo);
-        }
-
-        $scalarTypes = [
-            'string',
-            'int',
-            'integer',
-            'float',
-            'bool',
-            'boolean',
-            'array',
-        ];
 
         foreach ($data as $key => $value) {
             $type = $propertyInfo[$key] ?? 'string';
-            if (false === in_array($type, $scalarTypes, true)) {
+            if (false === in_array($type, $this->scalarTypes, true)) {
                 if ($type === 'DateTime') {
                     $data[$key] = $this->getSdkDateTime($value);
                     continue;
@@ -99,6 +130,7 @@ class Entity extends AbstractHydrator
         }
 
         if ($object instanceof ArrayCollection) {
+            // TODO: introduce interface for collection models for method implementation
             $collectionKey = $object->getCollectionName();
             if (false === array_key_exists($collectionKey, $data)) {
                 // assume the given array are necessary single entities
@@ -119,5 +151,21 @@ class Entity extends AbstractHydrator
         }
 
         return parent::hydrate($data, $object);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function extract($object)
+    {
+        $data = parent::extract($object);
+        foreach ($data as $name => $value) {
+            if ($value instanceof ArrayCollection) {
+                $data[$name] = $value->toArray();
+            } elseif (true === is_object($value)) {
+                $data[$name] = $this->extract($value);
+            }
+        }
+        return $data;
     }
 }

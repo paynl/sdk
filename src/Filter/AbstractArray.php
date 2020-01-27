@@ -16,6 +16,11 @@ abstract class AbstractArray implements FilterInterface
      */
     protected $values = [];
 
+    /**
+     * AbstractArray constructor.
+     *
+     * @param array|int|string $value
+     */
     public function __construct($value)
     {
         $this->setValue($value);

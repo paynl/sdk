@@ -7,6 +7,9 @@ namespace PayNL\Sdk\Common;
 /**
  * Trait DebugTrait
  *
+ * Contains the necessary methods which are declared in the corresponding interface
+ * @see DebugAwareInterface
+ *
  * @package PayNL\Sdk
  */
 trait DebugAwareTrait
@@ -17,9 +20,7 @@ trait DebugAwareTrait
     protected $debug = false;
 
     /**
-     * @param boolean $debug
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setDebug(bool $debug)
     {
@@ -28,7 +29,7 @@ trait DebugAwareTrait
     }
 
     /**
-     * @return boolean
+     * @inheritDoc
      */
     public function isDebug(): bool
     {

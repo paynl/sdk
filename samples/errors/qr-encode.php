@@ -14,9 +14,11 @@ $response = $app
         null,
         [
             'Qr' => [
+                'uuid' => '0',
                 'serviceId' => 'SL-0000-0000',
-                'secret'    => '',
+                'secret'    => 'abcdefesds',
                 'reference' => 'ABCD0123',
+                'amount' => [],
             ],
         ]
     )

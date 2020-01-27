@@ -9,6 +9,6 @@ namespace PayNL\Sdk\Exception;
  *
  * @package PayNL\Sdk\Exception
  */
-class ConfigNotFoundException extends LogicException implements ExceptionInterface
+class ConfigNotFoundException extends LogicException
 {
 }

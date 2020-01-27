@@ -7,6 +7,9 @@ namespace PayNL\Sdk\Common;
 /**
  * Trait OptionsTrait
  *
+ * Contains the necessary methods which are declared in the corresponding interface
+ *  @see OptionsAwareInterface and a little bit more
+ *
  * @package PayNL\Sdk\Common
  */
 trait OptionsAwareTrait
@@ -17,7 +20,7 @@ trait OptionsAwareTrait
     protected $options = [];
 
     /**
-     * @return array
+     * @inheritDoc
      */
     public function getOptions(): array
     {
@@ -45,9 +48,7 @@ trait OptionsAwareTrait
     }
 
     /**
-     * @param array $options
-     *
-     * @return static
+     * @inheritDoc
      */
     public function setOptions(array $options)
     {

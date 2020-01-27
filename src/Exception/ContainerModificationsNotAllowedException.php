@@ -9,6 +9,6 @@ namespace PayNL\Sdk\Exception;
  *
  * @package PayNL\Sdk\Exception
  */
-class ContainerModificationsNotAllowedException extends DomainException implements ExceptionInterface
+class ContainerModificationsNotAllowedException extends DomainException
 {
 }

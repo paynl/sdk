@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace PayNL\Sdk\Api;
 
 use PayNL\GuzzleHttp\Client as GuzzleClient;
-use PayNL\Sdk\AuthAdapter\AdapterInterface as AuthAdapterInterface;
-use PayNL\Sdk\Config\Config;
-use PayNL\Sdk\Exception\ServiceNotFoundException;
-use PayNL\Sdk\Common\FactoryInterface;
-use PayNL\Sdk\Service\Manager;
 use Psr\Container\ContainerInterface;
-use Zend\Stdlib\ArrayUtils;
+use PayNL\Sdk\{
+    AuthAdapter\AdapterInterface as AuthAdapterInterface,
+    Config\Config,
+    Exception\ServiceNotFoundException,
+    Common\FactoryInterface,
+    Service\Manager
+};
 
 /**
  * Class Factory

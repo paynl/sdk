@@ -13,5 +13,10 @@ use PayNL\Sdk\Service\AbstractPluginManager;
  */
 class Manager extends AbstractPluginManager
 {
+    /**
+     * @var string
+     *
+     * @see AbstractPluginManager::$instanceOf
+     */
     protected $instanceOf = ValidatorInterface::class;
 }

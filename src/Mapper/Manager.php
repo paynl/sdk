@@ -18,6 +18,8 @@ class Manager extends AbstractPluginManager
 {
     /**
      * @var string
+     *
+     * @see AbstractPluginManager::$instanceOf
      */
     protected $instanceOf = MapperInterface::class;
 

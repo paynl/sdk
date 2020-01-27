@@ -5,15 +5,18 @@ declare(strict_types=1);
 namespace PayNL\Sdk\Validator;
 
 use ReflectionClass, ReflectionException;
-use PayNL\Sdk\Hydrator\Simple as SimpleHydrator;
+use Zend\Hydrator\HydratorAwareInterface;
+use Zend\Hydrator\HydratorAwareTrait;
 
 /**
  * Class RequiredMembers
  *
  * @package PayNL\Sdk\Validator
  */
-class RequiredMembers extends AbstractValidator
+class RequiredMembers extends AbstractValidator implements HydratorAwareInterface
 {
+    use HydratorAwareTrait;
+
     /*
      * Message type constant definitions
      */
@@ -44,7 +47,7 @@ class RequiredMembers extends AbstractValidator
             return true;
         }
 
-        $data = (new SimpleHydrator())->extract($filledObjectToCheck);
+        $data = $this->getHydrator()->extract($filledObjectToCheck);
         $missingMembers = $emptyMembers = [];
         foreach ($required as $memberName => $type) {
             if (false === array_key_exists($memberName, $data)) {

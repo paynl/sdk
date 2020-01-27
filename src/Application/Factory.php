@@ -14,7 +14,12 @@ use PayNL\Sdk\Common\FactoryInterface;
  */
 class Factory implements FactoryInterface
 {
-    public function __invoke(ContainerInterface $container, string $requestedName, array $options = null)
+    /**
+     * @inheritDoc
+     *
+     * @return Application
+     */
+    public function __invoke(ContainerInterface $container, string $requestedName, array $options = null): Application
     {
         // init "default" response
         $response = $container->get('Response');

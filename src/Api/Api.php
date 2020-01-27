@@ -5,17 +5,17 @@ declare(strict_types=1);
 namespace PayNL\Sdk\Api;
 
 use PayNL\GuzzleHttp\Client as GuzzleClient;
-use PayNL\Sdk\AuthAdapter\AdapterInterface as AuthAdapterInterface;
-use PayNL\Sdk\Common\DebugAwareInterface;
-use PayNL\Sdk\Common\DebugAwareTrait;
-use PayNL\Sdk\Common\OptionsAwareInterface;
-use PayNL\Sdk\Common\OptionsAwareTrait;
-use PayNL\Sdk\Response\Response;
-use PayNL\Sdk\Request\{
-    AbstractRequest,
-    RequestInterface
+use PayNL\Sdk\{
+    AuthAdapter\AdapterInterface as AuthAdapterInterface,
+    Common\DebugAwareInterface,
+    Common\DebugAwareTrait,
+    Common\OptionsAwareInterface,
+    Common\OptionsAwareTrait,
+    Response\Response,
+    Request\AbstractRequest,
+    Request\RequestInterface,
+    Response\ResponseInterface
 };
-use PayNL\Sdk\Response\ResponseInterface;
 
 /**
  * Class Api
@@ -51,6 +51,11 @@ class Api implements OptionsAwareInterface, DebugAwareInterface
         ;
     }
 
+    /**
+     * @param GuzzleClient $client
+     *
+     * @return Api
+     */
     protected function setClient(GuzzleClient $client): self
     {
         $this->client = $client;
@@ -85,8 +90,9 @@ class Api implements OptionsAwareInterface, DebugAwareInterface
     }
 
     /**
+     * Handle the actual request by executing it and return the populated response object
+     *
      * @param RequestInterface $request
-     * param array $headers Additional request headers (Accept, Authorization and Content-Type are already set)
      * @param Response $response
      *
      * @return Response
@@ -98,17 +104,18 @@ class Api implements OptionsAwareInterface, DebugAwareInterface
             $this->dumpDebugInfo('Requested format: ' . $format);
         }
 
-        $client = $this->getClient();
+        $request->applyClient($this->getClient());
 
+        // apply the correct headers based on the formats set on request and response object
+        //  and also add the authentication header which is based on the authentication adapter
         $acceptHeader = 'application/json';
         if (RequestInterface::FORMAT_XML === $format) {
             $acceptHeader = 'application/xml';
         }
 
-        $request->applyClient($client);
         if ($request instanceof AbstractRequest) {
             $request->setHeader(RequestInterface::HEADER_ACCEPT, $acceptHeader)
-                ->setHeader(RequestInterface::HEADER_AUTHORIZATION, $this->getAuthAdapter()->getHeaderString()) // TODO move these to service??
+                ->setHeader(RequestInterface::HEADER_AUTHORIZATION, $this->getAuthAdapter()->getHeaderString())
             ;
         }
 

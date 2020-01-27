@@ -4,10 +4,16 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Common;
 
-use Exception, DateTime as stdDateTime, DateTimeZone, JsonSerializable;
+use Exception,
+    DateTime as stdDateTime,
+    DateTimeZone,
+    JsonSerializable
+;
 
 /**
  * Class DateTime
+ *
+ * Extends the PHP DateTime object to make it json serializable
  *
  * @package PayNL\Sdk
  */

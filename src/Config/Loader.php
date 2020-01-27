@@ -4,13 +4,18 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Config;
 
-use PayNL\Sdk\Config\ProviderInterface as ConfigProviderInterface;
-use PayNL\Sdk\Exception;
-use PayNL\Sdk\Util\Misc;
-use Zend\Stdlib\ArrayUtils;
+use Traversable;
+use PayNL\Sdk\{
+    Config\ProviderInterface as ConfigProviderInterface,
+    Exception,
+    Util\Misc
+};
 
 /**
  * Class ConfigLoader
+ *
+ * Loads all the configurations for the given config paths which must be callable objects (Config
+ * Providers)
  *
  * @package PayNL\Sdk
  */
@@ -26,6 +31,9 @@ class Loader
      */
     protected $paths = [];
 
+    /**
+     * @var array|Config
+     */
     protected $applicationConfig;
 
     /**
@@ -50,19 +58,18 @@ class Loader
             $this->addPaths($applicationConfig->get('config_paths'));
         }
 
-//        $this->mergedConfig = $applicationConfig;
         $this->mergedConfig = new Config();
         $this->applicationConfig = $applicationConfig;
     }
 
     /**
-     * @param array $paths
+     * @param array|Traversable $paths
      *
      * @return Loader
      */
     public function addPaths($paths): self
     {
-        if ($paths instanceof \Traversable) {
+        if ($paths instanceof Traversable) {
             $paths = $paths->toArray();
         }
 
@@ -108,7 +115,7 @@ class Loader
 
     /**
      * @param string $key
-     * @param object $config
+     * @param ConfigProviderInterface $config
      *
      * @return Loader
      */
@@ -160,7 +167,7 @@ class Loader
     }
 
     /**
-     * Collection of the
+     * Collection of the providers given
      *
      * @return array
      */

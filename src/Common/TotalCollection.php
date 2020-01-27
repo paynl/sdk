@@ -19,7 +19,7 @@ class TotalCollection extends ArrayCollection
     protected $total = 0;
 
     /**
-     * @return int
+     * @return integer
      */
     public function getTotal(): int
     {
@@ -59,7 +59,7 @@ class TotalCollection extends ArrayCollection
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function remove($key)
     {
@@ -71,7 +71,7 @@ class TotalCollection extends ArrayCollection
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function removeElement($element)
     {

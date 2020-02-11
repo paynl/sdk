@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PayNL\Sdk\Api;
 
 use PayNL\Sdk\{
+    Request\AbstractRequest,
     Request\RequestInterface,
     Response\Response,
     Response\ResponseInterface,
@@ -98,6 +99,7 @@ class Service
      */
     public function handle(): void
     {
+        /** @var AbstractRequest $request */
         $request = $this->getRequest();
 
         $headers = $request->getHeaders();

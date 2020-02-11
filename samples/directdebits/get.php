@@ -8,7 +8,7 @@ $response = $app
     ->setRequest(
         'GetDirectdebit',
         [
-            'incassoOrderId' => $config->get('incassoOrderId'),
+            'incassoOrderId' => (isset($config) ? $config->get('incassoOrderId') : ''),
         ]
     )
     ->run()

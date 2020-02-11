@@ -35,7 +35,7 @@ class Status implements ModelInterface
     protected $reason = '';
 
     /**
-     * @return string
+     * @return string|integer
      */
     public function getCode()
     {
@@ -43,7 +43,7 @@ class Status implements ModelInterface
     }
 
     /**
-     * @param string|int $code
+     * @param mixed $code
      *
      * @throws InvalidArgumentException
      *

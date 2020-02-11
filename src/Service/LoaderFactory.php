@@ -57,18 +57,20 @@ class LoaderFactory implements FactoryInterface
     public function __invoke(ContainerInterface $container, string $requestedName, array $options = null): ServiceLoader
     {
         /**
-         * @var ServiceManager $container
          * @var Config $configuration
          */
         $configuration = $container->get('configLoader')->getMergedConfig();
 
 //        $serviceLoader = $container->has('serviceLoaderInterface') ? $container->get('serviceLoaderInterface') : new ServiceLoader($container);
 
-        $serviceLoader = new ServiceLoader($container);
+        /** @var ServiceManager $serviceManager */
+        $serviceManager = $container;
+
+        $serviceLoader = new ServiceLoader($serviceManager);
 
         $serviceLoader->setDefaultServiceConfig(new ServiceConfig($this->defaultServiceConfig));
 
-        $serviceLoader->addServiceManager($container, 'service_manager', 'getServiceConfig');
+        $serviceLoader->addServiceManager($serviceManager, 'service_manager', 'getServiceConfig');
 
         if (true === $configuration->has('service_loader_options')) {
             $this->injectServiceLoaderOptions($configuration->get('service_loader_options'), $serviceLoader);
@@ -80,7 +82,7 @@ class LoaderFactory implements FactoryInterface
     }
 
     /**
-     * @param Config $options
+     * @param mixed $options
      * @param ServiceLoader $serviceLoader
      *
      * @throws Exception\ServiceNotCreatedException
@@ -89,7 +91,9 @@ class LoaderFactory implements FactoryInterface
      */
     protected function injectServiceLoaderOptions($options, ServiceLoader $serviceLoader): void
     {
-        if (false === ($options instanceof Config)) {
+        if (true === is_array($options)) {
+            $options = new Config($options);
+        } elseif (false === ($options instanceof Config)) {
             throw new Exception\ServiceNotCreatedException(
                 sprintf(
                     'The given options to %s must be an array or an instance of %s, %s given',
@@ -120,19 +124,8 @@ class LoaderFactory implements FactoryInterface
      *
      * @return void
      */
-    private function validatePluginManagerOptions($options, $name): void
+    private function validatePluginManagerOptions(Config $options, $name): void
     {
-        if (false === ($options instanceof Config)) {
-            throw new Exception\ServiceNotCreatedException(
-                sprintf(
-                    'Plugin manager %s config is invalid, must be an instance of %s, got %s',
-                    $name,
-                    Config::class,
-                    is_object($options) ? get_class($options) : gettype($options)
-                )
-            );
-        }
-
         $mandatoryManagerConfigKeys = [
             'service_manager',
             'config_key',

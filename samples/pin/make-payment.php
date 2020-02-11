@@ -8,12 +8,12 @@ $response = $app
     ->setRequest(
         'PayTransaction',
         [
-            'transactionId' => $config->get('transactionId'),
+            'transactionId' => (isset($config) ? $config->get('transactionId') : ''),
         ],
         null,
         [
             'Terminal' => [
-                'id' => $config->get('terminalId'),
+                'id' => (isset($config) ? $config->get('terminalId') : ''),
             ],
         ]
     )

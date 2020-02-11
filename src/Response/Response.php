@@ -112,7 +112,7 @@ class Response implements ResponseInterface, TransformerAwareInterface, DebugAwa
     }
 
     /**
-     * @return mixed
+     * @inheritDoc
      */
     public function getBody()
     {

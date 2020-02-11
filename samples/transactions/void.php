@@ -6,7 +6,7 @@ $app = require __DIR__ . '/../init_application.php';
 
 $response = $app
     ->setRequest('CancelTransaction', [
-        'transactionId' => $config->get('transactionId'),
+        'transactionId' => (isset($config) ? $config->get('transactionId') : ''),
     ])
     ->run()
 ;

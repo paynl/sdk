@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Model;
 
-use PayNL\Sdk\Common\TotalCollection;
+use PayNL\Sdk\Common\AbstractTotalCollection;
 
 /**
  * Class Currencies
  *
  * @package PayNL\Sdk\Model
  */
-class Currencies extends TotalCollection implements ModelInterface
+class Currencies extends AbstractTotalCollection implements ModelInterface
 {
     use LinksTrait;
 
@@ -55,6 +55,9 @@ class Currencies extends TotalCollection implements ModelInterface
         return $this;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getCollectionName(): string
     {
         return 'currencies';

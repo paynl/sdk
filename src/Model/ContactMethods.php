@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace PayNL\Sdk\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use PayNL\Sdk\Common\CollectionInterface;
 
 /**
  * Class ContactMethods
  *
  * @package PayNL\Sdk\Model
  */
-class ContactMethods extends ArrayCollection implements ModelInterface
+class ContactMethods extends ArrayCollection implements ModelInterface, CollectionInterface
 {
     /**
      * @return array
@@ -53,6 +54,9 @@ class ContactMethods extends ArrayCollection implements ModelInterface
         return $this;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getCollectionName(): string
     {
         return 'contactMethods';

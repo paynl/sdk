@@ -47,7 +47,12 @@ class RequiredMembers extends AbstractValidator implements HydratorAwareInterfac
             return true;
         }
 
-        $data = $this->getHydrator()->extract($filledObjectToCheck);
+        $hydrator = $this->getHydrator();
+        if (null === $hydrator) {
+            throw new \Exception('No hydrator');
+        }
+
+        $data = $hydrator->extract($filledObjectToCheck);
         $missingMembers = $emptyMembers = [];
         foreach ($required as $memberName => $type) {
             if (false === array_key_exists($memberName, $data)) {
@@ -60,7 +65,7 @@ class RequiredMembers extends AbstractValidator implements HydratorAwareInterfac
                 || '' === $data[$memberName]
                 || (
                     true === is_int($data[$memberName])
-                    && 1 === preg_match('/^(?P<idKey>id$|(.*)Id)$/', $memberName, $match)
+                    && 1 === preg_match('/^(?P<idKey>id$|(.*)Id)$/', (string)$memberName, $match)
                     && 0 === $data[$memberName]
                 )
             ) {

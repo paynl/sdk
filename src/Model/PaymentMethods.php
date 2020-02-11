@@ -5,14 +5,18 @@ declare(strict_types=1);
 namespace PayNL\Sdk\Model;
 
 use JsonSerializable;
-use PayNL\Sdk\Common\{JsonSerializeTrait, TotalCollection};
+use PayNL\Sdk\Common\{
+    JsonSerializeTrait,
+    CollectionInterface,
+    AbstractTotalCollection
+};
 
 /**
  * Class PaymentMethods
  *
  * @package PayNL\Sdk\Model
  */
-class PaymentMethods extends TotalCollection implements ModelInterface, JsonSerializable
+class PaymentMethods extends AbstractTotalCollection implements ModelInterface, CollectionInterface, JsonSerializable
 {
     use LinksTrait, JsonSerializeTrait;
 
@@ -55,6 +59,9 @@ class PaymentMethods extends TotalCollection implements ModelInterface, JsonSeri
         return $this;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getCollectionName(): string
     {
         return 'paymentMethods';

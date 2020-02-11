@@ -62,7 +62,7 @@ abstract class AbstractPluginManager extends Manager
     /**
      * Validate the given instance if its suffices the set "instanceOf" property
      *
-     * @param $instance
+     * @param mixed $instance
      *
      * @throws InvalidServiceException when the plugin created is invalid for the plugin context
      *

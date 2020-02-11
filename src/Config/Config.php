@@ -30,12 +30,6 @@ class Config implements Countable, Iterator, ArrayAccess
     public function __construct(array $data = [])
     {
         foreach ($data as $key => $value) {
-            if (false === is_string($key) && false === is_int($key)) {
-                throw new UnexpectedValueException(
-                    'Keys in the configuration must be a string or integer'
-                );
-            }
-
             if (true === is_array($value)) {
                 $value = new self($value);
             }

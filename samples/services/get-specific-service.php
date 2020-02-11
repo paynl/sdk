@@ -6,7 +6,7 @@ $app = require __DIR__ . '/../init_application.php';
 
 $response = $app
     ->setRequest('GetService', [
-        'serviceId' => $config->get('serviceId'),
+        'serviceId' => (isset($config) ? $config->get('serviceId') : ''),
     ])
     ->run()
 ;

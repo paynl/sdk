@@ -78,9 +78,8 @@ class Loader
         } else {
             throw new Exception\RuntimeException(
                 sprintf(
-                    'Invalid service manager provided, expected instance of %s or string, %s provided',
-                    ServiceManager::class,
-                    (is_object($serviceManager) ? get_class($serviceManager) : gettype($serviceManager))
+                    'Invalid service manager provided, expected instance of %s or string',
+                    ServiceManager::class
                 )
             );
         }
@@ -156,7 +155,7 @@ class Loader
 
                 /** @var ServiceManager $instance */
                 $instance = $this->defaultServiceManager->get($sm['service_manager']);
-                if (false === ($instance instanceof ServiceManager)) {
+                if (! $instance instanceof ServiceManager) {
                     throw new Exception\ServiceNotFoundException(
                         sprintf(
                             'Could not find service manager with name %s',

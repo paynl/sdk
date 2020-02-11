@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace PayNL\Sdk\Application;
 
 use Psr\Container\ContainerInterface;
-use PayNL\Sdk\Common\FactoryInterface;
+use PayNL\Sdk\{
+    Common\FactoryInterface,
+    Service\Manager as ServiceManager
+};
 
 /**
  * Class ApplicationFactory
@@ -25,8 +28,11 @@ class Factory implements FactoryInterface
         $response = $container->get('Response');
         $response->setStatusCode(500);
 
+        /** @var ServiceManager $serviceManager */
+        $serviceManager = $container;
+
         return new Application(
-            $container,
+            $serviceManager,
             $response
         );
     }

@@ -32,7 +32,7 @@ class Loader
     protected $paths = [];
 
     /**
-     * @var array|Config
+     * @var Config
      */
     protected $applicationConfig;
 
@@ -50,7 +50,7 @@ class Loader
     {
         if (true === is_array($applicationConfig)) {
             $applicationConfig = new Config($applicationConfig);
-        } elseif (false === ($applicationConfig instanceof Config)) {
+        } elseif (! ($applicationConfig instanceof Config)) {
             throw new Exception\InvalidArgumentException('Config not correct');
         }
 
@@ -63,14 +63,21 @@ class Loader
     }
 
     /**
-     * @param array|Traversable $paths
+     * @param string|array|Traversable $paths
      *
      * @return Loader
      */
     public function addPaths($paths): self
     {
-        if ($paths instanceof Traversable) {
-            $paths = $paths->toArray();
+        if (true === is_string($paths)) {
+            $paths = [$paths];
+        } elseif (! is_iterable($paths)) {
+            throw new Exception\RuntimeException(
+                sprintf(
+                    'Given paths to "%s" must be iterable',
+                    __METHOD__
+                )
+            );
         }
 
         foreach ($paths as $path) {
@@ -119,18 +126,8 @@ class Loader
      *
      * @return Loader
      */
-    protected function addConfig(string $key, $config): self
+    protected function addConfig(string $key, ConfigProviderInterface $config): self
     {
-        if (false === ($config instanceof ConfigProviderInterface)) {
-            throw new Exception\InvalidArgumentException(
-                sprintf(
-                    'Config being merged must be instance of %s, %s given',
-                    ConfigProviderInterface::class,
-                    (is_object($config) ? get_class($config) : gettype($config))
-                )
-            );
-        }
-
         $this->configs[$key] = $config;
         return $this;
     }

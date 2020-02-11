@@ -8,7 +8,7 @@ $response = $app
     ->setRequest(
         'RefundTransaction',
         [
-            'transactionId' => $config->get('transactionId'),
+            'transactionId' => (isset($config) ? $config->get('transactionId') : ''),
         ],
         null,
         [

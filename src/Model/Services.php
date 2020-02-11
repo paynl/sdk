@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Model;
 
-use PayNL\Sdk\Common\TotalCollection;
+use PayNL\Sdk\Common\AbstractTotalCollection;
 
 /**
  * Class Services
  *
  * @package PayNL\Sdk\Model
  */
-class Services extends TotalCollection implements ModelInterface
+class Services extends AbstractTotalCollection implements ModelInterface
 {
     use LinksTrait;
 
@@ -55,6 +55,9 @@ class Services extends TotalCollection implements ModelInterface
         return $this;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getCollectionName(): string
     {
         return 'services';

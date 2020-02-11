@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace PayNL\Sdk\Hydrator;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use PayNL\Sdk\Exception\LogicException;
-use PayNL\Sdk\Exception\RuntimeException;
-use PayNL\Sdk\Model\ModelInterface;
+use PayNL\Sdk\{
+    Common\CollectionInterface,
+    Exception\LogicException,
+    Exception\RuntimeException,
+    Model\ModelInterface
+};
 use ReflectionClass,
     ReflectionProperty,
     ReflectionException
@@ -57,13 +60,19 @@ class Entity extends AbstractHydrator
      *
      * @return array
      */
-    public function load(ModelInterface $model)
+    public function load(ModelInterface $model): array
     {
         $ref = null;
         try {
             $ref = new ReflectionClass($model);
         } catch (ReflectionException $re) {
             // do nothing, model always exist
+            throw new RuntimeException(
+                sprintf(
+                    'Can not load model "%s"',
+                    get_class($model)
+                )
+            );
         }
 
         $properties = $ref->getProperties();
@@ -72,6 +81,15 @@ class Entity extends AbstractHydrator
         /** @var ReflectionProperty $property */
         foreach ($properties as $property) {
             $docComment = $property->getDocComment();
+            if (false === $docComment) {
+                throw new LogicException(
+                    sprintf(
+                        'Doc comment missing for "%s" in "%s"',
+                        $property->getName(),
+                        get_class($model)
+                    )
+                );
+            }
             if (1 !== preg_match("/@var(?:\n|\s(?P<type>.+)\n)/s", $docComment, $annotations)) {
                 throw new LogicException(
                     sprintf(
@@ -129,8 +147,7 @@ class Entity extends AbstractHydrator
             }
         }
 
-        if ($object instanceof ArrayCollection) {
-            // TODO: introduce interface for collection models for method implementation
+        if ($object instanceof CollectionInterface) {
             $collectionKey = $object->getCollectionName();
             if (false === array_key_exists($collectionKey, $data)) {
                 // assume the given array are necessary single entities
@@ -156,7 +173,7 @@ class Entity extends AbstractHydrator
     /**
      * @inheritDoc
      */
-    public function extract($object)
+    public function extract($object): array
     {
         $data = parent::extract($object);
         foreach ($data as $name => $value) {

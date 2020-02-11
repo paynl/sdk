@@ -64,12 +64,12 @@ trait OptionsAwareTrait
     }
 
     /**
-     * @param string $name
+     * @param string|int $name
      * @param mixed $value
      *
      * @return static
      */
-    public function addOption(string $name, $value): self
+    public function addOption($name, $value): self
     {
         $this->options[$name] = $value;
         return $this;

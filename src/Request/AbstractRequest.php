@@ -475,6 +475,7 @@ abstract class AbstractRequest implements
             $guzzleRequest = new Request($this->getMethod(), $uri, $this->getHeaders(), $this->getBody());
             if (true === $this->isDebug()) {
                 $this->dumpDebugInfo('Requested URL: ' . rtrim((string)$guzzleClient->getConfig('base_uri'), '/') . '/' . $guzzleRequest->getUri());
+                $this->dumpDebugInfo('Headers:', $this->getHeaders());
             }
 
             $guzzleResponse = $guzzleClient->send($guzzleRequest);

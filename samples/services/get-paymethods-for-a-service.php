@@ -8,7 +8,7 @@ $response = $app
     ->setRequest(
         'GetPaymentMethods',
         [
-            'serviceId' => $config->get('serviceId'),
+            'serviceId' => (isset($config) ? $config->get('serviceId') : ''),
         ],
         // filters
         [

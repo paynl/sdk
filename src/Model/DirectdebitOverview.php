@@ -43,7 +43,7 @@ class DirectdebitOverview implements ModelInterface
     }
 
     /**
-     * @return array
+     * @return Directdebits
      */
     public function getDirectdebits(): Directdebits
     {

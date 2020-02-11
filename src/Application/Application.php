@@ -46,10 +46,10 @@ class Application
     /**
      * Application constructor.
      *
-     * @param $serviceManager
+     * @param ServiceManager $serviceManager
      * @param Response $response
      */
-    public function __construct($serviceManager, Response $response)
+    public function __construct(ServiceManager $serviceManager, Response $response)
     {
         $this->serviceManager = $serviceManager;
         $this->response = $response;
@@ -70,7 +70,7 @@ class Application
     /**
      * Static method for quickly initializing the application
      *
-     * @param array|Config $configuration
+     * @param mixed $configuration
      *
      * @return Application
      */
@@ -132,10 +132,10 @@ class Application
      * Parameters, filters and body can be given only when the given request (name) is a string, otherwise
      * these parameters will be ignored
      *
-     * @param string|AbstractRequest $request
+     * @param mixed $request
      * @param array|null $params
      * @param array|null $filters
-     * @param null $body
+     * @param mixed $body
      *
      * @throws InvalidArgumentException when the given request is neither a string nor an instance of AbstractRequest
      *  or it's thrown when the given body is neither an array nor an instance of ModelInterface
@@ -177,7 +177,7 @@ class Application
             if (null !== $body) {
                 $request->setBody($body);
             }
-        } elseif (false === ($request instanceof AbstractRequest)) {
+        } elseif (! ($request instanceof AbstractRequest)) {
             throw new InvalidArgumentException(
                 sprintf(
                     'Given request should correspond to a request class name or alias, or should be an ' .

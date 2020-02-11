@@ -76,9 +76,9 @@ abstract class AbstractRequest implements
     protected $headers = [];
 
     /**
-     * @var string
+     * @var null|string
      */
-    protected $body = '';
+    protected $body;
 
     /**
      * @var Client
@@ -188,7 +188,7 @@ abstract class AbstractRequest implements
     }
 
     /**
-     * @return string
+     * @inheritDoc
      */
     public function getFormat(): string
     {
@@ -324,14 +324,15 @@ abstract class AbstractRequest implements
      */
     public function getBody(): string
     {
-        if (false === is_string($this->body)) {
+        if (false === is_string($this->body) && null !== $this->body) {
             /** @var ModelInterface $body */
             $body = $this->body;
             // validate the given body (model) for the required members
             $this->validateBody($body);
             return $this->encodeBody($body);
         }
-        return $this->body;
+
+        return (string)$this->body;
     }
 
     /**
@@ -349,7 +350,7 @@ abstract class AbstractRequest implements
     }
 
     /**
-     * @param Client $client
+     * @inheritDoc
      *
      * @return AbstractRequest
      */
@@ -447,14 +448,10 @@ abstract class AbstractRequest implements
      *
      * @throws RuntimeException when no HTTP client is set
      *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     * @SuppressWarnings(PHPMD.NPathComplexity)
-     *
      * @return void
      */
     public function execute(Response $response): void
     {
-//        $this->init();
         $uri = trim($this->getUri(), '/');
         $filters = $this->getFilters();
         if (0 < count($filters)) {
@@ -475,7 +472,10 @@ abstract class AbstractRequest implements
             $guzzleRequest = new Request($this->getMethod(), $uri, $this->getHeaders(), $this->getBody());
             if (true === $this->isDebug()) {
                 $this->dumpDebugInfo('Requested URL: ' . rtrim((string)$guzzleClient->getConfig('base_uri'), '/') . '/' . $guzzleRequest->getUri());
-                $this->dumpDebugInfo('Headers:', $this->getHeaders());
+                $headers = $this->getHeaders();
+                $this->dumpDebugInfo('Headers:' . PHP_EOL . PHP_EOL . implode(PHP_EOL, array_map(static function($item, $key) {
+                    return "{$key}: {$item}";
+                }, $headers, array_keys($headers))));
             }
 
             $guzzleResponse = $guzzleClient->send($guzzleRequest);
@@ -534,7 +534,7 @@ abstract class AbstractRequest implements
         }
 
 
-        return (new JsonEncoder())->encode([
+        return (string)(new JsonEncoder())->encode([
            'errors' => (object)[
                'general' => (object)[
                    'code'    => $statusCode,

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Transformer;
 
+use PayNL\Sdk\Model\ModelInterface;
+
 /**
  * Class Response
  *
@@ -23,6 +25,8 @@ class Response extends AbstractTransformer
             return [];
         }
 
-        return $this->hydrator->hydrate($inputToTransform, $this->getModel());
+        /** @var ModelInterface $model */
+        $model = $this->hydrator->hydrate($inputToTransform, $this->getModel());
+        return $model;
     }
 }

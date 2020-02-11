@@ -14,9 +14,6 @@ use PayNL\Sdk\Common\JsonSerializeTrait;
  *
  * @package PayNL\Sdk\Model
  *
- * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
- * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
- *
  * @method bool isCancelled()
  * @method bool isPartiallyRefunded()
  * @method bool isRefundedCustomer()
@@ -569,7 +566,12 @@ class Transaction implements ModelInterface, JsonSerializable
     public function __call(string $name, array $arguments = [])
     {
         if ('isPending' === $name) {
-            return in_array($this->getStatus()->getCode(), [
+            $status = $this->getStatus();
+            if (null === $status) {
+                return false;
+            }
+
+            return in_array($status->getCode(), [
                 TransactionStatus::STATUS_PENDING1,
                 TransactionStatus::STATUS_PENDING2,
                 TransactionStatus::STATUS_PENDING3,
@@ -577,8 +579,15 @@ class Transaction implements ModelInterface, JsonSerializable
         }
 
         if (1 === preg_match('/^is(?P<status>[A-z]+)/', $name, $match)) {
-            $statusConstantName = 'STATUS_' . strtoupper((new CamelCaseToUnderscore())->filter($match['status']));
-            return $this->getStatus()->is($statusConstantName);
+            $status = $this->getStatus();
+            if (null === $status) {
+                return false;
+            }
+
+            /** @var string $statusName */
+            $statusName = (new CamelCaseToUnderscore())->filter($match['status']);
+            $statusConstantName = 'STATUS_' . strtoupper($statusName);
+            return $status->is($statusConstantName);
         }
 
         throw new BadMethodCallException(

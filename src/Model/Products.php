@@ -6,14 +6,17 @@ namespace PayNL\Sdk\Model;
 
 use JsonSerializable;
 use Doctrine\Common\Collections\ArrayCollection;
-use PayNL\Sdk\Common\JsonSerializeTrait;
+use PayNL\Sdk\Common\{
+    JsonSerializeTrait,
+    CollectionInterface
+};
 
 /**
  * Class Products
  *
  * @package PayNL\Sdk\Model
  */
-class Products extends ArrayCollection implements ModelInterface, JsonSerializable
+class Products extends ArrayCollection implements ModelInterface, CollectionInterface, JsonSerializable
 {
     use JsonSerializeTrait;
 
@@ -56,11 +59,9 @@ class Products extends ArrayCollection implements ModelInterface, JsonSerializab
         return $this;
     }
 
-//    public function toArray()
-//    {
-//        return array_values(parent::toArray());
-//    }
-
+    /**
+     * @inheritDoc
+     */
     public function getCollectionName(): string
     {
         return 'products';

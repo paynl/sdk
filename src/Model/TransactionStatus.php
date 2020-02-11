@@ -95,15 +95,18 @@ class TransactionStatus extends Status
             );
         }
 
-        return parent::setCode((string)$code);
+        parent::setCode((string)$code);
+
+        return $this;
     }
 
     /**
-     * @return integer
+     * @return string|integer
      */
     public function getCode()
     {
-        return (int)parent::getCode();
+        $code = parent::getCode();
+        return (int)$code;
     }
 
     /**

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PayNL\Sdk\Request;
 
 use PayNL\Sdk\Response\Response;
+use PayNL\GuzzleHttp\Client;
 
 /**
  * Interface RequestInterface
@@ -50,6 +51,18 @@ interface RequestInterface
      * @return string
      */
     public function getMethod(): string;
+
+    /**
+     * @return string
+     */
+    public function getFormat(): string;
+
+    /**
+     * @param Client $client
+     *
+     * @return static
+     */
+    public function applyClient(Client $client);
 
     /**
      * @param Response $response

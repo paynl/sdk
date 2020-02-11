@@ -11,7 +11,7 @@ use PayNL\Sdk\{
     Config\Config,
     Exception\ServiceNotFoundException,
     Common\FactoryInterface,
-    Service\Manager
+    Service\Manager as ServiceManager
 };
 
 /**
@@ -43,8 +43,9 @@ class Factory implements FactoryInterface
 
                 return new Api($authAdapter, $guzzleClient, $options->toArray());
             case Service::class:
-                /** @var Manager $container */
-                return new Service($container->get('Api'), $container);
+                /** @var ServiceManager $serviceManager */
+                $serviceManager = $container;
+                return new Service($container->get('Api'), $serviceManager);
             default:
                 throw new ServiceNotFoundException(
                     sprintf(

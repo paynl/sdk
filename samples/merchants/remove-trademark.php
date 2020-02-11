@@ -8,8 +8,8 @@ $response = $app
     ->setRequest(
         'DeleteTrademark',
         [
-            'merchantId'  => $config->get('merchantId'),
-            'trademarkId' => 'TM-4254-8731'
+            'merchantId'  => (isset($config) ? $config->get('merchantId') : ''),
+            'trademarkId' => 'TM-4254-8731',
         ]
     )
     ->run()

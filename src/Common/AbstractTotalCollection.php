@@ -11,7 +11,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  *
  * @package PayNL\Sdk
  */
-class TotalCollection extends ArrayCollection
+abstract class AbstractTotalCollection extends ArrayCollection implements CollectionInterface
 {
     /**
      * @var integer
@@ -29,7 +29,7 @@ class TotalCollection extends ArrayCollection
     /**
      * @param int $total
      *
-     * @return TotalCollection
+     * @return AbstractTotalCollection
      */
     public function setTotal(int $total): self
     {

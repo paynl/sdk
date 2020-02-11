@@ -8,7 +8,7 @@ $response = $app
     ->setRequest(
         'ActivateVoucher',
         [
-            'cardNumber' => $config->get('voucherNumber'),
+            'cardNumber' => (isset($config) ? $config->get('cardNumber') : ''),
         ],
         null,
         [

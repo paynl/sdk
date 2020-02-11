@@ -8,7 +8,7 @@ $response = $app
     ->setRequest(
         'GetMerchant',
         [
-            'merchantId' => $config->get('merchantId')
+            'merchantId' => (isset($config) ? $config->get('merchantId') : ''),
         ]
     )
     ->run()

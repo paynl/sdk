@@ -19,7 +19,8 @@ class Factory implements FactoryInterface
         $config = $container->get('config');
         $responseFormat = $config['response']['format'] ?? ResponseInterface::FORMAT_OBJECTS;
 
-        $response = new Response($container);
+        /** @var Response $response */
+        $response = new $requestedName();
         $response->setFormat($responseFormat);
 
         if (ResponseInterface::FORMAT_OBJECTS === $responseFormat) {

@@ -28,7 +28,7 @@ class Integration implements ModelInterface, JsonSerializable
     /**
      * @required
      *
-     * @var integer
+     * @var boolean
      */
     protected $testMode = self::TEST_MODE_OFF;
 
@@ -44,9 +44,9 @@ class Integration implements ModelInterface, JsonSerializable
     }
 
     /**
-     * @return integer
+     * @return boolean
      */
-    public function getTestMode(): int
+    public function getTestMode(): bool
     {
         return $this->testMode;
     }

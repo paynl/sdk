@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Util;
 
+use PayNL\Sdk\Exception\RuntimeException;
+
 /**
  * Class Misc
  *
@@ -14,11 +16,22 @@ class Misc
     /**
      * @param string $file
      *
+     * @throws RuntimeException when given file can not be opened
+     *
      * @return string
      */
     public static function getClassNameByFile(string $file): string
     {
         $fp = fopen($file, 'rb');
+        if (false === $fp) {
+            throw new RuntimeException(
+                sprintf(
+                    'Can not open file "%s"',
+                    $file
+                )
+            );
+        }
+
         $class = $namespace = $buffer = '';
         $i = 0;
         while (!$class) {

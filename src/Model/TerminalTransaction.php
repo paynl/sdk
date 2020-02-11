@@ -199,7 +199,7 @@ class TerminalTransaction implements ModelInterface, JsonSerializable
      */
     public function getTerminal(): Terminal
     {
-        return (string)$this->terminal;
+        return $this->terminal;
     }
 
     /**

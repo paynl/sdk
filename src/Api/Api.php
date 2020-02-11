@@ -108,24 +108,23 @@ class Api implements OptionsAwareInterface, DebugAwareInterface
 
         // apply the correct headers based on the formats set on request and response object
         //  and also add the authentication header which is based on the authentication adapter
+        $contentTypeHeader = 'application/json';
+        if (ResponseInterface::FORMAT_XML === $format) {
+            $contentTypeHeader = 'application/xml';
+        }
+
+        $format = $response->getFormat();
         $acceptHeader = 'application/json';
         if (RequestInterface::FORMAT_XML === $format) {
             $acceptHeader = 'application/xml';
         }
 
+
         if ($request instanceof AbstractRequest) {
             $request->setHeader(RequestInterface::HEADER_ACCEPT, $acceptHeader)
+                ->setHeader(RequestInterface::HEADER_CONTENT_TYPE, $contentTypeHeader)
                 ->setHeader(RequestInterface::HEADER_AUTHORIZATION, $this->getAuthAdapter()->getHeaderString())
             ;
-        }
-
-        $format = $response->getFormat();
-        $contentTypeHeader = 'application/json';
-        if (ResponseInterface::FORMAT_XML === $format) {
-            $contentTypeHeader = 'application/xml';
-        }
-        if ($request instanceof AbstractRequest) {
-            $request->setHeader(RequestInterface::HEADER_CONTENT_TYPE, $contentTypeHeader);
         }
 
         $request->execute($response);

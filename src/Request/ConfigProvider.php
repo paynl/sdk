@@ -61,83 +61,246 @@ class ConfigProvider implements ConfigProviderInterface
             'initializers' => [
                 DebugAwareInitializer::class,
             ],
-            'aliases' => [
-                'GetAllCurrencies'              => Currencies\GetAll::class,
-                'GetCurrency'                   => Currencies\Get::class,
-                'CreateDirectdebit'             => Directdebits\Create::class,
-                'CreateRecurringDirectdebit'    => Directdebits\CreateRecurring::class,
-                'DeleteDirectdebit'             => Directdebits\Delete::class,
-                'GetDirectdebit'                => Directdebits\Get::class,
-                'UpdateDirectdebit'             => Directdebits\Update::class,
-                'IsPay'                         => IsPay\Get::class,
-                'AddTrademark'                  => Merchants\AddTrademark::class,
-                'DeleteTrademark'               => Merchants\DeleteTrademark::class,
-                'GetMerchant'                   => Merchants\Get::class,
-                'ConfirmTerminalTransaction'    => Pin\ConfirmTerminalTransaction::class,
-                'GetReceipt'                    => Pin\GetReceipt::class,
-                'GetTerminals'                  => Pin\GetTerminals::class,
-                'GetTerminalTransactionStatus'  => Pin\GetTerminalTransactionStatus::class,
-                'PayTransaction'                => Pin\PayTransaction::class,
-                'DecodeQr'                      => Qr\Decode::class,
-                'EncodeQr'                      => Qr\Encode::class,
-                'ValidateQr'                    => Qr\Validate::class,
-                'GetRefund'                     => Refunds\Get::class,
-                'CreatePaymentLink'             => Services\CreatePaymentLink::class,
-                'GetService'                    => Services\Get::class,
-                'GetAllServices'                => Services\GetAll::class,
-                'GetPaymentMethods'             => Services\GetPaymentMethods::class,
-                'ApproveTransaction'            => Transactions\Approve::class,
-                'CancelTransaction'             => Transactions\Cancel::class,
-                'CaptureTransaction'            => Transactions\Capture::class,
-                'CreateTransaction'             => Transactions\Create::class,
-                'DeclineTransaction'            => Transactions\Decline::class,
-                'GetTransaction'                => Transactions\Get::class,
-                'CaptureTransactionByQr'        => Transactions\Qr::class,
-                'MakeTransactionRecurring'      => Transactions\Recurring::class,
-                'RefundTransaction'             => Transactions\Refund::class,
-                'TokenizeTransaction'           => Transactions\Tokenize::class,
-                'ActivateVoucher'               => Vouchers\Activate::class,
-                'CheckVoucherBalance'           => Vouchers\Balance::class,
-                'ChargeVoucher'                 => Vouchers\Charge::class,
+            'services' => [
+                'GetAllCurrencies' => [
+                    'uri' => '/currencies',
+                    'method' => RequestInterface::METHOD_GET,
+                ],
+                'GetCurrency' => [
+                    'uri' => '/currencies/%currencyId%',
+                    'method' => RequestInterface::METHOD_GET,
+                    'requiredParams' => [
+                        'currencyId' => '[a-zA-Z]{3}',
+                    ],
+                ],
+                'CreateDirectdebit' => [
+                    'uri' => '/directdebits',
+                    'method' => RequestInterface::METHOD_POST,
+                ],
+                'CreateRecurringDirectdebit' => [
+                    'uri' => '/directdebits/%incassoOrderId%/debits',
+                    'method' => RequestInterface::METHOD_POST,
+                    'requiredParams' => [
+                        'incassoOrderId' => '[A-Z]{2}-\d{4}-\d{4}-\d{4}'
+                    ],
+                ],
+                'DeleteDirectdebit' => [
+                    'uri' => '/directdebits/%incassoOrderId%',
+                    'method' => RequestInterface::METHOD_DELETE,
+                    'requiredParams' => [
+                        'incassoOrderId' => '[A-Z]{2}-\d{4}-\d{4}-\d{4}'
+                    ],
+                ],
+                'GetDirectdebit' => [
+                    'uri' => '/directdebits/%incassoOrderId%',
+                    'method' => RequestInterface::METHOD_GET,
+                    'requiredParams' => [
+                        'incassoOrderId' => '[A-Z]{2}-\d{4}-\d{4}-\d{4}'
+                    ],
+                ],
+                'UpdateDirectdebit'=> [
+                    'uri' => '/directdebits/%incassoOrderId%',
+                    'method' => RequestInterface::METHOD_PATCH,
+                    'requiredParams' => [
+                        'incassoOrderId' => 'IO-\d{4}-\d{4}-\d{4}'
+                    ],
+                ],
+                'IsPay' => [
+                    'uri' => '/ispay/ip?value=%ip%',
+                    'method' => RequestInterface::METHOD_GET,
+                    'requiredParams' => [
+                        'ip' => '[0-9\.]+', // TODO: correct regex implement
+                    ],
+                ],
+                'AddTrademark' => [
+                    'uri' => '/merchants/%merchantId%/trademarks',
+                    'method' => RequestInterface::METHOD_POST,
+                    'requiredParams' => [
+                        'merchantId' => 'M-\d{4}-\d{4}',
+                    ],
+                ],
+                'DeleteTrademark' => [
+                    'uri' => '/merchants/%merchantId%/trademarks/%trademarkId%',
+                    'method' => RequestInterface::METHOD_POST,
+                    'requiredParams' => [
+                        'merchantId' => 'M-\d{4}-\d{4}',
+                        'trademarkId' => 'TM-\d{4}-\d{4}'
+                    ],
+                ],
+                'GetMerchant' => [
+                    'uri' => '/merchants/%merchantId%',
+                    'method' => RequestInterface::METHOD_GET,
+                    'requiredParams' => [
+                        'merchantId' => 'M-\d{4}-\d{4}',
+                    ],
+                ],
+                'ConfirmTerminalTransaction' => [
+                    'uri' => '/pin/%terminalTransactionId%/confirm',
+                    'method' => RequestInterface::METHOD_PATCH,
+                    'requiredParams' => [
+                        'terminalTransactionId' => 'TT-\d{4}-\d{4}-\d{4}',
+                    ],
+                ],
+                'GetReceipt' => [
+                    'uri' => '/pin/%terminalTransactionId%/receipt',
+                    'method' => RequestInterface::METHOD_GET,
+                    'requiredParams' => [
+                        'terminalTransactionId' => 'TT-\d{4}-\d{4}-\d{4}',
+                    ],
+                ],
+                'GetTerminals' => [
+                    'uri' => '/pin/terminals',
+                    'method' => RequestInterface::METHOD_GET,
+                ],
+                'GetTerminalTransactionStatus' => [
+                    'uri' => '/pin/%terminalTransactionId%/status',
+                    'method' => RequestInterface::METHOD_GET,
+                    'requiredParams' => [
+                        'terminalTransactionId' => 'TT-\d{4}-\d{4}-\d{4}',
+                    ],
+                ],
+                'PayTransaction' => [
+                    'uri' => '/pin/%terminalTransactionId%/payment',
+                    'method' => RequestInterface::METHOD_POST,
+                    'requiredParams' => [
+                        'terminalTransactionId' => 'TT-\d{4}-\d{4}-\d{4}',
+                    ],
+                ],
+                'DecodeQr' => [
+                    'uri' => '/qr/decode',
+                    'method' => RequestInterface::METHOD_POST,
+                ],
+                'EncodeQr'=> [
+                    'uri' => '/qr/encode',
+                    'method' => RequestInterface::METHOD_POST,
+                ],
+                'ValidateQr' => [
+                    'uri' => '/qr/validate',
+                    'method' => RequestInterface::METHOD_POST,
+                ],
+                'GetRefund' => [
+                    'uri' => '/refund/%refundId%',
+                    'method' => RequestInterface::METHOD_GET,
+                    'requiredParams' => [
+                        'refundId' => 'RF-\d{4}-\d{4}',
+                    ],
+                ],
+                'CreatePaymentLink' => [
+                    'uri' => '/services/%serviceId%/paymentlink',
+                    'method' => RequestInterface::METHOD_POST,
+                    'requiredParams' => [
+                        'serviceId' => 'SL-\d{4}-\d{4}',
+                    ],
+                ],
+                'GetService' => [
+                    'uri' => '/services/%serviceId%',
+                    'method' => RequestInterface::METHOD_GET,
+                    'requiredParams' => [
+                        'serviceId' => 'SL-\d{4}-\d{4}',
+                    ],
+                ],
+                'GetAllServices' => [
+                    'uri' => '/services',
+                    'method' => RequestInterface::METHOD_GET,
+                ],
+                'GetPaymentMethods' => [
+                    'uri' => '/services/%serviceId%/paymentmethods',
+                    'method' => RequestInterface::METHOD_GET,
+                    'requiredParams' => [
+                        'serviceId' => 'SL-\d{4}-\d{4}',
+                    ],
+                ],
+                'ApproveTransaction' => [
+                    'uri' => '/transactions/%transactionId%/approve',
+                    'method' => RequestInterface::METHOD_PATCH,
+                    'requiredParams' => [
+                        'transactionId' => 'EX-\d{4}-\d{4}-\d{4}',
+                    ],
+                ],
+                'CancelTransaction' => [
+                    'uri' => '/transactions/%transactionId%/void',
+                    'method' => RequestInterface::METHOD_PATCH,
+                    'requiredParams' => [
+                        'transactionId' => 'EX-\d{4}-\d{4}-\d{4}',
+                    ],
+                ],
+                'CaptureTransaction' => [
+                    'uri' => '/transactions/%transactionId%/capture',
+                    'method' => RequestInterface::METHOD_PATCH,
+                    'requiredParams' => [
+                        'transactionId' => 'EX-\d{4}-\d{4}-\d{4}',
+                    ],
+                ],
+                'CreateTransaction' => [
+                    'uri' => '/transactions',
+                    'method' => RequestInterface::METHOD_POST,
+                ],
+                'DeclineTransaction' => [
+                    'uri' => '/transactions/%transactionId%/decline',
+                    'method' => RequestInterface::METHOD_PATCH,
+                    'requiredParams' => [
+                        'transactionId' => 'EX-\d{4}-\d{4}-\d{4}',
+                    ],
+                ],
+                'GetTransaction' => [
+                    'uri' => '/transactions/%transactionId%',
+                    'method' => RequestInterface::METHOD_GET,
+                    'requiredParams' => [
+                        'transactionId' => 'EX-\d{4}-\d{4}-\d{4}',
+                    ],
+                ],
+                'CaptureTransactionByQr' => [
+                    'uri' => '/transactions/%transactionId%/qr',
+                    'method' => RequestInterface::METHOD_PATCH,
+                    'requiredParams' => [
+                        'transactionId' => 'EX-\d{4}-\d{4}-\d{4}',
+                    ],
+                ],
+                'MakeTransactionRecurring' => [
+                    'uri' => '/transactions/%transactionId%/recurring',
+                    'method' => RequestInterface::METHOD_POST,
+                    'requiredParams' => [
+                        'transactionId' => 'EX-\d{4}-\d{4}-\d{4}',
+                    ],
+                ],
+                'RefundTransaction' => [
+                    'uri' => '/transactions/%transactionId%/refund',
+                    'method' => RequestInterface::METHOD_PATCH,
+                    'requiredParams' => [
+                        'transactionId' => 'EX-\d{4}-\d{4}-\d{4}',
+                    ],
+                ],
+                'TokenizeTransaction' => [
+                    'uri' => '/transactions/%transactionId%/tokenize',
+                    'method' => RequestInterface::METHOD_PATCH,
+                    'requiredParams' => [
+                        'transactionId' => 'EX-\d{4}-\d{4}-\d{4}',
+                    ],
+                ],
+                'ActivateVoucher' => [
+                    'uri' => '/vouchers/%cardNumber%/activate',
+                    'method' => RequestInterface::METHOD_PATCH,
+                    'requiredParams' => [
+                        'cardNumber' => '\d+',
+                    ],
+                ],
+                'CheckVoucherBalance' => [
+                    'uri' => '/vouchers/%cardNumber%/balance',
+                    'method' => RequestInterface::METHOD_PATCH,
+                    'requiredParams' => [
+                        'cardNumber' => '\d+',
+                    ],
+                ],
+                'ChargeVoucher' => [
+                    'uri' => '/vouchers/%cardNumber%/charge',
+                    'method' => RequestInterface::METHOD_PATCH,
+                    'requiredParams' => [
+                        'cardNumber' => '\d+',
+                    ],
+                ],
             ],
             'factories' => [
-                Currencies\GetAll::class                => Factory::class,
-                Currencies\Get::class                   => Factory::class,
-                Directdebits\Create::class              => Factory::class,
-                Directdebits\CreateRecurring::class     => Factory::class,
-                Directdebits\Delete::class              => Factory::class,
-                Directdebits\Get::class                 => Factory::class,
-                Directdebits\Update::class              => Factory::class,
-                IsPay\Get::class                        => Factory::class,
-                Merchants\AddTrademark::class           => Factory::class,
-                Merchants\DeleteTrademark::class        => Factory::class,
-                Merchants\Get::class                    => Factory::class,
-                Pin\ConfirmTerminalTransaction::class   => Factory::class,
-                Pin\GetReceipt::class                   => Factory::class,
-                Pin\GetTerminals::class                 => Factory::class,
-                Pin\GetTerminalTransactionStatus::class => Factory::class,
-                Pin\PayTransaction::class               => Factory::class,
-                Qr\Decode::class                        => Factory::class,
-                Qr\Encode::class                        => Factory::class,
-                Qr\Validate::class                      => Factory::class,
-                Refunds\Get::class                      => Factory::class,
-                Services\CreatePaymentLink::class       => Factory::class,
-                Services\Get::class                     => Factory::class,
-                Services\GetAll::class                  => Factory::class,
-                Services\GetPaymentMethods::class       => Factory::class,
-                Transactions\Approve::class             => Factory::class,
-                Transactions\Cancel::class              => Factory::class,
-                Transactions\Capture::class             => Factory::class,
-                Transactions\Create::class              => Factory::class,
-                Transactions\Decline::class             => Factory::class,
-                Transactions\Get::class                 => Factory::class,
-                Transactions\Qr::class                  => Factory::class,
-                Transactions\Recurring::class           => Factory::class,
-                Transactions\Refund::class              => Factory::class,
-                Transactions\Tokenize::class            => Factory::class,
-                Vouchers\Activate::class                => Factory::class,
-                Vouchers\Balance::class                 => Factory::class,
-                Vouchers\Charge::class                  => Factory::class,
+                Request::class => Factory::class,
             ],
         ];
     }

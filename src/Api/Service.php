@@ -118,7 +118,7 @@ class Service
             /** @var ResponseTransformer $transformer */
             $transformer = $this->serviceManager->get('transformerManager')->get('Response');
 
-            $modelName = $mapperManager->get('RequestModelMapper')->getTarget($request);
+            $modelName = $mapperManager->get('RequestModelMapper')->getTarget($request->getOption('name'));
             $transformer->setHydrator($this->serviceManager->get('hydratorManager')->build('Entity'));
 
             if (null !== $modelName) {

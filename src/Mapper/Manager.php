@@ -67,25 +67,25 @@ class Manager extends AbstractPluginManager
 
                 // check the map
                 foreach ($map as $source => $target) {
-                    $source = $sourceManager->resolvedAliases[$source] ?? $source;
-                    if (false === class_exists($source)) {
+                    if (false === $sourceManager->has($source)) {
                         throw new ServiceNotFoundException(
-                            'Source does not exist'
+                            sprintf(
+                                'Mapping source service with name "%s" not found in %s',
+                                $source,
+                                $sourceManagerName
+                            )
                         );
                     }
 
-                    $target = $targetManager->resolvedAliases[$target] ?? $target;
-                    if (false === class_exists($target)) {
+                    if (false === $targetManager->has($target)) {
                         throw new ServiceNotFoundException(
                             sprintf(
-                                'Service with name "%s" not found in %s',
+                                'Mapping target service with name "%s" not found in %s',
                                 $target,
                                 $targetManagerName
                             )
                         );
                     }
-
-                    $map[$source] = $target;
                 }
 
                 $mappingConfig[$mapper] = $map;

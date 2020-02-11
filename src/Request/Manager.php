@@ -7,6 +7,7 @@ namespace PayNL\Sdk\Request;
 use Psr\Container\ContainerInterface;
 use PayNL\Sdk\{
     Service\AbstractPluginManager,
+    Service\Manager as ServiceManager,
     Validator\ValidatorManagerAwareInterface
 };
 
@@ -33,6 +34,30 @@ class Manager extends AbstractPluginManager
     {
         $this->addInitializer([$this, 'injectValidatorManager']);
         parent::__construct($parentLocator, $config);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function configure(array $config): ServiceManager
+    {
+        $services = [];
+        if (true === array_key_exists('services', $config)) {
+            $services = $config['services'];
+            unset($config['services']);
+        }
+
+        parent::configure($config);
+
+        // "convert" the request to services with a initialized object
+        foreach ($services as $requestName => $requestConfig) {
+            $requestConfig['name'] = $requestName;
+            $request = $this->build(Request::class, $requestConfig);
+            $services[$requestName] = $request;
+        }
+
+        parent::configure(['services' => $services]);
+        return $this;
     }
 
     /**

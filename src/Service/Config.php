@@ -51,29 +51,6 @@ class Config extends BaseConfig
         $this->merge(new parent($config));
     }
 
-//    public function __construct($config = [])
-//    {
-//        if (true === is_array($this->config)) {
-//            $this->config = new BaseConfig($config);
-//        }
-//
-//        foreach (array_keys($config->toArray()) as $key) {
-//            if (false === in_array($key, $this->allowedKeys, true)) {
-//                unset($config[$key]);
-//            }
-//        }
-//
-//        $this->config->merge($config);// = ArrayUtils::merge($this->config, $config);
-//    }
-
-    /**
-     * @return array
-     */
-//    public function toArray(): array
-//    {
-//        return $this->config;
-//    }
-
     /**
      * @param Manager $serviceManger
      *

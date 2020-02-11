@@ -16,6 +16,11 @@ use PayNL\Sdk\{
     Service\ManagerConfig as ServiceManagerConfig
 };
 
+/**
+ * Class Application
+ *
+ * @package PayNL\Sdk\Application
+ */
 class Application
 {
     /**
@@ -162,13 +167,16 @@ class Application
             }
 
             // get the request from its manager with the given options
-            $request = $this->serviceManager->get('requestManager')
-                ->build($request, [
-                    'params'  => $params ?: [],
-                    'filters' => $filters ?: [],
-                    'body'    => $body,
-                ])
+            /** @var AbstractRequest $request */
+            $request = $this->serviceManager->get('requestManager')->get($request);
+
+            $request->setParams($params ?? [])
+                ->setFilters($filters ?? [])
             ;
+
+            if (null !== $body) {
+                $request->setBody($body);
+            }
         } elseif (false === ($request instanceof AbstractRequest)) {
             throw new InvalidArgumentException(
                 sprintf(

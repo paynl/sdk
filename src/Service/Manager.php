@@ -292,7 +292,7 @@ class Manager implements ContainerInterface
         }
 
         $name = $this->resolvedAliases[$name] ?? $name;
-//        dump($this->services);
+
         return isset($this->services[$name]) || isset($this->factories[$name]);
     }
 
@@ -425,7 +425,7 @@ class Manager implements ContainerInterface
 
     /**
      * @param string $name
-     * @param array|object $service
+     * @param object $service
      *
      * @return void
      */

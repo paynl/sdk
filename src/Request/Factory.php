@@ -17,15 +17,17 @@ class Factory implements FactoryInterface
 {
     /**
      * @inheritDoc
+     *
+     * @return RequestInterface
      */
-    public function __invoke(ContainerInterface $container, string $requestedName, array $options = null)
+    public function __invoke(ContainerInterface $container, string $requestedName, array $options = null): RequestInterface
     {
         if (null === $options) {
             $options = [];
         }
 
         $config = $container->get('config');
-        $options['format'] = $config['request']['format'] ?? RequestInterface::FORMAT_OBJECTS;
+        $options['format'] = $config->get('request')->get('format') ?? RequestInterface::FORMAT_OBJECTS;
 
         if (true === array_key_exists('filters', $options)) {
             // we've got filer, initiate them and "override" the filter in the set
@@ -38,8 +40,18 @@ class Factory implements FactoryInterface
             }
         }
 
-        /** @var AbstractRequest $request */
-        $request = new $requestedName($options);
+        $uri            = $options['uri'] ?? '';
+        $method         = $options['method'] ?? '';
+        $requiredParams = $options['requiredParams'] ?? [];
+        unset($options['uri'], $options['method'], $options['requiredParams']);
+
+        /** @var RequestInterface $request */
+        $request = new $requestedName(
+            $uri,
+            $method,
+            $requiredParams,
+            $options
+        );
 
         return $request;
     }

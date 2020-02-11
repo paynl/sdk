@@ -17,6 +17,7 @@ use PayNL\Sdk\{
     Common\OptionsAwareTrait,
     Exception\EmptyRequiredMemberException,
     Exception\ExceptionInterface,
+    Exception\MissingParamException,
     Exception\MissingRequiredMemberException,
     Exception\RuntimeException,
     Model\ModelInterface,
@@ -55,6 +56,21 @@ abstract class AbstractRequest implements
     protected $format = self::FORMAT_OBJECTS;
 
     /**
+     * @var string
+     */
+    protected $uri;
+
+    /**
+     * @var string
+     */
+    protected $method;
+
+    /**
+     * @var array
+     */
+    protected $requiredParams = [];
+
+    /**
      * @var array
      */
     protected $headers = [];
@@ -88,21 +104,11 @@ abstract class AbstractRequest implements
     {
         $this->setOptions($options);
 
-        if ($this->hasOption('params')) {
-            $this->setParams($this->getOption('params'));
-        }
-
-        if ($this->hasOption('filters')) {
-            $this->setFilters($this->getOption('filters'));
-        }
-
-        if ($this->hasOption('body') && null !== $this->getOption('body')) {
-            $this->setBody($this->getOption('body'));
-        }
-
         if ($this->hasOption('format') && true === is_string($this->getOption('format'))) {
             $this->setFormat($this->getOption('format'));
         }
+
+        $this->init();
     }
 
     /**
@@ -153,6 +159,31 @@ abstract class AbstractRequest implements
     public function setParams(array $params): self
     {
         $this->params = $params;
+
+        if (0 === count($this->getRequiredParams())) {
+            return $this;
+        }
+
+        foreach ($this->getRequiredParams() as $paramName => $paramDefinition) {
+            if (false === $this->hasParam($paramName)) {
+                throw new MissingParamException('Missing param!');
+            }
+
+            if (true === is_string($paramDefinition)
+                && '' !== $paramDefinition
+                && 1 !== preg_match("/^{$paramDefinition}$/", $this->getParam($paramName))
+            ) {
+                throw new InvalidArgumentException(
+                    sprintf(
+                        'Param %s is not valid. It must match "%s"',
+                        $paramName,
+                        $paramDefinition
+                    )
+                );
+            }
+            // set it in the array
+            $this->setUri(str_replace("%{$paramName}%", $this->getParam($paramName), $this->getUri()));
+        }
         return $this;
     }
 
@@ -182,6 +213,63 @@ abstract class AbstractRequest implements
             );
         }
         $this->format = $format;
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getUri(): string
+    {
+        return $this->uri;
+    }
+
+    /**
+     * @param string $uri
+     *
+     * @return AbstractRequest
+     */
+    public function setUri(string $uri): self
+    {
+        $this->uri = '/' . trim($uri, '/');
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getMethod(): string
+    {
+        return $this->method;
+    }
+
+    /**
+     * @param string $method
+     *
+     * @return AbstractRequest
+     */
+    public function setMethod(string $method): self
+    {
+        $this->method = $method;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getRequiredParams(): array
+    {
+        return $this->requiredParams;
+    }
+
+    /**
+     * @param array $requiredParams
+     *
+     * @return AbstractRequest
+     */
+    public function setRequiredParams(array $requiredParams): self
+    {
+        $this->requiredParams = $requiredParams;
         return $this;
     }
 
@@ -366,8 +454,8 @@ abstract class AbstractRequest implements
      */
     public function execute(Response $response): void
     {
-        $this->init();
-        $uri = $this->getUri();
+//        $this->init();
+        $uri = trim($this->getUri(), '/');
         $filters = $this->getFilters();
         if (0 < count($filters)) {
             $uri .= '?' . implode('&', $filters);

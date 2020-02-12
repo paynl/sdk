@@ -36,6 +36,9 @@ use Symfony\Component\Serializer\Encoder\{
  * Class AbstractRequest
  *
  * @package PayNL\Sdk\Request
+ *
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 abstract class AbstractRequest implements
     RequestInterface,
@@ -112,7 +115,7 @@ abstract class AbstractRequest implements
     }
 
     /**
-     * Method to execute custom code just before the request execute
+     * Method to execute custom code just after the request construction
      *
      * @return void
      */
@@ -159,10 +162,6 @@ abstract class AbstractRequest implements
     public function setParams(array $params): self
     {
         $this->params = $params;
-
-        if (0 === count($this->getRequiredParams())) {
-            return $this;
-        }
 
         foreach ($this->getRequiredParams() as $paramName => $paramDefinition) {
             if (false === $this->hasParam($paramName)) {
@@ -305,10 +304,7 @@ abstract class AbstractRequest implements
      */
     public function getHeader(string $name): ?string
     {
-        if (false === array_key_exists($name, $this->getHeaders())) {
-            return null;
-        }
-        return $this->headers[$name];
+        return $this->headers[$name] ?? null;
     }
 
     /**
@@ -383,10 +379,7 @@ abstract class AbstractRequest implements
      */
     public function getFilter(string $name): ?FilterInterface
     {
-        if (false === array_key_exists($name, $this->filters)) {
-            return null;
-        }
-        return $this->filters[$name];
+        return $this->filters[$name] ?? null;
     }
 
     /**
@@ -454,13 +447,10 @@ abstract class AbstractRequest implements
     {
         $uri = trim($this->getUri(), '/');
         $filters = $this->getFilters();
-        if (0 < count($filters)) {
-            $uri .= '?' . implode('&', $filters);
-        }
 
-        if (true === $this->isDebug()) {
-            $this->dumpDebugInfo('Request body: ' . $this->getBody());
-        }
+        $uri = trim($uri . '?' . implode('&', $filters), '?');
+
+        $this->dumpDebugInfo('Request body: ' . $this->getBody());
 
         try {
             $guzzleClient = $this->getClient();
@@ -470,13 +460,11 @@ abstract class AbstractRequest implements
 
             // create a Guzzle PSR 7 Request
             $guzzleRequest = new Request($this->getMethod(), $uri, $this->getHeaders(), $this->getBody());
-            if (true === $this->isDebug()) {
-                $this->dumpDebugInfo('Requested URL: ' . rtrim((string)$guzzleClient->getConfig('base_uri'), '/') . '/' . $guzzleRequest->getUri());
-                $headers = $this->getHeaders();
-                $this->dumpDebugInfo('Headers:' . PHP_EOL . PHP_EOL . implode(PHP_EOL, array_map(static function($item, $key) {
-                    return "{$key}: {$item}";
-                }, $headers, array_keys($headers))));
-            }
+
+            $this->dumpDebugInfo('Requested URL: ' . rtrim((string)$guzzleClient->getConfig('base_uri'), '/') . '/' . $guzzleRequest->getUri());
+            $this->dumpDebugInfo('Headers:' . PHP_EOL . PHP_EOL . implode(PHP_EOL, array_map(static function($item, $key) {
+                return "{$key}: {$item}";
+            }, $this->getHeaders(), array_keys($this->getHeaders()))));
 
             $guzzleResponse = $guzzleClient->send($guzzleRequest);
 
@@ -515,9 +503,7 @@ abstract class AbstractRequest implements
             ->setBody($body)
         ;
 
-        if (true === $this->isDebug()) {
-            $this->dumpDebugInfo('Response: ', $response);
-        }
+        $this->dumpDebugInfo('Response: ', $response);
     }
 
     /**
@@ -532,7 +518,6 @@ abstract class AbstractRequest implements
         if (false !== strpos($rawBody, '{"errors":')) {
             return $rawBody;
         }
-
 
         return (string)(new JsonEncoder())->encode([
            'errors' => (object)[
@@ -565,14 +550,14 @@ abstract class AbstractRequest implements
         }
 
         // create exception stack
-        $c = 0;
+        $counter = 0;
         $prev = null;
         foreach ($validator->getMessages() as $type => $message) {
             $exceptionClass = MissingRequiredMemberException::class;
             if (true === in_array($type, [$validator::MSG_EMPTY_MEMBER, $validator::MSG_EMPTY_MEMBERS], true)) {
                 $exceptionClass = EmptyRequiredMemberException::class;
             }
-            $e = new $exceptionClass($message, 500, ($c++ !== 0 ? $prev : null));
+            $e = new $exceptionClass($message, 500, ($counter++ !== 0 ? $prev : null));
             $prev = $e;
         }
 

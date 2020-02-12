@@ -4,14 +4,17 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Model;
 
-use PayNL\Sdk\Common\DateTime;
-use PayNL\Sdk\Config\ProviderInterface as ConfigProviderInterface;
-use PayNL\Sdk\Common\ManagerFactory;
+use PayNL\Sdk\{
+    Config\ProviderInterface as ConfigProviderInterface,
+    Common\ManagerFactory
+};
 
 /**
  * Class ConfigProvider
  *
  * @package PayNL\Sdk\Model
+ *
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class ConfigProvider implements ConfigProviderInterface
 {
@@ -49,6 +52,8 @@ class ConfigProvider implements ConfigProviderInterface
 
     /**
      * @return array
+     *
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function getModelConfig(): array
     {

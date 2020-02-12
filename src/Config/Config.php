@@ -4,16 +4,14 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Config;
 
-use Countable,
-    Iterator,
-    ArrayAccess
-;
-use PayNL\Sdk\Exception\UnexpectedValueException;
+use Countable, Iterator, ArrayAccess;
 
 /**
  * Class Config
  *
  * @package PayNL\Sdk
+ *
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  */
 class Config implements Countable, Iterator, ArrayAccess
 {

@@ -46,7 +46,7 @@ class Integration implements ModelInterface, JsonSerializable
     /**
      * @return boolean
      */
-    public function getTestMode(): bool
+    public function isTestMode(): bool
     {
         return $this->testMode;
     }

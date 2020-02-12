@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5f0e6517adfb9a303071faa55f76b968",
+    "content-hash": "6da660b5a0100b49907cf4c0bcdc254a",
     "packages": [
         {
             "name": "doctrine/collections",
@@ -957,6 +957,7 @@
                 "selenium",
                 "webdriver"
             ],
+            "abandoned": "php-webdriver/webdriver",
             "time": "2019-06-13T08:02:18+00:00"
         },
         {

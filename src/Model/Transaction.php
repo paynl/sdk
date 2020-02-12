@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Model;
 
-use DateTime as stdDateTime, JsonSerializable, BadMethodCallException;
+use JsonSerializable;
 use Zend\Filter\Word\CamelCaseToUnderscore;
-use PayNL\Sdk\Common\DateTime;
-use PayNL\Sdk\Common\JsonSerializeTrait;
+use PayNL\Sdk\{
+    Common\DateTime,
+    Common\JsonSerializeTrait,
+    Exception\BadMethodCallException
+};
 
 /**
  * Class Transaction
@@ -532,6 +535,8 @@ class Transaction implements ModelInterface, JsonSerializable
 
     /**
      * @return DateTime
+     *
+     * @SuppressWarnings(PHPMD.StaticAccess)
      */
     public function getCreatedAt(): DateTime
     {
@@ -587,7 +592,7 @@ class Transaction implements ModelInterface, JsonSerializable
             /** @var string $statusName */
             $statusName = (new CamelCaseToUnderscore())->filter($match['status']);
             $statusConstantName = 'STATUS_' . strtoupper($statusName);
-            return $status->is($statusConstantName);
+            return $status->isStatus($statusConstantName);
         }
 
         throw new BadMethodCallException(

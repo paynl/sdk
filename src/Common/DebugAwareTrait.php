@@ -45,6 +45,10 @@ trait DebugAwareTrait
      */
     public function dumpDebugInfo(...$arguments): void
     {
+        if (false === $this->isDebug()) {
+            return;
+        }
+
         ini_set('xdebug.overload_var_dump', 'off');
         if (true === function_exists('dump') && 0 !== strpos(get_class($this), 'Mock_')) {
             dump(...$arguments);

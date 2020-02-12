@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Mapper;
 
-use PayNL\Sdk\Exception\ServiceNotFoundException;
-use PayNL\Sdk\Service\AbstractPluginManager;
-use Zend\Stdlib\ArrayUtils;
-use PayNL\Sdk\Service\Manager as ServiceManager;
+use PayNL\Sdk\{
+    Config\Config,
+    Service\AbstractPluginManager,
+    Service\Manager as ServiceManager,
+    Exception\ServiceNotFoundException,
+    Exception\ServiceNotCreatedException
+};
 
 /**
  * Class Manager
@@ -35,7 +38,10 @@ class Manager extends AbstractPluginManager
     {
         parent::configure($config);
 
-        if (true === array_key_exists('mapping', $config) && false === empty($config['mapping'])) {
+        $currentMapping = new Config($this->mapping);
+        $mappingConfig = [];
+
+        if (false === empty($config['mapping'])) {
             $mappingConfig = $config['mapping'];
 
 
@@ -45,7 +51,12 @@ class Manager extends AbstractPluginManager
                 $mapper = $this->resolvedAliases[$mapperAlias] ?? $mapperAlias;
 
                 if (false === class_exists($mapper)) {
-                    throw new \Exception('No mapper');
+                    throw new ServiceNotCreatedException(
+                        sprintf(
+                            'Can not initiate mapper object, class "%s" does not exist',
+                            $mapper
+                        )
+                    );
                 }
 
                 $mappingConfig[$mapper] = $map;
@@ -54,7 +65,7 @@ class Manager extends AbstractPluginManager
                 // determine the necessary managers
                 preg_match_all('/((?:^|[A-Z])[a-z]+)/', str_replace([__NAMESPACE__, 'Mapper'], '', $mapper), $matches);
                 if (2 < count($matches[1])) {
-                    throw new \Exception(
+                    throw new ServiceNotFoundException(
                         'invalid name'
                     );
                 }
@@ -90,9 +101,8 @@ class Manager extends AbstractPluginManager
 
                 $mappingConfig[$mapper] = $map;
             }
-
-            $this->mapping = ArrayUtils::merge($mappingConfig, $this->mapping);
         }
+        $this->mapping = $currentMapping->merge(new Config($mappingConfig))->toArray();
 
         return $this;
     }
@@ -108,6 +118,9 @@ class Manager extends AbstractPluginManager
         parent::validateOverrides($config);
     }
 
+    /**
+     * @return array
+     */
     public function getMapping(): array
     {
         return $this->mapping;

@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Transformer;
 
-
+/**
+ * Trait TransformerAwareTrait
+ *
+ * @package PayNL\Sdk\Transformer
+ */
 trait TransformerAwareTrait
 {
     /**
@@ -12,11 +16,17 @@ trait TransformerAwareTrait
      */
     protected $transformer;
 
-    public function getTransformer(): TransformerInterface
+    /**
+     * @inheritDoc
+     */
+    public function getTransformer(): ?TransformerInterface
     {
         return $this->transformer;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function setTransformer(TransformerInterface $transformer)
     {
         $this->transformer = $transformer;

@@ -130,7 +130,7 @@ class Response implements ResponseInterface, TransformerAwareInterface, DebugAwa
     public function setBody($body): Response
     {
         // initiate transformer (... more than meets the eye ;-) )
-        if (static::FORMAT_OBJECTS === $this->getFormat()) {
+        if (static::FORMAT_OBJECTS === $this->getFormat() && null !== $this->getTransformer()) {
             $body = $this->getTransformer()->transform($body);
         }
 

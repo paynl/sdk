@@ -7,7 +7,15 @@ namespace PayNL\Sdk\Transformer;
 
 interface TransformerAwareInterface
 {
-    public function getTransformer(): TransformerInterface;
+    /**
+     * @return TransformerInterface|null
+     */
+    public function getTransformer(): ?TransformerInterface;
 
+    /**
+     * @param TransformerInterface $transformer
+     *
+     * @return static
+     */
     public function setTransformer(TransformerInterface $transformer);
 }

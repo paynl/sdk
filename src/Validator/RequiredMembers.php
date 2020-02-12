@@ -116,7 +116,7 @@ class RequiredMembers extends AbstractValidator implements HydratorAwareInterfac
     }
 
     /**
-     * @param object $objectToExtract
+     * @param mixed $objectToExtract
      *
      * @throws RuntimeException when the hydrator can not be found
      * @throws InvalidArgumentException when given object isn't an object

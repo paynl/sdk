@@ -210,8 +210,8 @@ class TransactionStatusTest extends UnitTest
     {
         $this->status->setCode(TransactionStatus::STATUS_PAID);
 
-        verify($this->status->is('STATUS_PAID'))->bool();
-        verify($this->status->is('STATUS_PAID'))->true();
+        verify($this->status->isStatus('STATUS_PAID'))->bool();
+        verify($this->status->isStatus('STATUS_PAID'))->true();
     }
 
     /**
@@ -225,8 +225,8 @@ class TransactionStatusTest extends UnitTest
     {
         $this->status->setCode(TransactionStatus::STATUS_PAID);
 
-        verify($this->status->is(TransactionStatus::STATUS_PAID))->bool();
-        verify($this->status->is('STATUS_PAID'))->true();
+        verify($this->status->isStatus(TransactionStatus::STATUS_PAID))->bool();
+        verify($this->status->isStatus('STATUS_PAID'))->true();
     }
 
     /**
@@ -236,6 +236,6 @@ class TransactionStatusTest extends UnitTest
     {
         $this->expectException(InvalidArgumentException::class);
 
-        $this->status->is([]);
+        $this->status->isStatus([]);
     }
 }

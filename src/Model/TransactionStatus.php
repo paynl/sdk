@@ -116,7 +116,7 @@ class TransactionStatus extends Status
      *
      * @return bool
      */
-    public function is($constantNameOrCode): bool
+    public function isStatus($constantNameOrCode): bool
     {
         if (true === is_string($constantNameOrCode)) {
             $constantNameOrCode = constant(static::class . '::' . $constantNameOrCode);

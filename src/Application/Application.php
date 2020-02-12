@@ -174,9 +174,7 @@ class Application
                 ->setFilters($filters ?? [])
             ;
 
-            if (null !== $body) {
-                $request->setBody($body);
-            }
+            $request->setBody($body);
         } elseif (! ($request instanceof AbstractRequest)) {
             throw new InvalidArgumentException(
                 sprintf(

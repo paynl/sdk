@@ -4,16 +4,24 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Service;
 
-use Exception as stdException;
-use PayNL\Sdk\Common\InitializerInterface;
-use PayNL\Sdk\Exception;
 use Psr\Container\ContainerInterface;
-use PayNL\Sdk\Common\InvokableFactory;
+use PayNL\Sdk\{
+    Common\InitializerInterface,
+    Common\InvokableFactory,
+    Exception\ContainerModificationsNotAllowedException,
+    Exception\CyclicAliasException,
+    Exception\InvalidArgumentException,
+    Exception\ServiceNotCreatedException,
+    Exception\ServiceNotFoundException
+};
+use Exception as stdException;
 
 /**
  * Class Manager
  *
  * @package PayNL\Sdk
+ *
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 class Manager implements ContainerInterface
 {
@@ -79,32 +87,32 @@ class Manager implements ContainerInterface
     {
         $this->validateOverrides($config);
 
-        if (true === array_key_exists('services', $config) && false === empty($config['services'])) {
+        if (true === isset($config['services'])) {
             $this->services = array_merge($config['services'], $this->services);
         }
 
-        if (true === array_key_exists('invokables', $config) && false === empty($config['invokables'])) {
+        if (false === empty($config['invokables'])) {
             $aliases = $this->createAliasesForInvokables($config['invokables']);
             $factories = $this->createFactoriesForInvokables($config['invokables']);
 
             if (false === empty($aliases)) {
-                $config['aliases'] = (true === isset($config['aliases']) ? array_merge($config['aliases'], $aliases) : $aliases);
+                $config['aliases'] = array_merge($config['aliases'] ?? [], $aliases);
             }
 
-            $config['factories'] = (true === isset($config['factories']) ? array_merge($config['factories'], $factories) : $factories);
+            $config['factories'] = array_merge($config['factories'] ?? [], $factories);
         }
 
-        if (true === array_key_exists('factories', $config) && false === empty($config['factories'])) {
+        if (true === isset($config['factories'])) {
             $this->factories = array_merge($config['factories'], $this->factories);
         }
 
-        if (true === array_key_exists('aliases', $config) && false === empty($config['aliases'])) {
+        if (true === isset($config['aliases'])) {
             $this->configureAliases($config['aliases']);
         } elseif (false === $this->configured && 0 < count($this->aliases)) {
             $this->resolveAliases($this->aliases);
         }
 
-        if (true === array_key_exists('initializers', $config) && false === empty($config['initializers'])) {
+        if (true === isset($config['initializers'])) {
             $this->resolveInitializers($config['initializers']);
         }
 
@@ -120,10 +128,6 @@ class Manager implements ContainerInterface
      */
     private function createAliasesForInvokables(array $invokables): array
     {
-        if (0 === count($invokables)) {
-            return [];
-        }
-
         $aliases = [];
         foreach ($invokables as $name => $class) {
             if ($name === $class) {
@@ -141,10 +145,6 @@ class Manager implements ContainerInterface
      */
     private function createFactoriesForInvokables(array $invokables): array
     {
-        if (0 === count($invokables)) {
-            return [];
-        }
-
         $factories = [];
         foreach ($invokables as $name => $class) {
             if ($name === $class) {
@@ -170,8 +170,8 @@ class Manager implements ContainerInterface
             return;
         }
 
-        $intersecting = $this->aliases && array_intersect_key($this->aliases, $aliases);
-        $this->aliases = $this->aliases ? array_merge($this->aliases, $aliases) : $aliases;
+        $intersecting = false === empty($this->aliases) && array_intersect_key($this->aliases, $aliases);
+        $this->aliases = array_merge($this->aliases, $aliases);
 
         if ($intersecting) {
             $this->resolveAliases($this->aliases);
@@ -185,23 +185,19 @@ class Manager implements ContainerInterface
     /**
      * @param array $aliases
      *
-     * @throws Exception\CyclicAliasException
+     * @throws CyclicAliasException
      *
      * @return void
      */
     private function resolveAliases(array $aliases): void
     {
-        if (0 === count($aliases)) {
-            return;
-        }
-
-        foreach ($aliases as $alias => $service) {
+        foreach (array_keys($aliases) as $alias) {
             $visited = [];
             $name = $alias;
 
             while (true === isset($this->aliases[$name])) {
                 if (true === isset($visited[$name])) {
-                    throw new Exception\CyclicAliasException(
+                    throw new CyclicAliasException(
                         sprintf(
                             'Cycle(s) were detected in provided aliases for %s',
                             $name
@@ -224,23 +220,22 @@ class Manager implements ContainerInterface
      */
     private function resolveNewAliasesWithPreviouslyResolvedAliases(array $aliases): void
     {
-        if (0 === count($aliases)) {
-            return;
-        }
-
         foreach ($this->resolvedAliases as $name => $target) {
-            if (isset($aliases[$target])) {
+            if (true === isset($aliases[$target])) {
                 $this->resolvedAliases[$name] = $this->resolvedAliases[$target];
             }
         }
     }
 
+    /**
+     * @param array $initializers
+     *
+     * @throws InvalidArgumentException when the initializer can not be found/loaded or is not a callable object
+     *
+     * @return void
+     */
     private function resolveInitializers(array $initializers): void
     {
-        if (0 === count($initializers)) {
-            return;
-        }
-
         foreach ($initializers as $initializer) {
             if (true === is_string($initializer) && class_exists($initializer)) {
                 $initializer = new $initializer();
@@ -253,7 +248,7 @@ class Manager implements ContainerInterface
 
             // Error section
             if (true === is_string($initializer)) {
-                throw new Exception\InvalidArgumentException(
+                throw new InvalidArgumentException(
                     sprintf(
                         'An invalid initializer was registered; resolved to class or function "%s" ' .
                         'which does not exist. Please provide a valid function name or class name ' .
@@ -264,7 +259,7 @@ class Manager implements ContainerInterface
                 );
             }
 
-            throw new Exception\InvalidArgumentException(
+            throw new InvalidArgumentException(
                 sprintf(
                     'An invalid initializer was registered. Expected a callable, or an instance of "%s", got "%s"',
                     InitializerInterface::class,
@@ -277,12 +272,12 @@ class Manager implements ContainerInterface
     /**
      * @inheritDoc
      *
-     * @throw Exception\InvalidArgumentException when given name is not a string
+     * @throw InvalidArgumentException when given name is not a string
      */
     public function has($name): bool
     {
         if (false === is_string($name)) {
-            throw new Exception\InvalidArgumentException(
+            throw new InvalidArgumentException(
                 sprintf(
                     'Given name to "%s" must be a string, %s given',
                     __METHOD__,
@@ -339,13 +334,13 @@ class Manager implements ContainerInterface
     /**
      * Indicate whether or not the instance is immutable.
      *
-     * @param bool $flag
+     * @param bool $allow
      *
      * @return Manager
      */
-    public function setAllowOverride($flag): self
+    public function setAllowOverride(bool $allow): self
     {
-        $this->allowOverride = (bool) $flag;
+        $this->allowOverride = $allow;
         return $this;
     }
 
@@ -354,7 +349,7 @@ class Manager implements ContainerInterface
      *
      * @return bool
      */
-    public function getAllowOverride(): bool
+    public function hasAllowOverride(): bool
     {
         return $this->allowOverride;
     }
@@ -363,7 +358,7 @@ class Manager implements ContainerInterface
      * @param string $resolvedName
      * @param array|null $options
      *
-     * @throws Exception\ServiceNotCreatedException
+     * @throws ServiceNotCreatedException
      *
      * @return mixed
      */
@@ -373,7 +368,7 @@ class Manager implements ContainerInterface
             $factory = $this->getFactory($resolvedName);
             $instance = $factory($this->creationContext, $resolvedName, $options);
         } catch (stdException $exception) {
-            throw new Exception\ServiceNotCreatedException(
+            throw new ServiceNotCreatedException(
                 sprintf(
                     'Service with name "%s" is not created because of %s',
                     $resolvedName,
@@ -394,7 +389,7 @@ class Manager implements ContainerInterface
     /**
      * @param string $name
      *
-     * @throws Exception\ServiceNotFoundException
+     * @throws ServiceNotFoundException
      *
      * @return callable
      */
@@ -415,7 +410,7 @@ class Manager implements ContainerInterface
             return $factory;
         }
 
-        throw new Exception\ServiceNotFoundException(
+        throw new ServiceNotFoundException(
             sprintf(
                 'Unable to resolve service "%s" to a factory',
                 $name
@@ -498,7 +493,7 @@ class Manager implements ContainerInterface
      * @param array $services
      * @param string $type
      *
-     * @throws Exception\ContainerModificationsNotAllowedException
+     * @throws ContainerModificationsNotAllowedException
      *
      * @return void
      */
@@ -515,7 +510,7 @@ class Manager implements ContainerInterface
             return;
         }
 
-        throw new Exception\ContainerModificationsNotAllowedException(
+        throw new ContainerModificationsNotAllowedException(
             sprintf(
                 'An updated/new %s is not allowed because the container does not allow changes for already ' .
                 'existing instances. The following already exist in the container: %s',

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Validator;
 
+use PayNL\Sdk\Exception\InvalidArgumentException;
+use PayNL\Sdk\Exception\RuntimeException;
 use ReflectionClass, ReflectionException;
 use Zend\Hydrator\HydratorAwareInterface;
 use Zend\Hydrator\HydratorAwareTrait;
@@ -47,40 +49,33 @@ class RequiredMembers extends AbstractValidator implements HydratorAwareInterfac
             return true;
         }
 
-        $hydrator = $this->getHydrator();
-        if (null === $hydrator) {
-            throw new \Exception('No hydrator');
-        }
-
-        $data = $hydrator->extract($filledObjectToCheck);
+        $data = $this->getDataFromObject($filledObjectToCheck);
         $missingMembers = $emptyMembers = [];
-        foreach ($required as $memberName => $type) {
+
+        foreach (array_keys($required) as $memberName) {
             if (false === array_key_exists($memberName, $data)) {
                 $missingMembers[] = $memberName;
-                continue;
-            }
-
-            // filter zero only if its an id field
-            if (null === $data[$memberName]
-                || '' === $data[$memberName]
-                || (
-                    true === is_int($data[$memberName])
-                    && 1 === preg_match('/^(?P<idKey>id$|(.*)Id)$/', (string)$memberName, $match)
-                    && 0 === $data[$memberName]
-                )
-            ) {
+            } elseif (true === $this->isEmpty($memberName, $data[$memberName])) {
                 $emptyMembers[] = $memberName;
             }
         }
 
         $nrOfMissingMembers = count($missingMembers);
         if (0 < $nrOfMissingMembers) {
-            $this->error(1 === $nrOfMissingMembers ? static::MSG_MISSING_MEMBER : static::MSG_MISSING_MEMBERS, implode('", "', $missingMembers), $className);
+            $this->error(
+                1 === $nrOfMissingMembers ? static::MSG_MISSING_MEMBER : static::MSG_MISSING_MEMBERS,
+                implode('", "', $missingMembers),
+                $className
+            );
         }
 
         $nrOfEmptyMembers = count($emptyMembers);
         if (0 < $nrOfEmptyMembers) {
-            $this->error(1 === $nrOfEmptyMembers ? static::MSG_EMPTY_MEMBER : static::MSG_EMPTY_MEMBERS, implode('", "', $emptyMembers), $className);
+            $this->error(
+                1 === $nrOfEmptyMembers ? static::MSG_EMPTY_MEMBER : static::MSG_EMPTY_MEMBERS,
+                implode('", "', $emptyMembers),
+                $className
+            );
         }
 
         return 0 === $nrOfMissingMembers + $nrOfEmptyMembers;
@@ -118,5 +113,58 @@ class RequiredMembers extends AbstractValidator implements HydratorAwareInterfac
         }
 
         return $requiredClassMembers;
+    }
+
+    /**
+     * @param object $objectToExtract
+     *
+     * @throws RuntimeException when the hydrator can not be found
+     * @throws InvalidArgumentException when given object isn't an object
+     *
+     * @return array
+     */
+    private function getDataFromObject($objectToExtract): array
+    {
+        $hydrator = $this->getHydrator();
+        if (null === $hydrator) {
+            throw new RuntimeException(
+                sprintf(
+                    'Hydrator for "%s" is not set',
+                    __CLASS__
+                )
+            );
+        }
+
+        if (false === is_object($objectToExtract)) {
+            throw new InvalidArgumentException(
+                sprintf(
+                    'Given argument to "%s" must be an object, %s given',
+                    __METHOD__,
+                    gettype($objectToExtract)
+                )
+            );
+        }
+
+        return $hydrator->extract($objectToExtract);
+    }
+
+    /**
+     * Checks if the given $value is empty. In other words, its an empty string, null or
+     * (if the key is an id field) equal to zero (0).
+     *
+     * @param string|int $key
+     * @param mixed $value
+     *
+     * @return bool
+     */
+    private function isEmpty($key, $value): bool
+    {
+        return null === $value
+            || '' === $value
+            || (
+                1 === preg_match('/^(id$|(.*)Id)$/', (string)$key)
+                && 0 === $value
+            )
+        ;
     }
 }

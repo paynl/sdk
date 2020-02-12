@@ -26,6 +26,20 @@ use PayNL\Sdk\{
  */
 class ManagerFactory implements FactoryInterface
 {
+    /*
+     * Constant definition of config keys corresponding to their manager
+     */
+    protected const CONFIG_KEYS = [
+        HydratorManager::class    => 'hydrators',
+        TransformerManager::class => 'transformers',
+        AuthAdapterManager::class => 'authAdapters',
+        RequestManager::class     => 'requests',
+        ModelManager::class       => 'models',
+        MapperManager::class      => 'mappers',
+        ValidatorManager::class   => 'validators',
+        FilterManager::class      => 'filters',
+    ];
+
     /**
      * @inheritDoc
      *
@@ -33,38 +47,14 @@ class ManagerFactory implements FactoryInterface
      */
     public function __invoke(ContainerInterface $container, string $requestedName, array $options = null): AbstractPluginManager
     {
-        switch ($requestedName) {
-            case HydratorManager::class:
-                $configKey = 'hydrators';
-                break;
-            case TransformerManager::class:
-                $configKey = 'transformers';
-                break;
-            case AuthAdapterManager::class:
-                $configKey = 'authAdapters';
-                break;
-            case RequestManager::class:
-                $configKey = 'requests';
-                break;
-            case ModelManager::class:
-                $configKey = 'models';
-                break;
-            case MapperManager::class:
-                $configKey = 'mappers';
-                break;
-            case ValidatorManager::class:
-                $configKey = 'validators';
-                break;
-            case FilterManager::class:
-                $configKey = 'filters';
-                break;
-            default:
-                throw new ServiceNotCreatedException(
-                    sprintf(
-                        'Manager "%s" is not supported',
-                        $requestedName
-                    )
-                );
+        $configKey = self::CONFIG_KEYS[$requestedName] ?? null;
+        if (null === $configKey) {
+            throw new ServiceNotCreatedException(
+                sprintf(
+                    'Manager "%s" is not supported',
+                    $requestedName
+                )
+            );
         }
 
         $manager = new $requestedName($container, $options ?? []);

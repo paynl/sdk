@@ -100,9 +100,8 @@ class Api implements OptionsAwareInterface, DebugAwareInterface
     public function doHandle(RequestInterface $request, Response $response): Response
     {
         $format = $request->getFormat();
-        if (true === $this->isDebug()) {
-            $this->dumpDebugInfo('Requested format: ' . $format);
-        }
+
+        $this->dumpDebugInfo('Requested format: ' . $format);
 
         $request->applyClient($this->getClient());
 

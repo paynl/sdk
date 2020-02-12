@@ -104,9 +104,9 @@ class Response implements ResponseInterface, TransformerAwareInterface, DebugAwa
      */
     public function setRawBody(string $rawBody): Response
     {
-        if ($this->isDebug()) {
-            $this->dumpDebugInfo('Raw response body: ' . $rawBody);
-        }
+
+        $this->dumpDebugInfo('Raw response body: ' . $rawBody);
+
         $this->rawBody = $rawBody;
         return $this;
     }

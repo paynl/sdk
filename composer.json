@@ -9,6 +9,9 @@
     "name": "Ian Sneep",
     "email": "ian@pay.nl"
   }],
+  "support": {
+    "email": "support@pay.nl"
+  },
   "require": {
     "php": "^7.1",
     "ext-curl": "*",
@@ -19,8 +22,7 @@
     "ralouphie/getallheaders": "^2.0.5 || ^3.0.0",
     "symfony/serializer": "^4.3",
     "zendframework/zend-filter": "^2.9",
-    "zendframework/zend-hydrator": "^2.4",
-    "zendframework/zend-stdlib": "^3.2"
+    "zendframework/zend-hydrator": "^2.4"
   },
   "require-dev": {
     "ext-simplexml": "*",
@@ -33,6 +35,11 @@
     "roave/security-advisories": "dev-master",
     "squizlabs/php_codesniffer": "^3.4",
     "symfony/var-dumper": "^4.3"
+  },
+  "suggest": {
+    "symfony/var-dumper": "Allows another level of debugging within the application",
+    "filp/whoops": "For enhanced exception handling",
+    "codeception/codeception": "For executing the package tests"
   },
   "autoload":{
     "psr-4": {

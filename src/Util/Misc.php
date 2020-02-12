@@ -18,12 +18,15 @@ class Misc
      *
      * @throws RuntimeException when given file can not be opened
      *
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     *
      * @return string
      */
     public static function getClassNameByFile(string $file): string
     {
-        $fp = fopen($file, 'rb');
-        if (false === $fp) {
+        $handle = fopen($file, 'rb');
+        if (false === $handle) {
             throw new RuntimeException(
                 sprintf(
                     'Can not open file "%s"',
@@ -33,13 +36,13 @@ class Misc
         }
 
         $class = $namespace = $buffer = '';
-        $i = 0;
+        $counter = 0;
         while (!$class) {
-            if (feof($fp)) {
+            if (feof($handle)) {
                 break;
             }
 
-            $buffer .= fread($fp, 512);
+            $buffer .= fread($handle, 512);
             $tokens = token_get_all($buffer);
 
             if (strpos($buffer, '{') === false) {
@@ -48,21 +51,21 @@ class Misc
 
             $tokenCount = count($tokens);
 
-            for (; $i < $tokenCount; $i++) {
-                if ($tokens[$i][0] === T_NAMESPACE) {
-                    for ($j = $i+1; $j < $tokenCount; $j++) {
-                        if ($tokens[$j][0] === T_STRING) {
-                            $namespace .= '\\'.$tokens[$j][1];
-                        } else if ($tokens[$j] === '{' || $tokens[$j] === ';') {
+            for (; $counter < $tokenCount; $counter++) {
+                if ($tokens[$counter][0] === T_NAMESPACE) {
+                    for ($nextCounter = $counter+1; $nextCounter < $tokenCount; $nextCounter++) {
+                        if ($tokens[$nextCounter][0] === T_STRING) {
+                            $namespace .= '\\'.$tokens[$nextCounter][1];
+                        } else if ($tokens[$nextCounter] === '{' || $tokens[$nextCounter] === ';') {
                             break;
                         }
                     }
                 }
 
-                if ($tokens[$i][0] === T_CLASS) {
-                    for ($j = $i+1; $j < $tokenCount; $j++) {
-                        if ($tokens[$j] === '{') {
-                            $class = $tokens[$i+2][1];
+                if ($tokens[$counter][0] === T_CLASS) {
+                    for ($nextCounter = $counter+1; $nextCounter < $tokenCount; $nextCounter++) {
+                        if ($tokens[$nextCounter] === '{') {
+                            $class = $tokens[$counter+2][1];
                         }
                     }
                 }

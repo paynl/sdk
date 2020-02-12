@@ -101,6 +101,8 @@ class Loader
      * @param string $path
      *
      * @return Loader
+     *
+     * @SuppressWarnings(PHPMD.StaticAccess)
      */
     public function addConfigByPath(string $path): self
     {

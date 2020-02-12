@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Mapper;
 
-use PayNL\Sdk\Common\FactoryInterface;
+use PayNL\Sdk\{
+    Common\FactoryInterface,
+    Exception\ServiceNotCreatedException
+};
 use Psr\Container\ContainerInterface;
 
 /**
@@ -14,16 +17,28 @@ use Psr\Container\ContainerInterface;
  */
 class Factory implements FactoryInterface
 {
-    public function __invoke(ContainerInterface $container, string $requestedName, array $options = null)
+    /**
+     * @inheritDoc
+     *
+     * @return AbstractMapper
+     */
+    public function __invoke(ContainerInterface $container, string $requestedName, array $options = null): AbstractMapper
     {
         $mapConfig = $container->get('mapperManager')->getMapping();
 
         if (false === is_array($mapConfig) || true === empty($mapConfig)) {
-            throw new \Exception('No map config');
+            throw new ServiceNotCreatedException(
+                'No map config is set'
+            );
         }
 
         if (false === array_key_exists($requestedName, $mapConfig)) {
-            throw new \Exception('No map config for %s found, use %s');
+            throw new ServiceNotCreatedException(
+                sprintf(
+                    'No entry found within map config for "%s"',
+                    $requestedName
+                )
+            );
         }
 
         return new $requestedName($mapConfig[$requestedName]);

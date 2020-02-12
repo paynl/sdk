@@ -17,8 +17,6 @@ use PayNL\Sdk\Service\Manager as ServiceManager;
  * Class AbstractTransformer
  *
  * @package PayNL\Sdk\Transformer
- *
- * @SuppressWarnings(PHPMD.NumberOfChildren)
  */
 abstract class AbstractTransformer implements TransformerInterface, ModelAwareInterface, HydratorAwareInterface
 {

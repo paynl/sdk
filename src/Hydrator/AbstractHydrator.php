@@ -9,7 +9,6 @@ use PayNL\Sdk\{
     Common\DateTime,
     Common\DebugAwareInterface,
     Common\DebugAwareTrait,
-    Exception\InvalidArgumentException,
     Hydrator\Manager as HydratorManager,
     Model\Manager as ModelManager,
     Validator\ValidatorManagerAwareInterface,
@@ -41,20 +40,14 @@ abstract class AbstractHydrator extends ClassMethods implements DebugAwareInterf
      *
      * @param HydratorManager $hydratorManager
      * @param ModelManager $modelManager
-     * @param bool $underscoreSeparatedKeys
-     * @param bool $methodExistsCheck
      */
-    public function __construct(HydratorManager $hydratorManager, ModelManager $modelManager, $underscoreSeparatedKeys = true, $methodExistsCheck = false)
+    public function __construct(HydratorManager $hydratorManager, ModelManager $modelManager)
     {
         $this->hydratorManager = $hydratorManager;
         $this->modelManager = $modelManager;
 
-        // nasty construction to prevent unused parameter notification from PHPStan
-        $underscoreSeparatedKeys = $underscoreSeparatedKeys === true ? false : $underscoreSeparatedKeys;
-        $methodExistsCheck       = $methodExistsCheck === false ?: true;
-
         // override the given params
-        parent::__construct($underscoreSeparatedKeys, $methodExistsCheck);
+        parent::__construct(false, true);
     }
 
     /**
@@ -75,6 +68,8 @@ abstract class AbstractHydrator extends ClassMethods implements DebugAwareInterf
      * @param string|stdDateTime $dateTime
      *
      * @return DateTime
+     *
+     * @SuppressWarnings(PHPMD.StaticAccess)
      */
     protected function getSdkDateTime($dateTime): DateTime
     {

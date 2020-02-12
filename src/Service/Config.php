@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Service;
 
-use Zend\Stdlib\ArrayUtils;
 use PayNL\Sdk\Config\Config as BaseConfig;
 
 /**
@@ -38,17 +37,22 @@ class Config extends BaseConfig
         'services'     => [],
     ];
 
+    /**
+     * Config constructor.
+     *
+     * @param array $config
+     */
     public function __construct(array $config = [])
     {
         parent::__construct($this->config);
 
-        foreach ($config as $key => $value) {
+        foreach (array_keys($config) as $key) {
             if (false === in_array($key, $this->allowedKeys, true)) {
                 unset($config[$key]);
             }
         }
 
-        $this->merge(new parent($config));
+        $this->merge(new BaseConfig($config));
     }
 
     /**

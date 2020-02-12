@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Service;
 
-use PayNL\Sdk\Service\Manager as ServiceManager;
-use PayNL\Sdk\Service\Config as ServiceConfig;
-use PayNL\Sdk\Config\Config;
-use Zend\Stdlib\ArrayUtils;
-use PayNL\Sdk\Exception;
-use PayNL\Sdk\Config\Loader as ConfigLoader;
-use Traversable;
+use PayNL\Sdk\{
+    Service\Manager as ServiceManager,
+    Service\Config as ServiceConfig,
+    Config\Config,
+    Exception,
+    Config\Loader as ConfigLoader
+};
 
 /**
  * Class Loader
@@ -71,11 +71,14 @@ class Loader
      */
     public function addServiceManager($serviceManager, string $key, string $mandatoryMethod): self
     {
+        $smKey = '';
         if (true === is_string($serviceManager)) {
             $smKey = $serviceManager;
         } elseif ($serviceManager instanceof ServiceManager) {
             $smKey = spl_object_hash($serviceManager);
-        } else {
+        }
+
+        if ('' === $smKey) {
             throw new Exception\RuntimeException(
                 sprintf(
                     'Invalid service manager provided, expected instance of %s or string',
@@ -106,8 +109,6 @@ class Loader
         /** @var ConfigLoader $configLoader */
         $configLoader = $this->defaultServiceManager->get('configLoader');
 
-//        dump($configLoader->getConfigs(), $this->serviceManagers);die;
-
         foreach ($this->serviceManagers as $key => $sm) {
             // search for config provider
             foreach ($configLoader->getConfigs() as $className => $provider) {
@@ -121,8 +122,8 @@ class Loader
                     $config = $this->serviceConfigToArray($config);
                 }
 
-                if ($config instanceof Traversable) {
-                    $config = ArrayUtils::iteratorToArray($config);
+                if ($config instanceof Config) {
+                    $config = $config->toArray();
                 }
 
                 if (false === is_array($config)) {
@@ -166,9 +167,9 @@ class Loader
                 $sm['service_manager'] = $instance;
             }
 
-            $serviceConfig = new ServiceConfig($smConfig);
+            $serviceConfig = new ServiceConfig($smConfig->toArray());
 
-            $allowOverride = $sm['service_manager']->getAllowOverride();
+            $allowOverride = $sm['service_manager']->hasAllowOverride();
             $sm['service_manager']->setAllowOverride(true);
 
             $serviceConfig->configureServiceManager($sm['service_manager']);
@@ -182,9 +183,9 @@ class Loader
      * @param array $metadata
      * @param array $config
      *
-     * @return array
+     * @return Config
      */
-    protected function mergeServiceConfig(string $key, array $metadata, array $config): array
+    protected function mergeServiceConfig(string $key, array $metadata, array $config): Config
     {
         if (true === array_key_exists($metadata['config_key'], $config)
             && true === is_array($config[$metadata['config_key']])
@@ -193,15 +194,18 @@ class Loader
             $this->serviceManagers[$key]['configuration']['merged_config'] = $config[$metadata['config_key']];
         }
 
-        $serviceConfig = [];
-        foreach ($this->serviceManagers[$key]['configuration'] as $name => $configs) {
-            if (true === array_key_exists('configuration_classes', $configs)) {
-                foreach ($configs['configuration_classes'] as $class) {
-                    $configs = ArrayUtils::merge($configs, $this->serviceConfigToArray($class));
-                }
+        $serviceConfig = new Config();//[];
+        foreach ($this->serviceManagers[$key]['configuration'] as $configs) {
+            if (true === is_array($configs)) {
+                $configs = new Config($configs);
             }
 
-            $serviceConfig = ArrayUtils::merge($serviceConfig, $configs instanceof Config ? $configs->toArray() : $configs);
+            if (true === $configs->has('configuration_classes')) {
+                foreach ($configs->get('configuration_classes') as $class) {
+                    $configs->merge(new Config($this->serviceConfigToArray($class)));
+                }
+            }
+            $serviceConfig->merge($configs);
         }
 
         return $serviceConfig;

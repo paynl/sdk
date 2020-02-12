@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace Tests\Unit\PayNL\Sdk\Api;
 
 use Codeception\Test\Unit as UnitTest;
-use PayNL\GuzzleHttp\Client;
+use PayNL\GuzzleHttp\{
+    Client,
+    HandlerStack
+};
 use PayNL\Sdk\{
     Api\Api,
     AuthAdapter\AdapterInterface,
@@ -49,7 +52,7 @@ class ApiTest extends UnitTest
         $clientMock = $this->make(Client::class, [
             'config' => [
                 'base_uri' => 'https://rest-api.idefix.mike.dev.pay.nl',
-                'handler'  => \PayNL\GuzzleHttp\HandlerStack::create(),
+                'handler'  => HandlerStack::create(),
             ]
         ]);
 

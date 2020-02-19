@@ -78,6 +78,21 @@
     "sort-packages": true,
     "discard-changes": true
   },
+  "scripts": {
+    "test": [
+      "@codecept-unit",
+      "@style-check"
+    ],
+    "style-check": [
+      "@phpstan",
+      "@phpmd",
+      "@phpcs"
+    ],
+    "phpstan": "bin/phpstan analyse",
+    "phpmd": "bin/phpmd src,samples text phpmd.xml",
+    "phpcs": "bin/phpcs",
+    "codecept-unit": "bin/codecept run unit"
+  },
   "extra": {
     "branch-alias": {
       "dev-master": "2.x-dev"

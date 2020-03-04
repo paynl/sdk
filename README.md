@@ -39,8 +39,7 @@ You can download the zip on the projects [releases](https://github.com/paynl/sdk
 
 ### Requirements
 
-The Pay.nl PHP SDK works on php versions 5.3, 5.4, 5.5, 5.6, 7.0 and 7.1
-Also the php curl extension needs to be installed.
+The Pay.nl PHP SDK works on php versions 5.6 or higher, and requires the php curl extension.
 
 ### Quick start and examples
 

@@ -157,8 +157,8 @@ class AbstractRequestTest extends UnitTest
      */
     public function testItCanAddHeader(): void
     {
-        verify(method_exists($this->anonymousClassFromAbstract, 'addHeader'))->true();
-        verify($this->anonymousClassFromAbstract->addHeader('X-Test-Header', 'Test-value'))
+        verify(method_exists($this->anonymousClassFromAbstract, 'setHeader'))->true();
+        verify($this->anonymousClassFromAbstract->setHeader('X-Test-Header', 'Test-value'))
             ->isInstanceOf(AbstractRequest::class)
         ;
 
@@ -220,7 +220,7 @@ class AbstractRequestTest extends UnitTest
     {
         verify(method_exists($this->anonymousClassFromAbstract, 'getHeader'))->true();
 
-        $this->anonymousClassFromAbstract->addHeader('X-Custom-header', 'SomeValue');
+        $this->anonymousClassFromAbstract->setHeader('X-Custom-header', 'SomeValue');
 
         $header = $this->anonymousClassFromAbstract->getHeader('X-Custom-header');
         verify($header)->string();

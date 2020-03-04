@@ -164,14 +164,14 @@ class ServiceTest extends UnitTest
      */
     public function testItCanGetTestMode(): void
     {
-        verify($this->service->getTestMode())->int();
-        verify($this->service->getTestMode())->equals(0);
+        verify($this->service->isTestMode())->int();
+        verify($this->service->isTestMode())->equals(0);
 
         $this->service->setTestMode(1);
 
-        verify($this->service->getTestMode())->int();
-        verify($this->service->getTestMode())->notEmpty();
-        verify($this->service->getTestMode())->equals(1);
+        verify($this->service->isTestMode())->int();
+        verify($this->service->isTestMode())->notEmpty();
+        verify($this->service->isTestMode())->equals(1);
     }
 
     /**

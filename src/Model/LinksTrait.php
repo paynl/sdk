@@ -19,7 +19,7 @@ trait LinksTrait
     /**
      * @return Links
      */
-    public function getLinks(): ?Links
+    public function getLinks(): ?Links //FIXME: always return Links object?
     {
         return $this->links;
     }

@@ -28,7 +28,7 @@ abstract class AbstractValidator implements ValidatorInterface
      */
     public function getMessages(): array
     {
-        return array_unique($this->messages);
+        return $this->messages;
     }
 
     /**

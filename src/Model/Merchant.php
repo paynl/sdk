@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Model;
 
-use \DateTime;
+use PayNL\Sdk\Common\DateTime;
 
 /**
  * Class Merchant
@@ -56,14 +56,14 @@ class Merchant implements ModelInterface
     protected $visitAddress;
 
     /**
-     * @var array
+     * @var Trademarks
      */
-    protected $trademarks = [];
+    protected $trademarks;
 
     /**
-     * @var array
+     * @var ContactMethods
      */
-    protected $contactMethods = [];
+    protected $contactMethods;
 
     /**
      * @var DateTime
@@ -75,7 +75,7 @@ class Merchant implements ModelInterface
      */
     public function getId(): string
     {
-        return $this->id;
+        return (string)$this->id;
     }
 
     /**
@@ -94,7 +94,7 @@ class Merchant implements ModelInterface
      */
     public function getName(): string
     {
-        return $this->name;
+        return (string)$this->name;
     }
 
     /**
@@ -113,7 +113,7 @@ class Merchant implements ModelInterface
      */
     public function getCoc(): string
     {
-        return $this->coc;
+        return (string)$this->coc;
     }
 
     /**
@@ -132,7 +132,7 @@ class Merchant implements ModelInterface
      */
     public function getVat(): string
     {
-        return $this->vat;
+        return (string)$this->vat;
     }
 
     /**
@@ -151,7 +151,7 @@ class Merchant implements ModelInterface
      */
     public function getWebsite(): string
     {
-        return $this->website;
+        return (string)$this->website;
     }
 
     /**
@@ -223,28 +223,24 @@ class Merchant implements ModelInterface
     }
 
     /**
-     * @return array
+     * @return Trademarks
      */
-    public function getTrademarks(): array
+    public function getTrademarks(): Trademarks
     {
+        if (null === $this->trademarks) {
+            $this->setTrademarks(new Trademarks());
+        }
         return $this->trademarks;
     }
 
     /**
-     * @param array $trademarks
+     * @param Trademarks $trademarks
      *
      * @return Merchant
      */
-    public function setTrademarks(array $trademarks): self
+    public function setTrademarks(Trademarks $trademarks): self
     {
-        $this->trademarks = [];
-        if (0 === count($trademarks)) {
-            return $this;
-        }
-
-        foreach ($trademarks as $trademark) {
-            $this->addTrademark($trademark);
-        }
+        $this->trademarks = $trademarks;
         return $this;
     }
 
@@ -255,33 +251,29 @@ class Merchant implements ModelInterface
      */
     public function addTrademark(Trademark $trademark): self
     {
-        $this->trademarks[] = $trademark;
+        $this->getTrademarks()->addTrademark($trademark);
         return $this;
     }
 
     /**
-     * @return array
+     * @return ContactMethods
      */
-    public function getContactMethods(): array
+    public function getContactMethods(): ContactMethods
     {
+        if (null === $this->contactMethods) {
+            $this->setContactMethods(new ContactMethods());
+        }
         return $this->contactMethods;
     }
 
     /**
-     * @param array $contactMethods
+     * @param ContactMethods $contactMethods
      *
      * @return Merchant
      */
-    public function setContactMethods(array $contactMethods): self
+    public function setContactMethods(ContactMethods $contactMethods): self
     {
-        $this->contactMethods = [];
-        if (0 === count($contactMethods)) {
-            return $this;
-        }
-
-        foreach ($contactMethods as $contactMethod) {
-            $this->addContactMethod($contactMethod);
-        }
+        $this->contactMethods = $contactMethods;
         return $this;
     }
 
@@ -292,7 +284,7 @@ class Merchant implements ModelInterface
      */
     public function addContactMethod(ContactMethod $contactMethod): self
     {
-        $this->contactMethods[] = $contactMethod;
+        $this->getContactMethods()->addContactMethod($contactMethod);
         return $this;
     }
 

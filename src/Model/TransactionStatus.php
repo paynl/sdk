@@ -23,6 +23,7 @@ class TransactionStatus extends Status
     public const STATUS_EXPIRED            = -80;
     public const STATUS_REFUNDING          = -72;
     public const STATUS_CHARGEBACK         = -71;
+    public const STATUS_MANUALLY_DECLINED  = -64;
     public const STATUS_DENIED             = -63;
     public const STATUS_FAILURE            = -60;
     public const STATUS_INVALID_AMOUNT     = -51;
@@ -40,6 +41,14 @@ class TransactionStatus extends Status
     public const STATUS_AUTHORIZED         = 95;
     public const STATUS_PARTIALLY_ACCEPTED = 97;
     public const STATUS_PAID               = 100;
+
+    /**
+     * TransactionStatus constructor.
+     */
+    public function __construct()
+    {
+        $this->setCode(static::STATUS_UNKNOWN);
+    }
 
     /**
      * @throws ReflectionException
@@ -60,9 +69,9 @@ class TransactionStatus extends Status
      * @throws InvalidArgumentException
      * @throws ReflectionException
      *
-     * @return Status
+     * @return TransactionStatus
      */
-    public function setCode($code): Status
+    public function setCode($code)
     {
         if (true === is_string($code)) {
             $code = (int)$code;
@@ -86,15 +95,18 @@ class TransactionStatus extends Status
             );
         }
 
-        return parent::setCode((string)$code);
+        parent::setCode((string)$code);
+
+        return $this;
     }
 
     /**
-     * @return integer
+     * @return string|integer
      */
     public function getCode()
     {
-        return (int)parent::getCode();
+        $code = parent::getCode();
+        return (int)$code;
     }
 
     /**
@@ -104,7 +116,7 @@ class TransactionStatus extends Status
      *
      * @return bool
      */
-    public function is($constantNameOrCode): bool
+    public function isStatus($constantNameOrCode): bool
     {
         if (true === is_string($constantNameOrCode)) {
             $constantNameOrCode = constant(static::class . '::' . $constantNameOrCode);

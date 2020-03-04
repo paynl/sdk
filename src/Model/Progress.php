@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PayNL\Sdk\Model;
 
 use JsonSerializable;
+use PayNL\Sdk\Common\JsonSerializeTrait;
 
 /**
  * Class Progress
@@ -35,7 +36,7 @@ class Progress implements ModelInterface, JsonSerializable
      */
     public function getPercentage(): int
     {
-        return $this->percentage;
+        return (int)$this->percentage;
     }
 
     /**
@@ -54,7 +55,7 @@ class Progress implements ModelInterface, JsonSerializable
      */
     public function getSecondsPassed(): int
     {
-        return $this->secondsPassed;
+        return (int)$this->secondsPassed;
     }
 
     /**
@@ -73,7 +74,7 @@ class Progress implements ModelInterface, JsonSerializable
      */
     public function getPercentagePerSecond(): float
     {
-        return $this->percentagePerSecond;
+        return (float)$this->percentagePerSecond;
     }
 
     /**

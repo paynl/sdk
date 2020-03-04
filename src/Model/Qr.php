@@ -6,6 +6,7 @@ namespace PayNL\Sdk\Model;
 
 use JsonSerializable;
 use PayNL\Sdk\Exception\InvalidArgumentException;
+use PayNL\Sdk\Common\JsonSerializeTrait;
 
 /**
  * Class Qr
@@ -14,12 +15,17 @@ use PayNL\Sdk\Exception\InvalidArgumentException;
  */
 class Qr implements ModelInterface, JsonSerializable
 {
+    /*
+     * Reference type constant definitions
+     */
     public const REFERENCE_TYPE_STRING = 'string';
     public const REFERENCE_TYPE_HEX    = 'hex';
 
     use JsonSerializeTrait;
 
     /**
+     * @required
+     *
      * @var string
      */
     protected $uuid;
@@ -30,11 +36,22 @@ class Qr implements ModelInterface, JsonSerializable
     protected $serviceId;
 
     /**
+     * @required
+     *
      * @var string
      */
     protected $secret;
 
     /**
+     * @required
+     *
+     * @var Amount
+     */
+    protected $amount;
+
+    /**
+     * @required
+     *
      * @var string
      */
     protected $reference;
@@ -50,16 +67,31 @@ class Qr implements ModelInterface, JsonSerializable
     protected $referenceType = self::REFERENCE_TYPE_STRING;
 
     /**
-     * @var PaymentMethod|null
+     * @var PaymentMethod
      */
     protected $paymentMethod;
+
+    /**
+     * @var string
+     */
+    protected $externalPaymentLink = '';
+
+    /**
+     * @var string
+     */
+    protected $paymentLink = '';
+
+    /**
+     * @var string
+     */
+    protected $contents = '';
 
     /**
      * @return string
      */
     public function getUuid(): string
     {
-        return $this->uuid;
+        return (string)$this->uuid;
     }
 
     /**
@@ -67,7 +99,7 @@ class Qr implements ModelInterface, JsonSerializable
      *
      * @return Qr
      */
-    public function setUuid(string $uuid): Qr
+    public function setUuid(string $uuid): self
     {
         $this->uuid = $uuid;
         return $this;
@@ -78,7 +110,7 @@ class Qr implements ModelInterface, JsonSerializable
      */
     public function getServiceId(): string
     {
-        return $this->serviceId;
+        return (string)$this->serviceId;
     }
 
     /**
@@ -86,7 +118,7 @@ class Qr implements ModelInterface, JsonSerializable
      *
      * @return Qr
      */
-    public function setServiceId(string $serviceId): Qr
+    public function setServiceId(string $serviceId): self
     {
         $this->serviceId = $serviceId;
         return $this;
@@ -97,7 +129,7 @@ class Qr implements ModelInterface, JsonSerializable
      */
     public function getSecret(): string
     {
-        return $this->secret;
+        return (string)$this->secret;
     }
 
     /**
@@ -105,9 +137,28 @@ class Qr implements ModelInterface, JsonSerializable
      *
      * @return Qr
      */
-    public function setSecret(string $secret): Qr
+    public function setSecret(string $secret): self
     {
         $this->secret = $secret;
+        return $this;
+    }
+
+    /**
+     * @return Amount|null
+     */
+    public function getAmount(): ?Amount
+    {
+        return $this->amount;
+    }
+
+    /**
+     * @param Amount $amount
+     *
+     * @return Qr
+     */
+    public function setAmount(Amount $amount): self
+    {
+        $this->amount = $amount;
         return $this;
     }
 
@@ -116,7 +167,7 @@ class Qr implements ModelInterface, JsonSerializable
      */
     public function getReference(): string
     {
-        return $this->reference;
+        return (string)$this->reference;
     }
 
     /**
@@ -124,7 +175,7 @@ class Qr implements ModelInterface, JsonSerializable
      *
      * @return Qr
      */
-    public function setReference(string $reference): Qr
+    public function setReference(string $reference): self
     {
         $this->reference = $reference;
         return $this;
@@ -143,7 +194,7 @@ class Qr implements ModelInterface, JsonSerializable
      *
      * @return Qr
      */
-    public function setPadChar(string $padChar): Qr
+    public function setPadChar(string $padChar): self
     {
         $this->padChar = $padChar;
         return $this;
@@ -154,7 +205,7 @@ class Qr implements ModelInterface, JsonSerializable
      */
     public function getReferenceType(): string
     {
-        return $this->referenceType;
+        return (string)$this->referenceType;
     }
 
     /**
@@ -164,7 +215,7 @@ class Qr implements ModelInterface, JsonSerializable
      *
      * @return Qr
      */
-    public function setReferenceType(string $referenceType): Qr
+    public function setReferenceType(string $referenceType): self
     {
         if (false === in_array($referenceType, [ self::REFERENCE_TYPE_STRING, self::REFERENCE_TYPE_HEX ], true)) {
             throw new InvalidArgumentException(
@@ -192,9 +243,66 @@ class Qr implements ModelInterface, JsonSerializable
      *
      * @return Qr
      */
-    public function setPaymentMethod(PaymentMethod $paymentMethod): Qr
+    public function setPaymentMethod(PaymentMethod $paymentMethod): self
     {
         $this->paymentMethod = $paymentMethod;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getExternalPaymentLink(): string
+    {
+        return $this->externalPaymentLink;
+    }
+
+    /**
+     * @param string $externalPaymentLink
+     *
+     * @return Qr
+     */
+    public function setExternalPaymentLink(string $externalPaymentLink): self
+    {
+        $this->externalPaymentLink = $externalPaymentLink;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPaymentLink(): string
+    {
+        return $this->paymentLink;
+    }
+
+    /**
+     * @param string $paymentLink
+     *
+     * @return Qr
+     */
+    public function setPaymentLink(string $paymentLink): self
+    {
+        $this->paymentLink = $paymentLink;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getContents(): string
+    {
+        return $this->contents;
+    }
+
+    /**
+     * @param string $contents
+     *
+     * @return Qr
+     */
+    public function setContents(string $contents): self
+    {
+        $this->contents = $contents;
         return $this;
     }
 }

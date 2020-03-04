@@ -11,14 +11,21 @@ use PayNL\GuzzleHttp\{
     Exception\GuzzleException
 };
 use PayNL\Sdk\{
-    DebugTrait,
+    Common\DebugAwareInterface,
+    Common\DebugAwareTrait,
+    Common\OptionsAwareInterface,
+    Common\OptionsAwareTrait,
+    Exception\EmptyRequiredMemberException,
     Exception\ExceptionInterface,
+    Exception\MissingParamException,
+    Exception\MissingRequiredMemberException,
     Exception\RuntimeException,
-    Response,
+    Model\ModelInterface,
+    Response\Response,
     Exception\InvalidArgumentException,
     Filter\FilterInterface,
-    Transformer\Errors as ErrorsTransformer,
-    Validator\ObjectInstance
+    Validator\ValidatorManagerAwareInterface,
+    Validator\ValidatorManagerAwareTrait
 };
 use Symfony\Component\Serializer\Encoder\{
     JsonEncoder,
@@ -30,12 +37,16 @@ use Symfony\Component\Serializer\Encoder\{
  *
  * @package PayNL\Sdk\Request
  *
- * @SuppressWarnings(PHPMD.NumberOfChildren)
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
-abstract class AbstractRequest implements RequestInterface
+abstract class AbstractRequest implements
+    RequestInterface,
+    DebugAwareInterface,
+    OptionsAwareInterface,
+    ValidatorManagerAwareInterface
 {
-    use DebugTrait;
+    use DebugAwareTrait, OptionsAwareTrait, ValidatorManagerAwareTrait;
 
     /*
      * Tag name declaration for XML request string
@@ -48,14 +59,29 @@ abstract class AbstractRequest implements RequestInterface
     protected $format = self::FORMAT_OBJECTS;
 
     /**
+     * @var string
+     */
+    protected $uri;
+
+    /**
+     * @var string
+     */
+    protected $method;
+
+    /**
+     * @var array
+     */
+    protected $requiredParams = [];
+
+    /**
      * @var array
      */
     protected $headers = [];
 
     /**
-     * @var string
+     * @var null|string
      */
-    protected $body = '';
+    protected $body;
 
     /**
      * @var Client
@@ -68,7 +94,100 @@ abstract class AbstractRequest implements RequestInterface
     protected $filters = [];
 
     /**
-     * @return string
+     * @var array
+     */
+    protected $params = [];
+
+    /**
+     * AbstractRequest constructor.
+     *
+     * @param array $options
+     */
+    public function __construct(array $options = [])
+    {
+        $this->setOptions($options);
+
+        if ($this->hasOption('format') && true === is_string($this->getOption('format'))) {
+            $this->setFormat($this->getOption('format'));
+        }
+
+        $this->init();
+    }
+
+    /**
+     * Method to execute custom code just after the request construction
+     *
+     * @return void
+     */
+    public function init(): void
+    {
+    }
+
+    /**
+     * @return array
+     */
+    public function getParams(): array
+    {
+        return $this->params;
+    }
+
+    /**
+     * @param string|int $name
+     *
+     * @return mixed|null
+     */
+    public function getParam($name)
+    {
+        if (false === $this->hasParam($name)) {
+            return null;
+        }
+        return $this->params[$name];
+    }
+
+    /**
+     * @param string|int $name
+     *
+     * @return bool
+     */
+    public function hasParam($name): bool
+    {
+        return array_key_exists($name, $this->params);
+    }
+
+    /**
+     * @param array $params
+     *
+     * @return static
+     */
+    public function setParams(array $params): self
+    {
+        $this->params = $params;
+
+        foreach ($this->getRequiredParams() as $paramName => $paramDefinition) {
+            if (false === $this->hasParam($paramName)) {
+                throw new MissingParamException('Missing param!');
+            }
+
+            if (true === is_string($paramDefinition)
+                && '' !== $paramDefinition
+                && 1 !== preg_match("/^{$paramDefinition}$/", $this->getParam($paramName))
+            ) {
+                throw new InvalidArgumentException(
+                    sprintf(
+                        'Param %s is not valid. It must match "%s"',
+                        $paramName,
+                        $paramDefinition
+                    )
+                );
+            }
+            // set it in the array
+            $this->setUri(str_replace("%{$paramName}%", $this->getParam($paramName), $this->getUri()));
+        }
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
      */
     public function getFormat(): string
     {
@@ -97,12 +216,69 @@ abstract class AbstractRequest implements RequestInterface
     }
 
     /**
+     * @inheritDoc
+     */
+    public function getUri(): string
+    {
+        return $this->uri;
+    }
+
+    /**
+     * @param string $uri
+     *
+     * @return AbstractRequest
+     */
+    public function setUri(string $uri): self
+    {
+        $this->uri = '/' . trim($uri, '/');
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getMethod(): string
+    {
+        return $this->method;
+    }
+
+    /**
+     * @param string $method
+     *
+     * @return AbstractRequest
+     */
+    public function setMethod(string $method): self
+    {
+        $this->method = $method;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getRequiredParams(): array
+    {
+        return $this->requiredParams;
+    }
+
+    /**
+     * @param array $requiredParams
+     *
+     * @return AbstractRequest
+     */
+    public function setRequiredParams(array $requiredParams): self
+    {
+        $this->requiredParams = $requiredParams;
+        return $this;
+    }
+
+    /**
      * @param string $name
      * @param string $value
      *
      * @return AbstractRequest
      */
-    public function addHeader(string $name, string $value): self
+    public function setHeader(string $name, string $value): self
     {
         $this->headers[$name] = $value;
         return $this;
@@ -116,7 +292,7 @@ abstract class AbstractRequest implements RequestInterface
     public function setHeaders(array $headers): self
     {
         foreach ($headers as $name => $header) {
-            $this->addHeader($name, $header);
+            $this->setHeader($name, $header);
         }
         return $this;
     }
@@ -128,10 +304,7 @@ abstract class AbstractRequest implements RequestInterface
      */
     public function getHeader(string $name): ?string
     {
-        if (false === array_key_exists($name, $this->getHeaders())) {
-            return null;
-        }
-        return $this->headers[$name];
+        return $this->headers[$name] ?? null;
     }
 
     /**
@@ -147,7 +320,15 @@ abstract class AbstractRequest implements RequestInterface
      */
     public function getBody(): string
     {
-        return $this->body;
+        if (false === is_string($this->body) && null !== $this->body) {
+            /** @var ModelInterface $body */
+            $body = $this->body;
+            // validate the given body (model) for the required members
+            $this->validateBody($body);
+            return $this->encodeBody($body);
+        }
+
+        return (string)$this->body;
     }
 
     /**
@@ -160,16 +341,12 @@ abstract class AbstractRequest implements RequestInterface
      */
     public function setBody($body): self
     {
-        if (false === is_string($body)) {
-            $body = $this->encodeBody($body);
-        }
-
         $this->body = $body;
         return $this;
     }
 
     /**
-     * @param Client $client
+     * @inheritDoc
      *
      * @return AbstractRequest
      */
@@ -202,16 +379,11 @@ abstract class AbstractRequest implements RequestInterface
      */
     public function getFilter(string $name): ?FilterInterface
     {
-        if (false === array_key_exists($name, $this->filters)) {
-            return null;
-        }
-        return $this->filters[$name];
+        return $this->filters[$name] ?? null;
     }
 
     /**
      * @param array $filters
-     *
-     * @throws InvalidArgumentException when the given filters contain an invalid filter
      *
      * @return AbstractRequest
      */
@@ -220,13 +392,7 @@ abstract class AbstractRequest implements RequestInterface
         // reset the filters
         $this->filters = [];
 
-        $validator = new ObjectInstance();
         foreach ($filters as $filter) {
-            if (false === $validator->isValid($filter, FilterInterface::class)) {
-                throw new InvalidArgumentException(
-                    implode(PHP_EOL, $validator->getMessages())
-                );
-            }
             $this->addFilter($filter);
         }
         return $this;
@@ -254,14 +420,20 @@ abstract class AbstractRequest implements RequestInterface
     {
         $encoder = new JsonEncoder();
         $contentTypeHeader = 'application/json';
+        $context = [
+            'json_encode_options' => JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | (true === $this->isDebug() ? JSON_PRETTY_PRINT : 0),
+        ];
+
         if (static::FORMAT_XML === $this->getFormat()) {
             $encoder = new XmlEncoder([
                 XmlEncoder::ROOT_NODE_NAME => static::XML_ROOT_NODE_NAME,
             ]);
             $contentTypeHeader = 'application/xml';
+            $context = [];
         }
-        $this->addHeader(static::HEADER_CONTENT_TYPE, $contentTypeHeader);
-        return (string)$encoder->encode($body, $this->getFormat());
+        $this->setHeader(static::HEADER_CONTENT_TYPE, $contentTypeHeader);
+
+        return (string)$encoder->encode($body, $this->getFormat(), $context);
     }
 
     /**
@@ -269,51 +441,41 @@ abstract class AbstractRequest implements RequestInterface
      *
      * @throws RuntimeException when no HTTP client is set
      *
-     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     * @SuppressWarnings(PHPMD.NPathComplexity)
-     *
      * @return void
      */
     public function execute(Response $response): void
     {
-        $uri = $this->getUri();
+        $uri = trim($this->getUri(), '/');
         $filters = $this->getFilters();
-        if (0 < count($filters)) {
-            $uri .= '?' . implode('&', $filters);
-        }
 
-        if (true === $this->isDebug()) {
-            $this->dumpDebugInfo('Body: ' . $this->getBody());
-        }
+        $uri = trim($uri . '?' . implode('&', $filters), '?');
 
-        // create a Guzzle PSR 7 Request
-        $guzzleRequest = new Request($this->getMethod(), $uri, $this->getHeaders(), $this->getBody());
-        if (true === $this->isDebug()) {
-            $this->dumpDebugInfo('Requested URL: ' . $guzzleRequest->getUri());
-        }
+        $this->dumpDebugInfo('Request body: ' . $this->getBody());
 
         try {
             $guzzleClient = $this->getClient();
             if (false === ($guzzleClient instanceof Client)) {
                 throw new RuntimeException('No HTTP client found', 500);
             }
+
+            // create a Guzzle PSR 7 Request
+            $guzzleRequest = new Request($this->getMethod(), $uri, $this->getHeaders(), $this->getBody());
+
+            $this->dumpDebugInfo('Requested URL: ' . rtrim((string)$guzzleClient->getConfig('base_uri'), '/') . '/' . $guzzleRequest->getUri());
+            $this->dumpDebugInfo('Headers:' . PHP_EOL . PHP_EOL . implode(PHP_EOL, array_map(static function($item, $key) {
+                return "{$key}: {$item}";
+            }, $this->getHeaders(), array_keys($this->getHeaders()))));
+
             $guzzleResponse = $guzzleClient->send($guzzleRequest);
 
             $rawBody = $guzzleResponse->getBody()->getContents();
 
-            $body = $rawBody;
-            // initiate transformer (... more than meets the eye ;-) )
-            if (static::FORMAT_OBJECTS === $this->getFormat()) {
-                $transformer = $this->getTransformer();
-                if (true === $this->isDebug()) {
-                    $this->dumpDebugInfo('Use transformer: ' . get_class($transformer));
-                }
-                $body = $transformer->transform($rawBody);
-            }
             $statusCode = $guzzleResponse->getStatusCode();
+            $body = $rawBody;
         } catch (RequestException $re) {
-            $rawBody = $errorMessages = '';
-            $body = $re->getMessage();
+            $errorMessages = '';
+            $rawBody = $re->getMessage();
+
             if (true === method_exists($re, 'getResponse') && null !== $re->getResponse()) {
                 $guzzleExceptionBody = $re->getResponse()->getBody();
                 $size = $guzzleExceptionBody->isSeekable() === true ? (int)$guzzleExceptionBody->getSize() : 0;
@@ -326,32 +488,14 @@ abstract class AbstractRequest implements RequestInterface
                 }
 
                 $rawBody = trim($re->getResponse()->getReasonPhrase() . ': ' . $errorMessages, ': ');
-
-                $body = $rawBody;
-
-                if ('' !== $errorMessages && static::FORMAT_OBJECTS === $this->getFormat()) {
-                    $transformer = new ErrorsTransformer();
-                    $body = $transformer->transform($errorMessages);
-                }
             }
 
             $statusCode = $re->getCode();
+            $body = $this->getErrorsString((int)$statusCode, $errorMessages);
         } catch (GuzzleException | ExceptionInterface $e) {
             $statusCode = $e->getCode() ?? 500;
-            $rawBody = $e->getMessage();
-            $body = 'Error: ' . $e->getMessage() . ' (' . $statusCode . ')';
-
-            if (static::FORMAT_OBJECTS === $this->getFormat()) {
-                $transformer = new ErrorsTransformer();
-                $body = $transformer->transform((new JsonEncoder())->encode([
-                    'errors' => (object)[
-                        'general' => (object)[
-                            'code'    => $statusCode,
-                            'message' => $rawBody,
-                        ]
-                    ]
-                ], JsonEncoder::FORMAT));
-            }
+            $rawBody = 'Error: ' . $e->getMessage() . ' (' . $statusCode . ')';
+            $body = $this->getErrorsString((int)$statusCode, $rawBody);
         }
 
         $response->setStatusCode($statusCode)
@@ -359,8 +503,71 @@ abstract class AbstractRequest implements RequestInterface
             ->setBody($body)
         ;
 
-        if (true === $this->isDebug()) {
-            $this->dumpDebugInfo('Response: ', $response);
+        $this->dumpDebugInfo('Response: ', $response);
+    }
+
+    /**
+     * @param int $statusCode
+     * @param string $rawBody
+     *
+     * @return string
+     */
+    private function getErrorsString(int $statusCode, string $rawBody): string
+    {
+        // if given raw body already is Json return that
+        if (false !== strpos($rawBody, '{"errors":')) {
+            return $rawBody;
         }
+
+        return (string)(new JsonEncoder())->encode([
+           'errors' => (object)[
+               'general' => (object)[
+                   'code'    => $statusCode,
+                   'message' => $rawBody,
+               ]
+           ]
+        ], JsonEncoder::FORMAT);
+    }
+
+    /**
+     * Validates the given body, when it contains a ModelInterface object, if it contains all
+     *  the required properties
+     *
+     * @param mixed $body
+     *
+     * @return void
+     */
+    protected function validateBody($body): void
+    {
+        if (true === is_string($body)) {
+            return;
+        }
+
+        $validator = $this->getValidatorManager()->get('RequiredMembers');
+
+        if (true === $validator->isValid($body)) {
+            return;
+        }
+
+        // create exception stack
+        $counter = 0;
+        $prev = null;
+        foreach ($validator->getMessages() as $type => $message) {
+            $exceptionClass = MissingRequiredMemberException::class;
+            if (true === in_array($type, [$validator::MSG_EMPTY_MEMBER, $validator::MSG_EMPTY_MEMBERS], true)) {
+                $exceptionClass = EmptyRequiredMemberException::class;
+            }
+            $e = new $exceptionClass($message, 500, ($counter++ !== 0 ? $prev : null));
+            $prev = $e;
+        }
+
+        throw new RuntimeException(
+            sprintf(
+                'Object "%s" is not valid',
+                __CLASS__
+            ),
+            500,
+            $prev
+        );
     }
 }

@@ -31,7 +31,7 @@ class ContactMethod implements ModelInterface
      */
     public function getType(): string
     {
-        return $this->type;
+        return (string)$this->type;
     }
 
     /**
@@ -39,7 +39,7 @@ class ContactMethod implements ModelInterface
      *
      * @return ContactMethod
      */
-    public function setType(string $type): ContactMethod
+    public function setType(string $type): self
     {
         $this->type = $type;
         return $this;
@@ -50,7 +50,7 @@ class ContactMethod implements ModelInterface
      */
     public function getValue(): string
     {
-        return $this->value;
+        return (string)$this->value;
     }
 
     /**
@@ -58,7 +58,7 @@ class ContactMethod implements ModelInterface
      *
      * @return ContactMethod
      */
-    public function setValue(string $value): ContactMethod
+    public function setValue(string $value): self
     {
         $this->value = $value;
         return $this;
@@ -69,7 +69,7 @@ class ContactMethod implements ModelInterface
      */
     public function getDescription(): string
     {
-        return $this->description;
+        return (string)$this->description;
     }
 
     /**
@@ -77,7 +77,7 @@ class ContactMethod implements ModelInterface
      *
      * @return ContactMethod
      */
-    public function setDescription(string $description): ContactMethod
+    public function setDescription(string $description): self
     {
         $this->description = $description;
         return $this;

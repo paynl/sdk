@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Model;
 
-use \JsonSerializable;
+use JsonSerializable;
+use PayNL\Sdk\Common\JsonSerializeTrait;
 
 /**
  * Class Statistics
@@ -18,7 +19,7 @@ class Statistics implements ModelInterface, JsonSerializable
     /**
      * @var string
      */
-    protected $promoterId;
+    protected $object;
 
     /**
      * @var string
@@ -46,26 +47,21 @@ class Statistics implements ModelInterface, JsonSerializable
     protected $extra3;
 
     /**
-     * @var array
-     */
-    protected $transferData = [];
-
-    /**
      * @return string
      */
-    public function getPromoterId(): string
+    public function getObject(): string
     {
-        return $this->promoterId;
+        return $this->object;
     }
 
     /**
-     * @param string $promoterId
+     * @param string $object
      *
      * @return Statistics
      */
-    public function setPromoterId(string $promoterId): Statistics
+    public function setObject(string $object): self
     {
-        $this->promoterId = $promoterId;
+        $this->object = $object;
         return $this;
     }
 
@@ -82,7 +78,7 @@ class Statistics implements ModelInterface, JsonSerializable
      *
      * @return Statistics
      */
-    public function setInfo(string $info): Statistics
+    public function setInfo(string $info): self
     {
         $this->info = $info;
         return $this;
@@ -101,7 +97,7 @@ class Statistics implements ModelInterface, JsonSerializable
      *
      * @return Statistics
      */
-    public function setTool(string $tool): Statistics
+    public function setTool(string $tool): self
     {
         $this->tool = $tool;
         return $this;
@@ -120,7 +116,7 @@ class Statistics implements ModelInterface, JsonSerializable
      *
      * @return Statistics
      */
-    public function setExtra1(string $extra1): Statistics
+    public function setExtra1(string $extra1): self
     {
         $this->extra1 = $extra1;
         return $this;
@@ -139,7 +135,7 @@ class Statistics implements ModelInterface, JsonSerializable
      *
      * @return Statistics
      */
-    public function setExtra2(string $extra2): Statistics
+    public function setExtra2(string $extra2): self
     {
         $this->extra2 = $extra2;
         return $this;
@@ -158,28 +154,9 @@ class Statistics implements ModelInterface, JsonSerializable
      *
      * @return Statistics
      */
-    public function setExtra3(string $extra3): Statistics
+    public function setExtra3(string $extra3): self
     {
         $this->extra3 = $extra3;
-        return $this;
-    }
-
-    /**
-     * @return array
-     */
-    public function getTransferData(): array
-    {
-        return $this->transferData;
-    }
-
-    /**
-     * @param array $transferData
-     *
-     * @return Statistics
-     */
-    public function setTransferData(array $transferData): Statistics
-    {
-        $this->transferData = $transferData;
         return $this;
     }
 }

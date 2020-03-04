@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Helper;
 
-use \Exception;
-use \ReflectionClass;
-use \ReflectionException;
-use Codeception\Module;
+use Exception,
+    ReflectionClass,
+    ReflectionException,
+    Codeception\Module
+;
 
 /**
  * Class Unit

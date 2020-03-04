@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Request;
 
-use PayNL\Sdk\Response;
-use PayNL\Sdk\Transformer\TransformerInterface;
+use PayNL\Sdk\Response\Response;
+use PayNL\GuzzleHttp\Client;
 
 /**
  * Interface RequestInterface
@@ -53,15 +53,21 @@ interface RequestInterface
     public function getMethod(): string;
 
     /**
+     * @return string
+     */
+    public function getFormat(): string;
+
+    /**
+     * @param Client $client
+     *
+     * @return static
+     */
+    public function applyClient(Client $client);
+
+    /**
      * @param Response $response
      *
      * @return void
      */
     public function execute(Response $response): void;
-
-    /**
-     *
-     * @return TransformerInterface
-     */
-    public function getTransformer(): TransformerInterface;
 }

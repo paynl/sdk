@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Model;
 
-use \DateTime;
-use \JsonSerializable;
+use DateTime;
+use JsonSerializable;
+use PayNL\Sdk\Common\JsonSerializeTrait;
 
 /**
  * Class Refund
@@ -15,6 +16,11 @@ use \JsonSerializable;
 class Refund implements ModelInterface, JsonSerializable
 {
     use JsonSerializeTrait, LinksTrait;
+
+    /**
+     * @var string
+     */
+    protected $id;
 
     /**
      * @var string
@@ -42,9 +48,9 @@ class Refund implements ModelInterface, JsonSerializable
     protected $status;
 
     /**
-     * @var array
+     * @var Products
      */
-    protected $products = [];
+    protected $products;
 
     /**
      * @var string
@@ -59,9 +65,28 @@ class Refund implements ModelInterface, JsonSerializable
     /**
      * @return string
      */
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param string $id
+     *
+     * @return Refund
+     */
+    public function setId(string $id): Refund
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
     public function getPaymentSessionId(): string
     {
-        return $this->paymentSessionId ?? '';
+        return (string)$this->paymentSessionId;
     }
 
     /**
@@ -99,7 +124,7 @@ class Refund implements ModelInterface, JsonSerializable
      */
     public function getDescription(): string
     {
-        return $this->description;
+        return (string)$this->description;
     }
 
     /**
@@ -152,28 +177,24 @@ class Refund implements ModelInterface, JsonSerializable
     }
 
     /**
-     * @return array
+     * @return Products
      */
-    public function getProducts(): array
+    public function getProducts(): Products
     {
+        if (null === $this->products) {
+            $this->setProducts(new Products());
+        }
         return $this->products;
     }
 
     /**
-     * @param array $products
+     * @param Products $products
      *
      * @return Refund
      */
-    public function setProducts(array $products): self
+    public function setProducts(Products $products): self
     {
-        $this->products = [];
-        if (0 === count($products)) {
-            return $this;
-        }
-
-        foreach ($products as $product) {
-            $this->addProduct($product);
-        }
+        $this->products = $products;
         return $this;
     }
 
@@ -184,7 +205,7 @@ class Refund implements ModelInterface, JsonSerializable
      */
     public function addProduct(Product $product): self
     {
-        $this->products[] = $product;
+        $this->getProducts()->addProduct($product);
         return $this;
     }
 
@@ -193,7 +214,7 @@ class Refund implements ModelInterface, JsonSerializable
      */
     public function getReason(): string
     {
-        return $this->reason;
+        return (string)$this->reason;
     }
 
     /**

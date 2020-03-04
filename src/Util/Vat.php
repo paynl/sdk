@@ -64,7 +64,8 @@ class Vat
     public function determineVatClass(float $vatPercentage): string
     {
         $vatClasses = $this->getVatClasses();
-        return (string)array_search((static function (int $inputNumber, array $numberSet) {
+
+        $determineClosestVatPercentage = static function (int $inputNumber, array $numberSet) {
             // determine the nearest
             $numberData = [];
             foreach ($numberSet as $entry) {
@@ -73,6 +74,11 @@ class Vat
             ksort($numberData);
             $numberData = array_values($numberData);
             return array_shift($numberData);
-        })((int)$vatPercentage, array_values($vatClasses)), $vatClasses, true);
+        };
+
+        $closestVatPercentage = $determineClosestVatPercentage((int)$vatPercentage, array_values($vatClasses));
+
+
+        return (string)array_search($closestVatPercentage, $vatClasses, true);
     }
 }

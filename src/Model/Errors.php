@@ -5,14 +5,17 @@ declare(strict_types=1);
 namespace PayNL\Sdk\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use PayNL\Sdk\Common\CollectionInterface;
 
 /**
  * Class Errors
  *
  * @package PayNL\Sdk\Model
  */
-class Errors extends ArrayCollection implements ModelInterface
+class Errors extends ArrayCollection implements ModelInterface, CollectionInterface
 {
+    use LinksTrait;
+
     /**
      * @return array
      */
@@ -26,12 +29,20 @@ class Errors extends ArrayCollection implements ModelInterface
      *
      * @return Errors
      */
-    public function setErrors(array $errors): Errors
+    public function setErrors(array $errors): self
     {
         $this->clear();
         foreach ($errors as $key => $error) {
             $this->set($key, $error);
         }
         return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getCollectionName(): string
+    {
+        return 'errors';
     }
 }

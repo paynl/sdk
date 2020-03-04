@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\AuthAdapter;
 
-use PayNL\Sdk\Exception\InvalidArgumentException;
-
 /**
  * Class Basic
  *
@@ -24,27 +22,7 @@ class Basic implements AdapterInterface
     protected $password;
 
     /**
-     * Basic constructor.
-     *
-     * @param string $username
-     * @param string $password
-     *
-     * @throws InvalidArgumentException
-     */
-    public function __construct(string $username, string $password)
-    {
-        if (true === empty($username) || true === empty($password)) {
-            throw new InvalidArgumentException(
-                'Username and/ or password can not be empty'
-            );
-        }
-
-        $this->setUsername($username);
-        $this->setPassword($password);
-    }
-
-    /**
-     * @return string
+     * @inheritDoc
      */
     public function getUsername(): string
     {
@@ -52,18 +30,16 @@ class Basic implements AdapterInterface
     }
 
     /**
-     * @param string $username
-     *
-     * @return Basic
+     * @inheritDoc
      */
-    protected function setUsername(string $username): self
+    public function setUsername(string $username)
     {
         $this->username = $username;
         return $this;
     }
 
     /**
-     * @return string
+     * @inheritDoc
      */
     public function getPassword(): string
     {
@@ -71,11 +47,9 @@ class Basic implements AdapterInterface
     }
 
     /**
-     * @param string $password
-     *
-     * @return Basic
+     * @inheritDoc
      */
-    protected function setPassword(string $password): self
+    public function setPassword(string $password)
     {
         $this->password = $password;
         return $this;

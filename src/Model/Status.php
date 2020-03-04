@@ -35,26 +35,28 @@ class Status implements ModelInterface
     protected $reason = '';
 
     /**
-     * @return string
+     * @return string|integer
      */
     public function getCode()
     {
-        return $this->code;
+        return (string)$this->code;
     }
 
     /**
-     * @param string $code
+     * @param mixed $code
      *
      * @throws InvalidArgumentException
      *
      * @return Status
      */
-    public function setCode($code): Status
+    public function setCode($code)
     {
-        if (false === is_string($code)) {
+        if (true === is_int($code)) {
+            $code = (string)$code;
+        } elseif (false === is_string($code)) {
             throw new InvalidArgumentException(
                 sprintf(
-                    'Argument given to %s is not a string',
+                    'Argument given to %s is not a string nor an integer',
                     __METHOD__
                 )
             );
@@ -69,7 +71,7 @@ class Status implements ModelInterface
      */
     public function getName(): string
     {
-        return $this->name;
+        return (string)$this->name;
     }
 
     /**
@@ -77,7 +79,7 @@ class Status implements ModelInterface
      *
      * @return Status
      */
-    public function setName(string $name): Status
+    public function setName(string $name): self
     {
         $this->name = $name;
         return $this;
@@ -96,7 +98,7 @@ class Status implements ModelInterface
      *
      * @return Status
      */
-    public function setDate(DateTime $date): Status
+    public function setDate(DateTime $date): self
     {
         $this->date = $date;
         return $this;
@@ -115,7 +117,7 @@ class Status implements ModelInterface
      *
      * @return Status
      */
-    public function setReason(string $reason): Status
+    public function setReason(string $reason): self
     {
         $this->reason = $reason;
         return $this;

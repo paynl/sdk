@@ -41,7 +41,7 @@ class Receipt implements ModelInterface
      */
     public function getId(): string
     {
-        return $this->id;
+        return (string)$this->id;
     }
 
     /**
@@ -60,7 +60,7 @@ class Receipt implements ModelInterface
      */
     public function getSignature(): string
     {
-        return $this->signature;
+        return (string)$this->signature;
     }
 
     /**
@@ -79,7 +79,7 @@ class Receipt implements ModelInterface
      */
     public function getApprovalId(): string
     {
-        return $this->approvalId;
+        return (string)$this->approvalId;
     }
 
     /**

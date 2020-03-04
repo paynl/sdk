@@ -20,4 +20,16 @@ interface FilterInterface
      * @return string
      */
     public function getValue(): string;
+
+    /**
+     * @param mixed $value
+     *
+     * @return static
+     */
+    public function setValue($value);
+
+    /**
+     * @return string
+     */
+    public function __toString(): string;
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PayNL\Sdk\Model;
 
 use JsonSerializable;
+use PayNL\Sdk\Common\JsonSerializeTrait;
 
 /**
  * Class Amount
@@ -18,11 +19,15 @@ class Amount implements ModelInterface, JsonSerializable
     /**
      * Amount in cents
      *
+     * @required
+     *
      * @var integer
      */
     protected $amount = 0;
 
     /**
+     * @required
+     *
      * @var string
      */
     protected $currency = 'EUR';

@@ -1,6 +1,6 @@
 .idea
 
-samples/gateway.php
+samples/test.php
 
 bin
 composer.phar

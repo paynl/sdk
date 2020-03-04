@@ -139,7 +139,7 @@ class ProductTest extends UnitTest
      */
     public function testItCanSetAVat(): void
     {
-        expect($this->product->setVat('L'))->isInstanceOf(Product::class);
+        expect($this->product->setVatCode('L'))->isInstanceOf(Product::class);
     }
 
     /**
@@ -149,10 +149,10 @@ class ProductTest extends UnitTest
      */
     public function testItCanGetAVat(): void
     {
-        $this->product->setVat('L');
+        $this->product->setVatCode('L');
 
-        verify($this->product->getVat())->string();
-        verify($this->product->getVat())->notEmpty();
-        verify($this->product->getVat())->equals('L');
+        verify($this->product->getVatCode())->string();
+        verify($this->product->getVatCode())->notEmpty();
+        verify($this->product->getVatCode())->equals('L');
     }
 }

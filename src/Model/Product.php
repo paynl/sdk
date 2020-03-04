@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Model;
 
-use \JsonSerializable;
+use JsonSerializable;
+use PayNL\Sdk\Common\JsonSerializeTrait;
 
 /**
  * Class Product
@@ -19,6 +20,11 @@ class Product implements ModelInterface, JsonSerializable
      * @var string
      */
     protected $id;
+
+    /**
+     * @var string
+     */
+    protected $type;
 
     /**
      * @var string
@@ -38,14 +44,14 @@ class Product implements ModelInterface, JsonSerializable
     /**
      * @var string
      */
-    protected $vat;
+    protected $vatCode;
 
     /**
      * @return string
      */
     public function getId(): string
     {
-        return $this->id;
+        return (string)$this->id;
     }
 
     /**
@@ -53,7 +59,7 @@ class Product implements ModelInterface, JsonSerializable
      *
      * @return Product
      */
-    public function setId(string $id): Product
+    public function setId(string $id): self
     {
         $this->id = $id;
         return $this;
@@ -64,7 +70,7 @@ class Product implements ModelInterface, JsonSerializable
      */
     public function getDescription(): string
     {
-        return $this->description;
+        return (string)$this->description;
     }
 
     /**
@@ -72,7 +78,7 @@ class Product implements ModelInterface, JsonSerializable
      *
      * @return Product
      */
-    public function setDescription(string $description): Product
+    public function setDescription(string $description): self
     {
         $this->description = $description;
         return $this;
@@ -91,7 +97,7 @@ class Product implements ModelInterface, JsonSerializable
      *
      * @return Product
      */
-    public function setPrice(Amount $price): Product
+    public function setPrice(Amount $price): self
     {
         $this->price = $price;
         return $this;
@@ -102,7 +108,7 @@ class Product implements ModelInterface, JsonSerializable
      */
     public function getQuantity(): float
     {
-        return $this->quantity;
+        return (float)$this->quantity;
     }
 
     /**
@@ -110,7 +116,7 @@ class Product implements ModelInterface, JsonSerializable
      *
      * @return Product
      */
-    public function setQuantity(float $quantity): Product
+    public function setQuantity(float $quantity): self
     {
         $this->quantity = $quantity;
         return $this;
@@ -119,19 +125,19 @@ class Product implements ModelInterface, JsonSerializable
     /**
      * @return string
      */
-    public function getVat(): string
+    public function getVatCode(): string
     {
-        return $this->vat;
+        return (string)$this->vatCode;
     }
 
     /**
-     * @param string $vat
+     * @param string $vatCode
      *
      * @return Product
      */
-    public function setVat(string $vat): Product
+    public function setVatCode(string $vatCode): self
     {
-        $this->vat = $vat;
+        $this->vatCode = $vatCode;
         return $this;
     }
 }

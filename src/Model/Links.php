@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace PayNL\Sdk\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use PayNL\Sdk\Common\CollectionInterface;
 
 /**
  * Class Links
  *
  * @package PayNL\Sdk\Model
  */
-class Links extends ArrayCollection implements ModelInterface
+class Links extends ArrayCollection implements ModelInterface, CollectionInterface
 {
     /**
      * @return array
@@ -50,5 +51,13 @@ class Links extends ArrayCollection implements ModelInterface
     {
         $this->set($link->getRel(), $link);
         return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getCollectionName(): string
+    {
+        return 'links';
     }
 }

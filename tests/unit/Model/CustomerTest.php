@@ -52,7 +52,7 @@ class CustomerTest extends UnitTest
      */
     public function testItCanSetInitials(): void
     {
-        expect($this->customer->setInitials('Q.G.'))->isInstanceOf(Customer::class);
+        expect($this->customer->setName('Q.G.'))->isInstanceOf(Customer::class);
     }
 
     /**
@@ -62,11 +62,11 @@ class CustomerTest extends UnitTest
      */
     public function testItCanGetInitials(): void
     {
-        $this->customer->setInitials('Q.G.');
+        $this->customer->setName('Q.G.');
 
-        verify($this->customer->getInitials())->string();
-        verify($this->customer->getInitials())->notEmpty();
-        verify($this->customer->getInitials())->equals('Q.G.');
+        verify($this->customer->getName())->string();
+        verify($this->customer->getName())->notEmpty();
+        verify($this->customer->getName())->equals('Q.G.');
     }
 
     /**

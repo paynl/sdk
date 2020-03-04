@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PayNL\Sdk\Model;
 
 use JsonSerializable;
+use PayNL\Sdk\Common\JsonSerializeTrait;
 
 /**
  * Class Voucher
@@ -54,7 +55,7 @@ class Voucher implements ModelInterface, JsonSerializable
      */
     public function getPinCode(): string
     {
-        return $this->pinCode;
+        return (string)$this->pinCode;
     }
 
     /**
@@ -73,7 +74,7 @@ class Voucher implements ModelInterface, JsonSerializable
      */
     public function getPosId(): string
     {
-        return $this->posId;
+        return (string)$this->posId;
     }
 
     /**

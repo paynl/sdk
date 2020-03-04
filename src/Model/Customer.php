@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Model;
 
-use \DateTime;
-use \JsonSerializable;
+use DateTime;
+use JsonSerializable;
+use PayNL\Sdk\Exception\InvalidArgumentException;
+use PayNL\Sdk\Common\JsonSerializeTrait;
 
 /**
  * Class Customer
@@ -16,15 +18,31 @@ class Customer implements ModelInterface, JsonSerializable
 {
     use JsonSerializeTrait;
 
+    /*
+     * Customer type constant definitions
+     */
+    public const TYPE_BUSINESS = 'B';
+    public const TYPE_CONSUMER = 'C';
+
     /**
      * @var string
      */
-    protected $initials;
+    protected $type = self::TYPE_CONSUMER;
+
+    /**
+     * @var string
+     */
+    protected $name;
 
     /**
      * @var string
      */
     protected $lastName;
+
+    /**
+     * @var string
+     */
+    protected $ip;
 
     /**
      * @var DateTime
@@ -44,17 +62,17 @@ class Customer implements ModelInterface, JsonSerializable
     /**
      * @var string
      */
-    protected $ip;
-
-    /**
-     * @var string
-     */
     protected $email;
 
     /**
      * @var integer
      */
-    protected $trustLevel;
+    protected $trustLevel = 0;
+
+    /**
+     * @var string
+     */
+    protected $reference;
 
     /**
      * @var BankAccount
@@ -62,31 +80,67 @@ class Customer implements ModelInterface, JsonSerializable
     protected $bankAccount;
 
     /**
-     * @var integer
+     * @var Company
      */
-    protected $reference;
+    protected $company;
 
-    /**
-     * @var string
-     */
-    protected $language;
+    protected function getTypes(): array
+    {
+        return [
+            static::TYPE_BUSINESS,
+            static::TYPE_CONSUMER,
+        ];
+    }
 
     /**
      * @return string
      */
-    public function getInitials(): string
+    public function getType(): string
     {
-        return $this->initials;
+        return $this->type;
     }
 
     /**
-     * @param string $initials
+     * @param string $type
+     *
+     * @throws InvalidArgumentException when given type is not allowed
      *
      * @return Customer
      */
-    public function setInitials(string $initials): self
+    public function setType(string $type): self
     {
-        $this->initials = $initials;
+        $allowedTypes = $this->getTypes();
+        if (false === in_array($type, $allowedTypes, true)) {
+            throw new InvalidArgumentException(
+                sprintf(
+                    'Given type "%s" to %s is prohibited, choose one of "%s"',
+                    $type,
+                    __METHOD__,
+                    implode('", "', $allowedTypes)
+                )
+            );
+        }
+
+        $this->type = $type;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return (string)$this->name;
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return Customer
+     */
+    public function setName(string $name): self
+    {
+        $this->name = $name;
         return $this;
     }
 
@@ -95,7 +149,7 @@ class Customer implements ModelInterface, JsonSerializable
      */
     public function getLastName(): string
     {
-        return $this->lastName;
+        return (string)$this->lastName;
     }
 
     /**
@@ -106,6 +160,25 @@ class Customer implements ModelInterface, JsonSerializable
     public function setLastName(string $lastName): self
     {
         $this->lastName = $lastName;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIp(): string
+    {
+        return (string)$this->ip;
+    }
+
+    /**
+     * @param string $ip
+     *
+     * @return Customer
+     */
+    public function setIp(string $ip): self
+    {
+        $this->ip = $ip;
         return $this;
     }
 
@@ -133,7 +206,7 @@ class Customer implements ModelInterface, JsonSerializable
      */
     public function getGender(): string
     {
-        return $this->gender;
+        return (string)$this->gender;
     }
 
     /**
@@ -152,7 +225,7 @@ class Customer implements ModelInterface, JsonSerializable
      */
     public function getPhone(): string
     {
-        return $this->phone;
+        return (string)$this->phone;
     }
 
     /**
@@ -169,28 +242,9 @@ class Customer implements ModelInterface, JsonSerializable
     /**
      * @return string
      */
-    public function getIp(): string
-    {
-        return $this->ip;
-    }
-
-    /**
-     * @param string $ip
-     *
-     * @return Customer
-     */
-    public function setIp(string $ip): self
-    {
-        $this->ip = $ip;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
     public function getEmail(): string
     {
-        return $this->email;
+        return (string)$this->email;
     }
 
     /**
@@ -219,7 +273,40 @@ class Customer implements ModelInterface, JsonSerializable
      */
     public function setTrustLevel(int $trustLevel): self
     {
+        $min = -10;
+        $max = 10;
+        if (false === in_array($trustLevel, range($min, $max), true)) {
+            throw new InvalidArgumentException(
+                sprintf(
+                    'Given trust level "%d" to %s is not valid, choose one between %d and %d',
+                    $trustLevel,
+                    __METHOD__,
+                    $min,
+                    $max
+                )
+            );
+        }
+
         $this->trustLevel = $trustLevel;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getReference(): string
+    {
+        return (string)$this->reference;
+    }
+
+    /**
+     * @param string $reference
+     *
+     * @return Customer
+     */
+    public function setReference(string $reference): self
+    {
+        $this->reference = $reference;
         return $this;
     }
 
@@ -243,40 +330,21 @@ class Customer implements ModelInterface, JsonSerializable
     }
 
     /**
-     * @return integer
+     * @return Company
      */
-    public function getReference(): int
+    public function getCompany(): Company
     {
-        return $this->reference;
+        return $this->company;
     }
 
     /**
-     * @param integer $reference
+     * @param Company $company
      *
      * @return Customer
      */
-    public function setReference(int $reference): self
+    public function setCompany(Company $company): self
     {
-        $this->reference = $reference;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getLanguage(): string
-    {
-        return $this->language;
-    }
-
-    /**
-     * @param string $language
-     *
-     * @return Customer
-     */
-    public function setLanguage(string $language): self
-    {
-        $this->language = $language;
+        $this->company = $company;
         return $this;
     }
 }

@@ -4,10 +4,15 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Hydrator;
 
+use DateTime as stdDateTime;
 use PayNL\Sdk\{
-    Exception\InvalidArgumentException,
-    Validator\ObjectInstance as ObjectInstanceValidator,
-    Model\Links as LinksModel
+    Common\DateTime,
+    Common\DebugAwareInterface,
+    Common\DebugAwareTrait,
+    Hydrator\Manager as HydratorManager,
+    Model\Manager as ModelManager,
+    Validator\ValidatorManagerAwareInterface,
+    Validator\ValidatorManagerAwareTrait
 };
 use Zend\Hydrator\ClassMethods;
 
@@ -15,55 +20,66 @@ use Zend\Hydrator\ClassMethods;
  * Class AbstractHydrator
  *
  * @package PayNL\Sdk\Hydrator
- *
- * @SuppressWarnings(PHPMD.NumberOfChildren)
  */
-abstract class AbstractHydrator extends ClassMethods
+abstract class AbstractHydrator extends ClassMethods implements DebugAwareInterface, ValidatorManagerAwareInterface
 {
+    use DebugAwareTrait, ValidatorManagerAwareTrait;
+
+    /**
+     * @var HydratorManager
+     */
+    protected $hydratorManager;
+
+    /**
+     * @var ModelManager
+     */
+    protected $modelManager;
+
     /**
      * AbstractHydrator constructor.
      *
-     * @param bool $underscoreSeparatedKeys
-     * @param bool $methodExistsCheck
-     *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-     * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
+     * @param HydratorManager $hydratorManager
+     * @param ModelManager $modelManager
      */
-    public function __construct($underscoreSeparatedKeys = true, $methodExistsCheck = false)
+    public function __construct(HydratorManager $hydratorManager, ModelManager $modelManager)
     {
-        // nasty construction to prevent unused parameter notification from PHPStan
-        $underscoreSeparatedKeys = $underscoreSeparatedKeys === true ? false : $underscoreSeparatedKeys;
-        $methodExistsCheck       = $methodExistsCheck === false ?: true;
+        $this->hydratorManager = $hydratorManager;
+        $this->modelManager = $modelManager;
 
         // override the given params
-        parent::__construct($underscoreSeparatedKeys, $methodExistsCheck);
+        parent::__construct(false, true);
     }
 
+    /**
+     * @inheritDoc
+     *
+     * @internal also automatically sets links and filters to remove all null values
+     */
     public function hydrate(array $data, $object)
     {
-        if (true === array_key_exists('_links', $data) && false === ($data['_links'] instanceof LinksModel)) {
-            $data['links'] = (new Links())->hydrate($data['_links'], new LinksModel());
-            unset($data['_links']);
-        }
+        $data = array_filter($data, static function ($item) {
+            return null !== $item;
+        });
 
         return parent::hydrate($data, $object);
     }
 
     /**
-     * @param object $object
-     * @param string $shouldBeInstanceOf
+     * @param string|stdDateTime $dateTime
      *
-     * @throws InvalidArgumentException
+     * @return DateTime
      *
-     * @return void
+     * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    protected function validateGivenObject($object, string $shouldBeInstanceOf): void
+    protected function getSdkDateTime($dateTime): DateTime
     {
-        $instanceValidator = new ObjectInstanceValidator();
-        if (false === $instanceValidator->isValid($object, $shouldBeInstanceOf)) {
-            throw new InvalidArgumentException(
-                implode(PHP_EOL, $instanceValidator->getMessages())
-            );
+        if ($dateTime instanceof DateTime) {
+            return $dateTime;
         }
+
+        if ($dateTime instanceof stdDateTime) {
+            $dateTime = $dateTime->format(stdDateTime::ATOM);
+        }
+        return DateTime::createFromFormat(DateTime::ATOM, $dateTime);
     }
 }

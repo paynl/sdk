@@ -5,18 +5,33 @@ declare(strict_types=1);
 namespace PayNL\Sdk\Transformer;
 
 use PayNL\Sdk\Exception\UnexpectedValueException;
+use PayNL\Sdk\Model\ModelAwareInterface;
+use PayNL\Sdk\Model\ModelAwareTrait;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Exception\NotEncodableValueException;
+use Zend\Hydrator\HydratorAwareInterface;
+use Zend\Hydrator\HydratorAwareTrait;
+use PayNL\Sdk\Service\Manager as ServiceManager;
 
 /**
  * Class AbstractTransformer
  *
  * @package PayNL\Sdk\Transformer
- *
- * @SuppressWarnings(PHPMD.NumberOfChildren)
  */
-abstract class AbstractTransformer implements TransformerInterface
+abstract class AbstractTransformer implements TransformerInterface, ModelAwareInterface, HydratorAwareInterface
 {
+    use ModelAwareTrait, HydratorAwareTrait;
+
+    /**
+     * @var ServiceManager
+     */
+    protected $serviceManager;
+
+    public function __construct(ServiceManager $serviceManager)
+    {
+        $this->serviceManager = $serviceManager;
+    }
+
     /**
      * @param string $jsonEncodedString
      *
@@ -50,7 +65,7 @@ abstract class AbstractTransformer implements TransformerInterface
                 return is_array($item) === true ? $context->filterNotNull($item) : $item;
             }, $input),
             static function ($item) {
-                return $item !== '' && $item !== null && (is_array($item) === false || 0 < count($item));
+                return $item !== '' && $item !== null;// && (is_array($item) === false || 0 < count($item));
             }
         );
     }

@@ -233,7 +233,7 @@ class AddressTest extends UnitTest
      */
     public function testItCanSetInitials(): void
     {
-        expect($this->address->setInitials('O'))->isInstanceOf(Address::class);
+        expect($this->address->setName('O'))->isInstanceOf(Address::class);
     }
 
     /**
@@ -243,11 +243,11 @@ class AddressTest extends UnitTest
      */
     public function testItCanGetInitials(): void
     {
-        $this->address->setInitials('O');
+        $this->address->setName('O');
 
-        verify($this->address->getInitials())->string();
-        verify($this->address->getInitials())->notEmpty();
-        verify($this->address->getInitials())->equals('O');
+        verify($this->address->getName())->string();
+        verify($this->address->getName())->notEmpty();
+        verify($this->address->getName())->equals('O');
     }
 
     /**

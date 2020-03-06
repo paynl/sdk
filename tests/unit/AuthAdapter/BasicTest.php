@@ -34,7 +34,10 @@ class BasicTest extends UnitTest
         $username = 'KungLao';
         $password = 'IGotAMagicHat';
 
-        $this->adapter = new Basic($username, $password);
+        $this->adapter = (new Basic())
+            ->setUsername($username)
+            ->setPassword($password)
+        ;
     }
 
     /**
@@ -51,7 +54,9 @@ class BasicTest extends UnitTest
     public function testItThrowsAnExceptionOnEmptyUsername(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        new Basic('', 'password');
+        (new Basic())
+            ->setUsername('')
+        ;
     }
 
     /**
@@ -60,7 +65,9 @@ class BasicTest extends UnitTest
     public function testItThrowsAnExceptionOnEmptyPassword(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        new Basic('username', '');
+        (new Basic())
+            ->setPassword('')
+        ;
     }
 
     /**
@@ -76,8 +83,7 @@ class BasicTest extends UnitTest
      */
     public function testItCanSetAnUsername(): void
     {
-        verify($this->tester->getMethodAccessibility($this->adapter, 'setUsername'))->equals('protected');
-        $this->tester->invokeMethod($this->adapter, 'setUsername', [ 'LiuKang' ]);
+        $this->adapter->setUsername('LiuKang');
         verify($this->adapter->getUsername())->equals('LiuKang');
     }
 
@@ -94,8 +100,7 @@ class BasicTest extends UnitTest
      */
     public function testItCanSetAPassword(): void
     {
-        verify($this->tester->getMethodAccessibility($this->adapter, 'setPassword'))->equals('protected');
-        $this->tester->invokeMethod($this->adapter, 'setPassword', [ 'ICanBeADragon:P' ]);
+        $this->adapter->setPassword('ICanBeADragon:P');
         verify($this->adapter->getPassword())->equals('ICanBeADragon:P');
     }
 

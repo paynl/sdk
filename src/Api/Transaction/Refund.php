@@ -14,13 +14,12 @@ class Refund extends Transaction
 {
     protected $apiTokenRequired = true;
 
-    protected $version = 11;
+    protected $version = 15;
 
     /**
      * @var string the transactionId
      */
     private $transactionId;
-
     /**
      * @var int the amount in cents
      */
@@ -33,6 +32,14 @@ class Refund extends Transaction
      * @var \DateTime the date the refund should take place
      */
     private $processDate;
+    /**
+     * @var int (optional) The vat percentage this refund applies to (AfterPay/Focum only)
+     */
+    private $vatPercentage;
+    /**
+     * @var int (optional) The currency in which the amount is specified. If no amount is specified, the full amount is refunded and currency is not used. Standard in euro.
+     */
+    private $currency;
 
     /**
      * @param string $transactionId
@@ -40,6 +47,22 @@ class Refund extends Transaction
     public function setTransactionId($transactionId)
     {
         $this->transactionId = $transactionId;
+    }
+
+    /**
+     * @param string $vatPercentage
+     */
+    public function setVatPercentage($vatPercentage)
+    {
+        $this->vatPercentage = $vatPercentage;
+    }
+
+    /**
+     * @param string $transactionId
+     */
+    public function setCurrency($currency)
+    {
+        $this->currency = $currency;
     }
 
     /**
@@ -86,6 +109,12 @@ class Refund extends Transaction
         }
         if ($this->processDate instanceof \DateTime) {
             $this->data['processDate'] = $this->processDate->format('d-m-Y');
+        }
+        if (!empty($this->vatPercentage)) {
+            $this->data['vatPercentage'] = $this->vatPercentage;
+        }
+        if (!empty($this->currency)) {
+            $this->data['currency'] = $this->currency;
         }
 
         return parent::getData();

@@ -58,6 +58,9 @@ class ConfigProvider implements ConfigProviderInterface
     public function getRequestConfig(): array
     {
         return [
+            'aliases' => [
+                'Request' => Request::class,
+            ],
             'initializers' => [
                 DebugAwareInitializer::class,
             ],

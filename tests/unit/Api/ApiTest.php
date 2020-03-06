@@ -9,13 +9,12 @@ use PayNL\GuzzleHttp\{
     Client,
     HandlerStack
 };
-use PayNL\Sdk\{
-    Api\Api,
+use PayNL\Sdk\{Api\Api,
     AuthAdapter\AdapterInterface,
     AuthAdapter\Basic,
     Request\Request,
-    Response\Response
-};
+    Request\RequestInterface,
+    Response\Response};
 use UnitTester, Exception;
 
 /**
@@ -42,11 +41,7 @@ class ApiTest extends UnitTest
      */
     public function _before(): void
     {
-        /** @var AdapterInterface $adapterMock */
-        $adapterMock = $this->make(Basic::class, [
-            'username' => 'harry',
-            'password' => 'deSchrikVanElkeCowboy',
-        ]);
+        $adapterMock = $this->tester->grabMockService('authAdapterManager')->get('Basic');
 
         /** @var Client $clientMock */
         $clientMock = $this->make(Client::class, [
@@ -81,13 +76,13 @@ class ApiTest extends UnitTest
         verify($this->api->getClient())->isInstanceOf(Client::class);
     }
 
+    /**
+     * @return void
+     */
     public function testItCanSetAuthAdapter(): void
     {
         /** @var AdapterInterface $adapterMock */
-        $adapterMock = $this->make(Basic::class, [
-            'username' => 'harry',
-            'password' => 'deSchrikVanElkeCowboy',
-        ]);
+        $adapterMock = $this->tester->grabMockService('authAdapterManager')->get('Basic');
 
         verify($this->tester->invokeMethod($this->api, 'setAuthAdapter', [$adapterMock]))->isInstanceOf(Api::class);
     }
@@ -163,29 +158,11 @@ class ApiTest extends UnitTest
      */
     public function testItCanDoHandle(): void
     {
-        $mockRequest = new Request('currencies/EUR', Request::METHOD_GET);/* extends Request
-        {
-//            public function getUri(): string
-//            {
-//                return 'currencies/EUR';
-//            }
-//
-//            public function getMethod(): string
-//            {
-//                return Request::METHOD_GET;
-//            }
-        };*/
-        $mockRequest->setFormat(Request::FORMAT_XML);
-
-//        $mockHeaders = [
-//            'Accept'          => 'application/json',
-//            'Authorization'   => '',
-//            'Content-Type'    => 'application/json',
-//            'X-Custom-Header' => 'Own value'
-//        ];
+        /** @var RequestInterface $mockRequest */
+        $mockRequest = $this->makeEmpty(RequestInterface::class);
 
         /** @var Response $mockResponse */
-        $mockResponse = $this->make(Response::class);
+        $mockResponse = $this->tester->grabMockService('Response');
 
         $response = $this->api->setDebug(true)
             ->doHandle($mockRequest, $mockResponse)

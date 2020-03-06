@@ -105,9 +105,9 @@ class Application
     /**
      * Get the totally merged configuration of all the declared components and own custom config
      *
-     * @return array
+     * @return Config
      */
-    public function getConfig(): array
+    public function getConfig(): Config
     {
         return $this->serviceManager->get('config');
     }
@@ -120,6 +120,9 @@ class Application
         return $this->serviceManager;
     }
 
+    /**
+     * @return AbstractRequest
+     */
     public function getRequest(): AbstractRequest
     {
         return $this->request;

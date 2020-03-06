@@ -2,6 +2,7 @@
 
 namespace Codeception\Lib\Connector;
 
+use PayNL\Sdk\Config\Config;
 use PayNL\Sdk\Service\AbstractPluginManager;
 use PHPUnit\Framework\AssertionFailedError;
 use PayNL\Sdk\Application\Application;
@@ -16,6 +17,9 @@ class Sdk
      */
     protected $application;
 
+    /**
+     * @var Config
+     */
     protected $applicationConfig;
 
     /**
@@ -23,12 +27,20 @@ class Sdk
      */
     protected $serviceManager;
 
-    public function setApplicationConfig($config): void
+    /**
+     * @param Config $config
+     *
+     * @return void
+     */
+    public function setApplicationConfig(Config $config): void
     {
         $this->applicationConfig = $config;
         $this->initApplication();
     }
 
+    /**
+     * @return Application
+     */
     public function initApplication(): Application
     {
         $this->application = Application::init($this->applicationConfig);
@@ -37,16 +49,27 @@ class Sdk
         return $this->application;
     }
 
+    /**
+     * @param Application $application
+     *
+     * @return void
+     */
     public function setApplication(Application $application): void
     {
         $this->application = $application;
     }
 
+    /**
+     * @return Application
+     */
     public function getApplication(): Application
     {
         return $this->application;
     }
 
+    /**
+     * @return ServiceManager
+     */
     public function getServiceManager(): ServiceManager
     {
         return $this->serviceManager;

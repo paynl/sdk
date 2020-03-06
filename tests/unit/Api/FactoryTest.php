@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Tests\Unit\PayNL\Sdk\Api;
 
 use Codeception\Test\Unit as UnitTest;
+use Codeception\Lib\FactoryTestTrait;
 use PayNL\Sdk\{
     Api\Factory,
     Api\Api,
     Api\Service as ApiService,
-    Common\FactoryInterface,
     Service\Manager as ServiceManager,
     Exception\ServiceNotFoundException
 };
@@ -22,15 +22,12 @@ use UnitTester;
  */
 class FactoryTest extends UnitTest
 {
+    use FactoryTestTrait;
+
     /**
      * @var UnitTester
      */
     protected $tester;
-
-    /**
-     * @var Factory
-     */
-    protected $factory;
 
     /**
      * @var ServiceManager
@@ -44,23 +41,6 @@ class FactoryTest extends UnitTest
     {
         $this->serviceManagerMock = $this->tester->getServiceManager();
         $this->factory = new Factory();
-    }
-
-    /**
-     * @return void
-     */
-    public function testItIsAFactory(): void
-    {
-        verify($this->factory)->isInstanceOf(FactoryInterface::class);
-    }
-
-    /**
-     * @return void
-     */
-    public function testItIsCallable(): void
-    {
-        verify(method_exists($this->factory, '__invoke'))->true();
-        verify($this->factory)->callable();
     }
 
     /**

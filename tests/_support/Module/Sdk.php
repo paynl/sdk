@@ -36,6 +36,11 @@ class Sdk extends CodeceptionModule implements PartedModule
     public $client;
 
     /**
+     * @var Config|array
+     */
+    public $configuration;
+
+    /**
      * @var Application
      */
     public $application;
@@ -62,10 +67,10 @@ class Sdk extends CodeceptionModule implements PartedModule
             );
         }
 
-        $config = new Config(require $configFile);
+        $this->configuration = new Config(require $configFile);
 
         $this->client = new SdkConnector();
-        $this->client->setApplicationConfig($config);
+        $this->client->setApplicationConfig($this->configuration);
 
         if (false === ($this->config['recreateApplicationBetweenTests'] ?? true)) {
             $this->application = $this->client->initApplication();
@@ -94,6 +99,14 @@ class Sdk extends CodeceptionModule implements PartedModule
     public function grabMockService(string $name): Mockery\MockInterface
     {
         return $this->client->grabMockedServiceFromContainer($name);
+    }
+
+    /**
+     * @return array|Config
+     */
+    public function getConfig()
+    {
+        return $this->configuration;
     }
 
     public function getApplication(): Application

@@ -15,7 +15,9 @@ use PayNL\Sdk\Api\ConfigProvider;
  */
 class ConfigProviderTest extends UnitTest
 {
-    use ConfigProviderTestTrait;
+    use ConfigProviderTestTrait {
+        testItIsCallable as traitTestItIsCallable;
+    }
 
     /**
      * @return void
@@ -23,5 +25,24 @@ class ConfigProviderTest extends UnitTest
     public function _before(): void
     {
         $this->configProvider = new ConfigProvider();
+    }
+
+    public function testItIsCallable(): void
+    {
+        $calledOutput = ($this->configProvider)();
+        $this->tester->assertArrayMustContainKeys($calledOutput, [
+            'service_manager',
+            'api'
+        ]);
+
+        $this->traitTestItIsCallable();
+
+
+        $calledOutput = ($this->configProvider)();
+
+        verify($calledOutput)->hasKey('api');
+        verify($calledOutput['api'])->array();
+        verify($calledOutput['api'])->hasKey('url');
+        verify($calledOutput['api'])->hasKey('version');
     }
 }

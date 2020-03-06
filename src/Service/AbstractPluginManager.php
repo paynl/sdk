@@ -70,7 +70,8 @@ abstract class AbstractPluginManager extends Manager
      */
     public function validate($instance): void
     {
-        if (true === empty($this->instanceOf) || $instance instanceof $this->instanceOf) {
+        $instanceOf = $this->getInstanceOf();
+        if (true === empty($instanceOf) || $instance instanceof $instanceOf) {
             return;
         }
 
@@ -82,6 +83,14 @@ abstract class AbstractPluginManager extends Manager
                 true === is_object($instance) ? get_class($instance) : gettype($instance)
             )
         );
+    }
+
+    /**
+     * @return string
+     */
+    protected function getInstanceOf(): string
+    {
+        return $this->instanceOf;
     }
 
     /**

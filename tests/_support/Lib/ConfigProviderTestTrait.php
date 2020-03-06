@@ -37,17 +37,30 @@ trait ConfigProviderTestTrait
      */
     public function testItIsCallable(): void
     {
-        verify(method_exists($this->configProvider, '__invoke'))->true();
+        $this->tester->assertObjectHasMethod('__invoke', $this->configProvider);
         verify($this->configProvider)->callable();
 
         $calledOutput = ($this->configProvider)();
         verify($calledOutput)->array();
         verify($calledOutput)->hasKey('service_manager');
         verify($calledOutput['service_manager'])->array();
-        verify($calledOutput)->hasKey('api');
-        verify($calledOutput['api'])->array();
-        verify($calledOutput['api'])->hasKey('url');
-        verify($calledOutput['api'])->hasKey('version');
+
+        if (true === array_key_exists('service_loader_options', $calledOutput)) {
+            verify($calledOutput['service_loader_options'])->array();
+            foreach ($calledOutput['service_loader_options'] as $name => $settings) {
+                verify($calledOutput['service_loader_options'][$name])->hasKey('service_manager');
+                verify($calledOutput['service_loader_options'][$name]['service_manager'])->string();
+                verify($calledOutput['service_loader_options'][$name]['service_manager'])->notEmpty();
+
+                verify($calledOutput['service_loader_options'][$name])->hasKey('config_key');
+                verify($calledOutput['service_loader_options'][$name]['config_key'])->string();
+                verify($calledOutput['service_loader_options'][$name]['config_key'])->notEmpty();
+
+                verify($calledOutput['service_loader_options'][$name])->hasKey('class_method');
+                verify($calledOutput['service_loader_options'][$name]['class_method'])->string();
+                verify($calledOutput['service_loader_options'][$name]['class_method'])->notEmpty();
+            }
+        }
     }
 
     /**
@@ -64,7 +77,7 @@ trait ConfigProviderTestTrait
             'services',
         ];
 
-        verify(method_exists($this->configProvider, 'getDependencyConfig'))->true();
+        $this->tester->assertObjectHasMethod('getDependencyConfig', $this->configProvider);
 
         $configOutput = $this->configProvider->getDependencyConfig();
         verify($configOutput)->array();

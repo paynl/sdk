@@ -9,6 +9,7 @@ use Exception,
     ReflectionException,
     Codeception\Module
 ;
+use PHPUnit\Framework\Assert;
 
 /**
  * Class Unit
@@ -59,5 +60,60 @@ class Unit extends Module
         }
 
         return 'public';
+    }
+
+    /**
+     * Check that the given $inputArray contains at least one of the key names given
+     *  in $requiredKeys.
+     *
+     * @param array $inputArray
+     * @param array $requiredKeys
+     *
+     * @return void
+     */
+    public function assertArrayHasAtLeastOneOfKeys(array $inputArray, array $requiredKeys): void
+    {
+        $inputKeys = array_keys($inputArray);
+        $success = false;
+        foreach ($requiredKeys as $requiredKey) {
+            $success = Assert::contains($requiredKey)->evaluate($inputKeys, '', true);
+            if (true === $success) {
+                break;
+            }
+        }
+
+        if (false === $success) {
+            $this->fail(
+                sprintf(
+                    'Array should contain at least one of the following keys: "%s"',
+                    implode('", "', $requiredKeys)
+                )
+            );
+        }
+    }
+
+    /**
+     * Check that the given $inputArray can only contains keys named in $allowedKeys.
+     *
+     * @param array $inputArray
+     * @param array $allowedKeys
+     *
+     * @return void
+     */
+    public function assertArrayCanOnlyContainKeys(array $inputArray, array $allowedKeys): void
+    {
+        $inputKeys = array_keys($inputArray);
+        $notAllowedKeys = array_diff($inputKeys, $allowedKeys);
+
+        $success = Assert::isEmpty()->evaluate($notAllowedKeys, '', true);
+
+        if (false === $success) {
+            $this->fail(
+                sprintf(
+                    'Array contains keys which are not allowed. Allowed keys are "%s"',
+                    implode('", "', $allowedKeys)
+                )
+            );
+        }
     }
 }

@@ -107,8 +107,16 @@ abstract class AbstractRequest implements
     {
         $this->setOptions($options);
 
-        if ($this->hasOption('format') && true === is_string($this->getOption('format'))) {
+        if (true === $this->hasOption('format')
+            && true === is_string($this->getOption('format'))
+        ) {
             $this->setFormat($this->getOption('format'));
+        }
+
+        if (true === $this->hasOption('headers')
+            && true === is_array($this->getOption('headers'))
+        ) {
+            $this->setHeaders($this->getOption('headers'));
         }
 
         $this->init();

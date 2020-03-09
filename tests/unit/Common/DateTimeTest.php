@@ -2,12 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\PayNL\Sdk;
+namespace Tests\Unit\PayNL\Sdk\Common;
 
 use Codeception\Test\Unit as UnitTest;
-use PayNL\Sdk\DateTime;
+use PayNL\Sdk\Common\DateTime;
+use DateTime as stdDateTime;
 use Exception;
-use PayNL\Sdk\Exception\InvalidArgumentException;
+use UnitTester;
 
 /**
  * Class DateTime
@@ -16,6 +17,11 @@ use PayNL\Sdk\Exception\InvalidArgumentException;
  */
 class DateTimeTest extends UnitTest
 {
+    /**
+     * @var UnitTester
+     */
+    protected $tester;
+
     /**
      * @var DateTime
      */
@@ -37,7 +43,7 @@ class DateTimeTest extends UnitTest
     public function testIsItADateTime(): void
     {
         verify($this->dateTimeObject)->isInstanceOf(DateTime::class);
-        verify($this->dateTimeObject)->isInstanceOf(\DateTime::class);
+        verify($this->dateTimeObject)->isInstanceOf(stdDateTime::class);
     }
 
     /**
@@ -68,5 +74,17 @@ class DateTimeTest extends UnitTest
     public function testItCanBeConvertedToString(): void
     {
         verify((string)$this->dateTimeObject)->string();
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanInitNow(): void
+    {
+        $this->tester->assertClassHasMethod('now', DateTime::class);
+        $this->tester->assertClassMethodIsStatic('now', DateTime::class);
+
+        $datetime = DateTime::now();
+        verify($datetime)->isInstanceOf(DateTime::class);
     }
 }

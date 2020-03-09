@@ -43,7 +43,7 @@ abstract class AbstractTotalCollection extends ArrayCollection implements Collec
     public function set($key, $value): void
     {
         parent::set($key, $value);
-        $this->setTotal($this->getTotal() + 1);
+        $this->setTotal($this->count());
     }
 
     /**

@@ -64,7 +64,8 @@
       "Tests\\Functional\\PayNL\\Sdk\\": "tests/functional",
       "Tests\\Unit\\PayNL\\Sdk\\": "tests/unit",
       "Codeception\\Lib\\": "tests/_support/Lib",
-      "Codeception\\Module\\": "tests/_support/Module"
+      "Codeception\\Module\\": "tests/_support/Module",
+      "Codeception\\Mock\\": "tests/_support/Mock"
     },
     "files": [
       "samples/init_application.php"

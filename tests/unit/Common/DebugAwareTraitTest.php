@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\PayNL\Sdk;
+namespace Tests\Unit\PayNL\Sdk\Common;
 
 use Codeception\Test\Unit as UnitTest;
-use PayNL\Sdk\DebugTrait;
+use PayNL\Sdk\Common\DebugAwareTrait;
 use ReflectionException;
 use Symfony\Component\VarDumper\Test\VarDumperTestTrait;
 
@@ -14,12 +14,12 @@ use Symfony\Component\VarDumper\Test\VarDumperTestTrait;
  *
  * @package Tests\Unit\PayNL\Sdk
  */
-class DebugTraitTest extends UnitTest
+class DebugAwareTraitTest extends UnitTest
 {
     use VarDumperTestTrait;
 
     /**
-     * @var DebugTrait
+     * @var DebugAwareTrait
      */
     protected $mockedTrait;
 
@@ -30,8 +30,8 @@ class DebugTraitTest extends UnitTest
      */
     public function _before(): void
     {
-        /** @var DebugTrait $mockedTrait */
-        $this->mockedTrait = $this->getMockForTrait(DebugTrait::class);
+        /** @var DebugAwareTrait $mockedTrait */
+        $this->mockedTrait = $this->getMockForTrait(DebugAwareTrait::class);
     }
 
     /**
@@ -51,6 +51,7 @@ class DebugTraitTest extends UnitTest
      */
     public function testItCanDebugAndPrintInfo(): void
     {
+        $this->mockedTrait->setDebug(true);
         $this->mockedTrait->dumpDebugInfo('test', 'test2');
         $this->expectOutputString('<pre>string(4) "test"' . PHP_EOL . 'string(5) "test2"' . PHP_EOL . '</pre>' . PHP_EOL);
     }

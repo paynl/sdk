@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PayNL\Sdk\Common;
 
+use Codeception\TestAsset\Dummy;
 use Codeception\Test\Unit as UnitTest;
 use PayNL\Sdk\Common\FactoryInterface;
 use PayNL\Sdk\Common\InvokableFactory;
@@ -51,7 +52,9 @@ class InvokableFactoryTest extends UnitTest
      */
     public function testItCanMakeAnInstance(): void
     {
-
+        $dummy = ($this->invokableFactory)($this->tester->getServiceManager(), Dummy::class);
+        verify($dummy)->isInstanceOf(Dummy::class);
+        verify($dummy->getOptions())->isEmpty();
     }
 
     /**
@@ -59,6 +62,10 @@ class InvokableFactoryTest extends UnitTest
      */
     public function testItCanMakeAnInstanceWithOptions(): void
     {
-
+        $dummy = ($this->invokableFactory)($this->tester->getServiceManager(), Dummy::class, ['foo' => 'bar']);
+        verify($dummy)->isInstanceOf(Dummy::class);
+        verify($dummy->getOptions())->notEmpty();
+        verify($dummy->getOptions())->hasKey('foo');
+        verify($dummy->getOptions()['foo'])->equals('bar');
     }
 }

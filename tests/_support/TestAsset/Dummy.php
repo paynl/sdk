@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Codeception\Mock;
+namespace Codeception\TestAsset;
 
 /**
  * Class Dummy
  *
- * @package Codeception\Mock
+ * @package Codeception\TestAsset
  */
 class Dummy
 {

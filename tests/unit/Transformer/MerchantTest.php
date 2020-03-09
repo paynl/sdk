@@ -64,7 +64,7 @@ class MerchantTest extends UnitTest
             'vat'            => 'NL807960147B01',
             'website'        => 'http://www.pay.nl',
             'bankAccount'    => [
-                'iban'  => 'NL05RABO0352224037',
+                'iban'  => 'NL32RABO1670475085',
                 'bic'   => 'RABONL2U',
                 'owner' => 'TinTel BV',
             ],

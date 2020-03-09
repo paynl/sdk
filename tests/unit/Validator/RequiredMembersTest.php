@@ -6,12 +6,13 @@ namespace Tests\Unit\PayNL\Sdk\Validator;
 
 use CodeCeption\Test\Unit as UnitTest;
 
+use PayNL\Sdk\Exception\InvalidArgumentException;
 use PayNL\Sdk\Exception\RuntimeException;
 use PayNL\Sdk\Validator\AbstractValidator;
 use PayNL\Sdk\Validator\RequiredMembers;
 use PayNL\Sdk\Validator\ValidatorInterface;
 use UnitTester;
-use Codeception\Mock\{
+use Codeception\TestAsset\{
     Dummy,
     DummyWithoutRequiredMembers,
     DummyHydratorAware
@@ -44,12 +45,8 @@ class RequiredMembersTest extends UnitTest
     {
         $this->validator = new RequiredMembers();
 
-        $hydrator = new ClassMethods();
-        $this->validator->setHydrator($hydrator);
-
         $this->dummy = new Dummy();
         $this->dummyWithoutRequiredMembers = new DummyWithoutRequiredMembers();
-
         $this->dummyHydratorAware = new DummyHydratorAware();
     }
 
@@ -63,35 +60,43 @@ class RequiredMembersTest extends UnitTest
         verify($this->validator)->isInstanceOf(AbstractValidator::class);
     }
 
-    public function testGetDataFromObjectTrowsExceptionWithHydratorlessObject(): void
+    public function testGetDataFromObjectWithNullHydratorThrowsException(): void
     {
         $this->expectException(RuntimeException::class);
-        $data = $this->tester->invokeMethod($this->validator, 'getDataFromObject', [$this->dummyWithoutRequiredMembers]);
+        $this->tester->invokeMethod($this->validator, 'getDataFromObject', [$this->dummyHydratorAware]);
     }
 
-    public function testItCanGetDataFromAGivenObject()
+    public function testGetDataFromObjectWithNonObjectThrowsException(): void
     {
+        $this->validator->setHydrator(new ClassMethods());
+        $this->expectException(InvalidArgumentException::class);
+        $this->tester->invokeMethod($this->validator, 'getDataFromObject', [1]);
+    }
+
+    public function testItCanGetDataFromAGivenObject(): void
+    {
+        $this->validator->setHydrator(new ClassMethods());
         $this->dummy->setRequiredMember('some-string');
 
         $data = $this->tester->invokeMethod($this->validator, 'getDataFromObject', [$this->dummy]);
         verify($data)->array();
         verify($data)->notEmpty();
-        verify($data)->hasKey('requiredMember');
-        verify($data['requiredMember'])->equals('some-string');
+        verify($data)->hasKey('required_member');
+        verify($data['required_member'])->string();
+        verify($data['required_member'])->equals('some-string');
     }
 
     public function testItCanCheckForRequiredMembers(): void
     {
         $this->tester->assertObjectHasMethod('getRequiredMembers', $this->validator);
         $this->tester->assertObjectMethodIsProtected('getRequiredMembers', $this->validator);
-        $requiredMembers = $this->tester->invokeMethod($this->validator, 'getRequiredMembers', [Dummy::class]);
-        verify($requiredMembers)->array();
-        verify($requiredMembers)->notEmpty();
-        verify($requiredMembers)->hasKey('requiredMember');
-        verify($requiredMembers['requiredMember'])->string();
-        verify($requiredMembers['requiredMember'])->equals('string');
+        $data = $this->tester->invokeMethod($this->validator, 'getRequiredMembers', [Dummy::class]);
+        verify($data)->array();
+        verify($data)->notEmpty();
+        verify($data)->hasKey('requiredMember');
+        verify($data['requiredMember'])->string();
+        verify($data['requiredMember'])->equals('string');
     }
-
 
     /**
      * @depends testItCanCheckForRequiredMembers
@@ -101,11 +106,5 @@ class RequiredMembersTest extends UnitTest
         $result = $this->validator->isValid($this->dummyWithoutRequiredMembers);
         verify($result)->bool();
         verify($result)->true();
-    }
-
-    public function testItCantGetMembersOfNonExistentObjects(): void
-    {
-        $result = $this->validator->
-        verify($this->validator)->
     }
 }

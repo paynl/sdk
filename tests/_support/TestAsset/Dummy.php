@@ -14,8 +14,8 @@ class Dummy
     protected $options = [];
 
     /**
-     * @var string
      * @required
+     * @var string
      */
     protected $requiredMember;
 

@@ -68,7 +68,6 @@
       "Codeception\\TestAsset\\": "tests/_support/TestAsset"
     },
     "files": [
-      "samples/init_application.php"
     ]
   },
   "minimum-stability": "stable",

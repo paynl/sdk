@@ -14,6 +14,12 @@ class Dummy
     protected $options = [];
 
     /**
+     * @required
+     * @var string
+     */
+    protected $requiredMember;
+
+    /**
      * Dummy constructor.
      *
      * @param array|null $options
@@ -31,5 +37,21 @@ class Dummy
     public function getOptions(): array
     {
         return $this->options;
+    }
+
+    /**
+     * @param string $value
+     */
+    public function setRequiredMember(string $value): void
+    {
+        $this->requiredMember = $value;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRequiredMember(): string
+    {
+        return $this->requiredMember;
     }
 }

@@ -76,7 +76,7 @@ class DirectdebitTest extends UnitTest
                     'bankAccount' => [
                         'owner' => 'PAY.',
                         'bic' => 'RABONL2U',
-                        'iban' => 'NL35RABO0117713678',
+                        'iban' => 'NL32RABO1670475085',
                     ],
                 ],
                 'amount' => [

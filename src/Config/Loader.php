@@ -98,6 +98,14 @@ class Loader
     }
 
     /**
+     * @return array
+     */
+    protected function getPaths(): array
+    {
+        return $this->paths;
+    }
+
+    /**
      * @param string $path
      *
      * @return Loader
@@ -139,7 +147,7 @@ class Loader
      */
     public function load(): self
     {
-        foreach ($this->paths as $path) {
+        foreach ($this->getPaths() as $path) {
             $this->addConfigByPath($path);
         }
 

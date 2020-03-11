@@ -19,13 +19,13 @@ abstract class AbstractScalar implements FilterInterface
     protected $value;
 
     /**
-     * AbstractScalar constructor.
-     *
-     * @param int|string $value
+     * @inheritDoc
      */
-    public function __construct($value)
+    public function __construct($value = null)
     {
-        $this->setValue($value);
+        if (null !== $value) {
+            $this->setValue($value);
+        }
     }
 
     /**
@@ -41,19 +41,37 @@ abstract class AbstractScalar implements FilterInterface
      *
      * @throws InvalidArgumentException when given argument is not a string nor an integer
      */
-    public function setValue($value)
+    public function setValue($value): FilterInterface
     {
-        if (true === is_int($value)) {
-            $value = (string)$value;
-        } elseif (false === is_string($value)) {
-            throw new InvalidArgumentException(
-                sprintf(
-                    '%s expects argument given to be a string or an integer, %s given',
-                    __METHOD__,
-                    is_object($value) === true ? get_class($value) : gettype($value)
-                )
-            );
+        $exception = new InvalidArgumentException(
+            sprintf(
+                '%s expects argument given to be scalar, %s given',
+                __METHOD__,
+                gettype($value)
+            )
+        );
+
+        if (false === is_scalar($value)) {
+            throw $exception;
         }
+
+        switch (gettype($value)) {
+            case 'boolean':
+                $value = (string)(int)$value;
+                break;
+            case 'integer':
+            case 'double':
+                // for historical reasons the gettype of float is
+                //  "double" (https://www.php.net/manual/en/function.gettype.php)
+                $value = (string)$value;
+                break;
+            case 'string':
+                // do nothing
+                break;
+            default:
+                throw $exception;
+        }
+
         $this->value = $value;
         return $this;
     }

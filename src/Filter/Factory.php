@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PayNL\Sdk\Filter;
 
 use PayNL\Sdk\Common\FactoryInterface;
+use PayNL\Sdk\Exception\ServiceNotFoundException;
 use Psr\Container\ContainerInterface;
 
 /**
@@ -21,11 +22,17 @@ class Factory implements FactoryInterface
      */
     public function __invoke(ContainerInterface $container, string $requestedName, array $options = null): FilterInterface
     {
-        $value = $options['value'] ?? null;
+        if (false === class_exists($requestedName)) {
+            throw new ServiceNotFoundException(
+                sprintf(
+                    'No service found with name "%s"',
+                    $requestedName
+                )
+            );
+        }
 
-        /** @var FilterInterface $filter */
-        $filter = new $requestedName($value);
-
-        return $filter;
+        return (new $requestedName())
+            ->setValue($options['value'] ?? '')
+        ;
     }
 }

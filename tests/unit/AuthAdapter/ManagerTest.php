@@ -4,11 +4,21 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PayNL\Sdk\AuthAdapter;
 
-use Codeception\Test\Unit as UnitTest;
-use Codeception\Lib\ManagerTestTrait;
-use PayNL\Sdk\AuthAdapter\Manager;
-use PayNL\Sdk\Service\AbstractPluginManager;
+use Codeception\{
+    Lib\ManagerTestTrait,
+    Test\Unit as UnitTest
+};
+use PayNL\Sdk\{
+    AuthAdapter\AdapterInterface,
+    AuthAdapter\Manager,
+    Service\AbstractPluginManager
+};
 
+/**
+ * Class ManagerTest
+ *
+ * @package Tests\Unit\PayNL\Sdk\AuthAdapter
+ */
 class ManagerTest extends UnitTest
 {
     use ManagerTestTrait {
@@ -44,5 +54,6 @@ class ManagerTest extends UnitTest
         $instanceOf = $this->tester->invokeMethod($this->manager, 'getInstanceOf');
         verify($instanceOf)->string();
         verify($instanceOf)->notEmpty();
+        verify($instanceOf)->equals(AdapterInterface::class);
     }
 }

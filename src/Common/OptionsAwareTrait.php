@@ -56,6 +56,8 @@ trait OptionsAwareTrait
             return $this;
         }
 
+        $this->clear();
+
         foreach ($options as $name => $value) {
             $this->addOption($name, $value);
         }
@@ -72,6 +74,15 @@ trait OptionsAwareTrait
     public function addOption($name, $value): self
     {
         $this->options[$name] = $value;
+        return $this;
+    }
+
+    /**
+     * @return static
+     */
+    protected function clear(): self
+    {
+        $this->options = [];
         return $this;
     }
 }

@@ -4,16 +4,18 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Service;
 
-use PayNL\Sdk\Application;
-use PayNL\Sdk\Common\DebugAwareInitializer;
-use PayNL\Sdk\Service\Manager as ServiceManager;
-use PayNL\Sdk\Service\Loader as ServiceLoader;
-use PayNL\Sdk\Service\Config as ServiceConfig;
-use PayNL\Sdk\Config\Config;
-use PayNL\Sdk\Exception;
+use PayNL\Sdk\{
+    Application,
+    Common\DebugAwareInitializer,
+    Common\FactoryInterface,
+    Service\Manager as ServiceManager,
+    Service\Loader as ServiceLoader,
+    Service\Config as ServiceConfig,
+    Config\Config,
+    Config\Factory as ConfigFactory,
+    Exception
+};
 use Psr\Container\ContainerInterface;
-use PayNL\Sdk\Common\FactoryInterface;
-use PayNL\Sdk\Config\Factory as ConfigFactory;
 
 /**
  * Class LoaderFactory
@@ -154,66 +156,5 @@ class LoaderFactory implements FactoryInterface
                 );
             }
         }
-
-
-//        if (false === $options->has('service_manager')) {
-//            throw new Exception\ServiceNotCreatedException(
-//                sprintf(
-//                    self::MISSING_KEY_ERROR,
-//                    $name,
-//                    'service_manager'
-//                )
-//            );
-//        }
-//
-//        if (false === is_string($options->get('service_manager'))) {
-//            throw new Exception\ServiceNotCreatedException(
-//                sprintf(
-//                    self::VALUE_TYPE_ERROR,
-//                    'service_manager',
-//                    gettype($options->get('service_manager'))
-//                )
-//            );
-//        }
-//
-//        if (false === $options->has('config_key')) {
-//            throw new Exception\ServiceNotCreatedException(
-//                sprintf(
-//                    self::MISSING_KEY_ERROR,
-//                    $name,
-//                    'config_key'
-//                )
-//            );
-//        }
-//
-//        if (false === is_string($options->get('config_key'))) {
-//            throw new Exception\ServiceNotCreatedException(
-//                sprintf(
-//                    self::VALUE_TYPE_ERROR,
-//                    'service_manager',
-//                    gettype($options->get('config_key'))
-//                )
-//            );
-//        }
-//
-//        if (false === $options->has('class_method')) {
-//            throw new Exception\ServiceNotCreatedException(
-//                sprintf(
-//                    self::MISSING_KEY_ERROR,
-//                    $name,
-//                    'class_method'
-//                )
-//            );
-//        }
-//
-//        if (false === is_string($options->get('class_method'))) {
-//            throw new Exception\ServiceNotCreatedException(
-//                sprintf(
-//                    self::VALUE_TYPE_ERROR,
-//                    'service_manager',
-//                    gettype($options->get('class_method'))
-//                )
-//            );
-//        }
     }
 }

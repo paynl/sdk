@@ -4,10 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PayNL\Sdk\Filter;
 
-use Codeception\Test\Unit as UnitTest;
-use Codeception\Lib\ManagerTestTrait;
-use PayNL\Sdk\Filter\Manager;
-use PayNL\Sdk\Service\AbstractPluginManager;
+use Codeception\{
+    Lib\ManagerTestTrait,
+    Test\Unit as UnitTest
+};
+use PayNL\Sdk\{
+    Filter\FilterInterface,
+    Filter\Manager,
+    Service\AbstractPluginManager
+};
 
 /**
  * Class ManagerTest
@@ -49,5 +54,6 @@ class ManagerTest extends UnitTest
         $instanceOf = $this->tester->invokeMethod($this->manager, 'getInstanceOf');
         verify($instanceOf)->string();
         verify($instanceOf)->notEmpty();
+        verify($instanceOf)->equals(FilterInterface::class);
     }
 }

@@ -4,15 +4,18 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PayNL\Sdk\Filter;
 
-use Codeception\Test\Unit as UnitTest;
-use Codeception\Lib\FactoryTestTrait;
+use Codeception\{
+    Lib\FactoryTestTrait,
+    Test\Unit as UnitTest
+};
 use PayNL\Sdk\{
-    Exception\ServiceNotFoundException,
     Filter\Country,
     Filter\Factory,
     Service\Manager as ServiceManager
 };
-use UnitTester;
+use UnitTester,
+    Error
+;
 
 /**
  * Class FactoryTest
@@ -67,7 +70,7 @@ class FactoryTest extends UnitTest
      */
     public function testItThrowAnExceptionWhenRequestedNameIsNotSupported(): void
     {
-        $this->expectException(ServiceNotFoundException::class);
+        $this->expectException(Error::class);
         ($this->factory)($this->serviceManagerMock, 'UnsupportedClassName');
     }
 }

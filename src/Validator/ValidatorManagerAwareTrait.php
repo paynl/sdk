@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Validator;
 
+use RuntimeException;
+
 /**
  * Trait ValidatorAwareTrait
  *
@@ -21,6 +23,9 @@ trait ValidatorManagerAwareTrait
      */
     public function getValidatorManager(): Manager
     {
+        if($this->validatorManager === null) {
+            throw new RuntimeException('ValidatorManager was not set');
+        }
         return $this->validatorManager;
     }
 

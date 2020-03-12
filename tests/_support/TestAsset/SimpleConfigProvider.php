@@ -29,13 +29,27 @@ class SimpleConfigProvider implements ProviderInterface
                 ],
             ],
             'models' => [
+                'aliases' => [
+                    'ComplexModel' => 'complexModel',
+                    'FailingModel' => 'failingModel',
+                    'SecondFailingModel' => 'secondFailingModel',
+                    'SimpleModel' => 'simpleModel',
+                    'SimpleCollection' => 'simpleCollection',
+                    'SimpleDateTime' => 'simpleDateTime',
+                    'SimpleDependencyObject' => 'simpleDependencyObject',
+                ],
                 'invokables' => [
                     'complexModel' => ComplexModel::class,
+                    'failingModel' => FailingModel::class,
+                    'secondFailingModel' => SecondFailingModel::class,
                     'simpleModel'  => SimpleModel::class,
                     'simpleCollection' => SimpleCollection::class,
                     'simpleDateTime' => SimpleDateTime::class,
                     'simpleDependencyObject' => SimpleDependencyObject::class,
                 ],
+            ],
+            'hydrator_collection_map' => [
+                'simpleModels' => 'simpleModel',
             ],
         ];
     }

@@ -32,6 +32,19 @@ class ConfigProvider implements ConfigProviderInterface
                     'class_method' => 'getModelConfig'
                 ],
             ],
+            'hydrator_collection_map' => [
+                // CollectionEntity(Alias) => EntryEntity(Alias)
+                'contactMethods' => 'contactMethod',
+                'currencies'     => 'currency',
+                'directdebits'   => 'directdebit',
+                'errors'         => 'error',
+                'links'          => 'link',
+                'paymentMethods' => 'paymentMethod',
+                'products'       => 'product',
+                'services'       => 'service',
+                'terminals'      => 'terminal',
+                'trademarks'     => 'trademark'
+            ],
         ];
     }
 

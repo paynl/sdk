@@ -6,13 +6,14 @@ namespace Codeception\TestAsset;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use PayNL\Sdk\Common\CollectionInterface;
+use PayNL\Sdk\Model\ModelInterface;
 
 /**
  * Class SimpleCollection
  *
  * @package Codeception\TestAsset
  */
-class SimpleCollection extends ArrayCollection implements CollectionInterface
+class SimpleCollection extends ArrayCollection implements ModelInterface, CollectionInterface
 {
     /**
      * @return array

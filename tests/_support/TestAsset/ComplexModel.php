@@ -6,6 +6,7 @@ namespace Codeception\TestAsset;
 
 use PayNL\Sdk\Model\LinksTrait;
 use PayNL\Sdk\Model\ModelInterface;
+use DateTime;
 
 /**
  * Class SampleModel
@@ -17,7 +18,7 @@ class ComplexModel implements ModelInterface
     use LinksTrait;
 
     /**
-     * @var InvokableObject
+     * @var string
      */
     protected $foo;
 
@@ -27,24 +28,29 @@ class ComplexModel implements ModelInterface
     protected $bar;
 
     /**
-     * @var SimpleDateTime
+     * @var DateTime
      */
     protected $baz;
 
     /**
-     * @return InvokableObject
+     * @var SimpleCollection
      */
-    public function getFoo(): InvokableObject
+    protected $corge;
+
+    /**
+     * @return string
+     */
+    public function getFoo(): string
     {
         return $this->foo;
     }
 
     /**
-     * @param InvokableObject $foo
+     * @param string $foo
      *
      * @return ComplexModel
      */
-    public function setFoo(InvokableObject $foo): self
+    public function setFoo(string $foo): self
     {
         $this->foo = $foo;
         return $this;
@@ -70,21 +76,40 @@ class ComplexModel implements ModelInterface
     }
 
     /**
-     * @return SimpleDateTime
+     * @return DateTime
      */
-    public function getBaz(): SimpleDateTime
+    public function getBaz(): DateTime
     {
         return $this->baz;
     }
 
     /**
-     * @param SimpleDateTime $baz
+     * @param DateTime $baz
      *
      * @return ComplexModel
      */
-    public function setBaz(SimpleDateTime $baz): self
+    public function setBaz(DateTime $baz): self
     {
         $this->baz = $baz;
+        return $this;
+    }
+
+    /**
+     * @return SimpleCollection
+     */
+    public function getCorge(): SimpleCollection
+    {
+        return $this->corge;
+    }
+
+    /**
+     * @param SimpleCollection $corge
+     *
+     * @return ComplexModel
+     */
+    public function setCorge(SimpleCollection $corge): self
+    {
+        $this->corge = $corge;
         return $this;
     }
 }

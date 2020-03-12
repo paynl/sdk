@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\PayNL\Sdk\Util;
 
 use Codeception\Test\Unit as UnitTest;
-use InvalidArgumentException;
+use PayNL\Sdk\Exception\InvalidArgumentException;
 use PayNL\Sdk\Exception\LogicException;
 use PayNL\Sdk\Util\Misc;
 use Codeception\TestAsset\SampleConfigProvider;

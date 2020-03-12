@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Validator;
 
-use RuntimeException;
+use PayNL\Sdk\Exception\RuntimeException;
 
 /**
  * Trait ValidatorAwareTrait

@@ -7,6 +7,7 @@ namespace Tests\Unit\PayNL\Sdk\Common;
 use Codeception\Test\Unit as UnitTest;
 use PayNL\Sdk\Common\OptionsAwareInterface;
 use PayNL\Sdk\Common\OptionsAwareTrait;
+use PayNL\Sdk\Exception\InvalidArgumentException;
 use UnitTester;
 
 class OptionsAwareTraitTest extends UnitTest
@@ -138,5 +139,14 @@ class OptionsAwareTraitTest extends UnitTest
         verify($options)->hasKey('waldo');
         verify($options['waldo'])->string();
         verify($options['waldo'])->equals('fred');
+    }
+
+    /**
+     * @return void
+     */
+    public function testSetOptionsThrowsAnExceptionOnWrongArgument(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->mockedTrait->setOptions(1);
     }
 }

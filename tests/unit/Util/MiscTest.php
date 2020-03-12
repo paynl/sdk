@@ -65,22 +65,6 @@ class MiscTest extends UnitTest
     protected function _before()
     {
         $this->misc = new Misc();
-
-        verify(file_exists($this->getExistingUnreadableFilename()))->true();
-        verify(file_exists($this->getExistingReadableFilename()))->true();
-        verify(is_readable($this->getExistingReadableFilename()))->true();
-        verify(file_exists($this->getNonExistingFilename()))->false();
-        verify(file_exists($this->getInvalidClassFilename()))->true();
-
-        $this->originalFilePermissions = fileperms($this->getExistingUnreadableFilename());
-        @chmod($this->getExistingUnreadableFilename(), 0);
-
-        verify(is_readable($this->getExistingUnreadableFilename()))->false();
-    }
-
-    protected function _after()
-    {
-        @chmod($this->getExistingUnreadableFilename(), $this->originalFilePermissions);
     }
 
     /**
@@ -88,6 +72,7 @@ class MiscTest extends UnitTest
      */
     public function testItHandlesNonExistingClassNameByFile(): void
     {
+        verify(file_exists($this->getNonExistingFilename()))->false();
         $this->expectException(InvalidArgumentException::class);
         $this->misc::getClassNameByFile($this->getNonExistingFilename());
     }
@@ -97,8 +82,13 @@ class MiscTest extends UnitTest
      */
     public function testItHandlesExistingUnreadableClassNameByFile(): void
     {
+        verify(file_exists($this->getExistingUnreadableFilename()))->true();
+        $this->originalFilePermissions = fileperms($this->getExistingUnreadableFilename());
+        @chmod($this->getExistingUnreadableFilename(), 0);
+        verify(is_readable($this->getExistingUnreadableFilename()))->false();
         $this->expectException(InvalidArgumentException::class);
         $this->misc::getClassNameByFile($this->getExistingUnreadableFilename());
+        @chmod($this->getExistingUnreadableFilename(), $this->originalFilePermissions);
     }
 
     /**
@@ -106,6 +96,7 @@ class MiscTest extends UnitTest
      */
     public function testItHandlesInvalidClassNameByFile(): void
     {
+        verify(file_exists($this->getInvalidClassFilename()))->true();
         $this->expectException(LogicException::class);
         $this->misc::getClassNameByFile($this->getInvalidClassFilename());
     }
@@ -115,6 +106,8 @@ class MiscTest extends UnitTest
      */
     public function testItHandlesValidClassNameByFile(): void
     {
+        verify(file_exists($this->getExistingReadableFilename()))->true();
+        verify(is_readable($this->getExistingReadableFilename()))->true();
         $data = $this->misc::getClassNameByFile($this->getExistingReadableFilename());
         verify($data)->string();
         verify($data)->equals($this->getExistingReadableFilenameClass());

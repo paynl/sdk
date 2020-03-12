@@ -67,12 +67,6 @@ class Entity extends AbstractHydrator
             $ref = new ReflectionClass($model);
         } catch (ReflectionException $re) {
             // do nothing, model always exist
-            throw new RuntimeException(
-                sprintf(
-                    'Can not load model "%s"',
-                    get_class($model)
-                )
-            );
         }
 
         $properties = $ref->getProperties();

@@ -341,6 +341,8 @@ class Transaction
      * @param int|float|null $amount
      * @param string|null $description
      * @param \DateTime $processDate
+     * @param int|float|null $vatPercentage
+     * @param string $currency
      *
      * @return Result\Refund
      * @throws Error\Api

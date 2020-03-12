@@ -50,7 +50,7 @@ class Refund extends Transaction
     }
 
     /**
-     * @param string $vatPercentage
+     * @param int|float|null $vatPercentage
      */
     public function setVatPercentage($vatPercentage)
     {
@@ -58,7 +58,7 @@ class Refund extends Transaction
     }
 
     /**
-     * @param string $transactionId
+     * @param string $currency
      */
     public function setCurrency($currency)
     {

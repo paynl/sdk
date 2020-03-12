@@ -28,6 +28,15 @@ class SimpleConfigProvider implements ProviderInterface
                     'class_method'    => 'getTestAssetConfig',
                 ],
             ],
+            'models' => [
+                'invokables' => [
+                    'complexModel' => ComplexModel::class,
+                    'simpleModel'  => SimpleModel::class,
+                    'simpleCollection' => SimpleCollection::class,
+                    'simpleDateTime' => SimpleDateTime::class,
+                    'simpleDependencyObject' => SimpleDependencyObject::class,
+                ],
+            ],
         ];
     }
 

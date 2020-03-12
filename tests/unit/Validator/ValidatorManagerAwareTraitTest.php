@@ -8,6 +8,7 @@ use CodeCeption\Test\Unit as UnitTest;
 use PayNL\Sdk\Validator\Manager;
 use PayNL\Sdk\Validator\ValidatorManagerAwareTrait;
 use ReflectionException;
+use UnitTester;
 
 /**
  * Class ValidatorManagerAwareTraitTest
@@ -15,6 +16,9 @@ use ReflectionException;
  */
 class ValidatorManagerAwareTraitTest extends UnitTest
 {
+    /** @var UnitTester */
+    protected $tester;
+
     /**
      * @throws ReflectionException
      * @return void
@@ -24,7 +28,21 @@ class ValidatorManagerAwareTraitTest extends UnitTest
         /** @var ValidatorManagerAwareTrait $mock */
         $mock = $this->getMockForTrait(ValidatorManagerAwareTrait::class);
         verify(method_exists($mock, 'setValidatorManager'))->true();
-        verify($mock->setValidatorManager(new Manager()))->isInstanceOf(ValidatorManagerAwareTrait::class);
+        $validatorManagerMock = $this->tester->grabMockService('validatorManager');
+        verify($mock->setValidatorManager($validatorManagerMock))->isInstanceOf(get_class($mock));
+    }
+
+    /**
+     * @throws ReflectionException
+     * @return void
+     */
+    public function testItThrowsExceptionGettingEmptyManager(): void
+    {
+        /** @var ValidatorManagerAwareTrait $mock */
+        $mock = $this->getMockForTrait(ValidatorManagerAwareTrait::class);
+        verify(method_exists($mock, 'getValidatorManager'))->true();
+        $this->expectException('RuntimeException');
+        $mock->getValidatorManager();
     }
 
     /**
@@ -36,11 +54,8 @@ class ValidatorManagerAwareTraitTest extends UnitTest
     {
         /** @var ValidatorManagerAwareTrait $mock */
         $mock = $this->getMockForTrait(ValidatorManagerAwareTrait::class);
-        verify(method_exists($mock, 'getValidatorManager'))->true();
-        verify($mock->getValidatorManager())->isEmpty();
-        $mock->setValidatorManager(new Manager());
-        verify($mock->getValidatorManager())->isInstanceOf(Manager::class);
-        verify($mock->getValidatorManager())->containsOnlyInstancesOf(Manager::class);
-        verify($mock->getValidatorManager())->count(1);
+        $validatorManagerMock = $this->tester->grabMockService('validatorManager');
+        $mock->setValidatorManager($validatorManagerMock);
+        verify($mock->getValidatorManager())->isInstanceOf(get_class($validatorManagerMock));
     }
 }

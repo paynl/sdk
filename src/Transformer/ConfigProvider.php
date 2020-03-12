@@ -53,16 +53,10 @@ class ConfigProvider implements ConfigProviderInterface
     {
         return [
             'aliases' => [
-//                'collection' => Collection::class,
-//                'Collection' => Collection::class,
-//                'errors'     => Errors::class,
-//                'Errors'     => Errors::class,
                 'response'   => Response::class,
                 'Response'   => Response::class,
             ],
             'factories' => [
-//                Collection::class => Factory::class,
-//                Errors::class     => Factory::class,
                 Response::class   => Factory::class,
             ],
         ];

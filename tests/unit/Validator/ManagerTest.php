@@ -8,6 +8,7 @@ use Codeception\Lib\ManagerTestTrait;
 use CodeCeption\Test\Unit as UnitTest;
 use PayNL\Sdk\Validator\Manager;
 use PayNL\Sdk\Service\AbstractPluginManager;
+use PayNL\Sdk\Validator\ValidatorInterface;
 
 /**
  * Class ManagerTest
@@ -47,5 +48,6 @@ class ManagerTest extends UnitTest
         $instanceOf = $this->tester->invokeMethod($this->manager, 'getInstanceOf');
         verify($instanceOf)->string();
         verify($instanceOf)->notEmpty();
+        verify($instanceOf)->equals(ValidatorInterface::class);
     }
 }

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Unit\PayNL\Sdk\Validator;
 
 use CodeCeption\Test\Unit as UnitTest;
-use PayNL\Sdk\Validator\Manager;
 use PayNL\Sdk\Validator\ValidatorManagerAwareTrait;
 use ReflectionException;
 use UnitTester;

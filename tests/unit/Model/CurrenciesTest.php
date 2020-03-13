@@ -5,18 +5,9 @@ declare(strict_types=1);
 namespace Tests\Unit\PayNL\Sdk\Model;
 
 use Codeception\Test\Unit as UnitTest;
-use PayNL\Sdk\TotalCollection;
-use PayNL\Sdk\Model\{
-    ModelInterface,
-    Links,
-    Currency,
-    Currencies
-};
-use PayNL\Sdk\Hydrator\{
-    Simple as SimpleHydrator,
-    Links as LinksHydrator
-};
+use PayNL\Sdk\Model\{LinksTrait, ModelInterface, Links, Currency, Currencies};
 use JsonSerializable, Countable, ArrayAccess, IteratorAggregate, Exception;
+use PayNL\Sdk\Common\AbstractTotalCollection;
 
 /**
  * Class CurrenciesTest
@@ -29,6 +20,27 @@ class CurrenciesTest extends UnitTest
      * @var Currencies
      */
     protected $currencies;
+
+    private function eurCurrency(): Currency
+    {
+        return (new Currency())
+            ->setAbbreviation('EUR')
+            ->setDescription('Euro');
+    }
+
+    private function usdCurrency(): Currency
+    {
+        return (new Currency())
+            ->setAbbreviation('USD')
+            ->setDescription('Dollar');
+    }
+
+    private function audCurrency(): Currency
+    {
+        return (new Currency())
+            ->setAbbreviation('AUD')
+            ->setDescription('Australian Dollar');
+    }
 
     /**
      * @return void
@@ -51,48 +63,20 @@ class CurrenciesTest extends UnitTest
      */
     public function testItIsATotalCollection(): void
     {
-        verify($this->currencies)->isInstanceOf(TotalCollection::class);
+        verify($this->currencies)->isInstanceOf(AbstractTotalCollection::class);
     }
 
     /**
      * @return void
      */
-    public function testIsItNotJsonSerializable(): void
+    public function testItIsNotJsonSerializable(): void
     {
         verify($this->currencies)->isNotInstanceOf(JsonSerializable::class);
     }
 
-    /**
-     * @return void
-     */
-    public function testItCanSetLinks(): void
+    public function testItUsesLinksTrait(): void
     {
-        verify(method_exists($this->currencies, 'setLinks'))->true();
-        verify($this->currencies->setLinks(new Links()))->isInstanceOf(Currencies::class);
-    }
-
-    /**
-     * @depends testItCanSetLinks
-     *
-     * @return void
-     */
-    public function testItCanGetLinks(): void
-    {
-        verify(method_exists($this->currencies, 'getLinks'))->true();
-
-        $this->currencies->setLinks(
-            (new LinksHydrator())->hydrate([
-                [
-                    'rel'  => 'self',
-                    'type' => 'GET',
-                    'url'  => 'http://some.url.com',
-                ],
-            ], new Links())
-        );
-
-        verify($this->currencies->getLinks())->isInstanceOf(Links::class);
-        verify($this->currencies->getLinks())->count(1);
-        verify($this->currencies->getLinks())->hasKey('self');
+        verify(in_array(LinksTrait::class, class_uses($this->currencies), true))->true();
     }
 
     /**
@@ -101,12 +85,7 @@ class CurrenciesTest extends UnitTest
     public function testItCanAddCurrency(): void
     {
         verify(method_exists($this->currencies, 'addCurrency'))->true();
-        /** @var Currency $currency */
-        $currency = (new SimpleHydrator())->hydrate([
-            'abbreviation' => 'EUR',
-            'description'  => 'Euro',
-        ], new Currency());
-        verify($this->currencies->addCurrency($currency))->isInstanceOf(Currencies::class);
+        verify($this->currencies->addCurrency($this->eurCurrency()))->isInstanceOf(Currencies::class);
     }
 
     /**
@@ -114,14 +93,23 @@ class CurrenciesTest extends UnitTest
      *
      * @return void
      */
-    public function testItCanSetCurrencies(): void
+    public function testItCanSetEmptyCurrencies(): void
     {
         verify(method_exists($this->currencies, 'setCurrencies'))->true();
-        verify($this->currencies->setCurrencies([]))->isInstanceOf(Currencies::class);
+        verify($this->currencies->setCurrencies([$this->eurCurrency()]))->isInstanceOf(Currencies::class);
     }
 
     /**
-     * @depends testItCanSetCurrencies
+     * @depends testItCanSetEmptyCurrencies
+     */
+    public function testItCanSetSomeCurrencies(): void
+    {
+        verify($this->currencies->setCurrencies([$this->eurCurrency()]))->isInstanceOf(Currencies::class);
+    }
+
+    /**
+     * @depends testItCanSetSomeCurrencies
+     * @depends testItCanSetEmptyCurrencies
      *
      * @throws Exception
      *
@@ -132,14 +120,8 @@ class CurrenciesTest extends UnitTest
         verify(method_exists($this->currencies, 'getCurrencies'))->true();
 
         $this->currencies->setCurrencies([
-            (new SimpleHydrator())->hydrate([
-                'abbreviation' => 'EUR',
-                'description'  => 'Euro',
-            ], new Currency()),
-            (new SimpleHydrator())->hydrate([
-                'abbreviation' => 'USD',
-                'description'  => 'US Dollar',
-            ], new Currency()),
+            $this->eurCurrency(),
+            $this->usdCurrency()
         ])->setTotal(2);
 
         verify($this->currencies->getCurrencies())->array();
@@ -147,33 +129,7 @@ class CurrenciesTest extends UnitTest
     }
 
     /**
-     * @return void
-     */
-    public function testItCanSetTotal(): void
-    {
-        verify(method_exists($this->currencies, 'setTotal'))->true();
-        verify($this->currencies->setTotal(1))->isInstanceOf(Currencies::class);
-    }
-
-    /**
-     * @depends testItCanSetTotal
-     *
-     * @return void
-     */
-    public function testItCanGetTotal(): void
-    {
-        verify(method_exists($this->currencies, 'getTotal'))->true();
-
-        $this->currencies->setTotal(1);
-
-        verify($this->currencies->getTotal())->int();
-        verify($this->currencies->getTotal())->notEmpty();
-        verify($this->currencies->getTotal())->equals(1);
-    }
-
-
-    /**
-     * @depends testItCanSetCurrencies
+     * @depends testItCanSetSomeCurrencies
      *
      * @throws Exception
      *
@@ -184,21 +140,15 @@ class CurrenciesTest extends UnitTest
         verify($this->currencies)->isInstanceOf(Countable::class);
 
         $this->currencies->setCurrencies([
-            (new SimpleHydrator())->hydrate([
-                'abbreviation' => 'EUR',
-                'description'  => 'Euro',
-            ], new Currency()),
-            (new SimpleHydrator())->hydrate([
-                'abbreviation' => 'USD',
-                'description'  => 'US Dollar',
-            ], new Currency()),
+            $this->eurCurrency(),
+            $this->usdCurrency()
         ])->setTotal(2);
 
         verify(count($this->currencies))->equals(2);
     }
 
     /**
-     * @depends testItCanSetCurrencies
+     * @depends testItCanSetSomeCurrencies
      *
      * @throws Exception
      *
@@ -208,16 +158,12 @@ class CurrenciesTest extends UnitTest
     {
         verify($this->currencies)->isInstanceOf(ArrayAccess::class);
 
-        $this->currencies->setCurrencies([
-            (new SimpleHydrator())->hydrate([
-                'abbreviation' => 'EUR',
-                'description'  => 'Euro',
-            ], new Currency()),
-            (new SimpleHydrator())->hydrate([
-                'abbreviation' => 'USD',
-                'description'  => 'US Dollar',
-            ], new Currency()),
-        ])->setTotal(2);
+        $this->currencies
+            ->setCurrencies([
+                $this->eurCurrency(),
+                $this->usdCurrency()
+            ])
+            ->setTotal(2);
 
         // offsetExists
         verify(isset($this->currencies['EUR']))->true();
@@ -227,10 +173,11 @@ class CurrenciesTest extends UnitTest
         verify($this->currencies['EUR'])->isInstanceOf(Currency::class);
 
         // offsetSet
-        $this->currencies['AUD'] = (new SimpleHydrator())->hydrate([
-            'abbreviation' => 'AUD',
-            'description'  => 'Australian Dollar',
-        ], new Currency());
+        $audCurrency = (new Currency())
+            ->setAbbreviation('AUD')
+            ->setDescription('Australian Dollar');
+
+        $this->currencies['AUD'] = $audCurrency;
         verify($this->currencies)->hasKey('AUD');
         verify($this->currencies)->count(3);
 
@@ -241,7 +188,7 @@ class CurrenciesTest extends UnitTest
     }
 
     /**
-     * @depends testItCanSetCurrencies
+     * @depends testItCanSetSomeCurrencies
      *
      * @throws Exception
      *
@@ -252,14 +199,12 @@ class CurrenciesTest extends UnitTest
         verify($this->currencies)->isInstanceOf(IteratorAggregate::class);
 
         $this->currencies->setCurrencies([
-            (new SimpleHydrator())->hydrate([
-                'abbreviation' => 'EUR',
-                'description'  => 'Euro',
-            ], new Currency()),
-            (new SimpleHydrator())->hydrate([
-                'abbreviation' => 'USD',
-                'description'  => 'US Dollar',
-            ], new Currency()),
+            (new Currency())
+                ->setDescription('EUR')
+                ->setDescription('Euro'),
+            (new Currency())
+                ->setDescription('USD')
+                ->setDescription('US Dollar')
         ])->setTotal(2);
 
         verify(is_iterable($this->currencies))->true();

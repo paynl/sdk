@@ -8,7 +8,6 @@ use Codeception\Test\Unit as UnitTest;
 use PayNL\Sdk\Request\Parameter\TransactionIdTrait;
 use ReflectionException;
 
-
 /**
  * Class TransactionIdTraitTest
  *

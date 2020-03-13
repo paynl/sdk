@@ -341,6 +341,8 @@ class Transaction
      * @param int|float|null $amount
      * @param string|null $description
      * @param \DateTime $processDate
+     * @param int|float|null $vatPercentage
+     * @param string $currency
      *
      * @return Result\Refund
      * @throws Error\Api
@@ -352,7 +354,9 @@ class Transaction
         $transactionId,
         $amount = null,
         $description = null,
-        \DateTime $processDate = null
+        \DateTime $processDate = null,
+        $vatPercentage = null,
+        $currency = null
     )
     {
         $api = new Api\Refund();
@@ -366,6 +370,12 @@ class Transaction
         }
         if ($processDate !== null) {
             $api->setProcessDate($processDate);
+        }
+        if ($vatPercentage !== null) {
+            $api->setVatPercentage($vatPercentage);
+        }
+        if ($currency !== null) {
+            $api->setCurrency($currency);
         }
         $result = $api->doRequest();
 

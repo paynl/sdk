@@ -26,16 +26,10 @@ class Factory implements FactoryInterface
     {
         $mapConfig = $container->get('mapperManager')->getMapping();
 
-        if (false === is_array($mapConfig) || true === empty($mapConfig)) {
-            throw new ServiceNotCreatedException(
-                'No map config is set'
-            );
-        }
-
         if (false === array_key_exists($requestedName, $mapConfig)) {
             throw new ServiceNotCreatedException(
                 sprintf(
-                    'No entry found within map config for "%s"',
+                    'No map configuration found for "%s"',
                     $requestedName
                 )
             );

@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Common;
 
+use PayNL\Sdk\Exception\InvalidArgumentException;
+use Traversable;
+
 /**
  * Trait OptionsTrait
  *
@@ -50,10 +53,16 @@ trait OptionsAwareTrait
     /**
      * @inheritDoc
      */
-    public function setOptions(array $options)
+    public function setOptions($options)
     {
-        if (0 === count($options)) {
-            return $this;
+        if (false === is_array($options) && false === ($options instanceof Traversable)) {
+            throw new InvalidArgumentException(
+                sprintf(
+                    'Given options should be an array or an instance of %s, %s given',
+                    Traversable::class,
+                    is_object($options) ? get_class($options) : gettype($options)
+                )
+            );
         }
 
         $this->clear();

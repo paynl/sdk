@@ -7,6 +7,7 @@ namespace PayNL\Sdk\Hydrator;
 use Psr\Container\ContainerInterface;
 use PayNL\Sdk\{
     Common\FactoryInterface,
+    Common\OptionsAwareInterface,
     Exception\ServiceNotFoundException,
     Validator\ValidatorManagerAwareInterface
 };
@@ -42,6 +43,17 @@ class Factory implements FactoryInterface
         ) {
             $hydrator->setValidatorManager($container->get('validatorManager'));
         }
+
+        if ($hydrator instanceof OptionsAwareInterface) {
+            $hydratorCollectionMap = [];
+            $config = $container->get('config');
+            if (true === $config->has('hydrator_collection_map')) {
+               $hydratorCollectionMap = $config->get('hydrator_collection_map')->toArray();
+            }
+
+            $hydrator->setOptions(array_merge($options ?? [], ['collectionMap' => $hydratorCollectionMap]));
+        }
+
         /** @var AbstractHydrator $hydrator */
         return $hydrator;
     }

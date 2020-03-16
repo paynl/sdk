@@ -89,4 +89,16 @@ class Misc
 
         return $namespace . '\\' . $class;
     }
+
+    /**
+     * @param string $fqn
+     *
+     * @return string
+     */
+    public static function getClassNameByFQN(string $fqn): string
+    {
+        $namespaceSeparator = '\\';
+        $parts = explode($namespaceSeparator, $fqn);
+        return array_pop($parts);
+    }
 }

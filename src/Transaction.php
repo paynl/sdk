@@ -383,6 +383,35 @@ class Transaction
     }
 
     /**
+     * Cancels a transaction
+     *
+     * @param string $transactionId
+     * @param string|null $entranceCode
+     *
+     * @return Result\Cancel
+     * @throws Error\Api
+     * @throws Error\Error
+     * @throws Error\Required\ApiToken
+     * @throws Error\Required\ServiceId
+     */
+    public static function cancel(
+        $transactionId,
+        $entranceCode = null
+    )
+    {
+        $api = new Api\Cancel();
+        $api->setTransactionId($transactionId);
+      
+        if ($entranceCode !== null) {
+            $api->setEntranceCode($entranceCode);
+        }
+      
+        $result = $api->doRequest();
+
+        return new Result\Cancel($result);
+    }
+
+    /**
      * Charge an existing recurring transaction by its id
      *
      * @param $options array

@@ -27,7 +27,6 @@ use PayNL\Sdk\{
     Validator\ValidatorManagerAwareInterface,
     Validator\ValidatorManagerAwareTrait
 };
-use Hoa\Iterator\Filter;
 use Symfony\Component\Serializer\Encoder\{
     JsonEncoder,
     XmlEncoder

@@ -78,24 +78,6 @@ class AddressTest extends UnitTest
         expect($this->address->setStreetNumber(10))->isInstanceOf(Address::class);
     }
 
-    public function testItThrowsAnExceptionForSettingStreetNumberOnWrongInput1(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->address->setStreetNumber(1.01);
-    }
-
-    public function testItThrowsAnExceptionForSettingStreetNumberOnWrongInput2(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->address->setStreetNumber(array());
-    }
-
-    public function testItThrowsAnExceptionForSettingStreetNumberOnWrongInput3(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->address->setStreetNumber(new Address());
-    }
-
     /**
      * @depends testItCanSetAStreetNumber
      *
@@ -231,17 +213,17 @@ class AddressTest extends UnitTest
     /**
      * @return void
      */
-    public function testItCanSetInitials(): void
+    public function testItCanSetName(): void
     {
         expect($this->address->setName('O'))->isInstanceOf(Address::class);
     }
 
     /**
-     * @depends testItCanSetInitials
+     * @depends testItCanSetName
      *
      * @return void
      */
-    public function testItCanGetInitials(): void
+    public function testItCanGetName(): void
     {
         $this->address->setName('O');
 

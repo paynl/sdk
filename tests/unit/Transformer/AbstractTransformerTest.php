@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace Tests\Unit\PayNL\Sdk\Transformer;
 
 use Codeception\Test\Unit as UnitTest;
+use Codeception\TestAsset\DummyTransformer;
 use PayNL\Sdk\Exception\UnexpectedValueException;
 use PayNL\Sdk\Transformer\{
     AbstractTransformer,
     TransformerInterface
 };
-use UnitTester, TypeError, stdClass;
+use UnitTester, TypeError;
 
 /**
  * Class AbstractTransformerTest
@@ -34,12 +35,7 @@ class AbstractTransformerTest extends UnitTest
      */
     public function _before(): void
     {
-        $this->anonymousClassFromAbstract = new class() extends AbstractTransformer {
-            public function transform($inputToTransform)
-            {
-                return new stdClass();
-            }
-        };
+        $this->anonymousClassFromAbstract = new DummyTransformer($this->tester->getServiceManager());
     }
 
     /**

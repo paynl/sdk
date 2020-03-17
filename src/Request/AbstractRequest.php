@@ -393,6 +393,8 @@ abstract class AbstractRequest implements
     /**
      * @param array $filters
      *
+     * @throws InvalidArgumentException
+     *
      * @return AbstractRequest
      */
     public function setFilters(array $filters): self
@@ -401,6 +403,14 @@ abstract class AbstractRequest implements
         $this->filters = [];
 
         foreach ($filters as $filter) {
+            if (false === $filter instanceof FilterInterface) {
+                throw new InvalidArgumentException(
+                    sprintf(
+                        'Supplied filter is not of type %s',
+                        FilterInterface::class
+                    )
+                );
+            }
             $this->addFilter($filter);
         }
         return $this;

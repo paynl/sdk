@@ -25,6 +25,9 @@ trait ManagerTestTrait
      */
     protected $tester;
 
+    /**
+     * @return void
+     */
     public function testItIsAManager(): void
     {
         verify($this->manager)->isInstanceOf(ContainerInterface::class);
@@ -37,7 +40,7 @@ trait ManagerTestTrait
      */
     public function testItCanConfigure(): void
     {
-        verify(method_exists($this->manager, 'configure'))->true();
+        $this->tester->assertObjectHasMethod('configure', $this->manager);
         verify($this->manager->configure([]))
             ->isInstanceOf(get_class($this->manager));
     }

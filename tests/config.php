@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 return [
     'config_paths' => [
-        __DIR__ . DIRECTORY_SEPARATOR . '_support' . DIRECTORY_SEPARATOR . 'TestAsset' . DIRECTORY_SEPARATOR . 'ConfigProvider.php',
+        'testAssets' => __DIR__ . DIRECTORY_SEPARATOR . '_support' . DIRECTORY_SEPARATOR . 'TestAsset' . DIRECTORY_SEPARATOR . 'ConfigProvider.php',
     ],
     'api' => [
         'url'  => 'https://rest.idefix.mike.dev.pay.nl/',

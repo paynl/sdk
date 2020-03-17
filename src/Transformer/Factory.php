@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace PayNL\Sdk\Transformer;
 
 use PayNL\Sdk\Common\OptionsAwareInterface;
+use PayNL\Sdk\Validator\ValidatorInterface;
 use Psr\Container\ContainerInterface;
 use PayNL\Sdk\Common\FactoryInterface;
 
 /**
  * Class TransformerFactory
  *
- * @package PayNL\Sdk\Factory
+ * @package PayNL\Sdk\Transformer
  */
 class Factory implements FactoryInterface
 {

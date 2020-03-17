@@ -12,19 +12,15 @@ use PayNL\GuzzleHttp\{
     Psr7\Response as Psr7Response,
     Handler\MockHandler
 };
-use PayNL\Sdk\{
-    Exception\InvalidArgumentException,
-    Exception\RuntimeException,
+use Codeception\TestAsset\DummyFilter;
+use PayNL\Sdk\{Exception\InvalidArgumentException,
     Filter\FilterInterface,
-    Filter\Page as PageFilter,
-    Model\Errors,
-    Response,
+    Response\Response,
     Request\RequestInterface,
     Request\AbstractRequest,
-    Transformer\Simple,
-    Transformer\TransformerInterface
-};
-use TypeError, UnitTester, stdClass;
+    Response\ResponseInterface,
+    Transformer\TransformerInterface};
+use TypeError, UnitTester;
 
 /**
  * Class AbstractRequestTest
@@ -413,25 +409,16 @@ class AbstractRequestTest extends UnitTest
     public function testItCanAddFilter(): void
     {
         verify(method_exists($this->anonymousClassFromAbstract, 'addFilter'))->true();
-        $filter = new class implements FilterInterface {
-            public function getName(): string
-            {
-                return 'test';
-            }
+        $filter = new DummyFilter();
 
-            public function getValue(): string
-            {
-                return (string)1;
-            }
-        };
         verify($this->anonymousClassFromAbstract->addFilter($filter))
             ->isInstanceOf(AbstractRequest::class)
         ;
 
         $filters = $this->anonymousClassFromAbstract->getFilters();
-        verify($filters)->hasKey('test');
-        verify($filters['test'])->notEmpty();
-        verify($filters['test'])->isInstanceOf(FilterInterface::class);
+        verify($filters)->hasKey('DummyFilter');
+        verify($filters['DummyFilter'])->notEmpty();
+        verify($filters['DummyFilter'])->isInstanceOf(FilterInterface::class);
     }
 
     /**
@@ -444,17 +431,7 @@ class AbstractRequestTest extends UnitTest
     {
         verify(method_exists($this->anonymousClassFromAbstract, 'setFilters'))->true();
 
-        $filter = new class implements FilterInterface {
-            public function getName(): string
-            {
-                return 'test';
-            }
-
-            public function getValue(): string
-            {
-                return (string)1;
-            }
-        };
+        $filter = new DummyFilter();
 
         verify($this->anonymousClassFromAbstract->setFilters([
             $filter
@@ -485,21 +462,11 @@ class AbstractRequestTest extends UnitTest
     {
         verify(method_exists($this->anonymousClassFromAbstract, 'getFilter'))->true();
 
-        $filter = new class implements FilterInterface {
-            public function getName(): string
-            {
-                return 'test';
-            }
-
-            public function getValue(): string
-            {
-                return (string)1;
-            }
-        };
+        $filter = new DummyFilter();
 
         $this->anonymousClassFromAbstract->addFilter($filter);
 
-        $filterFromCollection = $this->anonymousClassFromAbstract->getFilter('test');
+        $filterFromCollection = $this->anonymousClassFromAbstract->getFilter('DummyFilter');
         verify($filterFromCollection)->notEmpty();
         verify($filterFromCollection)->isInstanceOf(FilterInterface::class);
         verify($filterFromCollection)->same($filter);
@@ -549,7 +516,8 @@ class AbstractRequestTest extends UnitTest
      */
     public function testItCanExecute(): void
     {
-        $response = new Response();
+        /** @var Response $response */
+        $response = $this->tester->grabService('Response');
 
         $guzzleMockHandler = new MockHandler();
         $guzzleMockHandler->append(new Psr7Response(200, [], '{"result": "ok"}'));
@@ -558,19 +526,18 @@ class AbstractRequestTest extends UnitTest
             'handler' => $guzzleMockHandler,
         ]);
 
-        $this->anonymousClassFromAbstract->setFilters([
-            new PageFilter(1),
-        ])->applyClient($guzzleClient)
-            ->setDebug(true)
+        $filter = new DummyFilter();
+        $filter->setValue('1');
+
+        $this->anonymousClassFromAbstract
+            ->setFilters([$filter])
+            ->applyClient($guzzleClient)
             ->execute($response)
         ;
 
         verify($response->getBody())->notEmpty();
-        verify($response->getBody())->isInstanceOf(stdClass::class);
-        verify($response->getBody())->hasAttribute('result');
-        verify($response->getBody()->result)->string();
-        verify($response->getBody()->result)->notEmpty();
-        verify($response->getBody()->result)->equals('ok');
+        verify($response->getBody())->string();
+        verify($response->getBody())->equals('OK');
     }
 
     /**
@@ -580,7 +547,9 @@ class AbstractRequestTest extends UnitTest
      */
     public function testItReturnsAResponseWhenRequestIsNotSuccessful(): void
     {
-        $response = new Response();
+        /** @var Response $response */
+        $response = $this->tester->grabService('Response');
+        $response->setFormat(ResponseInterface::FORMAT_JSON);
 
         $guzzleMockHandler = new MockHandler();
         $guzzleMockHandler->append(new Psr7Response(500));
@@ -604,12 +573,13 @@ class AbstractRequestTest extends UnitTest
      */
     public function testItContainsErrorsWhenNoGuzzleClientIsSet(): void
     {
-        $response = new Response();
+        /** @var Response $response */
+        $response = $this->tester->grabService('Response');
+        $response->setFormat(ResponseInterface::FORMAT_JSON);
 
-        $this->anonymousClassFromAbstract->setFilters([
-            new PageFilter(1),
-        ])->execute($response)
-        ;
+        $this->anonymousClassFromAbstract
+            ->setFilters([new DummyFilter()])
+            ->execute($response);
 
         verify($response->hasErrors())->true();
     }
@@ -621,7 +591,9 @@ class AbstractRequestTest extends UnitTest
      */
     public function testItCanProcessErrors(): void
     {
-        $response = new Response();
+        /** @var Response $response */
+        $response = $this->tester->grabService('Response');
+        $response->setFormat(ResponseInterface::FORMAT_JSON);
 
         $guzzleMockHandler = new MockHandler();
         $guzzleMockHandler->append(new ClientException(
@@ -635,12 +607,14 @@ class AbstractRequestTest extends UnitTest
         ]);
 
         $this->anonymousClassFromAbstract->setFilters([
-            new PageFilter(1),
+            new DummyFilter(),
         ])->applyClient($guzzleClient)
-            ->setDebug(true)
             ->execute($response)
         ;
 
-        verify($response->getBody())->isInstanceOf(Errors::class);
+        $body = $response->getBody();
+        $json = json_decode($body, true);
+        verify($json)->array();
+        verify($json)->hasKey('errors');
     }
 }

@@ -15,15 +15,16 @@ use UnitTester;
 use Codeception\TestAsset\{Dummy, DummyMissingProperty, DummyWithoutRequiredMembers, DummyHydratorAware};
 use Zend\Hydrator\ClassMethods;
 
-
+/**
+ * Class RequiredMembersTest
+ * @package Tests\Unit\PayNL\Sdk\Validator
+ */
 class RequiredMembersTest extends UnitTest
 {
     /** @var RequiredMembers */
     protected $validator;
 
-    /**
-     * @var Dummy
-     */
+    /** @var Dummy */
     private $dummy;
 
     /** @var DummyMissingProperty */
@@ -40,7 +41,10 @@ class RequiredMembersTest extends UnitTest
      */
     protected $tester;
 
-    private function setHydrator()
+    /**
+     * @return void
+     */
+    private function setHydrator(): void
     {
         $this->validator->setHydrator(new ClassMethods(false, true));
     }
@@ -55,22 +59,34 @@ class RequiredMembersTest extends UnitTest
         $this->dummyHydratorAware = new DummyHydratorAware();
     }
 
+    /**
+     * @return void
+     */
     public function testItIsAValidator(): void
     {
         verify($this->validator)->isInstanceOf(ValidatorInterface::class);
     }
 
+    /**
+     * @return void
+     */
     public function testItExtendsAbstract(): void
     {
         verify($this->validator)->isInstanceOf(AbstractValidator::class);
     }
 
+    /**
+     * @return void
+     */
     public function testGetDataFromObjectWithNullHydratorThrowsException(): void
     {
         $this->expectException(RuntimeException::class);
         $this->tester->invokeMethod($this->validator, 'getDataFromObject', [$this->dummyHydratorAware]);
     }
 
+    /**
+     * @return void
+     */
     public function testGetDataFromObjectWithNonObjectThrowsException(): void
     {
         $this->setHydrator();
@@ -78,18 +94,25 @@ class RequiredMembersTest extends UnitTest
         $this->tester->invokeMethod($this->validator, 'getDataFromObject', [1]);
     }
 
+    /**
+     * @return void
+     */
     public function testItCanGetDataFromAGivenObject(): void
     {
+        $this->setHydrator();
         $this->dummy->setRequiredMember('some-string');
 
         $data = $this->tester->invokeMethod($this->validator, 'getDataFromObject', [$this->dummy]);
         verify($data)->array();
         verify($data)->notEmpty();
-        verify($data)->hasKey('required_member');
-        verify($data['required_member'])->string();
-        verify($data['required_member'])->equals('some-string');
+        verify($data)->hasKey('requiredMember');
+        verify($data['requiredMember'])->string();
+        verify($data['requiredMember'])->equals('some-string');
     }
 
+    /**
+     * @return void
+     */
     public function testItCanCheckForRequiredMembers(): void
     {
         $this->tester->assertObjectHasMethod('getRequiredMembers', $this->validator);
@@ -104,6 +127,7 @@ class RequiredMembersTest extends UnitTest
 
     /**
      * @depends testItCanCheckForRequiredMembers
+     * @return void
      */
     public function testItCanValidateWithoutRequiredMembers(): void
     {
@@ -112,6 +136,9 @@ class RequiredMembersTest extends UnitTest
         verify($result)->true();
     }
 
+    /**
+     * @return void
+     */
     public function testValidateWithEmptyMembers(): void
     {
         $this->setHydrator();
@@ -121,6 +148,9 @@ class RequiredMembersTest extends UnitTest
         verify($result)->false();
     }
 
+    /**
+     * @return void
+     */
     public function testValidateWithMissingMembers(): void
     {
         $this->setHydrator();
@@ -129,6 +159,48 @@ class RequiredMembersTest extends UnitTest
         verify($result)->false();
     }
 
+    /**
+     * @return void
+     */
+    public function testItCanTestEmptyOnEmptyOrNullString(): void
+    {
+        foreach(
+            [
+                ['', ''],
+                ['', null],
+                ['id', 0],
+                ['transactionId', 0]
+            ] as $case
+        ) {
+            $data = $this->tester->invokeMethod($this->validator, 'isEmpty' ,$case);
+            verify($data)->bool();
+            verify($data)->true();
+        }
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanTestOnNotEmpty(): void
+    {
+        foreach(
+            [
+                ['', '12345'],
+                ['id', '12345'],
+                ['getId', '12345']
+            ] as $case
+        ) {
+            $data = $this->tester->invokeMethod($this->validator, 'isEmpty', $case);
+            verify($data)->bool();
+            verify($data)->false();
+        }
+    }
+
+    /**
+     * @depends testItCanTestEmptyOnEmptyOrNullString
+     * @depends testItCanTestOnNotEmpty
+     * @return void
+     */
     public function testValidateCorrectly(): void
     {
         $this->setHydrator();

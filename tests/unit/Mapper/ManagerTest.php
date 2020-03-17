@@ -66,14 +66,6 @@ class ManagerTest extends UnitTest
     /**
      * @return void
      */
-    public function testItCanConfigure(): void
-    {
-        verify($this->manager->configure([]))->isInstanceOf(Manager::class);
-    }
-
-    /**
-     * @return void
-     */
     public function testConfigureThrowsAnExceptionWhenMapperNotExists(): void
     {
         $this->expectException(ServiceNotCreatedException::class);

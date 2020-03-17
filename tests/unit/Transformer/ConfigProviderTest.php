@@ -20,25 +20,6 @@ class ConfigProviderTest extends UnitTest
         $this->configProvider = new ConfigProvider();
     }
 
-    /**
-     * @return void
-     */
-    public function testItHasDependencyConfig(): void
-    {
-        $this->tester->assertObjectHasMethod('getDependencyConfig', $this->configProvider);
-        $config = $this->configProvider->getDependencyConfig();
-        verify($config)->array();
-        verify($config)->notEmpty();
-
-        $configKeys = [
-            'aliases',
-            'factories'
-        ];
-
-        $this->tester->assertArrayHasAtLeastOneOfKeys($config, $configKeys);
-        $this->tester->assertArrayCanOnlyContainKeys($config, $configKeys);
-    }
-
     public function testItHasTransformerConfig(): void
     {
         $this->tester->assertObjectHasMethod('getTransformerConfig', $this->configProvider);

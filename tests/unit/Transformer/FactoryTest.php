@@ -41,7 +41,7 @@ class FactoryTest extends UnitTest
     /**
      * @return void
      */
-    public function testItCanCreateAValidator(): void
+    public function testItCanFilterATransformer(): void
     {
         $filter = ($this->factory)($this->serviceManagerMock, DummyTransformer::class);
         verify($filter)->isInstanceOf(TransformerInterface::class);

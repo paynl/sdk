@@ -27,15 +27,6 @@ class ConfigProviderTest extends UnitTest
     /**
      * @return void
      */
-    public function testItIsInvokable(): void
-    {
-        verify($this->configProvider)->callable();
-    }
-
-    /**
-     * @depends testItIsInvokable
-     * @return void
-     */
     public function testItHasInvokableConfig(): void
     {
         $invokeConfig = ($this->configProvider)();
@@ -57,18 +48,6 @@ class ConfigProviderTest extends UnitTest
         verify($config)->notEmpty();
         $this->tester->assertArrayHasAtLeastOneOfKeys($config, $keys);
         $this->tester->assertArrayCanOnlyContainKeys($config, $keys);
-    }
-
-
-    /**
-     * @return void
-     */
-    public function testItHasDependencyConfig(): void
-    {
-        $this->testInvokedFunctionWithKeys('getDependencyConfig', [
-            'aliases',
-            'factories'
-        ]);
     }
 
     /**

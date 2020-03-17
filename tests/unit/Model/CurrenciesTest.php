@@ -8,6 +8,7 @@ use Codeception\Test\Unit as UnitTest;
 use PayNL\Sdk\Model\{LinksTrait, ModelInterface, Links, Currency, Currencies};
 use JsonSerializable, Countable, ArrayAccess, IteratorAggregate, Exception;
 use PayNL\Sdk\Common\AbstractTotalCollection;
+use UnitTester;
 
 /**
  * Class CurrenciesTest
@@ -16,6 +17,9 @@ use PayNL\Sdk\Common\AbstractTotalCollection;
  */
 class CurrenciesTest extends UnitTest
 {
+    /** @var UnitTester */
+    protected $tester;
+
     /**
      * @var Currencies
      */
@@ -23,21 +27,21 @@ class CurrenciesTest extends UnitTest
 
     private function eurCurrency(): Currency
     {
-        return (new Currency())
+        return ($this->tester->grabService('modelManager')->build('Currency'))
             ->setAbbreviation('EUR')
             ->setDescription('Euro');
     }
 
     private function usdCurrency(): Currency
     {
-        return (new Currency())
+        return ($this->tester->grabService('modelManager')->build('Currency'))
             ->setAbbreviation('USD')
             ->setDescription('Dollar');
     }
 
     private function audCurrency(): Currency
     {
-        return (new Currency())
+        return ($this->tester->grabService('modelManager')->build('Currency'))
             ->setAbbreviation('AUD')
             ->setDescription('Australian Dollar');
     }
@@ -173,11 +177,7 @@ class CurrenciesTest extends UnitTest
         verify($this->currencies['EUR'])->isInstanceOf(Currency::class);
 
         // offsetSet
-        $audCurrency = (new Currency())
-            ->setAbbreviation('AUD')
-            ->setDescription('Australian Dollar');
-
-        $this->currencies['AUD'] = $audCurrency;
+        $this->currencies['AUD'] = $this->audCurrency();
         verify($this->currencies)->hasKey('AUD');
         verify($this->currencies)->count(3);
 
@@ -199,12 +199,8 @@ class CurrenciesTest extends UnitTest
         verify($this->currencies)->isInstanceOf(IteratorAggregate::class);
 
         $this->currencies->setCurrencies([
-            (new Currency())
-                ->setDescription('EUR')
-                ->setDescription('Euro'),
-            (new Currency())
-                ->setDescription('USD')
-                ->setDescription('US Dollar')
+            $this->eurCurrency(),
+            $this->usdCurrency()
         ])->setTotal(2);
 
         verify(is_iterable($this->currencies))->true();

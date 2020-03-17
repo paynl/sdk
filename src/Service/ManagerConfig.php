@@ -24,16 +24,16 @@ class ManagerConfig extends ServiceConfig
         'config_paths' => [
             // sequence is important!
             // TODO: determine sequence by dependencies to other components?
-            __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'AuthAdapter' . DIRECTORY_SEPARATOR . 'ConfigProvider.php',
-            __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Model' . DIRECTORY_SEPARATOR . 'ConfigProvider.php',
-            __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Request' . DIRECTORY_SEPARATOR . 'ConfigProvider.php',
-            __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Response' . DIRECTORY_SEPARATOR . 'ConfigProvider.php',
-            __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Hydrator' . DIRECTORY_SEPARATOR . 'ConfigProvider.php',
-            __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Transformer' . DIRECTORY_SEPARATOR . 'ConfigProvider.php',
-            __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Filter' . DIRECTORY_SEPARATOR . 'ConfigProvider.php',
-            __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Validator' . DIRECTORY_SEPARATOR . 'ConfigProvider.php',
-            __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Mapper' . DIRECTORY_SEPARATOR . 'ConfigProvider.php',
-            __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Api' . DIRECTORY_SEPARATOR . 'ConfigProvider.php',
+            'authAdapter' => __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'AuthAdapter' . DIRECTORY_SEPARATOR . 'ConfigProvider.php',
+            'model'       => __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Model' . DIRECTORY_SEPARATOR . 'ConfigProvider.php',
+            'request'     => __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Request' . DIRECTORY_SEPARATOR . 'ConfigProvider.php',
+            'response'    => __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Response' . DIRECTORY_SEPARATOR . 'ConfigProvider.php',
+            'hydrator'    => __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Hydrator' . DIRECTORY_SEPARATOR . 'ConfigProvider.php',
+            'transformer' => __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Transformer' . DIRECTORY_SEPARATOR . 'ConfigProvider.php',
+            'filter'      => __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Filter' . DIRECTORY_SEPARATOR . 'ConfigProvider.php',
+            'validator'   => __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Validator' . DIRECTORY_SEPARATOR . 'ConfigProvider.php',
+            'mapper'      => __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Mapper' . DIRECTORY_SEPARATOR . 'ConfigProvider.php',
+            'api'         => __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'Api' . DIRECTORY_SEPARATOR . 'ConfigProvider.php',
         ],
         'aliases' => [
             'serviceLoader' => ServiceLoader::class,
@@ -55,10 +55,19 @@ class ManagerConfig extends ServiceConfig
         $this->config['factories'][ConfigLoader::class] = static function (ContainerInterface $container) use ($configPaths) {
             $appConfig = $container->get('ApplicationConfig');
 
+            // add the mapper and api "modules" always last
+            $split = array_filter($configPaths, static function ($key) {
+                return true === in_array($key, ['mapper', 'api']);
+            }, ARRAY_FILTER_USE_KEY);
+
+            unset($configPaths['mapper'], $configPaths['api']);
+
             // get "custom" modules
             foreach ($appConfig['config_paths'] ?? [] as $configPath) {
                 $configPaths[] = $configPath;
             }
+
+            $configPaths = array_merge($configPaths, $split);
 
             $appConfig->set('config_paths', $configPaths);
 

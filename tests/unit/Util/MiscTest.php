@@ -112,4 +112,28 @@ class MiscTest extends UnitTest
         verify($data)->string();
         verify($data)->equals($this->getExistingReadableFilenameClass());
     }
+
+    /**
+     * @return void
+     */
+    public function testItCanDetermineClassNameForAFullyQualifiedName(): void
+    {
+        // PSR-4
+        $classNameWithNamespace = 'Foo\\Bar\\Baz';
+        $className = $this->misc::getClassNameByFQN($classNameWithNamespace);
+        verify($className)->string();
+        verify($className)->equals('Baz');
+
+        // PSR-0
+        $classWithoutANamespace = 'Foo_Bar_Baz';
+        $className = $this->misc::getClassNameByFQN($classWithoutANamespace);
+        verify($className)->string();
+        verify($className)->equals('Foo_Bar_Baz');
+
+        // No PSR
+        $class = 'Foo';
+        $className = $this->misc::getClassNameByFQN($class);
+        verify($className)->string();
+        verify($className)->equals('Foo');
+    }
 }

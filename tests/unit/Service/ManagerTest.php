@@ -4,26 +4,30 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PayNL\Sdk\Service;
 
-use Codeception\Test\Unit as UnitTest;
-use Codeception\Lib\ManagerTestTrait;
-use Codeception\TestAsset\Dummy;
-use Codeception\TestAsset\DummyFactory;
-use Codeception\TestAsset\DummyInitializer;
-use Codeception\TestAsset\DummyService;
-use Codeception\TestAsset\FailingModel;
-use Codeception\TestAsset\FailingPluginManager;
-use Codeception\TestAsset\InvokableObject;
-use Codeception\TestAsset\SampleFactory;
-use Codeception\TestAsset\SecondDummyInitializer;
-use Codeception\TestAsset\SimpleCollection;
-use Codeception\TestAsset\SimpleModel;
-use PayNL\Sdk\Common\InvokableFactory;
-use PayNL\Sdk\Exception\ContainerModificationsNotAllowedException;
-use PayNL\Sdk\Exception\CyclicAliasException;
-use PayNL\Sdk\Exception\InvalidArgumentException;
-use PayNL\Sdk\Exception\ServiceNotCreatedException;
-use PayNL\Sdk\Exception\ServiceNotFoundException;
-use PayNL\Sdk\Service\Manager;
+use Codeception\{
+    Test\Unit as UnitTest,
+    Lib\ManagerTestTrait,
+    TestAsset\Dummy,
+    TestAsset\DummyFactory,
+    TestAsset\DummyInitializer,
+    TestAsset\DummyService,
+    TestAsset\FailingModel,
+    TestAsset\FailingPluginManager,
+    TestAsset\InvokableObject,
+    TestAsset\SampleFactory,
+    TestAsset\SecondDummyInitializer,
+    TestAsset\SimpleCollection,
+    TestAsset\SimpleModel
+};
+use PayNL\Sdk\{
+    Common\InvokableFactory,
+    Exception\ContainerModificationsNotAllowedException,
+    Exception\CyclicAliasException,
+    Exception\InvalidArgumentException,
+    Exception\ServiceNotCreatedException,
+    Exception\ServiceNotFoundException,
+    Service\Manager
+};
 use Exception;
 
 class ManagerTest extends UnitTest
@@ -40,7 +44,6 @@ class ManagerTest extends UnitTest
             'aliases' => [
                 'foo_bar' => InvokableObject::class,
                 'corge' => 'foo_bar',
-//                'thud' => 'waldo',
             ],
             'factories' => [
                 InvokableObject::class => SampleFactory::class,
@@ -486,7 +489,7 @@ class ManagerTest extends UnitTest
         $this->traitTestItCanConfigure();
 
         try {
-            $this->manager->configure([
+            verify($this->manager->configure([
                 'aliases' => [
                     'baz' => Dummy::class,
                     'dummy' => 'Dummy',
@@ -503,11 +506,10 @@ class ManagerTest extends UnitTest
                 'services' => [
                     'corge' => DummyService::class,
                 ],
-            ]);
+            ]))->isInstanceOf(get_class($this->manager));
         } catch (Exception $e) {
             $this->fail();
         }
-        verify(true)->true();
     }
 
     /**

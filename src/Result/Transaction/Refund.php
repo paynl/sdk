@@ -7,7 +7,7 @@ use Paynl\Result\Result;
 /**
  * Result class for a refund
  *
- * @author Andy Pieters <andy@pay.nl>
+ * @author PAY. <support@pay.nl>
  */
 class Refund extends Result
 {   

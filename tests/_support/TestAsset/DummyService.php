@@ -9,7 +9,7 @@ namespace Codeception\TestAsset;
  *
  * @package Codeception\TestAsset
  */
-class DummyService
+class DummyService implements DummyInterface
 {
     // bogus
 }

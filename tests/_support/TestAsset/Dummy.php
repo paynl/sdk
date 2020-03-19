@@ -9,7 +9,7 @@ namespace Codeception\TestAsset;
  *
  * @package Codeception\TestAsset
  */
-class Dummy
+class Dummy implements DummyInterface
 {
     protected $options = [];
 

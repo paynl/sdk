@@ -5,13 +5,8 @@ declare(strict_types=1);
 namespace Tests\Unit\PayNL\Sdk\Model;
 
 use Codeception\Test\Unit as UnitTest;
-use PayNL\Sdk\Model\{
-    ModelInterface,
-    Links,
-    Currency
-};
+use PayNL\Sdk\Model\{LinksTrait, ModelInterface, Currency};
 use JsonSerializable;
-use PayNL\Sdk\Hydrator\Links as LinksHydrator;
 
 /**
  * Class CurrencyTest
@@ -38,6 +33,11 @@ class CurrencyTest extends UnitTest
         verify($this->currency)->isInstanceOf(ModelInterface::class);
     }
 
+    public function testItUsesLinksTrait(): void
+    {
+        verify(in_array(LinksTrait::class, class_uses($this->currency), true))->true();
+    }
+
     /**
      * @return void
      */
@@ -49,42 +49,10 @@ class CurrencyTest extends UnitTest
     /**
      * @return void
      */
-    public function testItCanSetLinks(): void
-    {
-        verify(method_exists($this->currency, 'setLinks'))->true();
-        verify($this->currency->setLinks(new Links()))->isInstanceOf(Currency::class);
-    }
-
-    /**
-     * @depends testItCanSetLinks
-     *
-     * @return void
-     */
-    public function testItCanGetLinks(): void
-    {
-        verify(method_exists($this->currency, 'getLinks'))->true();
-
-        $this->currency->setLinks(
-            (new LinksHydrator())->hydrate([
-                [
-                    'rel'  => 'self',
-                    'type' => 'GET',
-                    'url'  => 'http://some.url.com',
-                ],
-            ], new Links())
-        );
-
-        verify($this->currency->getLinks())->isInstanceOf(Links::class);
-        verify($this->currency->getLinks())->count(1);
-        verify($this->currency->getLinks())->hasKey('self');
-    }
-
-    /**
-     * @return void
-     */
     public function testItCanSetAnAbbreviation(): void
     {
-        expect($this->currency->setAbbreviation('EUR'))->isInstanceOf(Currency::class);
+        verify(method_exists($this->currency, 'setAbbreviation'))->true();
+        verify($this->currency->setAbbreviation('EUR'))->isInstanceOf(Currency::class);
     }
 
     /**
@@ -96,6 +64,7 @@ class CurrencyTest extends UnitTest
     {
         $this->currency->setAbbreviation('EUR');
 
+        verify(method_exists($this->currency, 'getAbbreviation'))->true();
         verify($this->currency->getAbbreviation())->string();
         verify($this->currency->getAbbreviation())->notEmpty();
         verify($this->currency->getAbbreviation())->equals('EUR');
@@ -106,7 +75,8 @@ class CurrencyTest extends UnitTest
      */
     public function testItCanSetADescription(): void
     {
-        expect($this->currency->setDescription('Euro'))->isInstanceOf(Currency::class);
+        verify(method_exists($this->currency, 'setDescription'))->true();
+        verify($this->currency->setDescription('Euro'))->isInstanceOf(Currency::class);
     }
 
     /**
@@ -118,6 +88,7 @@ class CurrencyTest extends UnitTest
     {
         $this->currency->setDescription('Euro');
 
+        verify(method_exists($this->currency, 'getDescription'))->true();
         verify($this->currency->getDescription())->string();
         verify($this->currency->getDescription())->notEmpty();
         verify($this->currency->getDescription())->equals('Euro');

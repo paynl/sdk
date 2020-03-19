@@ -11,6 +11,8 @@ use PayNL\Sdk\Model\{
     RecurringTransaction
 };
 use JsonSerializable;
+use PayNL\Sdk\Common\JsonSerializeTrait;
+use UnitTester;
 
 /**
  * Class RecurringTransactionTest
@@ -19,6 +21,9 @@ use JsonSerializable;
  */
 class RecurringTransactionTest extends UnitTest
 {
+    /** @var UnitTester */
+    protected $tester;
+
     /**
      * @var RecurringTransaction
      */
@@ -43,8 +48,14 @@ class RecurringTransactionTest extends UnitTest
     public function testIsItJsonSerializable(): void
     {
         verify($this->recurringTransaction)->isInstanceOf(JsonSerializable::class);
+    }
 
-        verify($this->recurringTransaction->jsonSerialize())->array();
+    /**
+     * @return void
+     */
+    public function testItHasJsonSerializeTrait(): void
+    {
+        verify(in_array(JsonSerializeTrait::class, class_uses($this->recurringTransaction), true))->true();
     }
 
     /**
@@ -52,7 +63,8 @@ class RecurringTransactionTest extends UnitTest
      */
     public function testItCanSetAnAmount(): void
     {
-        expect($this->recurringTransaction->setAmount(new Amount()))->isInstanceOf(RecurringTransaction::class);
+        $amountMock = $this->tester->grabService('modelManager')->get('Amount');
+        verify($this->recurringTransaction->setAmount($amountMock))->isInstanceOf(RecurringTransaction::class);
     }
 
     /**
@@ -62,7 +74,8 @@ class RecurringTransactionTest extends UnitTest
      */
     public function testItCanGetAnAmount(): void
     {
-        $this->recurringTransaction->setAmount(new Amount());
+        $amountMock = $this->tester->grabService('modelManager')->get('Amount');
+        $this->recurringTransaction->setAmount($amountMock);
 
         verify($this->recurringTransaction->getAmount())->notEmpty();
         verify($this->recurringTransaction->getAmount())->isInstanceOf(Amount::class);

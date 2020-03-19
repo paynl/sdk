@@ -6,8 +6,10 @@ namespace Tests\Unit\PayNL\Sdk\Model;
 
 use Codeception\Test\Unit as UnitTest;
 use PayNL\Sdk\Model\{Amount, ModelInterface, ServicePaymentLink, Statistics};
-use PayNL\Sdk\DateTime;
-use Exception, JsonSerializable;
+use JsonSerializable;
+use PayNL\Sdk\Common\JsonSerializeTrait;
+use PayNL\Sdk\Exception\InvalidArgumentException;
+use UnitTester;
 
 /**
  * Class ServicePaymentLinkTest
@@ -16,6 +18,9 @@ use Exception, JsonSerializable;
  */
 class ServicePaymentLinkTest extends UnitTest
 {
+    /** @var UnitTester */
+    protected $tester;
+
     /**
      * @var ServicePaymentLink
      */
@@ -40,30 +45,66 @@ class ServicePaymentLinkTest extends UnitTest
     public function testIsItJsonSerializable(): void
     {
         verify($this->servicePaymentLink)->isInstanceOf(JsonSerializable::class);
-
-        verify($this->servicePaymentLink->jsonSerialize())->array();
     }
 
     /**
      * @return void
      */
-    public function testItCanSetSecurityMode(): void
+    public function testItUsesJsonSerializeTrait(): void
     {
-        expect($this->servicePaymentLink->setSecurityMode(1))->isInstanceOf(ServicePaymentLink::class);
+        verify(in_array(JsonSerializeTrait::class, class_uses($this->servicePaymentLink), true))->true();
     }
 
     /**
-     * @depends testItCanSetSecurityMode
+     * @return array
+     */
+    private function getAvailableSecurityModes(): array
+    {
+        return $this->tester->invokeMethod($this->servicePaymentLink, 'getSecurityModes');
+    }
+
+    /**
+     * @return void
+     */
+    public function testItHasAvailableSecurityModes(): void
+    {
+        verify(method_exists($this->servicePaymentLink, 'getSecurityModes'))->true();
+    }
+
+    /**
+     * @depends testItHasAvailableSecurityModes
+     *
+     * @return void
+     */
+    public function testItCanSetSecurityMode(): void
+    {
+        $securityMode = ($this->getAvailableSecurityModes())[0];
+        verify($this->servicePaymentLink->setSecurityMode($securityMode))->isInstanceOf(ServicePaymentLink::class);
+    }
+
+    /**
+     * @return void
+     */
+    public function testItThrowsAnExceptionWhenSettingUnavailableSecurityMode(): void
+    {
+        $securityMode = -1;
+        verify(in_array($securityMode, $this->getAvailableSecurityModes(), true))->false();
+        $this->expectException(InvalidArgumentException::class);
+        $this->servicePaymentLink->setSecurityMode($securityMode);
+    }
+
+    /**
+     * depends testItCanSetSecurityMode
      *
      * @return void
      */
     public function testItCanGetSecurityMode(): void
     {
-        $this->servicePaymentLink->setSecurityMode(1);
+        $securityMode = ($this->getAvailableSecurityModes())[0];
+        $this->servicePaymentLink->setSecurityMode($securityMode);
 
         verify($this->servicePaymentLink->getSecurityMode())->int();
-        verify($this->servicePaymentLink->getSecurityMode())->notEmpty();
-        verify($this->servicePaymentLink->getSecurityMode())->equals(1);
+        verify($this->servicePaymentLink->getSecurityMode())->equals($securityMode);
     }
 
     /**
@@ -71,7 +112,8 @@ class ServicePaymentLinkTest extends UnitTest
      */
     public function testItCanSetAnAmount(): void
     {
-        expect($this->servicePaymentLink->setAmount(new Amount()))->isInstanceOf(ServicePaymentLink::class);
+        $amountMock = $this->tester->grabService('modelManager')->get('Amount');
+        expect($this->servicePaymentLink->setAmount($amountMock))->isInstanceOf(ServicePaymentLink::class);
     }
 
     /**
@@ -81,10 +123,14 @@ class ServicePaymentLinkTest extends UnitTest
      */
     public function testItCanGetAnAmount(): void
     {
-        $this->servicePaymentLink->setAmount(new Amount());
+        /** @var Amount $amountMock */
+        $amountMock = $this->tester->grabService('modelManager')->get('Amount');
+        $amountMock->setAmount(12345);
+        $this->servicePaymentLink->setAmount($amountMock);
 
         verify($this->servicePaymentLink->getAmount())->notEmpty();
         verify($this->servicePaymentLink->getAmount())->isInstanceOf(Amount::class);
+        verify($this->servicePaymentLink->getAmount())->equals($amountMock);
     }
 
     /**
@@ -92,7 +138,8 @@ class ServicePaymentLinkTest extends UnitTest
      */
     public function testItCanSetAnAmountMin(): void
     {
-        expect($this->servicePaymentLink->setAmountMin(new Amount()))->isInstanceOf(ServicePaymentLink::class);
+        $amountMock = $this->tester->grabService('modelManager')->get('Amount');
+        expect($this->servicePaymentLink->setAmountMin($amountMock))->isInstanceOf(ServicePaymentLink::class);
     }
 
     /**
@@ -102,10 +149,14 @@ class ServicePaymentLinkTest extends UnitTest
      */
     public function testItCanGetAnAmountMin(): void
     {
-        $this->servicePaymentLink->setAmountMin(new Amount());
+        /** @var Amount $amountMock */
+        $amountMock = $this->tester->grabService('modelManager')->get('Amount');
+        $amountMock->setAmount(12345);
+        $this->servicePaymentLink->setAmountMin($amountMock);
 
         verify($this->servicePaymentLink->getAmountMin())->notEmpty();
         verify($this->servicePaymentLink->getAmountMin())->isInstanceOf(Amount::class);
+        verify($this->servicePaymentLink->getAmountMin())->equals($amountMock);
     }
 
     /**
@@ -157,7 +208,8 @@ class ServicePaymentLinkTest extends UnitTest
      */
     public function testItCanSetStatistics(): void
     {
-        expect($this->servicePaymentLink->setStatistics(new Statistics()))->isInstanceOf(ServicePaymentLink::class);
+        $statisticsMock = $this->tester->grabService('modelManager')->get('Statistics');
+        expect($this->servicePaymentLink->setStatistics($statisticsMock))->isInstanceOf(ServicePaymentLink::class);
     }
 
     /**
@@ -167,9 +219,13 @@ class ServicePaymentLinkTest extends UnitTest
      */
     public function testItCanGetStatistics(): void
     {
-        $this->servicePaymentLink->setStatistics(new Statistics());
+        /** @var Statistics $statisticsMock */
+        $statisticsMock = $this->tester->grabService('modelManager')->get('Statistics');
+        $statisticsMock->setInfo('12345');
+        $this->servicePaymentLink->setStatistics($statisticsMock);
 
         verify($this->servicePaymentLink->getStatistics())->notEmpty();
         verify($this->servicePaymentLink->getStatistics())->isInstanceOf(Statistics::class);
+        verify($this->servicePaymentLink->getStatistics())->equals($statisticsMock);
     }
 }

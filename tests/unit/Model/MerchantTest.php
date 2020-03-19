@@ -6,17 +6,20 @@ namespace Tests\Unit\PayNL\Sdk\Model;
 
 use Codeception\Test\Unit as UnitTest;
 use PayNL\Sdk\Model\{
+    ContactMethods,
+    LinksTrait,
     ModelInterface,
-    Links,
     Address,
     BankAccount,
     ContactMethod,
     Merchant,
-    Trademark
+    Trademark,
+    Trademarks
 };
-use JsonSerializable, TypeError, stdClass, Exception;
-use PayNL\Sdk\DateTime;
-use PayNL\Sdk\Hydrator\Links as LinksHydrator;
+use JsonSerializable, Exception;
+use Mockery;
+use PayNL\Sdk\Common\DateTime;
+use UnitTester;
 
 /**
  * Class MerchantTest
@@ -25,6 +28,9 @@ use PayNL\Sdk\Hydrator\Links as LinksHydrator;
  */
 class MerchantTest extends UnitTest
 {
+    /** @var UnitTester */
+    protected $tester;
+
     /**
      * @var Merchant
      */
@@ -54,34 +60,9 @@ class MerchantTest extends UnitTest
     /**
      * @return void
      */
-    public function testItCanSetLinks(): void
+    public function testItHasLinksTrait(): void
     {
-        verify(method_exists($this->merchant, 'setLinks'))->true();
-        verify($this->merchant->setLinks(new Links()))->isInstanceOf(Merchant::class);
-    }
-
-    /**
-     * @depends testItCanSetLinks
-     *
-     * @return void
-     */
-    public function testItCanGetLinks(): void
-    {
-        verify(method_exists($this->merchant, 'getLinks'))->true();
-
-        $this->merchant->setLinks(
-            (new LinksHydrator())->hydrate([
-                [
-                    'rel'  => 'self',
-                    'type' => 'GET',
-                    'url'  => 'http://some.url.com',
-                ],
-            ], new Links())
-        );
-
-        verify($this->merchant->getLinks())->isInstanceOf(Links::class);
-        verify($this->merchant->getLinks())->count(1);
-        verify($this->merchant->getLinks())->hasKey('self');
+        verify(in_array(LinksTrait::class, class_uses($this->merchant), true))->true();
     }
 
     /**
@@ -241,7 +222,8 @@ class MerchantTest extends UnitTest
      */
     public function testItCanSetAVisitAddress(): void
     {
-        expect($this->merchant->setVisitAddress(new Address()))->isInstanceOf(Merchant::class);
+        $address = $this->tester->grabService('modelManager')->get('Address');
+        verify($this->merchant->setVisitAddress($address))->isInstanceOf(Merchant::class);
     }
 
     /**
@@ -251,7 +233,8 @@ class MerchantTest extends UnitTest
      */
     public function testItCanGetAVisitAddress(): void
     {
-        $this->merchant->setVisitAddress(new Address());
+        $address = $this->tester->grabService('modelManager')->get('Address');
+        $this->merchant->setVisitAddress($address);
 
         verify($this->merchant->getVisitAddress())->notEmpty();
         verify($this->merchant->getVisitAddress())->isInstanceOf(Address::class);
@@ -262,7 +245,20 @@ class MerchantTest extends UnitTest
      */
     public function testItCanAddATrademark(): void
     {
-        $this->merchant->addTrademark(new Trademark());
+        $trademark = $this->tester->grabService('modelManager')->get('Trademark');
+        $this->merchant->addTrademark($trademark);
+    }
+
+    private function getTrademarks(): Trademarks
+    {
+        /** @var Trademarks $trademarks */
+        $trademarks = $this->tester->grabService('modelManager')->get('Trademarks');
+
+        /** @var Trademark $trademark */
+        $trademark = $this->tester->grabService('modelManager')->get('Trademark');
+        $trademarks->add($trademark);
+
+        return $trademarks;
     }
 
     /**
@@ -272,22 +268,8 @@ class MerchantTest extends UnitTest
      */
     public function testItCanSetTrademarks(): void
     {
-        expect($this->merchant->setTrademarks([
-            new Trademark(),
-        ]))->isInstanceOf(Merchant::class);
-    }
-
-    /**
-     * @depends testItCanSetTrademarks
-     *
-     * @return void
-     */
-    public function testItThrowsAnExceptionWhenSettingTrademarks(): void
-    {
-        $this->expectException(TypeError::class);
-        $this->merchant->setTrademarks([
-            new stdClass()
-        ]);
+        expect($this->merchant->setTrademarks($this->getTrademarks()))
+            ->isInstanceOf(Merchant::class);
     }
 
     /**
@@ -297,26 +279,8 @@ class MerchantTest extends UnitTest
      */
     public function testItCanGetTrademarks(): void
     {
-        $this->merchant->setTrademarks([
-            new Trademark(),
-            new Trademark(),
-        ]);
-
-        verify($this->merchant->getTrademarks())->array();
-        verify($this->merchant->getTrademarks())->count(2);
-        verify($this->merchant->getTrademarks())->containsOnlyInstancesOf(Trademark::class);
-    }
-
-    /**
-     * @depends testItCanSetTrademarks
-     * @depends testItCanGetTrademarks
-     *
-     * @return void
-     */
-    public function testItCanResetTrademarks(): void
-    {
-        expect($this->merchant->setTrademarks([]))->isInstanceOf(Merchant::class);
-        verify($this->merchant->getTrademarks())->isEmpty();
+        $this->merchant->setTrademarks($this->getTrademarks());
+        verify($this->merchant->getTrademarks())->isInstanceOf(Trademarks::class);
     }
 
     /**
@@ -324,7 +288,19 @@ class MerchantTest extends UnitTest
      */
     public function testItCanAddAContactMethod(): void
     {
-        $this->merchant->addContactMethod(new ContactMethod());
+        $contactMethod = $this->tester->grabService('modelManager')->get('ContactMethod');
+        verify($this->merchant->addContactMethod($contactMethod))->isInstanceOf(Merchant::class);
+    }
+
+    private function getContactMethods(): ContactMethods
+    {
+        /** @var ContactMethods $contactMethods */
+        $contactMethods = $this->tester->grabService('modelManager')->get('ContactMethods');
+        /** @var ContactMethod $contactMethod */
+        $contactMethod = $this->tester->grabService('modelManager')->get('ContactMethod');
+        $contactMethods->add($contactMethod);
+
+        return $contactMethods;
     }
 
     /**
@@ -334,22 +310,7 @@ class MerchantTest extends UnitTest
      */
     public function testItCanSetContactMethods(): void
     {
-        expect($this->merchant->setContactMethods([
-            new ContactMethod(),
-        ]))->isInstanceOf(Merchant::class);
-    }
-
-    /**
-     * @depends testItCanSetContactMethods
-     *
-     * @return void
-     */
-    public function testItThrowsAnExceptionWhenSettingContactMethods(): void
-    {
-        $this->expectException(TypeError::class);
-        $this->merchant->setContactMethods([
-            new stdClass()
-        ]);
+        verify($this->merchant->setContactMethods($this->getContactMethods()))->isInstanceOf(Merchant::class);
     }
 
     /**
@@ -359,26 +320,8 @@ class MerchantTest extends UnitTest
      */
     public function testItCanGetContactMethods(): void
     {
-        $this->merchant->setContactMethods([
-            new ContactMethod(),
-            new ContactMethod(),
-        ]);
-
-        verify($this->merchant->getContactMethods())->array();
-        verify($this->merchant->getContactMethods())->count(2);
-        verify($this->merchant->getContactMethods())->containsOnlyInstancesOf(ContactMethod::class);
-    }
-
-    /**
-     * @depends testItCanSetContactMethods
-     * @depends testItCanGetContactMethods
-     *
-     * @return void
-     */
-    public function testItCanResetContactMethods(): void
-    {
-        expect($this->merchant->setContactMethods([]))->isInstanceOf(Merchant::class);
-        verify($this->merchant->getContactMethods())->isEmpty();
+        $this->merchant->setContactMethods($this->getContactMethods());
+        verify($this->merchant->getContactMethods())->isInstanceOf(ContactMethods::class);
     }
 
     /**
@@ -388,7 +331,8 @@ class MerchantTest extends UnitTest
      */
     public function testItCanSetACreatedDatetime(): void
     {
-        expect($this->merchant->setCreatedAt(new DateTime()))->isInstanceOf(Merchant::class);
+        $datetimeMock = Mockery::mock(DateTime::class);
+        verify($this->merchant->setCreatedAt($datetimeMock))->isInstanceOf(Merchant::class);
     }
 
     /**
@@ -400,7 +344,8 @@ class MerchantTest extends UnitTest
      */
     public function testItCanGetACreatedDatetime(): void
     {
-        $this->merchant->setCreatedAt(new DateTime());
+        $datetimeMock = Mockery::mock(DateTime::class);
+        $this->merchant->setCreatedAt($datetimeMock);
 
         verify($this->merchant->getCreatedAt())->notEmpty();
         verify($this->merchant->getCreatedAt())->isInstanceOf(DateTime::class);

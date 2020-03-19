@@ -10,9 +10,10 @@ use PayNL\Sdk\Model\{
     PaymentMethod,
     PaymentMethods
 };
+use PayNL\Sdk\Common\JsonSerializeTrait;
 use PayNL\Sdk\Exception\InvalidArgumentException;
-use PayNL\Sdk\Hydrator\PaymentMethod as PaymentMethodHydrator;
 use JsonSerializable;
+use UnitTester;
 
 /**
  * Class PaymentMethodTest
@@ -21,6 +22,9 @@ use JsonSerializable;
  */
 class PaymentMethodTest extends UnitTest
 {
+    /** @var UnitTester */
+    protected $tester;
+
     /**
      * @var PaymentMethod
      */
@@ -45,8 +49,11 @@ class PaymentMethodTest extends UnitTest
     public function testIsItJsonSerializable(): void
     {
         verify($this->paymentMethod)->isInstanceOf(JsonSerializable::class);
+    }
 
-        verify($this->paymentMethod->jsonSerialize())->array();
+    public function testItHasJsonSerializeTrait(): void
+    {
+        verify(in_array(JsonSerializeTrait::class, class_uses($this->paymentMethod), true))->true();
     }
 
     /**
@@ -76,7 +83,8 @@ class PaymentMethodTest extends UnitTest
      */
     public function testItCanSetASubId(): void
     {
-        expect($this->paymentMethod->setSubId(8))->isInstanceOf(PaymentMethod::class);
+        verify($this->paymentMethod->setSubId(8))->isInstanceOf(PaymentMethod::class);
+        verify($this->paymentMethod->setSubId('8'))->isInstanceOf(PaymentMethod::class);
     }
 
     /**
@@ -100,7 +108,7 @@ class PaymentMethodTest extends UnitTest
      *
      * @return void
      */
-    public function testItThrowsAnExceptionWhenSubIdIsNotAStringNorAnInteger()
+    public function testItThrowsAnExceptionWhenSubIdIsNotAStringNorAnInteger(): void
     {
         $this->expectException(InvalidArgumentException::class);
 
@@ -144,9 +152,6 @@ class PaymentMethodTest extends UnitTest
      */
     public function testItCanGetAnImage(): void
     {
-        verify($this->paymentMethod->getImage())->string();
-        verify($this->paymentMethod->getImage())->isEmpty();
-
         $this->paymentMethod->setImage('http://www.pay.nl/link-to-image');
 
         verify($this->paymentMethod->getImage())->string();
@@ -169,9 +174,6 @@ class PaymentMethodTest extends UnitTest
      */
     public function testItCanGetCountryCodes(): void
     {
-        verify($this->paymentMethod->getCountryCodes())->array();
-        verify($this->paymentMethod->getCountryCodes())->isEmpty();
-
         $this->paymentMethod->setCountryCodes([ 'NL', 'BE' ]);
 
         verify($this->paymentMethod->getCountryCodes())->array();
@@ -228,13 +230,16 @@ class PaymentMethodTest extends UnitTest
      */
     public function testItCanAddSubMethod(): void
     {
-        $this->paymentMethod->addSubMethod((new PaymentMethodHydrator())->hydrate([
-            'id'       => '138',
-            'name'     => 'PayPal',
-        ], new PaymentMethod()));
+        /** @var PaymentMethod $payPalPaymentMethod */
+        $payPalPaymentMethod = $this->tester->grabService('modelManager')->get('PaymentMethod');
+        $payPalPaymentMethod
+            ->setId(138)
+            ->setName('PayPal');
+
+        $this->paymentMethod->addSubMethod($payPalPaymentMethod);
 
         verify($this->paymentMethod->getSubMethods())->count(1);
-        verify($this->paymentMethod->getSubMethods())->hasKey(138);
+        verify($this->paymentMethod->getSubMethods())->hasKey($payPalPaymentMethod->getId());
         verify($this->paymentMethod->getSubMethods())->containsOnlyInstancesOf(PaymentMethod::class);
     }
 }

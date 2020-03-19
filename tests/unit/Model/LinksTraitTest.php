@@ -11,6 +11,7 @@ use PayNL\Sdk\Model\{
     Link
 };
 use ReflectionException;
+use UnitTester;
 
 
 /**
@@ -20,6 +21,8 @@ use ReflectionException;
  */
 class LinksTraitTest extends UnitTest
 {
+    /** @var UnitTester */
+    protected $tester;
     /**
      * @throws ReflectionException
      *
@@ -51,11 +54,15 @@ class LinksTraitTest extends UnitTest
 
         verify($traitCls->getLinks())->isEmpty();
 
-        $links = (new Links())->addLink(
-            (new Link())->setRel('self')
-                ->setType('GET')
-                ->setUrl('https://www.pay.nl')
-        );
+        /** @var Links $links */
+        $links = $this->tester->grabService('modelManager')->get('Links');
+
+        /** @var Link $link */
+        $link = $this->tester->grabService('modelManager')->get('Link');
+        $link->setRel('self');
+        $link->setType('GET');
+        $link->setUrl('https://www.pay.nl');
+        $links->addLink($link);
 
         $traitCls->setLinks($links);
 

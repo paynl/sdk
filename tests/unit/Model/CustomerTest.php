@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace Tests\Unit\PayNL\Sdk\Model;
 
 use Codeception\Test\Unit as UnitTest;
-use PayNL\Sdk\Model\{
-    ModelInterface,
-    BankAccount,
-    Customer
-};
+use PayNL\Sdk\Exception\InvalidArgumentException;
+use PayNL\Sdk\Model\{Company, ModelInterface, BankAccount, Customer};
 use DateTime, JsonSerializable;
+use PayNL\Sdk\Common\JsonSerializeTrait;
+use UnitTester;
 
 /**
  * Class CustomerTest
@@ -19,6 +18,9 @@ use DateTime, JsonSerializable;
  */
 class CustomerTest extends UnitTest
 {
+    /** @var UnitTester */
+    protected $tester;
+
     /**
      * @var Customer
      */
@@ -50,17 +52,71 @@ class CustomerTest extends UnitTest
     /**
      * @return void
      */
-    public function testItCanSetInitials(): void
+    public function testItUsesJsonSerializeTrait(): void
+    {
+        verify(in_array(JsonSerializeTrait::class, class_uses($this->customer), true))->true();
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanGetTypes(): void
+    {
+        $types = $this->tester->invokeMethod($this->customer, 'getTypes');
+        verify($types)->array();
+        verify($types)->notEmpty();
+    }
+
+    /**
+     * @depends testItCanGetTypes
+     * @return void
+     */
+    public function testItCanSetType(): void
+    {
+        $types = $this->tester->invokeMethod($this->customer, 'getTypes');
+        verify($this->customer->setType($types[0]))->isInstanceOf(Customer::class);
+    }
+
+    /**
+     * @depends testItCanSetType
+     * @return void
+     */
+    public function testItCanGetType(): void
+    {
+        $types = $this->tester->invokeMethod($this->customer, 'getTypes');
+        $this->customer->setType($types[0]);
+        $type = $this->customer->getType();
+        verify($type)->string();
+        verify($type)->equals($types[0]);
+    }
+
+    /**
+     * @depends testItCanSetType
+     * @return void
+     */
+    public function testItCannotSetProhibitedTypes(): void
+    {
+        $type = 'IllegalType';
+        $types = $this->tester->invokeMethod($this->customer, 'getTypes');
+        verify(in_array($type, $types, true))->false();
+        $this->expectException(InvalidArgumentException::class);
+        $this->customer->setType($type);
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanSetName(): void
     {
         expect($this->customer->setName('Q.G.'))->isInstanceOf(Customer::class);
     }
 
     /**
-     * @depends testItCanSetInitials
+     * @depends testItCanSetName
      *
      * @return void
      */
-    public function testItCanGetInitials(): void
+    public function testItCanGetName(): void
     {
         $this->customer->setName('Q.G.');
 
@@ -227,6 +283,17 @@ class CustomerTest extends UnitTest
     }
 
     /**
+     * @depends testItCanSetATrustLevel
+     * @return void
+     */
+    public function testItCannotSetInvalidTrustLevel(): void
+    {
+        $invalidTrustLevel = 11;
+        $this->expectException(InvalidArgumentException::class);
+        $this->customer->setTrustLevel($invalidTrustLevel);
+    }
+
+    /**
      * @return void
      */
     public function testItCanSetABankAccount(): void
@@ -252,7 +319,7 @@ class CustomerTest extends UnitTest
      */
     public function testItCanSetAReference(): void
     {
-        expect($this->customer->setReference(1234))->isInstanceOf(Customer::class);
+        expect($this->customer->setReference('1234'))->isInstanceOf(Customer::class);
     }
 
     /**
@@ -262,32 +329,33 @@ class CustomerTest extends UnitTest
      */
     public function testItCanGetAReference(): void
     {
-        $this->customer->setReference(1234);
+        $this->customer->setReference('1234');
 
-        verify($this->customer->getReference())->int();
+        verify($this->customer->getReference())->string();
         verify($this->customer->getReference())->notEmpty();
-        verify($this->customer->getReference())->equals(1234);
+        verify($this->customer->getReference())->equals('1234');
     }
 
     /**
      * @return void
      */
-    public function testItCanSetALanguage(): void
+    public function testItCanSetACompany(): void
     {
-        expect($this->customer->setLanguage('nl'))->isInstanceOf(Customer::class);
+        $company = $this->tester->getServiceManager()->get('modelManager')->build('Company');
+        verify($this->customer->setCompany($company))->isInstanceOf(Customer::class);
     }
 
     /**
-     * @depends testItCanSetALanguage
-     *
+     * @depends testItCanSetACompany
      * @return void
      */
-    public function testItCanGetALanguage(): void
+    public function testItCanGetACompany(): void
     {
-        $this->customer->setLanguage('nl');
-
-        verify($this->customer->getLanguage())->string();
-        verify($this->customer->getLanguage())->notEmpty();
-        verify($this->customer->getLanguage())->equals('nl');
+        /** @var Company $company */
+        $company = $this->tester->getServiceManager()->get('modelManager')->build('Company');
+        $company->setName('TestCompany');
+        $this->customer->setCompany($company);
+        verify($this->customer->getCompany())->isInstanceOf(Company::class);
+        verify($this->customer->getCompany())->equals($company);
     }
 }

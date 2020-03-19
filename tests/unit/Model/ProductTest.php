@@ -11,6 +11,7 @@ use PayNL\Sdk\Model\{
     Product
 };
 use JsonSerializable;
+use PayNL\Sdk\Common\JsonSerializeTrait;
 
 /**
  * Class ProductTest
@@ -43,8 +44,14 @@ class ProductTest extends UnitTest
     public function testIsItJsonSerializable(): void
     {
         verify($this->product)->isInstanceOf(JsonSerializable::class);
+    }
 
-        verify($this->product->jsonSerialize())->array();
+    /**
+     * @return void
+     */
+    public function testItHasJsonSerializeTrait(): void
+    {
+        verify(in_array(JsonSerializeTrait::class, class_uses($this->product), true))->true();
     }
 
     /**

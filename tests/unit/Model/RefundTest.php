@@ -169,7 +169,7 @@ class RefundTest extends UnitTest
 
         verify($this->refund->getBankAccount())->notEmpty();
         verify($this->refund->getBankAccount())->isInstanceOf(BankAccount::class);
-        verify($this->refund->getBankAccount())->equals($bankAccountMock);
+        verify($this->refund->getBankAccount())->same($bankAccountMock);
     }
 
     /**

@@ -7,6 +7,7 @@ namespace Tests\Unit\PayNL\Sdk\Model;
 use Codeception\Test\Unit as UnitTest;
 use PayNL\Sdk\Model\{LinksTrait, ModelInterface, Currency};
 use JsonSerializable;
+use UnitTester;
 
 /**
  * Class CurrencyTest
@@ -15,6 +16,9 @@ use JsonSerializable;
  */
 class CurrencyTest extends UnitTest
 {
+    /** @var UnitTester */
+    protected $tester;
+
     /**
      * @var Currency
      */
@@ -51,7 +55,7 @@ class CurrencyTest extends UnitTest
      */
     public function testItCanSetAnAbbreviation(): void
     {
-        verify(method_exists($this->currency, 'setAbbreviation'))->true();
+        $this->tester->assertObjectHasMethod('setAbbreviation', $this->currency);
         verify($this->currency->setAbbreviation('EUR'))->isInstanceOf(Currency::class);
     }
 
@@ -64,7 +68,7 @@ class CurrencyTest extends UnitTest
     {
         $this->currency->setAbbreviation('EUR');
 
-        verify(method_exists($this->currency, 'getAbbreviation'))->true();
+        $this->tester->assertObjectHasMethod('getAbbreviation', $this->currency);
         verify($this->currency->getAbbreviation())->string();
         verify($this->currency->getAbbreviation())->notEmpty();
         verify($this->currency->getAbbreviation())->equals('EUR');
@@ -75,7 +79,7 @@ class CurrencyTest extends UnitTest
      */
     public function testItCanSetADescription(): void
     {
-        verify(method_exists($this->currency, 'setDescription'))->true();
+        $this->tester->assertObjectHasMethod('setDescription', $this->currency);
         verify($this->currency->setDescription('Euro'))->isInstanceOf(Currency::class);
     }
 
@@ -88,7 +92,7 @@ class CurrencyTest extends UnitTest
     {
         $this->currency->setDescription('Euro');
 
-        verify(method_exists($this->currency, 'getDescription'))->true();
+        $this->tester->assertObjectHasMethod('getDescription', $this->currency);
         verify($this->currency->getDescription())->string();
         verify($this->currency->getDescription())->notEmpty();
         verify($this->currency->getDescription())->equals('Euro');

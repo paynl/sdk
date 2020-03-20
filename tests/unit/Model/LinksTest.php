@@ -102,9 +102,9 @@ class LinksTest extends UnitTest
      */
     public function testItCanSetEmptyLinks(): void
     {
-        verify(method_exists($this->links, 'setLinks'))->true();
+        $this->tester->assertObjectHasMethod('setLinks', $this->links);
         verify($this->links->setLinks([]))->isInstanceOf(Links::class);
-        verify(count($this->links))->equals(0);
+        verify($this->links)->count(0);
     }
 
     /**
@@ -114,7 +114,7 @@ class LinksTest extends UnitTest
     {
         $link = $this->getLink();
         $this->links->addLink($link);
-        verify(in_array($link->getRel(), $this->links->getKeys(), true))->true();
+        $this->tester->assertArrayMustContainKeys($this->links->getKeys(), $link->getRel());
     }
 
     /**

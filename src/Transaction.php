@@ -253,12 +253,6 @@ class Transaction
     /**
      * Get the transaction in a return script.
      * This will automatically load orderId from the get string to fetch the transaction
-     *
-     * @return Result\Transaction
-     * @throws Error\Api
-     * @throws Error\Error
-     * @throws Error\Required\ApiToken
-     * @throws Error\Required\ServiceId
      */
     public static function getForReturn()
     {
@@ -391,8 +385,7 @@ class Transaction
      * @return Result\Cancel
      * @throws Error\Api
      * @throws Error\Error
-     * @throws Error\Required\ApiToken
-     * @throws Error\Required\ServiceId
+     * @throws Error\Required\ApiToken    
      */
     public static function cancel(
         $transactionId,

@@ -8,7 +8,7 @@ use Paynl\Helper;
 /**
  * Api class to refund a transaction
  *
- * @author Kevin Verschoor <k.verschoor@pay.nl>
+ * @author PAY. <support@pay.nl>
  */
 class Cancel extends Transaction
 {
@@ -39,7 +39,7 @@ class Cancel extends Transaction
      */
     public function setEntranceCode($entranceCode)
     {
-        $this->amount = (int)$entranceCode;
+        $this->entranceCode = (int)$entranceCode;
     }
 
     /**

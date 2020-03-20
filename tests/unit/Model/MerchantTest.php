@@ -322,6 +322,8 @@ class MerchantTest extends UnitTest
     {
         $this->merchant->setContactMethods($this->getContactMethods());
         verify($this->merchant->getContactMethods())->isInstanceOf(ContactMethods::class);
+        verify($this->merchant->getContactMethods())->notEmpty();
+        verify($this->merchant->getContactMethods())->containsOnlyInstancesOf(ContactMethod::class);
     }
 
     /**

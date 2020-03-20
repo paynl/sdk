@@ -204,7 +204,6 @@ class PaymentMethodsTest extends UnitTest
 
     /**
      * @depends testItCanSetPaymentMethods
-     * @depends testItCanSetTotal
      *
      * @return void
      */
@@ -220,15 +219,13 @@ class PaymentMethodsTest extends UnitTest
                             $this->getASNBank()
                         ])
                     )
-            ])
-            ->setTotal(1);
+            ]);
 
         verify(count($this->paymentMethods))->equals(1);
     }
 
     /**
      * @depends testItCanSetPaymentMethods
-     * @depends testItCanSetTotal
      *
      * @return void
      */
@@ -246,14 +243,13 @@ class PaymentMethodsTest extends UnitTest
                             $this->getASNBank()
                         ])
                     )
-            ])
-            ->setTotal(1);
+            ]);
 
         // offsetExists
         verify(isset($this->paymentMethods[$paymentProfileIDeal->getId()]))->true();
         $nonExistingKey = 'non_existing_key';
-        verify($paymentProfileIDeal->getId() === $nonExistingKey)->false();
-        verify(isset($this->paymentMethods[$nonExistingKey]))->false();
+        verify($paymentProfileIDeal->getId())->notEquals($nonExistingKey);
+        verify($this->paymentMethods)->hasntKey($nonExistingKey);
 
         // offsetGet
         verify($this->paymentMethods[$paymentProfileIDeal->getId()])->isInstanceOf(PaymentMethod::class);
@@ -274,7 +270,6 @@ class PaymentMethodsTest extends UnitTest
 
     /**
      * @depends testItCanSetPaymentMethods
-     * @depends testItCanSetTotal
      *
      * @return void
      */
@@ -282,9 +277,7 @@ class PaymentMethodsTest extends UnitTest
     {
         verify($this->paymentMethods)->isInstanceOf(IteratorAggregate::class);
 
-        $this->paymentMethods
-            ->setPaymentMethods([ $this->getPayPal() ])
-            ->setTotal(1);
+        $this->paymentMethods->setPaymentMethods([ $this->getPayPal() ]);
 
         verify(is_iterable($this->paymentMethods))->true();
     }

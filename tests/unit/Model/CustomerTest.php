@@ -63,6 +63,8 @@ class CustomerTest extends UnitTest
     public function testItCanGetTypes(): void
     {
         $types = $this->tester->invokeMethod($this->customer, 'getTypes');
+        verify($types[0])->equals(Customer::TYPE_BUSINESS);
+        verify($types[1])->equals(Customer::TYPE_CONSUMER);
         verify($types)->array();
         verify($types)->notEmpty();
     }
@@ -74,7 +76,7 @@ class CustomerTest extends UnitTest
     public function testItCanSetType(): void
     {
         $types = $this->tester->invokeMethod($this->customer, 'getTypes');
-        verify($this->customer->setType($types[0]))->isInstanceOf(Customer::class);
+        verify($this->customer->setType(Customer::TYPE_BUSINESS))->isInstanceOf(Customer::class);
     }
 
     /**
@@ -84,10 +86,10 @@ class CustomerTest extends UnitTest
     public function testItCanGetType(): void
     {
         $types = $this->tester->invokeMethod($this->customer, 'getTypes');
-        $this->customer->setType($types[0]);
+        $this->customer->setType(Customer::TYPE_BUSINESS);
         $type = $this->customer->getType();
         verify($type)->string();
-        verify($type)->equals($types[0]);
+        verify($type)->equals(Customer::TYPE_BUSINESS);
     }
 
     /**

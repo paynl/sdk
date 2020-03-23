@@ -51,23 +51,25 @@ class TransactionStatus extends Status
     }
 
     /**
-     * @throws ReflectionException
-     *
      * @return array
      */
     public function getAllowedStatus(): array
     {
-        $ref = new ReflectionClass(static::class);
-        return array_filter($ref->getConstants(), static function (string $key) {
-            return 0 === strpos($key, 'STATUS_');
-        }, ARRAY_FILTER_USE_KEY);
+        try {
+            $ref = new ReflectionClass(static::class);
+            return array_filter($ref->getConstants(), static function (string $key) {
+                return 0 === strpos($key, 'STATUS_');
+            }, ARRAY_FILTER_USE_KEY);
+        } catch (ReflectionException $reflectionException) {
+            // does not occur
+            return [];
+        }
     }
 
     /**
      * @param mixed $code
      *
      * @throws InvalidArgumentException
-     * @throws ReflectionException
      *
      * @return TransactionStatus
      */

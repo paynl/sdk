@@ -29,6 +29,7 @@ class OrderTest extends UnitTest
      */
     public function _before(): void
     {
+        $this->shouldItBeJsonSerializable = true;
         $this->model = new Order();
     }
 

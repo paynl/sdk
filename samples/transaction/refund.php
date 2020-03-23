@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (C) 2015 Andy Pieters <andy@pay.nl>
+ * Copyright (C) 2020 PAY. <support@pay.nl>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +21,27 @@ require_once '../config.php';
 
 $transactionId = $_GET['transactionId'];
 try {
-    $result = \Paynl\Transaction::refund($transactionId, 5);
+    /*$example = \Paynl\Transaction::refund(
+        TRANSACTION ID(string) - Required, 
+        AMOUNT(float) - Empty = full refund, 
+        DESCRIPTION(string), 
+        DATE REFUND WILL BE PROCESSED(DateTime), 
+        VAT PERCENTAGE(float), 
+        CURRENCY(string) - Default EURO
+    );*/
+    
+    $result = \Paynl\Transaction::refund($transactionId, 0.01, 'description', new DateTime(18-03-2020), 0, 'USD');
+    
+    /*
+    * Getters
+    * description = $result->getDescription();
+    * orderId = $result->getOrderId();
+    * amount = $result->getAmount();
+    * refundAmount = $result->getRefundAmount();
+    * bankaccountNumber = $result->getBankaccountNumber();
+    * refundId = $result->getRefundId();
+    */
+
 } catch (\Paynl\Error\Error $e) {
     echo $e->getMessage();
 }

@@ -39,7 +39,7 @@ class Cancel extends Transaction
      */
     public function setEntranceCode($entranceCode)
     {
-        $this->entranceCode = (int)$entranceCode;
+        $this->entranceCode = $entranceCode;
     }
 
     /**

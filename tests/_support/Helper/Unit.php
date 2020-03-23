@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Helper;
 
-
-use PHPUnit\Framework\Constraint\IsEqual;
-use ReflectionProperty, ReflectionMethod;
-use Exception,
+use ReflectionProperty,
+    ReflectionMethod,
     ReflectionClass,
     ReflectionException,
+    Exception,
+    JsonSerializable,
     Codeception\Module
 ;
-use PHPUnit\Util\InvalidArgumentHelper, PHPUnit\Framework\Exception as PHPUnitFrameworkException;
-use PHPUnit\Framework\Assert;
+use PHPUnit\Util\InvalidArgumentHelper;
+use PHPUnit\Framework\{AssertionFailedError, Constraint\IsEqual, Assert, Exception as PHPUnitFrameworkException};
 
 /**
  * Class Unit
@@ -31,21 +31,27 @@ class Unit extends Module
     protected const VISIBILITY_PRIVATE   = 'private';
 
     /* Error constants definitions */
-    protected const ERROR_CLASS_NOT_ABSTRACT            = 1000;
-    protected const ERROR_CLASS_HAS_TOO_MUCH_PROPERTIES = 1001;
-    protected const ERROR_CLASS_HAS_TOO_LESS_PROPERTIES = 1002;
+    protected const ERROR_CLASS_NOT_ABSTRACT                = 1000;
+    protected const ERROR_CLASS_HAS_TOO_MUCH_PROPERTIES     = 1001;
+    protected const ERROR_CLASS_HAS_TOO_LESS_PROPERTIES     = 1002;
 
-    protected const ERROR_NOT_AN_OBJECT                 = 2000;
+    protected const ERROR_NOT_AN_OBJECT                     = 2000;
 
-    protected const ERROR_METHOD_MISSING                = 3000;
-    protected const ERROR_METHOD_VISIBILITY             = 3001;
-    protected const ERROR_METHOD_NOT_ABSTRACT           = 3010;
-    protected const ERROR_METHOD_NOT_FINAL              = 3020;
-    protected const ERROR_METHOD_NOT_STATIC             = 3030;
+    protected const ERROR_METHOD_MISSING                    = 3000;
+    protected const ERROR_METHOD_VISIBILITY                 = 3001;
+    protected const ERROR_METHOD_NOT_ABSTRACT               = 3010;
+    protected const ERROR_METHOD_NOT_FINAL                  = 3020;
+    protected const ERROR_METHOD_NOT_STATIC                 = 3030;
 
-    protected const ERROR_ARRAY_MUST_CONTAIN_AT_LEAST   = 4000;
-    protected const ERROR_ARRAY_CAN_ONLY_CONTAIN        = 4001;
-    protected const ERROR_ARRAY_MISSING_KEYS            = 4002;
+    protected const ERROR_ARRAY_MUST_CONTAIN_AT_LEAST       = 4000;
+    protected const ERROR_ARRAY_CAN_ONLY_CONTAIN            = 4001;
+    protected const ERROR_ARRAY_MISSING_KEYS                = 4002;
+
+    protected const ERROR_OBJECT_DOES_NOT_USE_TRAIT         = 5000;
+    protected const ERROR_CLASS_DOES_NOT_USE_TRAIT          = 5001;
+
+    protected const ERROR_OBJECT_IS_NOT_JSON_SERIALIZABLE   = 6000;
+    protected const ERROR_OBJECT_IS_JSON_SERIALIZABLE       = 6001;
 
     /**
      * Collection of possible error messages
@@ -53,18 +59,22 @@ class Unit extends Module
      * @var array
      */
     protected $errorTemplates = array(
-        self::ERROR_METHOD_VISIBILITY             => 'Method %s on %s should be %s',
-        self::ERROR_METHOD_MISSING                => 'Class %s is missing method "%s"',
-        self::ERROR_NOT_AN_OBJECT                 => 'An object must be given, got %s',
-        self::ERROR_CLASS_NOT_ABSTRACT            => 'Class %s is not declared abstract',
-        self::ERROR_CLASS_HAS_TOO_MUCH_PROPERTIES => 'The properties "%s" are added to %s',
-        self::ERROR_CLASS_HAS_TOO_LESS_PROPERTIES => 'The properties "%s" are missing in %s',
-        self::ERROR_METHOD_NOT_ABSTRACT           => 'Method %s should be declared as abstract',
-        self::ERROR_METHOD_NOT_FINAL              => 'Method %s should be declared as final',
-        self::ERROR_METHOD_NOT_STATIC             => 'Method %s should be declared as static',
-        self::ERROR_ARRAY_MUST_CONTAIN_AT_LEAST   => 'Array should contain at least one of the following keys: "%s"',
-        self::ERROR_ARRAY_CAN_ONLY_CONTAIN        => 'Array contains keys which are not allowed. Allowed keys are "%s"',
-        self::ERROR_ARRAY_MISSING_KEYS            => 'Array is missing key(s) "%s"',
+        self::ERROR_METHOD_VISIBILITY               => 'Method %s on %s should be %s',
+        self::ERROR_METHOD_MISSING                  => 'Class %s is missing method "%s"',
+        self::ERROR_NOT_AN_OBJECT                   => 'An object must be given, got %s',
+        self::ERROR_CLASS_NOT_ABSTRACT              => 'Class %s is not declared abstract',
+        self::ERROR_CLASS_HAS_TOO_MUCH_PROPERTIES   => 'The properties "%s" are added to %s',
+        self::ERROR_CLASS_HAS_TOO_LESS_PROPERTIES   => 'The properties "%s" are missing in %s',
+        self::ERROR_METHOD_NOT_ABSTRACT             => 'Method %s should be declared as abstract',
+        self::ERROR_METHOD_NOT_FINAL                => 'Method %s should be declared as final',
+        self::ERROR_METHOD_NOT_STATIC               => 'Method %s should be declared as static',
+        self::ERROR_ARRAY_MUST_CONTAIN_AT_LEAST     => 'Array should contain at least one of the following keys: "%s"',
+        self::ERROR_ARRAY_CAN_ONLY_CONTAIN          => 'Array contains keys which are not allowed. Allowed keys are "%s"',
+        self::ERROR_ARRAY_MISSING_KEYS              => 'Array is missing key(s) "%s"',
+        self::ERROR_OBJECT_DOES_NOT_USE_TRAIT       => 'Object does not use the "%s" trait',
+        self::ERROR_CLASS_DOES_NOT_USE_TRAIT        => 'Class does not use the "%s" trait',
+        self::ERROR_OBJECT_IS_NOT_JSON_SERIALIZABLE => 'Object "%s" can not be converted to JSON which should be possible',
+        self::ERROR_OBJECT_IS_JSON_SERIALIZABLE     => 'Object "%s" can be converted to JSON which should not be possible',
     );
 
     /**
@@ -274,6 +284,8 @@ class Unit extends Module
      * @param string $methodName
      * @param string $className
      *
+     * @uses validateClassMethod
+     *
      * @throws ReflectionException
      *
      * @return void
@@ -296,6 +308,8 @@ class Unit extends Module
     /**
      * @param string $methodName
      * @param string $className
+     *
+     * @uses assertClassHasMethod
      *
      * @throws ReflectionException
      *
@@ -321,6 +335,8 @@ class Unit extends Module
      * @param string $methodName
      * @param string $className
      *
+     * @uses assertClassHasMethod
+     *
      * @throws ReflectionException
      *
      * @return void
@@ -344,6 +360,8 @@ class Unit extends Module
     /**
      * @param string $methodName
      * @param string $className
+     *
+     * @uses assertClassHasMethod
      *
      * @throws ReflectionException
      *
@@ -369,6 +387,8 @@ class Unit extends Module
      * @param string $methodName
      * @param string $className
      *
+     * @uses assertClassHasMethod
+     *
      * @throws ReflectionException
      *
      * @return void
@@ -391,6 +411,8 @@ class Unit extends Module
      * @param string $methodName
      * @param string $className
      *
+     * @uses assertClassHasMethod
+     *
      * @throws ReflectionException
      *
      * @return void
@@ -412,6 +434,8 @@ class Unit extends Module
     /**
      * @param string $methodName
      * @param string $className
+     *
+     * @uses assertClassHasMethod
      *
      * @throws ReflectionException
      *
@@ -454,6 +478,8 @@ class Unit extends Module
      * @param string $methodName
      * @param object $object
      *
+     * @uses assertClassHasMethod
+     *
      * @throws ReflectionException
      *
      * @return void
@@ -470,6 +496,8 @@ class Unit extends Module
     /**
      * @param string $methodName
      * @param object $object
+     *
+     * @uses assertClassMethodIsPrivate
      *
      * @throws ReflectionException
      *
@@ -488,6 +516,8 @@ class Unit extends Module
      * @param string $methodName
      * @param object $object
      *
+     * @uses assertClassMethodIsProtected
+     *
      * @throws ReflectionException
      *
      * @return void
@@ -504,6 +534,8 @@ class Unit extends Module
     /**
      * @param string $methodName
      * @param object $object
+     *
+     * @uses assertClassMethodIsPublic
      *
      * @throws ReflectionException
      *
@@ -522,6 +554,8 @@ class Unit extends Module
      * @param string $methodName
      * @param object $object
      *
+     * @uses assertClassMethodIsAbstract
+     *
      * @throws ReflectionException
      *
      * @return void
@@ -539,6 +573,8 @@ class Unit extends Module
      * @param string $methodName
      * @param object $object
      *
+     * @uses assertClassMethodIsFinal
+     *
      * @throws ReflectionException
      *
      * @return void
@@ -555,6 +591,8 @@ class Unit extends Module
     /**
      * @param string $methodName
      * @param object $object
+     *
+     * @uses assertClassMethodIsStatic
      *
      * @throws ReflectionException
      *
@@ -589,5 +627,108 @@ class Unit extends Module
 
         $reflection = new ReflectionClass($className);
         return $reflection->getMethod($methodName);
+    }
+
+    /**
+     * @param object $object
+     * @param bool $checkForTrait
+     *
+     * @return void
+     */
+    public function assertObjectIsJsonSerializable($object, bool $checkForTrait = true): void
+    {
+        try {
+            $interfaces = class_implements($object);
+            Assert::assertContains(
+                JsonSerializable::class,
+                $interfaces,
+                ''
+            );
+
+            if (true === $checkForTrait) {
+                $this->assertObjectUsesTrait($object, 'PayNL\\Sdk\\Common\\JsonSerializeTrait');
+            }
+        } catch (AssertionFailedError $afe) {
+            $this->fail(
+                sprintf(
+                    $this->errorTemplates[self::ERROR_OBJECT_IS_NOT_JSON_SERIALIZABLE],
+                    get_class($object)
+                )
+            );
+        }
+    }
+
+    /**
+     * @param object $object
+     * @param bool $checkForTrait
+     *
+     * @return void
+     */
+    public function assertObjectIsNotJsonSerializable($object, bool $checkForTrait = true): void
+    {
+        try {
+            $interfaces = class_implements($object);
+            Assert::assertNotContains(
+                JsonSerializable::class,
+                $interfaces,
+                ''
+            );
+
+            Assert::assertFalse(method_exists($object, 'jsonSerialize'));
+
+            if (true === $checkForTrait) {
+                $uses = class_uses($object);
+                Assert::assertNotContains(
+                    'PayNL\\Sdk\\Common\\JsonSerializeTrait',
+                    $uses,
+                    ''
+                );
+            }
+        } catch (AssertionFailedError $afe) {
+            $this->fail(
+                sprintf(
+                    $this->errorTemplates[self::ERROR_OBJECT_IS_JSON_SERIALIZABLE],
+                    get_class($object)
+                )
+            );
+        }
+    }
+
+    /**
+     * @param object $object            The object instance to check
+     * @param string $requiredTrait     The trait's FQN to check for
+     *
+     * @return void
+     */
+    public function assertObjectUsesTrait($object, string $requiredTrait): void
+    {
+        $uses = class_uses($object);
+        Assert::assertContains(
+            $requiredTrait,
+            $uses,
+            sprintf(
+                $this->errorTemplates[self::ERROR_OBJECT_DOES_NOT_USE_TRAIT],
+                $requiredTrait
+            )
+        );
+    }
+
+    /**
+     * @param string $class             The class' FQN
+     * @param string $requiredTrait     The trait's FQN
+     *
+     * @return void
+     */
+    public function assertClassUsesTrait(string $class, string $requiredTrait): void
+    {
+        $uses = class_uses($class);
+        Assert::assertContains(
+            $requiredTrait,
+            $uses,
+            sprintf(
+                $this->errorTemplates[self::ERROR_CLASS_DOES_NOT_USE_TRAIT],
+                $requiredTrait
+            )
+        );
     }
 }

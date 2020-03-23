@@ -46,7 +46,7 @@ trait ModelTestTrait
         if (null === $this->shouldItBeJsonSerializable) {
             Assert::fail(
                 sprintf(
-                    'Model test "%s" should set it should or shouldn\'t be JsonSerializable',
+                    'Model test "%s" should set if it should or shouldn\'t be JsonSerializable',
                     __CLASS__
                 )
             );

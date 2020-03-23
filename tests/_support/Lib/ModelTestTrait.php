@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Codeception\Lib;
 
 use PayNL\Sdk\Model\ModelInterface;
+use PHPUnit\Framework\Assert;
 use UnitTester;
 
 /**
@@ -18,6 +19,11 @@ trait ModelTestTrait
      * @var UnitTester
      */
     protected $tester;
+
+    /**
+     * @var bool
+     */
+    protected $shouldItBeJsonSerializable;
 
     /**
      * @var ModelInterface
@@ -35,8 +41,21 @@ trait ModelTestTrait
     /**
      * @return void
      */
-    public function testItIsJsonSerializable(): void
+    public function testItShouldBeJsonSerializable(): void
     {
-        $this->tester->assertObjectIsJsonSerializable($this->model);
+        if (null === $this->shouldItBeJsonSerializable) {
+            Assert::fail(
+                sprintf(
+                    'Model test "%s" should set it should or shouldn\'t be JsonSerializable',
+                    __CLASS__
+                )
+            );
+        }
+
+        if (true === $this->shouldItBeJsonSerializable) {
+            $this->tester->assertObjectIsJsonSerializable($this->model);
+        } else {
+            $this->tester->assertObjectIsNotJsonSerializable($this->model);
+        }
     }
 }

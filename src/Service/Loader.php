@@ -194,7 +194,7 @@ class Loader
             $this->serviceManagers[$key]['configuration']['merged_config'] = $config[$metadata['config_key']];
         }
 
-        $serviceConfig = new Config();//[];
+        $serviceConfig = new Config();
         foreach ($this->serviceManagers[$key]['configuration'] as $configs) {
             if (true === is_array($configs)) {
                 $configs = new Config($configs);

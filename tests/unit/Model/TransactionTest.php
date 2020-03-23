@@ -4,19 +4,25 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PayNL\Sdk\Model;
 
-use Codeception\Test\Unit as UnitTest;
-use PayNL\Sdk\DateTime;
+use Codeception\{
+    Lib\ModelTestTrait,
+    Test\Unit as UnitTest
+};
+use Mockery;
+use PayNL\Sdk\Common\DateTime;
 use PayNL\Sdk\Model\Address;
 use PayNL\Sdk\Model\Amount;
 use PayNL\Sdk\Model\Company;
 use PayNL\Sdk\Model\Customer;
+use PayNL\Sdk\Model\Integration;
+use PayNL\Sdk\Model\Order;
 use PayNL\Sdk\Model\PaymentMethod;
 use PayNL\Sdk\Model\Product;
 use PayNL\Sdk\Model\Statistics;
 use PayNL\Sdk\Model\TransactionStatus;
 use PayNL\Sdk\Model\Transaction;
-use PayNL\Sdk\Model\ModelInterface;
-use Exception, JsonSerializable, BadMethodCallException;
+use Exception, BadMethodCallException;
+use PayNL\Sdk\Model\Transfer;
 
 /**
  * Class TransactionTest
@@ -25,36 +31,22 @@ use Exception, JsonSerializable, BadMethodCallException;
  */
 class TransactionTest extends UnitTest
 {
+    use ModelTestTrait;
+
     /**
      * @var Transaction
      */
-    protected $transaction;
+    protected $model;
 
     /**
      * @return void
      */
     public function _before(): void
     {
-        $this->transaction = new Transaction();
-        $this->transaction->setStatus(new TransactionStatus());
-    }
+        $this->shouldItBeJsonSerializable = true;
 
-    /**
-     * @return void
-     */
-    public function testItIsAModel(): void
-    {
-        verify($this->transaction)->isInstanceOf(ModelInterface::class);
-    }
-
-    /**
-     * @return void
-     */
-    public function testIsItJsonSerializable(): void
-    {
-        verify($this->transaction)->isInstanceOf(JsonSerializable::class);
-
-        verify($this->transaction->jsonSerialize())->array();
+        $this->model = new Transaction();
+        //$this->model->setStatus(new TransactionStatus());
     }
 
     /**
@@ -62,7 +54,12 @@ class TransactionTest extends UnitTest
      */
     public function testItCanSetAnId(): void
     {
-        expect($this->transaction->setId('T-0000-0001'))->isInstanceOf(Transaction::class);
+        $this->tester->assertObjectHasMethod('setId', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setId', $this->model);
+
+        $transaction = $this->model->setId('T-0000-0001');
+        verify($transaction)->object();
+        verify($transaction)->same($this->model);
     }
 
     /**
@@ -72,11 +69,18 @@ class TransactionTest extends UnitTest
      */
     public function testItCanGetAnId(): void
     {
-        $this->transaction->setId('T-0000-0001');
+        $this->tester->assertObjectHasMethod('getId', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getId', $this->model);
 
-        verify($this->transaction->getId())->string();
-        verify($this->transaction->getId())->notEmpty();
-        verify($this->transaction->getId())->equals('T-0000-0001');
+        $id = $this->model->getId();
+        verify($id)->string();
+        verify($id)->isEmpty();
+
+        $this->model->setId('T-0000-0001');
+        $id = $this->model->getId();
+        verify($id)->string();
+        verify($id)->notEmpty();
+        verify($id)->equals('T-0000-0001');
     }
 
     /**
@@ -84,7 +88,12 @@ class TransactionTest extends UnitTest
      */
     public function testItCanSetAServiceId(): void
     {
-        expect($this->transaction->setServiceId('SL-0000-0001'))->isInstanceOf(Transaction::class);
+        $this->tester->assertObjectHasMethod('setServiceId', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setServiceId', $this->model);
+
+        $transaction = $this->model->setServiceId('SL-0000-0001');
+        verify($transaction)->object();
+        verify($transaction)->same($this->model);
     }
 
     /**
@@ -94,119 +103,18 @@ class TransactionTest extends UnitTest
      */
     public function testItCanGetAServiceId(): void
     {
-        $this->transaction->setServiceId('SL-0000-0001');
+        $this->tester->assertObjectHasMethod('getServiceId', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getServiceId', $this->model);
 
-        verify($this->transaction->getServiceId())->string();
-        verify($this->transaction->getServiceId())->notEmpty();
-        verify($this->transaction->getServiceId())->equals('SL-0000-0001');
-    }
+        $serviceId = $this->model->getServiceId();
+        verify($serviceId)->string();
+        verify($serviceId)->isEmpty();
 
-    /**
-     * @return void
-     */
-    public function testItCanSetASStatus(): void
-    {
-        expect($this->transaction->setStatus(new TransactionStatus()))->isInstanceOf(Transaction::class);
-    }
-
-    /**
-     * @depends testItCanSetASStatus
-     *
-     * @return void
-     */
-    public function testItCanGetASStatus(): void
-    {
-        $this->transaction->setStatus(new TransactionStatus());
-
-        verify($this->transaction->getStatus())->notEmpty();
-        verify($this->transaction->getStatus())->isInstanceOf(TransactionStatus::class);
-    }
-
-    /**
-     * @return void
-     */
-    public function testItCanSetAReturnUrl(): void
-    {
-        expect($this->transaction->setReturnUrl('http://www.pay.nl/return-url'))->isInstanceOf(Transaction::class);
-    }
-
-    /**
-     * @depends testItCanSetAReturnUrl
-     *
-     * @return void
-     */
-    public function testItCanGetAReturnUrl(): void
-    {
-        $this->transaction->setReturnUrl('http://www.pay.nl/return-url');
-
-        verify($this->transaction->getReturnUrl())->string();
-        verify($this->transaction->getReturnUrl())->notEmpty();
-        verify($this->transaction->getReturnUrl())->equals('http://www.pay.nl/return-url');
-    }
-
-    /**
-     * @return void
-     */
-    public function testItCanSetAExchangeUrl(): void
-    {
-        expect($this->transaction->setExchangeUrl('http://www.pay.nl/exchange-url'))->isInstanceOf(Transaction::class);
-    }
-
-    /**
-     * @depends testItCanSetAExchangeUrl
-     *
-     * @return void
-     */
-    public function testItCanGetAExchangeUrl(): void
-    {
-        $this->transaction->setExchangeUrl('http://www.pay.nl/exchange-url');
-
-        verify($this->transaction->getExchangeUrl())->string();
-        verify($this->transaction->getExchangeUrl())->notEmpty();
-        verify($this->transaction->getExchangeUrl())->equals('http://www.pay.nl/exchange-url');
-    }
-
-    /**
-     * @return void
-     */
-    public function testItCanSetAReference(): void
-    {
-        expect($this->transaction->setMerchantReference('consumer reference'))->isInstanceOf(Transaction::class);
-    }
-
-    /**
-     * @depends testItCanSetAReference
-     *
-     * @return void
-     */
-    public function testItCanGetAReference(): void
-    {
-        $this->transaction->setMerchantReference('consumer reference');
-
-        verify($this->transaction->getMerchantReference())->string();
-        verify($this->transaction->getMerchantReference())->notEmpty();
-        verify($this->transaction->getMerchantReference())->equals('consumer reference');
-    }
-
-    /**
-     * @return void
-     */
-    public function testItCanSetAPaymentMethod(): void
-    {
-        expect($this->transaction->setPaymentMethod(new PaymentMethod()))->isInstanceOf(Transaction::class);
-    }
-
-    /**
-     * @depends testItCanSetAPaymentMethod
-     *
-     * @return void
-     */
-    public function testItCanGetAPaymentMethod(): void
-    {
-        $this->transaction->setPaymentMethod(new PaymentMethod());
-
-        verify($this->transaction->getPaymentMethod())->notEmpty();
-        verify($this->transaction->getPaymentMethod())->isInstanceOf(PaymentMethod::class);
+        $this->model->setServiceId('SL-0000-0001');
+        $serviceId = $this->model->getServiceId();
+        verify($serviceId)->string();
+        verify($serviceId)->notEmpty();
+        verify($serviceId)->equals('SL-0000-0001');
     }
 
     /**
@@ -214,7 +122,12 @@ class TransactionTest extends UnitTest
      */
     public function testItCanSetADescription(): void
     {
-        expect($this->transaction->setDescription('Transaction description'))->isInstanceOf(Transaction::class);
+        $this->tester->assertObjectHasMethod('setDescription', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setDescription', $this->model);
+
+        $transaction = $this->model->setDescription('foo bar baz');
+        verify($transaction)->object();
+        verify($transaction)->same($this->model);
     }
 
     /**
@@ -224,80 +137,86 @@ class TransactionTest extends UnitTest
      */
     public function testItCanGetADescription(): void
     {
-        $this->transaction->setDescription('Transaction description');
+        $this->tester->assertObjectHasMethod('getDescription', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getDescription', $this->model);
 
-        verify($this->transaction->getDescription())->string();
-        verify($this->transaction->getDescription())->notEmpty();
-        verify($this->transaction->getDescription())->equals('Transaction description');
+        $description = $this->model->getDescription();
+        verify($description)->string();
+        verify($description)->isEmpty();
+
+        $this->model->setDescription('foo bar baz');
+        $description = $this->model->getDescription();
+        verify($description)->string();
+        verify($description)->notEmpty();
+        verify($description)->equals('foo bar baz');
     }
 
     /**
      * @return void
      */
-    public function testItCanSetAIssuerUrl(): void
+    public function testItCanSetMerchantReference(): void
     {
-        expect($this->transaction->setIssuerUrl('https://www.pay.nl/pay-link'))->isInstanceOf(Transaction::class);
+        $this->tester->assertObjectHasMethod('setMerchantReference', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setMerchantReference', $this->model);
+
+        $transaction = $this->model->setMerchantReference('foo bar');
+        verify($transaction)->object();
+        verify($transaction)->same($this->model);
     }
 
     /**
-     * @depends testItCanSetAIssuerUrl
+     * @depends testItCanSetMerchantReference
      *
      * @return void
      */
-    public function testItCanGetAIssuerUrl(): void
+    public function testItCanGetMerchantReference(): void
     {
-        $this->transaction->setIssuerUrl('https://www.pay.nl/pay-link');
+        $this->tester->assertObjectHasMethod('getMerchantReference', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getMerchantReference', $this->model);
 
-        verify($this->transaction->getIssuerUrl())->string();
-        verify($this->transaction->getIssuerUrl())->notEmpty();
-        verify($this->transaction->getIssuerUrl())->equals('https://www.pay.nl/pay-link');
+        $merchantReference = $this->model->getMerchantReference();
+        verify($merchantReference)->string();
+        verify($merchantReference)->isEmpty();
+
+        $this->model->setMerchantReference('foo bar');
+        $merchantReference = $this->model->getMerchantReference();
+        verify($merchantReference)->string();
+        verify($merchantReference)->notEmpty();
+        verify($merchantReference)->equals('foo bar');
     }
 
     /**
      * @return void
      */
-    public function testItCanSetAnOrderId(): void
+    public function testItCanSetLanguage(): void
     {
-        verify(method_exists($this->transaction, 'setOrderId'))->true();
-        verify($this->transaction->setOrderId('Test123'))->isInstanceOf(Transaction::class);
+        $this->tester->assertObjectHasMethod('setLanguage', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setLanguage', $this->model);
+
+        $transaction = $this->model->setLanguage('nl');
+        verify($transaction)->object();
+        verify($transaction)->same($this->model);
     }
 
     /**
-     * @depends testItCanSetAnOrderId
+     * @depends testItCanSetLanguage
      *
      * @return void
      */
-    public function testItCanGetAnOrderId(): void
+    public function testItCanGetLanguage(): void
     {
-        verify(method_exists($this->transaction, 'getOrderId'))->true();
+        $this->tester->assertObjectHasMethod('getLanguage', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getLanguage', $this->model);
 
-        $this->transaction->setOrderId('Test1234');
+        $language = $this->model->getLanguage();
+        verify($language)->string();
+        verify($language)->isEmpty();
 
-        verify($this->transaction->getOrderId())->string();
-        verify($this->transaction->getOrderId())->notEmpty();
-        verify($this->transaction->getOrderId())->equals('Test1234');
-    }
-
-    /**
-     * @return void
-     */
-    public function testItCanSetAnOrderNumber(): void
-    {
-        expect($this->transaction->setOrderNumber('O1000024'))->isInstanceOf(Transaction::class);
-    }
-
-    /**
-     * @depends testItCanSetAnOrderNumber
-     *
-     * @return void
-     */
-    public function testItCanGetAnOrderNumber(): void
-    {
-        $this->transaction->setOrderNumber('O10000042');
-
-        verify($this->transaction->getOrderNumber())->string();
-        verify($this->transaction->getOrderNumber())->notEmpty();
-        verify($this->transaction->getOrderNumber())->equals('O10000042');
+        $this->model->setLanguage('nl');
+        $language = $this->model->getLanguage();
+        verify($language)->string();
+        verify($language)->notEmpty();
+        verify($language)->equals('nl');
     }
 
     /**
@@ -305,165 +224,50 @@ class TransactionTest extends UnitTest
      *
      * @return void
      */
-    public function testItCanSetAInvoiceDate(): void
+    public function testItCanSetAExpiresAt(): void
     {
-        expect($this->transaction->setInvoiceDate(DateTime::now()))->isInstanceOf(Transaction::class);
+        $this->tester->assertObjectHasMethod('setExpiresAt', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setExpiresAt', $this->model);
+
+        $dateTimeMock = Mockery::mock(DateTime::class);
+        $transaction = $this->model->setExpiresAt($dateTimeMock);
+        verify($transaction)->object();
+        verify($transaction)->same($this->model);
     }
 
     /**
-     * @depends testItCanSetAInvoiceDate
-     *
-     * @throws Exception
+     * @depends testItCanSetAExpiresAt
      *
      * @return void
      */
-    public function testItCanGetAInvoiceDate(): void
+    public function testItCanGetAExpiresAt(): void
     {
-        $this->transaction->setInvoiceDate(DateTime::now());
+        $this->tester->assertObjectHasMethod('getExpiresAt', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getExpiresAt', $this->model);
 
-        verify($this->transaction->getInvoiceDate())->notEmpty();
-        verify($this->transaction->getInvoiceDate())->isInstanceOf(DateTime::class);
+        $expiresAt = $this->model->getExpiresAt();
+        verify($expiresAt)->null();
+
+        $dateTimeMock = Mockery::mock(DateTime::class);
+        $this->model->setExpiresAt($dateTimeMock);
+        $expiresAt = $this->model->getExpiresAt();
+        verify($expiresAt)->object();
+        verify($expiresAt)->isInstanceOf(DateTime::class);
+        verify($expiresAt)->same($dateTimeMock);
     }
 
     /**
-     * @throws Exception
-     *
-     * @return void
-     */
-    public function testItCanSetADeliveryDate(): void
-    {
-        expect($this->transaction->setDeliveryDate(DateTime::now()))->isInstanceOf(Transaction::class);
-    }
-
-    /**
-     * @depends testItCanSetADeliveryDate
-     *
-     * @throws Exception
-     *
-     * @return void
-     */
-    public function testItCanGetADeliveryDate(): void
-    {
-        $this->transaction->setDeliveryDate(DateTime::now());
-
-        verify($this->transaction->getDeliveryDate())->notEmpty();
-        verify($this->transaction->getDeliveryDate())->isInstanceOf(DateTime::class);
-    }
-
-    /**
-     * @throws Exception
-     *
-     * @return void
-     */
-    public function testItCanSetAAddress(): void
-    {
-        expect($this->transaction->setAddress(new Address()))->isInstanceOf(Transaction::class);
-    }
-
-    /**
-     * @depends testItCanSetAAddress
-     *
-     * @throws Exception
-     *
-     * @return void
-     */
-    public function testItCanGetAAddress(): void
-    {
-        $this->transaction->setAddress(new Address());
-
-        verify($this->transaction->getAddress())->notEmpty();
-        verify($this->transaction->getAddress())->isInstanceOf(Address::class);
-    }
-
-    /**
-     * @throws Exception
-     *
-     * @return void
-     */
-    public function testItCanSetABillingAddress(): void
-    {
-        expect($this->transaction->setBillingAddress(new Address()))->isInstanceOf(Transaction::class);
-    }
-
-    /**
-     * @depends testItCanSetABillingAddress
-     *
-     * @throws Exception
-     *
-     * @return void
-     */
-    public function testItCanGetABillingAddress(): void
-    {
-        $this->transaction->setBillingAddress(new Address());
-
-        verify($this->transaction->getBillingAddress())->notEmpty();
-        verify($this->transaction->getBillingAddress())->isInstanceOf(Address::class);
-    }
-
-    /**
-     * @throws Exception
-     *
-     * @return void
-     */
-    public function testItCanSetACustomer(): void
-    {
-        expect($this->transaction->setCustomer(new Customer()))->isInstanceOf(Transaction::class);
-    }
-
-    /**
-     * @depends testItCanSetACustomer
-     *
-     * @throws Exception
-     *
-     * @return void
-     */
-    public function testItCanGetACustomer(): void
-    {
-        $this->transaction->setCustomer(new Customer());
-
-        verify($this->transaction->getCustomer())->notEmpty();
-        verify($this->transaction->getCustomer())->isInstanceOf(Customer::class);
-    }
-
-    /**
-     * @throws Exception
-     *
-     * @return void
-     */
-    public function testItCanSetProducts(): void
-    {
-        expect($this->transaction->setProducts([
-            new Product(),
-        ]))->isInstanceOf(Transaction::class);
-    }
-
-    /**
-     * @depends testItCanSetProducts
-     *
-     * @throws Exception
-     *
-     * @return void
-     */
-    public function testItCanGetProducts(): void
-    {
-        $this->transaction->setProducts([
-            new Product(),
-        ]);
-
-        verify($this->transaction->getProducts())->array();
-        verify($this->transaction->getProducts())->notEmpty();
-        verify($this->transaction->getProducts())->containsOnlyInstancesOf(Product::class);
-        verify($this->transaction->getProducts())->count(1);
-    }
-
-    /**
-     * @throws Exception
-     *
      * @return void
      */
     public function testItCanSetAnAmount(): void
     {
-        expect($this->transaction->setAmount(new Amount()))->isInstanceOf(Transaction::class);
+        $this->tester->assertObjectHasMethod('setAmount', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setAmount', $this->model);
+
+        $amountMock = $this->tester->grabMockService('modelManager')->get(Amount::class);
+        $transaction = $this->model->setAmount($amountMock);
+        verify($transaction)->object();
+        verify($transaction)->same($this->model);
     }
 
     /**
@@ -475,10 +279,16 @@ class TransactionTest extends UnitTest
      */
     public function testItCanGetAnAmount(): void
     {
-        $this->transaction->setAmount(new Amount());
+        $this->tester->assertObjectHasMethod('getAmount', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getAmount', $this->model);
 
-        verify($this->transaction->getAmount())->notEmpty();
-        verify($this->transaction->getAmount())->isInstanceOf(Amount::class);
+        $amountMock = $this->tester->grabMockService('modelManager')->get(Amount::class);
+        $this->model->setAmount($amountMock);
+
+        $amount = $this->model->getAmount();
+        verify($amount)->object();
+        verify($amount)->isInstanceOf(Amount::class);
+        verify($amount)->same($amountMock);
     }
 
     /**
@@ -488,7 +298,13 @@ class TransactionTest extends UnitTest
      */
     public function testItCanSetAnAmountConverted(): void
     {
-        expect($this->transaction->setAmountConverted(new Amount()))->isInstanceOf(Transaction::class);
+        $this->tester->assertObjectHasMethod('setAmountConverted', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setAmountConverted', $this->model);
+
+        $amountMock = $this->tester->grabMockService('modelManager')->get(Amount::class);
+        $transaction = $this->model->setAmountConverted($amountMock);
+        verify($transaction)->object();
+        verify($transaction)->same($this->model);
     }
 
     /**
@@ -500,10 +316,19 @@ class TransactionTest extends UnitTest
      */
     public function testItCanGetAnAmountConverted(): void
     {
-        $this->transaction->setAmountConverted(new Amount());
+        $this->tester->assertObjectHasMethod('getAmountConverted', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getAmountConverted', $this->model);
 
-        verify($this->transaction->getAmountConverted())->notEmpty();
-        verify($this->transaction->getAmountConverted())->isInstanceOf(Amount::class);
+        $amount = $this->model->getAmountConverted();
+        verify($amount)->null();
+
+        $amountMock = $this->tester->grabMockService('modelManager')->get(Amount::class);
+        $this->model->setAmountConverted($amountMock);
+
+        $amount = $this->model->getAmountConverted();
+        verify($amount)->object();
+        verify($amount)->isInstanceOf(Amount::class);
+        verify($amount)->same($amountMock);
     }
 
     /**
@@ -513,7 +338,13 @@ class TransactionTest extends UnitTest
      */
     public function testItCanSetAnAmountPaid(): void
     {
-        expect($this->transaction->setAmountPaid(new Amount()))->isInstanceOf(Transaction::class);
+        $this->tester->assertObjectHasMethod('setAmountPaid', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setAmountPaid', $this->model);
+
+        $amountMock = $this->tester->grabMockService('modelManager')->get(Amount::class);
+        $transaction = $this->model->setAmountPaid($amountMock);
+        verify($transaction)->object();
+        verify($transaction)->same($this->model);
     }
 
     /**
@@ -525,10 +356,19 @@ class TransactionTest extends UnitTest
      */
     public function testItCanGetAnAmountPaid(): void
     {
-        $this->transaction->setAmountPaid(new Amount());
+        $this->tester->assertObjectHasMethod('getAmountPaid', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getAmountPaid', $this->model);
 
-        verify($this->transaction->getAmountPaid())->notEmpty();
-        verify($this->transaction->getAmountPaid())->isInstanceOf(Amount::class);
+        $amount = $this->model->getAmountPaid();
+        verify($amount)->null();
+
+        $amountMock = $this->tester->grabMockService('modelManager')->get(Amount::class);
+        $this->model->setAmountPaid($amountMock);
+
+        $amount = $this->model->getAmountPaid();
+        verify($amount)->object();
+        verify($amount)->isInstanceOf(Amount::class);
+        verify($amount)->same($amountMock);
     }
 
     /**
@@ -538,7 +378,13 @@ class TransactionTest extends UnitTest
      */
     public function testItCanSetAnAmountRefunded(): void
     {
-        expect($this->transaction->setAmountRefunded(new Amount()))->isInstanceOf(Transaction::class);
+        $this->tester->assertObjectHasMethod('setAmountRefunded', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setAmountRefunded', $this->model);
+
+        $amountMock = $this->tester->grabMockService('modelManager')->get(Amount::class);
+        $transaction = $this->model->setAmountRefunded($amountMock);
+        verify($transaction)->object();
+        verify($transaction)->same($this->model);
     }
 
     /**
@@ -550,10 +396,365 @@ class TransactionTest extends UnitTest
      */
     public function testItCanGetAnAmountRefunded(): void
     {
-        $this->transaction->setAmountRefunded(new Amount());
+        $this->tester->assertObjectHasMethod('getAmountRefunded', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getAmountRefunded', $this->model);
 
-        verify($this->transaction->getAmountRefunded())->notEmpty();
-        verify($this->transaction->getAmountRefunded())->isInstanceOf(Amount::class);
+        $amount = $this->model->getAmountRefunded();
+        verify($amount)->null();
+
+        $amountMock = $this->tester->grabMockService('modelManager')->get(Amount::class);
+        $this->model->setAmountRefunded($amountMock);
+
+        $amount = $this->model->getAmountRefunded();
+        verify($amount)->object();
+        verify($amount)->isInstanceOf(Amount::class);
+        verify($amount)->same($amountMock);
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanSetPaymentMethod(): void
+    {
+        $this->tester->assertObjectHasMethod('setPaymentMethod', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setPaymentMethod', $this->model);
+
+        $paymentMethodMock = $this->tester->grabMockService('modelManager')->get(PaymentMethod::class);
+        $transaction = $this->model->setPaymentMethod($paymentMethodMock);
+        verify($transaction)->object();
+        verify($transaction)->same($this->model);
+    }
+
+    /**
+     * @depends testItCanSetPaymentMethod
+     *
+     * @return void
+     */
+    public function testItCanGetPaymentMethod(): void
+    {
+        $this->tester->assertObjectHasMethod('getPaymentMethod', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getPaymentMethod', $this->model);
+
+        $paymentMethod = $this->model->getPaymentMethod();
+        verify($paymentMethod)->null();
+
+        $paymentMethodMock = $this->tester->grabMockService('modelManager')->get(PaymentMethod::class);
+        $this->model->setPaymentMethod($paymentMethodMock);
+        $paymentMethod = $this->model->getPaymentMethod();
+        verify($paymentMethod)->object();
+        verify($paymentMethod)->isInstanceOf(PaymentMethod::class);
+        verify($paymentMethod)->same($paymentMethodMock);
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanSetReturnUrl(): void
+    {
+        $this->tester->assertObjectHasMethod('setReturnUrl', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setReturnUrl', $this->model);
+
+        $transaction = $this->model->setReturnUrl('http://foo.bar');
+        verify($transaction)->object();
+        verify($transaction)->same($this->model);
+    }
+
+    /**
+     * @depends testItCanSetReturnUrl
+     *
+     * @return void
+     */
+    public function testItCanGetReturnUrl(): void
+    {
+        $this->tester->assertObjectHasMethod('getReturnUrl', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getReturnUrl', $this->model);
+
+        $returnUrl = $this->model->getReturnUrl();
+        verify($returnUrl)->string();
+        verify($returnUrl)->isEmpty();
+
+        $this->model->setReturnUrl('http://foo.bar');
+        $returnUrl = $this->model->getReturnUrl();
+        verify($returnUrl)->string();
+        verify($returnUrl)->notEmpty();
+        verify($returnUrl)->equals('http://foo.bar');
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanSetAExchangeUrl(): void
+    {
+        $this->tester->assertObjectHasMethod('setExchangeUrl', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setExchangeUrl', $this->model);
+
+        $transaction = $this->model->setExchangeUrl('http://foo.bar');
+        verify($transaction)->object();
+        verify($transaction)->same($this->model);
+    }
+
+    /**
+     * @depends testItCanSetAExchangeUrl
+     *
+     * @return void
+     */
+    public function testItCanGetAExchangeUrl(): void
+    {
+        $this->tester->assertObjectHasMethod('getExchangeUrl', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getExchangeUrl', $this->model);
+
+        $exchangeUrl = $this->model->getExchangeUrl();
+        verify($exchangeUrl)->string();
+        verify($exchangeUrl)->isEmpty();
+
+        $this->model->setExchangeUrl('http://foo.bar');
+        $exchangeUrl = $this->model->getExchangeUrl();
+        verify($exchangeUrl)->string();
+        verify($exchangeUrl)->notEmpty();
+        verify($exchangeUrl)->equals('http://foo.bar');
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanSetAIssuerUrl(): void
+    {
+        $this->tester->assertObjectHasMethod('setIssuerUrl', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setIssuerUrl', $this->model);
+
+        $transaction = $this->model->setIssuerUrl('http://foo.bar');
+        verify($transaction)->object();
+        verify($transaction)->same($this->model);
+    }
+
+    /**
+     * @depends testItCanSetAIssuerUrl
+     *
+     * @return void
+     */
+    public function testItCanGetAIssuerUrl(): void
+    {
+        $this->tester->assertObjectHasMethod('getIssuerUrl', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getIssuerUrl', $this->model);
+
+        $issuerUrl = $this->model->getIssuerUrl();
+        verify($issuerUrl)->string();
+        verify($issuerUrl)->isEmpty();
+
+        $this->model->setIssuerUrl('http://foo.bar');
+        $issuerUrl = $this->model->getIssuerUrl();
+        verify($issuerUrl)->string();
+        verify($issuerUrl)->notEmpty();
+        verify($issuerUrl)->equals('http://foo.bar');
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanSetTransfer(): void
+    {
+        $this->tester->assertObjectHasMethod('setTransfer', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setTransfer', $this->model);
+
+        $transferMock = $this->tester->grabMockService('modelManager')->get(Transfer::class);
+        $transaction = $this->model->setTransfer($transferMock);
+        verify($transaction)->object();
+        verify($transaction)->same($this->model);
+    }
+
+    /**
+     * @depends testItCanSetTransfer
+     *
+     * @return void
+     */
+    public function testItCanGetTransfer(): void
+    {
+        $this->tester->assertObjectHasMethod('getTransfer', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getTransfer', $this->model);
+
+        $transfer = $this->model->getTransfer();
+        verify($transfer)->null();
+
+        $transferMock = $this->tester->grabMockService('modelManager')->get(Transfer::class);
+        $this->model->setTransfer($transferMock);
+        $transfer = $this->model->getTransfer();
+        verify($transfer)->object();
+        verify($transfer)->isInstanceOf(Transfer::class);
+        verify($transfer)->same($transferMock);
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanSetDomainId(): void
+    {
+        $this->tester->assertObjectHasMethod('setDomainId', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setDomainId', $this->model);
+
+        $transaction = $this->model->setDomainId('foo');
+        verify($transaction)->object();
+        verify($transaction)->same($this->model);
+    }
+
+    /**
+     * @depends testItCanSetDomainId
+     *
+     * @return void
+     */
+    public function testItCanGetDomainId(): void
+    {
+        $this->tester->assertObjectHasMethod('getDomainId', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getDomainId', $this->model);
+
+        $domainId = $this->model->getDomainId();
+        verify($domainId)->string();
+        verify($domainId)->isEmpty();
+
+        $this->model->setDomainId('foo');
+        $domainId = $this->model->getDomainId();
+        verify($domainId)->string();
+        verify($domainId)->notEmpty();
+        verify($domainId)->equals('foo');
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanSetIntegration(): void
+    {
+        $this->tester->assertObjectHasMethod('setIntegration', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setIntegration', $this->model);
+
+        $integrationMock = $this->tester->grabMockService('modelManager')->get(Integration::class);
+        $transaction = $this->model->setIntegration($integrationMock);
+        verify($transaction)->object();
+        verify($transaction)->same($this->model);
+    }
+
+    /**
+     * @depends testItCanSetIntegration
+     *
+     * @return void
+     */
+    public function testItCanGetIntegration(): void
+    {
+        $this->tester->assertObjectHasMethod('getIntegration', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getIntegration', $this->model);
+
+        $integration = $this->model->getIntegration();
+        verify($integration)->null();
+
+        $integrationMock = $this->tester->grabMockService('modelManager')->get(Integration::class);
+        $this->model->setIntegration($integrationMock);
+        $integration = $this->model->getIntegration();
+        verify($integration)->object();
+        verify($integration)->isInstanceOf(Integration::class);
+        verify($integration)->same($integrationMock);
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanSetOrder(): void
+    {
+        $this->tester->assertObjectHasMethod('setOrder', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setOrder', $this->model);
+
+        $orderMock = $this->tester->grabMockService('modelManager')->get(Order::class);
+        $transaction = $this->model->setOrder($orderMock);
+        verify($transaction)->object();
+        verify($transaction)->same($this->model);
+    }
+
+    /**
+     * @depends testItCanSetOrder
+     *
+     * @return void
+     */
+    public function testItCanGetOrder(): void
+    {
+        $this->tester->assertObjectHasMethod('getOrder', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getOrder', $this->model);
+
+        $order = $this->model->getOrder();
+        verify($order)->null();
+
+        $orderMock = $this->tester->grabMockService('modelManager')->get(Order::class);
+        $this->model->setOrder($orderMock);
+        $order = $this->model->getOrder();
+        verify($order)->object();
+        verify($order)->isInstanceOf(Order::class);
+        verify($order)->same($orderMock);
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanSetStatus(): void
+    {
+        $this->tester->assertObjectHasMethod('setStatus', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setStatus', $this->model);
+
+        $statusMock = $this->tester->grabMockService('modelManager')->get(TransactionStatus::class);
+        $transaction = $this->model->setStatus($statusMock);
+        verify($transaction)->object();
+        verify($transaction)->same($this->model);
+    }
+
+    /**
+     * @depends testItCanSetStatus
+     *
+     * @return void
+     */
+    public function testItCanGetStatus(): void
+    {
+        $this->tester->assertObjectHasMethod('getStatus', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getStatus', $this->model);
+
+        $status = $this->model->getStatus();
+        verify($status)->null();
+
+        $statusMock = $this->tester->grabMockService('modelManager')->get(TransactionStatus::class);
+        $this->model->setStatus($statusMock);
+        $status = $this->model->getStatus();
+        verify($status)->object();
+        verify($status)->isInstanceOf(TransactionStatus::class);
+        verify($status)->same($statusMock);
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanSetStatistics(): void
+    {
+        $this->tester->assertObjectHasMethod('setStatistics', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setStatistics', $this->model);
+
+        $statisticsMock = $this->tester->grabMockService('modelManager')->get(Statistics::class);
+        $transaction = $this->model->setStatistics($statisticsMock);
+        verify($transaction)->object();
+        verify($transaction)->same($this->model);
+    }
+
+    /**
+     * @depends testItCanSetStatistics
+     *
+     * @return void
+     */
+    public function testItCanGetStatistics(): void
+    {
+        $this->tester->assertObjectHasMethod('getStatistics', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getStatistics', $this->model);
+
+        $statistics = $this->model->getStatistics();
+        verify($statistics)->null();
+
+        $statisticsMock = $this->tester->grabMockService('modelManager')->get(Statistics::class);
+        $this->model->setStatistics($statisticsMock);
+        $statistics = $this->model->getStatistics();
+        verify($statistics)->object();
+        verify($statistics)->isInstanceOf(Statistics::class);
+        verify($statistics)->same($statisticsMock);
     }
 
     /**
@@ -561,407 +762,111 @@ class TransactionTest extends UnitTest
      *
      * @return void
      */
-    public function testItCanSetAStatistics(): void
+    public function testItCanSetCreatedAt(): void
     {
-        expect($this->transaction->setStatistics(new Statistics()))->isInstanceOf(Transaction::class);
+        $this->tester->assertObjectHasMethod('setCreatedAt', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setCreatedAt', $this->model);
+
+        $dateTimeMock = Mockery::mock(DateTime::class);
+        $transaction = $this->model->setCreatedAt($dateTimeMock);
+        verify($transaction)->object();
+        verify($transaction)->same($this->model);
     }
 
     /**
-     * @depends testItCanSetAStatistics
-     *
-     * @throws Exception
-     *
-     * @return void
-     */
-    public function testItCanGetAStatistics(): void
-    {
-        $this->transaction->setStatistics(new Statistics());
-
-        verify($this->transaction->getStatistics())->notEmpty();
-        verify($this->transaction->getStatistics())->isInstanceOf(Statistics::class);
-    }
-
-    /**
-     * @throws Exception
+     * @depends testItCanSetCreatedAt
      *
      * @return void
      */
-    public function testItCanSetACreatedAt(): void
+    public function testItCanGetCreatedAt(): void
     {
-        expect($this->transaction->setCreatedAt(DateTime::now()))->isInstanceOf(Transaction::class);
+        $this->tester->assertObjectHasMethod('getCreatedAt', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getCreatedAt', $this->model);
+
+        $createdAt = $this->model->getCreatedAt();
+        verify($createdAt)->object();
+        verify($createdAt)->isInstanceOf(DateTime::class);
+
+        $createdAtOld = $createdAt;
+
+        $dateTimeMock = Mockery::mock(DateTime::class);
+        $this->model->setCreatedAt($dateTimeMock);
+        $createdAt = $this->model->getCreatedAt();
+        verify($createdAt)->object();
+        verify($createdAt)->isInstanceOf(DateTime::class);
+        verify($createdAt)->same($dateTimeMock);
+        verify($createdAt)->notSame($createdAtOld);
     }
 
     /**
-     * @depends testItCanSetACreatedAt
-     *
-     * @throws Exception
-     *
-     * @return void
-     */
-    public function testItCanGetACreatedAt(): void
-    {
-        $this->transaction->setCreatedAt(DateTime::now());
-
-        verify($this->transaction->getCreatedAt())->notEmpty();
-        verify($this->transaction->getCreatedAt())->isInstanceOf(DateTime::class);
-    }
-
-    /**
-     * @throws Exception
-     *
-     * @return void
-     */
-    public function testItCanSetAExpiresAt(): void
-    {
-        expect($this->transaction->setExpiresAt(DateTime::now()))->isInstanceOf(Transaction::class);
-    }
-
-    /**
-     * @depends testItCanSetAExpiresAt
-     *
-     * @throws Exception
+     * @param int $statusCode
      *
      * @return void
      */
-    public function testItCanGetAExpiresAt(): void
+    private function setModelStatus(int $statusCode): void
     {
-        $this->transaction->setExpiresAt(DateTime::now());
+        $this->tester->assertClassHasMethod('__call', Transaction::class);
 
-        verify($this->transaction->getExpiresAt())->notEmpty();
-        verify($this->transaction->getExpiresAt())->isInstanceOf(DateTime::class);
+        /** @var TransactionStatus $transactionStatus */
+        $transactionStatus = $this->tester->grabService('modelManager')->get(TransactionStatus::class);
+        $transactionStatus->setCode($statusCode);
+
+        $this->model->setStatus($transactionStatus);
     }
 
     /**
-     * @return void
+     * @return array
      */
-    public function testItCanSetTestMode(): void
+    public function _statusCases(): array
     {
-        expect($this->transaction->setTestMode(1))->isInstanceOf(Transaction::class);
+        return array_reduce([
+            // array(status code, method name)
+            [TransactionStatus::STATUS_CANCELLED, 'isCancelled'],
+            [TransactionStatus::STATUS_PARTIALLY_REFUNDED, 'isPartiallyRefunded'],
+            [TransactionStatus::STATUS_REFUNDED_CUSTOMER, 'isRefundedCustomer'],
+            [TransactionStatus::STATUS_EXPIRED, 'isExpired'],
+            [TransactionStatus::STATUS_REFUNDING, 'isRefunding'],
+            [TransactionStatus::STATUS_CHARGEBACK, 'isChargeback'],
+            [TransactionStatus::STATUS_DENIED, 'isDenied'],
+            [TransactionStatus::STATUS_FAILURE, 'isFailure'],
+            [TransactionStatus::STATUS_INVALID_AMOUNT, 'isInvalidAmount'],
+            [TransactionStatus::STATUS_INITIALIZED, 'isInitialized'],
+            [TransactionStatus::STATUS_PROCESSING, 'isProcessing'],
+            [TransactionStatus::STATUS_PENDING1, 'isPending'],
+            [TransactionStatus::STATUS_PENDING2, 'isPending'],
+            [TransactionStatus::STATUS_PENDING3, 'isPending'],
+            [TransactionStatus::STATUS_SUBSCRIPTION_OPEN, 'isSubscriptionOpen'],
+            [TransactionStatus::STATUS_PROCESSED, 'isProcessed'],
+            [TransactionStatus::STATUS_CONFIRMED, 'isConfirmed'],
+            [TransactionStatus::STATUS_PARTIALLY_PAID, 'isPartiallyPaid'],
+            [TransactionStatus::STATUS_VERIFY, 'isVerify'],
+            [TransactionStatus::STATUS_AUTHORIZED, 'isAuthorized'],
+            [TransactionStatus::STATUS_PARTIALLY_ACCEPTED, 'isPartiallyAccepted'],
+            [TransactionStatus::STATUS_PAID, 'isPaid'],
+        ], static function ($result, $item) {
+            $key = $item[1] . " ({$item[0]})";
+            $result[$key] = $item;
+            return $result;
+        }, []);
     }
 
     /**
-     * @depends testItCanSetTestMode
+     * @depends testItCanSetStatus
+     *
+     * @dataProvider _statusCases
+     *
+     * @param int $statusCode
+     * @param string $methodName
      *
      * @return void
      */
-    public function testItCanGetTestMode(): void
+    public function testItCanCheckForStatusByMethodCall(int $statusCode, string $methodName): void
     {
-        $this->transaction->setTestMode(1);
+        $this->setModelStatus($statusCode);
 
-        verify($this->transaction->getTestMode())->int();
-        verify($this->transaction->getTestMode())->notEmpty();
-        verify($this->transaction->getTestMode())->equals(1);
-    }
-
-    /**
-     * @return void
-     */
-    public function testItCanSetATransferType(): void
-    {
-        expect($this->transaction->setTransferType('type'))->isInstanceOf(Transaction::class);
-    }
-
-    /**
-     * @depends testItCanSetATransferType
-     *
-     * @return void
-     */
-    public function testItCanGetATransferType(): void
-    {
-        $this->transaction->setTransferType('type');
-
-        verify($this->transaction->getTransferType())->string();
-        verify($this->transaction->getTransferType())->notEmpty();
-        verify($this->transaction->getTransferType())->equals('type');
-    }
-
-    /**
-     * @return void
-     */
-    public function testItCanSetATransferValue(): void
-    {
-        expect($this->transaction->setTransferValue('value'))->isInstanceOf(Transaction::class);
-    }
-
-    /**
-     * @depends testItCanSetATransferValue
-     *
-     * @return void
-     */
-    public function testItCanGetATransferValue(): void
-    {
-        $this->transaction->setTransferValue('value');
-
-        verify($this->transaction->getTransferValue())->string();
-        verify($this->transaction->getTransferValue())->notEmpty();
-        verify($this->transaction->getTransferValue())->equals('value');
-    }
-
-    /**
-     * @return void
-     */
-    public function testItCanSetAnEndUserId(): void
-    {
-        expect($this->transaction->setEndUserId('E-0000'))->isInstanceOf(Transaction::class);
-    }
-
-    /**
-     * @depends testItCanSetAnEndUserId
-     *
-     * @return void
-     */
-    public function testItCanGetAnEndUserId(): void
-    {
-        $this->transaction->setEndUserId('E-0000');
-
-        verify($this->transaction->getEndUserId())->string();
-        verify($this->transaction->getEndUserId())->notEmpty();
-        verify($this->transaction->getEndUserId())->equals('E-0000');
-    }
-
-    /**
-     * @throws Exception
-     *
-     * @return void
-     */
-    public function testItCanSetACompany(): void
-    {
-        expect($this->transaction->setCompany(new Company()))->isInstanceOf(Transaction::class);
-    }
-
-    /**
-     * @depends testItCanSetACompany
-     *
-     * @throws Exception
-     *
-     * @return void
-     */
-    public function testItCanGetACompany(): void
-    {
-        $this->transaction->setCompany(new Company());
-
-        verify($this->transaction->getCompany())->notEmpty();
-        verify($this->transaction->getCompany())->isInstanceOf(Company::class);
-    }
-
-    /**
-     * @return void
-     */
-    public function testItCanCheckIsCancelled(): void
-    {
-        $this->transaction->getStatus()->setCode(TransactionStatus::STATUS_CANCELLED);
-        verify($this->transaction->isCancelled())->bool();
-        verify($this->transaction->isCancelled())->true();
-    }
-
-    /**
-     * @return void
-     */
-    public function testItCanCheckIsPartiallyRefunded(): void
-    {
-        $this->transaction->getStatus()->setCode(TransactionStatus::STATUS_PARTIALLY_REFUNDED);
-        verify($this->transaction->isPartiallyRefunded())->bool();
-        verify($this->transaction->isPartiallyRefunded())->true();
-    }
-
-    /**
-     * @return void
-     */
-    public function testItCanCheckIsRefundedCustomer(): void
-    {
-        $this->transaction->getStatus()->setCode(TransactionStatus::STATUS_REFUNDED_CUSTOMER);
-        verify($this->transaction->isRefundedCustomer())->bool();
-        verify($this->transaction->isRefundedCustomer())->true();
-    }
-
-    /**
-     * @return void
-     */
-    public function testItCanCheckIsExpired(): void
-    {
-        $this->transaction->getStatus()->setCode(TransactionStatus::STATUS_EXPIRED);
-        verify($this->transaction->isExpired())->bool();
-        verify($this->transaction->isExpired())->true();
-    }
-
-    /**
-     * @return void
-     */
-    public function testItCanCheckIsRefunding(): void
-    {
-        $this->transaction->getStatus()->setCode(TransactionStatus::STATUS_REFUNDING);
-        verify($this->transaction->isRefunding())->bool();
-        verify($this->transaction->isRefunding())->true();
-    }
-
-    /**
-     * @return void
-     */
-    public function testItCanCheckIsChargeback(): void
-    {
-        $this->transaction->getStatus()->setCode(TransactionStatus::STATUS_CHARGEBACK);
-        verify($this->transaction->isChargeback())->bool();
-        verify($this->transaction->isChargeback())->true();
-    }
-
-    /**
-     * @return void
-     */
-    public function testItCanCheckIsDenied(): void
-    {
-        $this->transaction->getStatus()->setCode(TransactionStatus::STATUS_DENIED);
-        verify($this->transaction->isDenied())->bool();
-        verify($this->transaction->isDenied())->true();
-    }
-
-    /**
-     * @return void
-     */
-    public function testItCanCheckIsFailure(): void
-    {
-        $this->transaction->getStatus()->setCode(TransactionStatus::STATUS_FAILURE);
-        verify($this->transaction->isFailure())->bool();
-        verify($this->transaction->isFailure())->true();
-    }
-
-    /**
-     * @return void
-     */
-    public function testItCanCheckIsInvalidAmount(): void
-    {
-        $this->transaction->getStatus()->setCode(TransactionStatus::STATUS_INVALID_AMOUNT);
-        verify($this->transaction->isInvalidAmount())->bool();
-        verify($this->transaction->isInvalidAmount())->true();
-    }
-
-    /**
-     * @return void
-     */
-    public function testItCanCheckIsInitialized(): void
-    {
-        $this->transaction->getStatus()->setCode(TransactionStatus::STATUS_INITIALIZED);
-        verify($this->transaction->isInitialized())->bool();
-        verify($this->transaction->isInitialized())->true();
-    }
-
-    /**
-     * @return void
-     */
-    public function testItCanCheckIsProcessing(): void
-    {
-        $this->transaction->getStatus()->setCode(TransactionStatus::STATUS_PROCESSING);
-        verify($this->transaction->isProcessing())->bool();
-        verify($this->transaction->isProcessing())->true();
-    }
-
-    /**
-     * @return void
-     */
-    public function testItCanCheckIsPending1(): void
-    {
-        $this->transaction->getStatus()->setCode(TransactionStatus::STATUS_PENDING1);
-        verify($this->transaction->isPending())->bool();
-        verify($this->transaction->isPending())->true();
-    }
-
-    /**
-     * @return void
-     */
-    public function testItCanCheckIsPending2(): void
-    {
-        $this->transaction->getStatus()->setCode(TransactionStatus::STATUS_PENDING2);
-        verify($this->transaction->isPending())->bool();
-        verify($this->transaction->isPending())->true();
-    }
-
-    /**
-     * @return void
-     */
-    public function testItCanCheckIsPending3(): void
-    {
-        $this->transaction->getStatus()->setCode(TransactionStatus::STATUS_PENDING3);
-        verify($this->transaction->isPending())->bool();
-        verify($this->transaction->isPending())->true();
-    }
-
-    /**
-     * @return void
-     */
-    public function testItCanCheckIsSubscriptionOpen(): void
-    {
-        $this->transaction->getStatus()->setCode(TransactionStatus::STATUS_SUBSCRIPTION_OPEN);
-        verify($this->transaction->isSubscriptionOpen())->bool();
-        verify($this->transaction->isSubscriptionOpen())->true();
-    }
-
-    /**
-     * @return void
-     */
-    public function testItCanCheckIsProcessed(): void
-    {
-        $this->transaction->getStatus()->setCode(TransactionStatus::STATUS_PROCESSED);
-        verify($this->transaction->isProcessed())->bool();
-        verify($this->transaction->isProcessed())->true();
-    }
-
-    /**
-     * @return void
-     */
-    public function testItCanCheckIsConfirmed(): void
-    {
-        $this->transaction->getStatus()->setCode(TransactionStatus::STATUS_CONFIRMED);
-        verify($this->transaction->isConfirmed())->bool();
-        verify($this->transaction->isConfirmed())->true();
-    }
-
-    /**
-     * @return void
-     */
-    public function testItCanCheckIsPartiallyPaid(): void
-    {
-        $this->transaction->getStatus()->setCode(TransactionStatus::STATUS_PARTIALLY_PAID);
-        verify($this->transaction->isPartiallyPaid())->bool();
-        verify($this->transaction->isPartiallyPaid())->true();
-    }
-
-    /**
-     * @return void
-     */
-    public function testItCanCheckIsVerify(): void
-    {
-        $this->transaction->getStatus()->setCode(TransactionStatus::STATUS_VERIFY);
-        verify($this->transaction->isVerify())->bool();
-        verify($this->transaction->isVerify())->true();
-    }
-
-    /**
-     * @return void
-     */
-    public function testItCanCheckIsAuthorized(): void
-    {
-        $this->transaction->getStatus()->setCode(TransactionStatus::STATUS_AUTHORIZED);
-        verify($this->transaction->isAuthorized())->bool();
-        verify($this->transaction->isAuthorized())->true();
-    }
-
-    /**
-     * @return void
-     */
-    public function testItCanCheckIsPartiallyAccepted(): void
-    {
-        $this->transaction->getStatus()->setCode(TransactionStatus::STATUS_PARTIALLY_ACCEPTED);
-        verify($this->transaction->isPartiallyAccepted())->bool();
-        verify($this->transaction->isPartiallyAccepted())->true();
-    }
-
-    /**
-     * @return void
-     */
-    public function testItCanCheckIsPaid(): void
-    {
-        $this->transaction->getStatus()->setCode(TransactionStatus::STATUS_PAID);
-        verify($this->transaction->isPaid())->bool();
-        verify($this->transaction->isPaid())->true();
+        verify([$this->model, $methodName])->callable();
+        verify($this->model->$methodName())->bool();
+        verify($this->model->$methodName())->true();
     }
 
     /**
@@ -970,6 +875,6 @@ class TransactionTest extends UnitTest
     public function testItThrowsAnExceptionWhenMethodDoesNotExist(): void
     {
         $this->expectException(BadMethodCallException::class);
-        $this->transaction->test();
+        $this->model->test();
     }
 }

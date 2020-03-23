@@ -4,17 +4,23 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PayNL\Sdk\Service;
 
-use Codeception\Test\Unit as UnitTest;
-use Codeception\TestAsset\Dummy;
-use Codeception\TestAsset\DummyFactory;
-use Codeception\TestAsset\DummyService;
-use PayNL\Sdk\Config\Config;
-use PayNL\Sdk\Exception\RuntimeException;
-use PayNL\Sdk\Exception\ServiceNotFoundException;
-use PayNL\Sdk\Service\Loader;
-use PayNL\Sdk\Service\Config as ServiceConfig;
-use PayNL\Sdk\Service\Manager as ServiceManager;
-use UnitTester, Mockery, Exception;
+use Codeception\{
+    Test\Unit as UnitTest,
+    TestAsset\Dummy,
+    TestAsset\DummyService
+};
+use PayNL\Sdk\{
+    Config\Config,
+    Exception\RuntimeException,
+    Exception\ServiceNotFoundException,
+    Service\Loader,
+    Service\Config as ServiceConfig,
+    Service\Manager as ServiceManager
+};
+use UnitTester,
+    Mockery,
+    Exception
+;
 
 /**
  * Class LoaderTest

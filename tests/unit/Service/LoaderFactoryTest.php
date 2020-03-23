@@ -4,13 +4,19 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PayNL\Sdk\Service;
 
-use Codeception\Test\Unit as UnitTest;
-use Codeception\Lib\FactoryTestTrait;
-use PayNL\Sdk\Exception\ServiceNotCreatedException;
-use PayNL\Sdk\Service\LoaderFactory;
-use PayNL\Sdk\Service\Loader;
-use PayNL\Sdk\Config\Config;
-use UnitTester, Exception;
+use Codeception\{
+    Lib\FactoryTestTrait,
+    Test\Unit as UnitTest
+};
+use PayNL\Sdk\{
+    Exception\ServiceNotCreatedException,
+    Service\LoaderFactory,
+    Service\Loader,
+    Config\Config
+};
+use UnitTester,
+    Exception
+;
 
 /**
  * Class LoaderFactoryTest

@@ -4,17 +4,23 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PayNL\Sdk\Service;
 
-use Codeception\{Test\Unit as UnitTest,
+use Codeception\{
+    Test\Unit as UnitTest,
     Lib\ManagerTestTrait,
     TestAsset\Dummy,
     TestAsset\DummyInterface,
     TestAsset\DummyService,
-    TestAsset\SimpleModel};
-use PayNL\Sdk\{Exception\InvalidServiceException,
+    TestAsset\SimpleModel
+};
+use PayNL\Sdk\{
+    Exception\InvalidServiceException,
     Exception\ServiceNotFoundException,
     Service\AbstractPluginManager,
-    Service\Manager};
-use Exception, stdClass;
+    Service\Manager
+};
+use Exception,
+    stdClass
+;
 
 class AbstractPluginManagerTest extends UnitTest
 {

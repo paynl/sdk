@@ -8,21 +8,20 @@ use Codeception\{
     Lib\ModelTestTrait,
     Test\Unit as UnitTest
 };
-use Mockery;
-use PayNL\Sdk\Common\DateTime;
-use PayNL\Sdk\Model\Address;
-use PayNL\Sdk\Model\Amount;
-use PayNL\Sdk\Model\Company;
-use PayNL\Sdk\Model\Customer;
-use PayNL\Sdk\Model\Integration;
-use PayNL\Sdk\Model\Order;
-use PayNL\Sdk\Model\PaymentMethod;
-use PayNL\Sdk\Model\Product;
-use PayNL\Sdk\Model\Statistics;
-use PayNL\Sdk\Model\TransactionStatus;
-use PayNL\Sdk\Model\Transaction;
-use Exception, BadMethodCallException;
-use PayNL\Sdk\Model\Transfer;
+use PayNL\Sdk\{
+    Common\DateTime,
+    Model\Amount,
+    Model\Integration,
+    Model\Order,
+    Model\PaymentMethod,
+    Model\Statistics,
+    Model\TransactionStatus,
+    Model\Transaction,
+    Model\Transfer
+};
+use BadMethodCallException,
+    Mockery
+;
 
 /**
  * Class TransactionTest
@@ -46,13 +45,12 @@ class TransactionTest extends UnitTest
         $this->shouldItBeJsonSerializable = true;
 
         $this->model = new Transaction();
-        //$this->model->setStatus(new TransactionStatus());
     }
 
     /**
      * @return void
      */
-    public function testItCanSetAnId(): void
+    public function testItCanSetId(): void
     {
         $this->tester->assertObjectHasMethod('setId', $this->model);
         $this->tester->assertObjectMethodIsPublic('setId', $this->model);
@@ -63,11 +61,11 @@ class TransactionTest extends UnitTest
     }
 
     /**
-     * @depends testItCanSetAnId
+     * @depends testItCanSetId
      *
      * @return void
      */
-    public function testItCanGetAnId(): void
+    public function testItCanGetId(): void
     {
         $this->tester->assertObjectHasMethod('getId', $this->model);
         $this->tester->assertObjectMethodIsPublic('getId', $this->model);
@@ -86,7 +84,7 @@ class TransactionTest extends UnitTest
     /**
      * @return void
      */
-    public function testItCanSetAServiceId(): void
+    public function testItCanSetServiceId(): void
     {
         $this->tester->assertObjectHasMethod('setServiceId', $this->model);
         $this->tester->assertObjectMethodIsPublic('setServiceId', $this->model);
@@ -97,11 +95,11 @@ class TransactionTest extends UnitTest
     }
 
     /**
-     * @depends testItCanSetAServiceId
+     * @depends testItCanSetServiceId
      *
      * @return void
      */
-    public function testItCanGetAServiceId(): void
+    public function testItCanGetServiceId(): void
     {
         $this->tester->assertObjectHasMethod('getServiceId', $this->model);
         $this->tester->assertObjectMethodIsPublic('getServiceId', $this->model);
@@ -120,7 +118,7 @@ class TransactionTest extends UnitTest
     /**
      * @return void
      */
-    public function testItCanSetADescription(): void
+    public function testItCanSetDescription(): void
     {
         $this->tester->assertObjectHasMethod('setDescription', $this->model);
         $this->tester->assertObjectMethodIsPublic('setDescription', $this->model);
@@ -131,11 +129,11 @@ class TransactionTest extends UnitTest
     }
 
     /**
-     * @depends testItCanSetADescription
+     * @depends testItCanSetDescription
      *
      * @return void
      */
-    public function testItCanGetADescription(): void
+    public function testItCanGetDescription(): void
     {
         $this->tester->assertObjectHasMethod('getDescription', $this->model);
         $this->tester->assertObjectMethodIsPublic('getDescription', $this->model);
@@ -220,11 +218,9 @@ class TransactionTest extends UnitTest
     }
 
     /**
-     * @throws Exception
-     *
      * @return void
      */
-    public function testItCanSetAExpiresAt(): void
+    public function testItCanSetExpiresAt(): void
     {
         $this->tester->assertObjectHasMethod('setExpiresAt', $this->model);
         $this->tester->assertObjectMethodIsPublic('setExpiresAt', $this->model);
@@ -236,11 +232,11 @@ class TransactionTest extends UnitTest
     }
 
     /**
-     * @depends testItCanSetAExpiresAt
+     * @depends testItCanSetExpiresAt
      *
      * @return void
      */
-    public function testItCanGetAExpiresAt(): void
+    public function testItCanGetExpiresAt(): void
     {
         $this->tester->assertObjectHasMethod('getExpiresAt', $this->model);
         $this->tester->assertObjectMethodIsPublic('getExpiresAt', $this->model);
@@ -259,7 +255,7 @@ class TransactionTest extends UnitTest
     /**
      * @return void
      */
-    public function testItCanSetAnAmount(): void
+    public function testItCanSetAmount(): void
     {
         $this->tester->assertObjectHasMethod('setAmount', $this->model);
         $this->tester->assertObjectMethodIsPublic('setAmount', $this->model);
@@ -271,13 +267,11 @@ class TransactionTest extends UnitTest
     }
 
     /**
-     * @depends testItCanSetAnAmount
-     *
-     * @throws Exception
+     * @depends testItCanSetAmount
      *
      * @return void
      */
-    public function testItCanGetAnAmount(): void
+    public function testItCanGetAmount(): void
     {
         $this->tester->assertObjectHasMethod('getAmount', $this->model);
         $this->tester->assertObjectMethodIsPublic('getAmount', $this->model);
@@ -292,11 +286,9 @@ class TransactionTest extends UnitTest
     }
 
     /**
-     * @throws Exception
-     *
      * @return void
      */
-    public function testItCanSetAnAmountConverted(): void
+    public function testItCanSetAmountConverted(): void
     {
         $this->tester->assertObjectHasMethod('setAmountConverted', $this->model);
         $this->tester->assertObjectMethodIsPublic('setAmountConverted', $this->model);
@@ -308,13 +300,11 @@ class TransactionTest extends UnitTest
     }
 
     /**
-     * @depends testItCanSetAnAmountConverted
-     *
-     * @throws Exception
+     * @depends testItCanSetAmountConverted
      *
      * @return void
      */
-    public function testItCanGetAnAmountConverted(): void
+    public function testItCanGetAmountConverted(): void
     {
         $this->tester->assertObjectHasMethod('getAmountConverted', $this->model);
         $this->tester->assertObjectMethodIsPublic('getAmountConverted', $this->model);
@@ -332,11 +322,9 @@ class TransactionTest extends UnitTest
     }
 
     /**
-     * @throws Exception
-     *
      * @return void
      */
-    public function testItCanSetAnAmountPaid(): void
+    public function testItCanSetAmountPaid(): void
     {
         $this->tester->assertObjectHasMethod('setAmountPaid', $this->model);
         $this->tester->assertObjectMethodIsPublic('setAmountPaid', $this->model);
@@ -348,13 +336,11 @@ class TransactionTest extends UnitTest
     }
 
     /**
-     * @depends testItCanSetAnAmountPaid
-     *
-     * @throws Exception
+     * @depends testItCanSetAmountPaid
      *
      * @return void
      */
-    public function testItCanGetAnAmountPaid(): void
+    public function testItCanGetAmountPaid(): void
     {
         $this->tester->assertObjectHasMethod('getAmountPaid', $this->model);
         $this->tester->assertObjectMethodIsPublic('getAmountPaid', $this->model);
@@ -372,11 +358,9 @@ class TransactionTest extends UnitTest
     }
 
     /**
-     * @throws Exception
-     *
      * @return void
      */
-    public function testItCanSetAnAmountRefunded(): void
+    public function testItCanSetAmountRefunded(): void
     {
         $this->tester->assertObjectHasMethod('setAmountRefunded', $this->model);
         $this->tester->assertObjectMethodIsPublic('setAmountRefunded', $this->model);
@@ -388,13 +372,11 @@ class TransactionTest extends UnitTest
     }
 
     /**
-     * @depends testItCanSetAnAmountRefunded
-     *
-     * @throws Exception
+     * @depends testItCanSetAmountRefunded
      *
      * @return void
      */
-    public function testItCanGetAnAmountRefunded(): void
+    public function testItCanGetAmountRefunded(): void
     {
         $this->tester->assertObjectHasMethod('getAmountRefunded', $this->model);
         $this->tester->assertObjectMethodIsPublic('getAmountRefunded', $this->model);
@@ -483,7 +465,7 @@ class TransactionTest extends UnitTest
     /**
      * @return void
      */
-    public function testItCanSetAExchangeUrl(): void
+    public function testItCanSetExchangeUrl(): void
     {
         $this->tester->assertObjectHasMethod('setExchangeUrl', $this->model);
         $this->tester->assertObjectMethodIsPublic('setExchangeUrl', $this->model);
@@ -494,11 +476,11 @@ class TransactionTest extends UnitTest
     }
 
     /**
-     * @depends testItCanSetAExchangeUrl
+     * @depends testItCanSetExchangeUrl
      *
      * @return void
      */
-    public function testItCanGetAExchangeUrl(): void
+    public function testItCanGetExchangeUrl(): void
     {
         $this->tester->assertObjectHasMethod('getExchangeUrl', $this->model);
         $this->tester->assertObjectMethodIsPublic('getExchangeUrl', $this->model);
@@ -517,7 +499,7 @@ class TransactionTest extends UnitTest
     /**
      * @return void
      */
-    public function testItCanSetAIssuerUrl(): void
+    public function testItCanSetIssuerUrl(): void
     {
         $this->tester->assertObjectHasMethod('setIssuerUrl', $this->model);
         $this->tester->assertObjectMethodIsPublic('setIssuerUrl', $this->model);
@@ -528,11 +510,11 @@ class TransactionTest extends UnitTest
     }
 
     /**
-     * @depends testItCanSetAIssuerUrl
+     * @depends testItCanSetIssuerUrl
      *
      * @return void
      */
-    public function testItCanGetAIssuerUrl(): void
+    public function testItCanGetIssuerUrl(): void
     {
         $this->tester->assertObjectHasMethod('getIssuerUrl', $this->model);
         $this->tester->assertObjectMethodIsPublic('getIssuerUrl', $this->model);
@@ -758,8 +740,6 @@ class TransactionTest extends UnitTest
     }
 
     /**
-     * @throws Exception
-     *
      * @return void
      */
     public function testItCanSetCreatedAt(): void

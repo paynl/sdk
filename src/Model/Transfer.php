@@ -36,7 +36,7 @@ class Transfer implements ModelInterface, JsonSerializable
      */
     public function getType(): string
     {
-        return $this->type;
+        return (string)$this->type;
     }
 
     /**
@@ -55,7 +55,7 @@ class Transfer implements ModelInterface, JsonSerializable
      */
     public function getValue(): string
     {
-        return $this->value;
+        return (string)$this->value;
     }
 
     /**

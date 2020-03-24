@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\PayNL\Sdk\Model;
 
 use Codeception\Test\Unit as UnitTest;
+use Codeception\Lib\ModelTestTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use PayNL\Sdk\Model\{
     ModelInterface,
@@ -13,7 +14,6 @@ use PayNL\Sdk\Model\{
 };
 use PayNL\Sdk\Common\CollectionInterface;
 use JsonSerializable, Countable, ArrayAccess, IteratorAggregate;
-use UnitTester;
 
 /**
  * Class LinksTest
@@ -22,28 +22,20 @@ use UnitTester;
  */
 class LinksTest extends UnitTest
 {
-    /** @var UnitTester */
-    protected $tester;
+    use ModelTestTrait;
 
     /**
      * @var Links
      */
-    protected $links;
+    protected $model;
 
     /**
      * @return void
      */
     public function _before(): void
     {
-        $this->links = new Links();
-    }
-
-    /**
-     * @return void
-     */
-    public function testItIsAModel(): void
-    {
-        verify($this->links)->isInstanceOf(ModelInterface::class);
+        $this->shouldItBeJsonSerializable = false;
+        $this->model = new Links();
     }
 
     /**
@@ -51,7 +43,7 @@ class LinksTest extends UnitTest
      */
     public function testItIsAnArrayCollection(): void
     {
-        verify($this->links)->isInstanceOf(ArrayCollection::class);
+        verify($this->model)->isInstanceOf(ArrayCollection::class);
     }
 
     /**
@@ -59,15 +51,7 @@ class LinksTest extends UnitTest
      */
     public function testItIsACollection(): void
     {
-        verify($this->links)->isInstanceOf(CollectionInterface::class);
-    }
-
-    /**
-     * @return void
-     */
-    public function testIsItNotJsonSerializable(): void
-    {
-        verify($this->links)->isNotInstanceOf(JsonSerializable::class);
+        verify($this->model)->isInstanceOf(CollectionInterface::class);
     }
 
     /**
@@ -91,7 +75,7 @@ class LinksTest extends UnitTest
      */
     public function testItCanSetLinks(): void
     {
-        $result = $this->links->setLinks([ $this->getLink() ]);
+        $result = $this->model->setLinks([ $this->getLink() ]);
         verify($result)->isInstanceOf(Links::class);
     }
 
@@ -102,9 +86,9 @@ class LinksTest extends UnitTest
      */
     public function testItCanSetEmptyLinks(): void
     {
-        $this->tester->assertObjectHasMethod('setLinks', $this->links);
-        verify($this->links->setLinks([]))->isInstanceOf(Links::class);
-        verify($this->links)->count(0);
+        $this->tester->assertObjectHasMethod('setLinks', $this->model);
+        verify($this->model->setLinks([]))->isInstanceOf(Links::class);
+        verify($this->model)->count(0);
     }
 
     /**
@@ -113,8 +97,8 @@ class LinksTest extends UnitTest
     public function testItCanAddLink(): void
     {
         $link = $this->getLink();
-        $this->links->addLink($link);
-        $this->tester->assertArrayMustContainKeys($this->links->getKeys(), $link->getRel());
+        $this->model->addLink($link);
+        verify($this->model)->hasKey($link->getRel());
     }
 
     /**
@@ -124,16 +108,16 @@ class LinksTest extends UnitTest
      */
     public function testItCanGetLinks(): void
     {
-        verify(method_exists($this->links, 'getLinks'))->true();
+        verify(method_exists($this->model, 'getLinks'))->true();
 
         $link = $this->getLink();
         $key = $link->getRel();
 
-        $this->links->setLinks([ $this->getLink() ]);
+        $this->model->setLinks([ $this->getLink() ]);
 
-        verify($this->links->getLinks())->array();
-        verify($this->links->getLinks())->count(1);
-        verify($this->links->getLinks())->hasKey($key);
+        verify($this->model->getLinks())->array();
+        verify($this->model->getLinks())->count(1);
+        verify($this->model->getLinks())->hasKey($key);
     }
 
     /**
@@ -143,9 +127,9 @@ class LinksTest extends UnitTest
      */
     public function testItIsCountable(): void
     {
-        verify($this->links)->isInstanceOf(Countable::class);
-        $this->links->setLinks([ $this->getLink() ]);
-        verify(count($this->links))->equals(1);
+        verify($this->model)->isInstanceOf(Countable::class);
+        $this->model->setLinks([ $this->getLink() ]);
+        verify(count($this->model))->equals(1);
     }
 
     /**
@@ -155,27 +139,27 @@ class LinksTest extends UnitTest
      */
     public function testItCanBeAccessedLikeAnArray(): void
     {
-        verify($this->links)->isInstanceOf(ArrayAccess::class);
+        verify($this->model)->isInstanceOf(ArrayAccess::class);
 
-        $this->links->setLinks([ $this->getLink() ]);
+        $this->model->setLinks([ $this->getLink() ]);
 
         // offsetExists
-        verify(isset($this->links['self']))->true();
-        verify(isset($this->links['non_existing_key']))->false();
+        verify(isset($this->model['self']))->true();
+        verify(isset($this->model['non_existing_key']))->false();
 
         // offsetGet
-        verify($this->links['self'])->isInstanceOf(Link::class);
+        verify($this->model['self'])->isInstanceOf(Link::class);
 
         // offsetSet
 
-        $this->links['new'] = $this->getLink('new', 'GET', 'http://some.other-url.com');
-        verify($this->links)->hasKey('new');
-        verify($this->links)->count(2);
+        $this->model['new'] = $this->getLink('new', 'GET', 'http://some.other-url.com');
+        verify($this->model)->hasKey('new');
+        verify($this->model)->count(2);
 
         // offsetUnset
-        unset($this->links['self']);
-        verify($this->links)->count(1);
-        verify($this->links)->hasntKey('self');
+        unset($this->model['self']);
+        verify($this->model)->count(1);
+        verify($this->model)->hasntKey('self');
     }
 
     /**
@@ -185,10 +169,10 @@ class LinksTest extends UnitTest
      */
     public function testItCanBeIterated(): void
     {
-        verify($this->links)->isInstanceOf(IteratorAggregate::class);
+        verify($this->model)->isInstanceOf(IteratorAggregate::class);
 
-        $this->links->setLinks([ $this->getLink() ]);
+        $this->model->setLinks([ $this->getLink() ]);
 
-        verify(is_iterable($this->links))->true();
+        verify(is_iterable($this->model))->true();
     }
 }

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\PayNL\Sdk\Model;
 
 use Codeception\Test\Unit as UnitTest;
-use PayNL\Sdk\DateTime;
+use PayNL\Sdk\Common\DateTime;
 use PayNL\Sdk\Model\{
     ModelInterface,
     TransactionStatus

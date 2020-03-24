@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\PayNL\Sdk\Model;
 
 use Codeception\Test\Unit as UnitTest;
-use PayNL\Sdk\TotalCollection;
+use PayNL\Sdk\Common\AbstractTotalCollection;
 use PayNL\Sdk\Model\{
     ModelInterface,
     Links,
@@ -51,7 +51,7 @@ class TerminalsTest extends UnitTest
      */
     public function testItIsATotalCollection(): void
     {
-        verify($this->terminals)->isInstanceOf(TotalCollection::class);
+        verify($this->terminals)->isInstanceOf(AbstractTotalCollection::class);
     }
 
     /**

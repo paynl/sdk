@@ -16,7 +16,7 @@ use PayNL\Sdk\Model\{
 };
 use JsonSerializable, Exception;
 use PayNL\Sdk\Common\JsonSerializeTrait;
-use PayNL\Sdk\DateTime;
+use PayNL\Sdk\Common\DateTime;
 
 /**
  * Class MandateTest

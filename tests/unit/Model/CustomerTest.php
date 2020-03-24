@@ -62,11 +62,15 @@ class CustomerTest extends UnitTest
      */
     public function testItCanGetTypes(): void
     {
+        $this->tester->assertObjectHasMethod('getTypes', $this->customer);
+        $this->tester->assertObjectMethodIsProtected('getTypes', $this->customer);
+
         $types = $this->tester->invokeMethod($this->customer, 'getTypes');
-        verify($types[0])->equals(Customer::TYPE_BUSINESS);
-        verify($types[1])->equals(Customer::TYPE_CONSUMER);
         verify($types)->array();
         verify($types)->notEmpty();
+        verify($types)->count(2);
+        verify($types)->contains(Customer::TYPE_BUSINESS);
+        verify($types)->contains(Customer::TYPE_CONSUMER);
     }
 
     /**

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Codeception\Lib;
 
 use PayNL\Sdk\Model\ModelInterface;
-use PHPUnit\Framework\Assert;
 use UnitTester;
 
 /**
@@ -38,6 +37,9 @@ trait ModelTestTrait
         verify($this->model)->isInstanceOf(ModelInterface::class);
     }
 
+    /**
+     * @return $this
+     */
     protected function markAsJsonSerializeable(): self
     {
         $this->shouldItBeJsonSerializable = true;

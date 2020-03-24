@@ -26,7 +26,7 @@ class Error implements ModelInterface
      */
     public function getCode(): int
     {
-        return $this->code;
+        return $this->code ?? 0;
     }
 
     /**
@@ -45,7 +45,7 @@ class Error implements ModelInterface
      */
     public function getMessage(): string
     {
-        return $this->message;
+        return (string)$this->message;
     }
 
     /**

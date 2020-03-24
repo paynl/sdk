@@ -5,10 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\PayNL\Sdk\Model;
 
 use Codeception\Test\Unit as UnitTest;
-use PayNL\Sdk\Model\{
-    ModelInterface,
-    Errors
-};
+use PayNL\Sdk\Model\{LinksTrait, ModelInterface, Errors};
 use JsonSerializable, Countable, ArrayAccess, IteratorAggregate;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -51,6 +48,11 @@ class ErrorsTest extends UnitTest
     public function testIsItNotJsonSerializable(): void
     {
         verify($this->errors)->isNotInstanceOf(JsonSerializable::class);
+    }
+
+    public function testItUsesLinksTrait(): void
+    {
+        verify(in_array(LinksTrait::class, class_uses($this->errors), true))->true();
     }
 
     /**

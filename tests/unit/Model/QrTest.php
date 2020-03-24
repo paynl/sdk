@@ -6,11 +6,15 @@ namespace Tests\Unit\PayNL\Sdk\Model;
 
 use Codeception\Test\Unit as UnitTest;
 use PayNL\Sdk\Model\{
+    Amount,
     ModelInterface,
+    PaymentMethod,
     Qr
 };
 use JsonSerializable;
+use PayNL\Sdk\Common\JsonSerializeTrait;
 use PayNL\Sdk\Exception\InvalidArgumentException;
+use UnitTester;
 
 /**
  * Class QrTest
@@ -19,6 +23,9 @@ use PayNL\Sdk\Exception\InvalidArgumentException;
  */
 class QrTest extends UnitTest
 {
+    /** @var UnitTester */
+    protected $tester;
+
     /**
      * @var Qr
      */
@@ -43,8 +50,14 @@ class QrTest extends UnitTest
     public function testIsItJsonSerializable(): void
     {
         verify($this->qr)->isInstanceOf(JsonSerializable::class);
+    }
 
-        verify($this->qr->jsonSerialize())->array();
+    /**
+     * @return void
+     */
+    public function testItHasJsonSerializeTrait(): void
+    {
+        verify(in_array(JsonSerializeTrait::class, class_uses($this->qr), true))->true();
     }
 
     /**
@@ -111,6 +124,33 @@ class QrTest extends UnitTest
         verify($this->qr->getSecret())->string();
         verify($this->qr->getSecret())->notEmpty();
         verify($this->qr->getSecret())->equals('abcdef0123456789abcdef0123456789abcd0123');
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanSetAnAmount(): void
+    {
+        /** @var Amount $amount */
+        $amount = $this->tester->grabService('modelManager')->get('Amount');
+        $amount->setAmount(12345);
+        verify($this->qr->setAmount($amount))->isInstanceOf(Qr::class);
+    }
+
+    /**
+     * @depends testItCanSetAnAmount
+     *
+     * @return void
+     */
+    public function testItCanGetAnAmount(): void
+    {
+        /** @var Amount $amount */
+        $amount = $this->tester->grabService('modelManager')->get('Amount');
+        $amount->setAmount(12345);
+        $this->qr->setAmount($amount);
+
+        verify($this->qr->getAmount())->isInstanceOf(Amount::class);
+        verify($this->qr->getAmount())->equals($amount);
     }
 
     /**
@@ -188,4 +228,82 @@ class QrTest extends UnitTest
         verify($this->qr->getReferenceType())->notEmpty();
         verify($this->qr->getReferenceType())->equals('string');
     }
+
+    /**
+     * @return void
+     */
+    public function testItCanSetAPaymentMethod(): void
+    {
+        $paymentMethod = $this->tester->grabService('modelManager')->get('PaymentMethod');
+        verify($this->qr->setPaymentMethod($paymentMethod))->isInstanceOf(Qr::class);
+    }
+
+    /**
+     * @depends testItCanSetAPaymentMethod
+     *
+     * @return void
+     */
+    public function testItCanGetAPaymentMethod(): void
+    {
+        /** @var PaymentMethod $paymentMethod */
+        $paymentMethod = $this->tester->grabService('modelManager')->get('PaymentMethod');
+        $paymentMethod->setName('iDeal');
+        $this->qr->setPaymentMethod($paymentMethod);
+        verify($this->qr->getPaymentMethod())->equals($paymentMethod);
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanSetAnExternalPaymentLink(): void
+    {
+        verify($this->qr->setExternalPaymentLink('www.pay.nl'))->isInstanceOf(Qr::class);
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanGetAnExternalPaymentLink(): void
+    {
+        $externalPaymentLink = 'www.pay.nl';
+        $this->qr->setExternalPaymentLink($externalPaymentLink);
+        verify($externalPaymentLink === $this->qr->getExternalPaymentLink())->true();
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanSetAPaymentLink(): void
+    {
+        verify($this->qr->setPaymentLink('www.pay.nl'))->isInstanceOf(Qr::class);
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanGetAPaymentLink(): void
+    {
+        $paymentLink = 'www.pay.nl';
+        $this->qr->setPaymentLink($paymentLink);
+        verify($paymentLink === $this->qr->getPaymentLink())->true();
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanSetContents(): void
+    {
+        verify($this->qr->setContents('12345'))->isInstanceOf(Qr::class);
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanGetContents(): void
+    {
+        $contents = '12345';
+        $this->qr->setContents($contents);
+        verify($contents === $this->qr->getContents())->true();
+    }
+
 }

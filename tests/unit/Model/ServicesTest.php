@@ -6,20 +6,17 @@ namespace Tests\Unit\PayNL\Sdk\Model;
 
 use Codeception\Test\Unit as UnitTest;
 use PayNL\Sdk\Model\{
+    LinksTrait,
     ModelInterface,
-    Links,
     Service,
     Services
 };
-use PayNL\Sdk\{
-    DateTime,
-    TotalCollection
-};
-use PayNL\Sdk\Hydrator\{
-    Service as ServiceHydrator,
-    Links as LinksHydrator
-};
+
 use JsonSerializable, Countable, ArrayAccess, IteratorAggregate, Exception;
+use Mockery;
+use PayNL\Sdk\Common\AbstractTotalCollection;
+use UnitTester;
+use PayNL\Sdk\Common\DateTime;
 
 /**
  * Class ServicesTest
@@ -28,6 +25,9 @@ use JsonSerializable, Countable, ArrayAccess, IteratorAggregate, Exception;
  */
 class ServicesTest extends UnitTest
 {
+    /** @var UnitTester */
+    protected $tester;
+
     /**
      * @var Services
      */
@@ -52,9 +52,9 @@ class ServicesTest extends UnitTest
     /**
      * @return void
      */
-    public function testItIsATotalCollection(): void
+    public function testItIsAnAbstractCollection(): void
     {
-        verify($this->services)->isInstanceOf(TotalCollection::class);
+        verify($this->services)->isInstanceOf(AbstractTotalCollection::class);
     }
 
     /**
@@ -68,34 +68,36 @@ class ServicesTest extends UnitTest
     /**
      * @return void
      */
-    public function testItCanSetLinks(): void
+    public function testItUsesLinksTrait(): void
     {
-        verify(method_exists($this->services, 'setLinks'))->true();
-        verify($this->services->setLinks(new Links()))->isInstanceOf(Services::class);
+        verify(in_array(LinksTrait::class, class_uses($this->services), true))->true();
     }
 
-    /**
-     * @depends testItCanSetLinks
-     *
-     * @return void
-     */
-    public function testItCanGetLinks(): void
+    private function getServiceMock(): Service
     {
-        verify(method_exists($this->services, 'getLinks'))->true();
+        return $this->tester->grabService('modelManager')->get('Service');
+    }
 
-        $this->services->setLinks(
-            (new LinksHydrator())->hydrate([
-                [
-                    'rel'  => 'self',
-                    'type' => 'GET',
-                    'url'  => 'http://some.url.com',
-                ],
-            ], new Links())
-        );
+    private function getFirstService(): Service
+    {
+        return ($this->getServiceMock())
+            ->setId('SL-0000-0000')
+            ->setName('First serve')
+            ->setDescription('Ace!')
+            ->setTestMode(false)
+            ->setSecret('fksdrewu84')
+            ->setCreatedAt(Mockery::mock(DateTime::class));
+    }
 
-        verify($this->services->getLinks())->isInstanceOf(Links::class);
-        verify($this->services->getLinks())->count(1);
-        verify($this->services->getLinks())->hasKey('self');
+    private function getSecondService(): Service
+    {
+        return ($this->getServiceMock())
+            ->setId('SL-0000-0001')
+            ->setName('Second serve')
+            ->setDescription('Ace!')
+            ->setTestMode(false)
+            ->setSecret('fksdrewu84')
+            ->setCreatedAt(Mockery::mock(DateTime::class));
     }
 
     /**
@@ -106,14 +108,8 @@ class ServicesTest extends UnitTest
     public function testItCanAddService(): void
     {
         verify(method_exists($this->services, 'addService'))->true();
-        verify($this->services->addService((new ServiceHydrator())->hydrate([
-            'id'          => 'SL-0000-0000',
-            'name'        => 'First serve',
-            'description' => 'Ace!',
-            'testMode'    => 0,
-            'secret'      => 'fksdrewu84',
-            'createdAt'   => DateTime::createFromFormat('Y-m-d', '2019-09-11'),
-        ], new Service())))->isInstanceOf(Services::class);
+        verify($this->services->addService($this->getFirstService()))
+            ->isInstanceOf(Services::class);
     }
 
     /**
@@ -138,14 +134,7 @@ class ServicesTest extends UnitTest
     {
         verify(method_exists($this->services, 'getServices'))->true();
 
-        $this->services->addService((new ServiceHydrator())->hydrate([
-            'id'          => 'SL-0000-0000',
-            'name'        => 'First serve',
-            'description' => 'Ace!',
-            'testMode'    => 0,
-            'secret'      => 'fksdrewu84',
-            'createdAt'   => DateTime::createFromFormat('Y-m-d', '2019-09-11'),
-        ], new Service()));
+        $this->services->addService($this->getFirstService());
 
         verify($this->services->getServices())->array();
         verify($this->services->getServices())->count(1);
@@ -167,8 +156,6 @@ class ServicesTest extends UnitTest
      */
     public function testItCanGetTotal(): void
     {
-        verify(method_exists($this->services, 'getTotal'))->true();
-
         $this->services->setTotal(1);
 
         verify($this->services->getTotal())->int();
@@ -188,16 +175,7 @@ class ServicesTest extends UnitTest
     {
         verify($this->services)->isInstanceOf(Countable::class);
 
-        $this->services->setServices([
-            (new ServiceHydrator())->hydrate([
-                'id'          => 'SL-0000-0000',
-                'name'        => 'First serve',
-                'description' => 'Ace!',
-                'testMode'    => 0,
-                'secret'      => 'fksdrewu84',
-                'createdAt'   => DateTime::createFromFormat('Y-m-d', '2019-09-11'),
-            ], new Service()),
-        ])->setTotal(1);
+        $this->services->setServices([ $this->getFirstService() ])->setTotal(1);
 
         verify(count($this->services))->equals(1);
     }
@@ -213,40 +191,26 @@ class ServicesTest extends UnitTest
     {
         verify($this->services)->isInstanceOf(ArrayAccess::class);
 
-        $this->services->setServices([
-            (new ServiceHydrator())->hydrate([
-                'id'          => 'SL-0000-0000',
-                'name'        => 'First serve',
-                'description' => 'Ace!',
-                'testMode'    => 0,
-                'secret'      => 'fksdrewu84',
-                'createdAt'   => DateTime::createFromFormat('Y-m-d', '2019-09-11'),
-            ], new Service()),
-        ])->setTotal(1);
+        $firstService = $this->getFirstService();
+        $this->services->setServices([ $firstService ])->setTotal(1);
 
         // offsetExists
-        verify(isset($this->services['SL-0000-0000']))->true();
+        verify(isset($this->services[$firstService->getId()]))->true();
         verify(isset($this->services['non_existing_key']))->false();
 
         // offsetGet
-        verify($this->services['SL-0000-0000'])->isInstanceOf(Service::class);
+        verify($this->services[$firstService->getId()])->isInstanceOf(Service::class);
 
         // offsetSet
-        $this->services['SL-0000-0001'] = (new ServiceHydrator())->hydrate([
-            'id'          => 'SL-0000-0001',
-            'name'        => 'Second serve',
-            'description' => 'Ace!',
-            'testMode'    => 0,
-            'secret'      => 'fksdrewu84',
-            'createdAt'   => DateTime::createFromFormat('Y-m-d', '2019-09-11'),
-        ], new Service());
-        verify($this->services)->hasKey('SL-0000-0001');
+        $secondService = $this->getSecondService();
+        $this->services[$secondService->getId()] = $secondService;
+        verify($this->services)->hasKey($secondService->getId());
         verify($this->services)->count(2);
 
         // offsetUnset
-        unset($this->services['SL-0000-0000']);
+        unset($this->services[$firstService->getId()]);
         verify($this->services)->count(1);
-        verify($this->services)->hasntKey('SL-0000-0000');
+        verify($this->services)->hasntKey($firstService->getId());
     }
 
     /**
@@ -260,16 +224,7 @@ class ServicesTest extends UnitTest
     {
         verify($this->services)->isInstanceOf(IteratorAggregate::class);
 
-        $this->services->setServices([
-            (new ServiceHydrator())->hydrate([
-                'id'          => 'SL-0000-0000',
-                'name'        => 'First serve',
-                'description' => 'Ace!',
-                'testMode'    => 0,
-                'secret'      => 'fksdrewu84',
-                'createdAt'   => DateTime::createFromFormat('Y-m-d', '2019-09-11'),
-            ], new Service()),
-        ])->setTotal(1);
+        $this->services->setServices([ $this->getFirstService() ])->setTotal(1);
 
         verify(is_iterable($this->services))->true();
     }

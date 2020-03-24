@@ -10,6 +10,7 @@ use PayNL\Sdk\Model\{
     Progress
 };
 use JsonSerializable;
+use PayNL\Sdk\Common\JsonSerializeTrait;
 
 /**
  * Class ProgressTest
@@ -42,8 +43,14 @@ class ProgressTest extends UnitTest
     public function testIsItJsonSerializable(): void
     {
         verify($this->progress)->isInstanceOf(JsonSerializable::class);
+    }
 
-        verify($this->progress->jsonSerialize())->array();
+    /**
+     * @return void
+     */
+    public function testItHasJsonSerializeTrait(): void
+    {
+        verify(in_array(JsonSerializeTrait::class, class_uses($this->progress), true))->true();
     }
 
     /**

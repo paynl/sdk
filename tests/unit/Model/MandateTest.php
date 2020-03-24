@@ -15,6 +15,7 @@ use PayNL\Sdk\Model\{
     Statistics
 };
 use JsonSerializable, Exception;
+use PayNL\Sdk\Common\JsonSerializeTrait;
 use PayNL\Sdk\DateTime;
 
 /**
@@ -48,8 +49,11 @@ class MandateTest extends UnitTest
     public function testIsItJsonSerializable(): void
     {
         verify($this->mandate)->isInstanceOf(JsonSerializable::class);
+    }
 
-        verify($this->mandate->jsonSerialize())->array();
+    public function testItIsUsingJsonSerializeTrait(): void
+    {
+        verify(in_array(JsonSerializeTrait::class, class_uses($this->mandate), true))->true();
     }
 
     /**
@@ -57,7 +61,7 @@ class MandateTest extends UnitTest
      */
     public function testItCanSetAnId(): void
     {
-        expect($this->mandate->setId('IO-1000-0000-0001'))->isInstanceOf(Mandate::class);
+        verify($this->mandate->setId('IO-1000-0000-0001'))->isInstanceOf(Mandate::class);
     }
 
     /**

@@ -47,7 +47,7 @@ class Misc
             }
 
             $buffer .= fread($handle, 512);
-            $tokens = token_get_all($buffer);
+            $tokens = @token_get_all($buffer);
 
             if (strpos($buffer, '{') === false) {
                 continue;

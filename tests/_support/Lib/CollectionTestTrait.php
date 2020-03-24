@@ -87,6 +87,8 @@ trait CollectionTestTrait
 
         if (true === $this->shouldItBeATotalCollection) {
             verify($this->model)->isInstanceOf(AbstractTotalCollection::class);
+        } else {
+            verify($this->model)->isNotInstanceOf(AbstractTotalCollection::class);
         }
     }
 

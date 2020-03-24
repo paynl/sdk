@@ -24,7 +24,7 @@ class BankAccountTest extends UnitTest
      */
     public function _before(): void
     {
-        $this->shouldItBeJsonSerializable = true;
+        $this->markAsJsonSerializeable();
         $this->model = new BankAccount();
     }
 

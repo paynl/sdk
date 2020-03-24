@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PayNL\Sdk\Model;
 
-use Codeception\Test\Unit as UnitTest;
+use Codeception\{
+    Lib\ModelTestTrait,
+    Test\Unit as UnitTest
+};
 use PayNL\Sdk\Model\{
     Amount,
     ModelInterface,
@@ -23,41 +26,20 @@ use UnitTester;
  */
 class QrTest extends UnitTest
 {
-    /** @var UnitTester */
-    protected $tester;
+    use ModelTestTrait;
 
     /**
      * @var Qr
      */
-    protected $qr;
+    protected $model;
 
+    /**
+     * @return void
+     */
     public function _before(): void
     {
-        $this->qr = new Qr();
-    }
-
-    /**
-     * @return void
-     */
-    public function testItIsAModel(): void
-    {
-        verify($this->qr)->isInstanceOf(ModelInterface::class);
-    }
-
-    /**
-     * @return void
-     */
-    public function testIsItJsonSerializable(): void
-    {
-        verify($this->qr)->isInstanceOf(JsonSerializable::class);
-    }
-
-    /**
-     * @return void
-     */
-    public function testItHasJsonSerializeTrait(): void
-    {
-        verify(in_array(JsonSerializeTrait::class, class_uses($this->qr), true))->true();
+        $this->markAsJsonSerializable();
+        $this->model = new Qr();
     }
 
     /**
@@ -65,7 +47,10 @@ class QrTest extends UnitTest
      */
     public function testItCanSetAUuid(): void
     {
-        expect($this->qr->setUuid('869c9b32-e9a7-11e9-96ef-90b11c281a75'))->isInstanceOf(Qr::class);
+        $this->tester->assertObjectHasMethod('setUuid', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setUuid', $this->model);
+
+        expect($this->model->setUuid('869c9b32-e9a7-11e9-96ef-90b11c281a75'))->isInstanceOf(Qr::class);
     }
 
     /**
@@ -75,11 +60,14 @@ class QrTest extends UnitTest
      */
     public function testItCanGetAUuid(): void
     {
-        $this->qr->setUuid('869c9b32-e9a7-11e9-96ef-90b11c281a75');
+        $this->tester->assertObjectHasMethod('getUuid', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getUuid', $this->model);
 
-        verify($this->qr->getUuid())->string();
-        verify($this->qr->getUuid())->notEmpty();
-        verify($this->qr->getUuid())->equals('869c9b32-e9a7-11e9-96ef-90b11c281a75');
+        $this->model->setUuid('869c9b32-e9a7-11e9-96ef-90b11c281a75');
+
+        verify($this->model->getUuid())->string();
+        verify($this->model->getUuid())->notEmpty();
+        verify($this->model->getUuid())->equals('869c9b32-e9a7-11e9-96ef-90b11c281a75');
     }
 
     /**
@@ -87,7 +75,10 @@ class QrTest extends UnitTest
      */
     public function testItCanSetAServiceId(): void
     {
-        expect($this->qr->setServiceId('SL-0000-0000'))->isInstanceOf(Qr::class);
+        $this->tester->assertObjectHasMethod('setServiceId', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setServiceId', $this->model);
+
+        expect($this->model->setServiceId('SL-0000-0000'))->isInstanceOf(Qr::class);
     }
 
     /**
@@ -97,11 +88,14 @@ class QrTest extends UnitTest
      */
     public function testItCanGetAServiceId(): void
     {
-        $this->qr->setServiceId('SL-0000-0000');
+        $this->tester->assertObjectHasMethod('getServiceId', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getServiceId', $this->model);
 
-        verify($this->qr->getServiceId())->string();
-        verify($this->qr->getServiceId())->notEmpty();
-        verify($this->qr->getServiceId())->equals('SL-0000-0000');
+        $this->model->setServiceId('SL-0000-0000');
+
+        verify($this->model->getServiceId())->string();
+        verify($this->model->getServiceId())->notEmpty();
+        verify($this->model->getServiceId())->equals('SL-0000-0000');
     }
 
     /**
@@ -109,7 +103,10 @@ class QrTest extends UnitTest
      */
     public function testItCanSetASecret(): void
     {
-        expect($this->qr->setSecret('abcdef0123456789abcdef0123456789abcd0123'))->isInstanceOf(Qr::class);
+        $this->tester->assertObjectHasMethod('setSecret', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setSecret', $this->model);
+
+        expect($this->model->setSecret('abcdef0123456789abcdef0123456789abcd0123'))->isInstanceOf(Qr::class);
     }
 
     /**
@@ -119,11 +116,14 @@ class QrTest extends UnitTest
      */
     public function testItCanGetASecret(): void
     {
-        $this->qr->setSecret('abcdef0123456789abcdef0123456789abcd0123');
+        $this->tester->assertObjectHasMethod('getSecret', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getSecret', $this->model);
 
-        verify($this->qr->getSecret())->string();
-        verify($this->qr->getSecret())->notEmpty();
-        verify($this->qr->getSecret())->equals('abcdef0123456789abcdef0123456789abcd0123');
+        $this->model->setSecret('abcdef0123456789abcdef0123456789abcd0123');
+
+        verify($this->model->getSecret())->string();
+        verify($this->model->getSecret())->notEmpty();
+        verify($this->model->getSecret())->equals('abcdef0123456789abcdef0123456789abcd0123');
     }
 
     /**
@@ -131,10 +131,13 @@ class QrTest extends UnitTest
      */
     public function testItCanSetAnAmount(): void
     {
+        $this->tester->assertObjectHasMethod('setAmount', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setAmount', $this->model);
+
         /** @var Amount $amount */
         $amount = $this->tester->grabService('modelManager')->get('Amount');
         $amount->setAmount(12345);
-        verify($this->qr->setAmount($amount))->isInstanceOf(Qr::class);
+        verify($this->model->setAmount($amount))->isInstanceOf(Qr::class);
     }
 
     /**
@@ -144,13 +147,16 @@ class QrTest extends UnitTest
      */
     public function testItCanGetAnAmount(): void
     {
+        $this->tester->assertObjectHasMethod('getAmount', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getAmount', $this->model);
+
         /** @var Amount $amount */
         $amount = $this->tester->grabService('modelManager')->get('Amount');
         $amount->setAmount(12345);
-        $this->qr->setAmount($amount);
+        $this->model->setAmount($amount);
 
-        verify($this->qr->getAmount())->isInstanceOf(Amount::class);
-        verify($this->qr->getAmount())->equals($amount);
+        verify($this->model->getAmount())->isInstanceOf(Amount::class);
+        verify($this->model->getAmount())->equals($amount);
     }
 
     /**
@@ -158,7 +164,10 @@ class QrTest extends UnitTest
      */
     public function testItCanSetAReference(): void
     {
-        expect($this->qr->setReference('ABCD1234'))->isInstanceOf(Qr::class);
+        $this->tester->assertObjectHasMethod('setReference', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setReference', $this->model);
+
+        expect($this->model->setReference('ABCD1234'))->isInstanceOf(Qr::class);
     }
 
     /**
@@ -168,11 +177,14 @@ class QrTest extends UnitTest
      */
     public function testItCanGetAReference(): void
     {
-        $this->qr->setReference('ABCD1234');
+        $this->tester->assertObjectHasMethod('getReference', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getReference', $this->model);
 
-        verify($this->qr->getReference())->string();
-        verify($this->qr->getReference())->notEmpty();
-        verify($this->qr->getReference())->equals('ABCD1234');
+        $this->model->setReference('ABCD1234');
+
+        verify($this->model->getReference())->string();
+        verify($this->model->getReference())->notEmpty();
+        verify($this->model->getReference())->equals('ABCD1234');
     }
 
     /**
@@ -180,7 +192,10 @@ class QrTest extends UnitTest
      */
     public function testItCanSetAPadChar(): void
     {
-        expect($this->qr->setPadChar('A'))->isInstanceOf(Qr::class);
+        $this->tester->assertObjectHasMethod('setPadChar', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setPadChar', $this->model);
+
+        expect($this->model->setPadChar('A'))->isInstanceOf(Qr::class);
     }
 
     /**
@@ -190,11 +205,14 @@ class QrTest extends UnitTest
      */
     public function testItCanGetAPadChar(): void
     {
-        $this->qr->setPadChar('A');
+        $this->tester->assertObjectHasMethod('getPadChar', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getPadChar', $this->model);
 
-        verify($this->qr->getPadChar())->string();
-        verify($this->qr->getPadChar())->notEmpty();
-        verify($this->qr->getPadChar())->equals('A');
+        $this->model->setPadChar('A');
+
+        verify($this->model->getPadChar())->string();
+        verify($this->model->getPadChar())->notEmpty();
+        verify($this->model->getPadChar())->equals('A');
     }
 
     /**
@@ -202,7 +220,10 @@ class QrTest extends UnitTest
      */
     public function testItCanSetAReferenceType(): void
     {
-        expect($this->qr->setReferenceType('string'))->isInstanceOf(Qr::class);
+        $this->tester->assertObjectHasMethod('setReferenceType', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setReferenceType', $this->model);
+
+        expect($this->model->setReferenceType('string'))->isInstanceOf(Qr::class);
     }
 
     /**
@@ -212,7 +233,7 @@ class QrTest extends UnitTest
     {
         $this->expectException(InvalidArgumentException::class);
 
-        $this->qr->setReferenceType('test');
+        $this->model->setReferenceType('test');
     }
 
     /**
@@ -222,11 +243,14 @@ class QrTest extends UnitTest
      */
     public function testItCanGetAReferenceType(): void
     {
-        $this->qr->setReferenceType('string');
+        $this->tester->assertObjectHasMethod('getReferenceType', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getReferenceType', $this->model);
 
-        verify($this->qr->getReferenceType())->string();
-        verify($this->qr->getReferenceType())->notEmpty();
-        verify($this->qr->getReferenceType())->equals('string');
+        $this->model->setReferenceType('string');
+
+        verify($this->model->getReferenceType())->string();
+        verify($this->model->getReferenceType())->notEmpty();
+        verify($this->model->getReferenceType())->equals('string');
     }
 
     /**
@@ -234,8 +258,11 @@ class QrTest extends UnitTest
      */
     public function testItCanSetAPaymentMethod(): void
     {
+        $this->tester->assertObjectHasMethod('setPaymentMethod', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setPaymentMethod', $this->model);
+
         $paymentMethod = $this->tester->grabService('modelManager')->get('PaymentMethod');
-        verify($this->qr->setPaymentMethod($paymentMethod))->isInstanceOf(Qr::class);
+        verify($this->model->setPaymentMethod($paymentMethod))->isInstanceOf(Qr::class);
     }
 
     /**
@@ -245,11 +272,14 @@ class QrTest extends UnitTest
      */
     public function testItCanGetAPaymentMethod(): void
     {
+        $this->tester->assertObjectHasMethod('getPaymentMethod', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getPaymentMethod', $this->model);
+
         /** @var PaymentMethod $paymentMethod */
         $paymentMethod = $this->tester->grabService('modelManager')->get('PaymentMethod');
         $paymentMethod->setName('iDeal');
-        $this->qr->setPaymentMethod($paymentMethod);
-        verify($this->qr->getPaymentMethod())->equals($paymentMethod);
+        $this->model->setPaymentMethod($paymentMethod);
+        verify($this->model->getPaymentMethod())->equals($paymentMethod);
     }
 
     /**
@@ -257,7 +287,10 @@ class QrTest extends UnitTest
      */
     public function testItCanSetAnExternalPaymentLink(): void
     {
-        verify($this->qr->setExternalPaymentLink('www.pay.nl'))->isInstanceOf(Qr::class);
+        $this->tester->assertObjectHasMethod('setExternalPaymentLink', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setExternalPaymentLink', $this->model);
+
+        verify($this->model->setExternalPaymentLink('www.pay.nl'))->isInstanceOf(Qr::class);
     }
 
     /**
@@ -265,9 +298,12 @@ class QrTest extends UnitTest
      */
     public function testItCanGetAnExternalPaymentLink(): void
     {
+        $this->tester->assertObjectHasMethod('getExternalPaymentLink', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getExternalPaymentLink', $this->model);
+
         $externalPaymentLink = 'www.pay.nl';
-        $this->qr->setExternalPaymentLink($externalPaymentLink);
-        verify($externalPaymentLink === $this->qr->getExternalPaymentLink())->true();
+        $this->model->setExternalPaymentLink($externalPaymentLink);
+        verify($externalPaymentLink === $this->model->getExternalPaymentLink())->true();
     }
 
     /**
@@ -275,7 +311,10 @@ class QrTest extends UnitTest
      */
     public function testItCanSetAPaymentLink(): void
     {
-        verify($this->qr->setPaymentLink('www.pay.nl'))->isInstanceOf(Qr::class);
+        $this->tester->assertObjectHasMethod('setPaymentLink', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setPaymentLink', $this->model);
+
+        verify($this->model->setPaymentLink('www.pay.nl'))->isInstanceOf(Qr::class);
     }
 
     /**
@@ -283,9 +322,12 @@ class QrTest extends UnitTest
      */
     public function testItCanGetAPaymentLink(): void
     {
+        $this->tester->assertObjectHasMethod('getPaymentLink', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getPaymentLink', $this->model);
+
         $paymentLink = 'www.pay.nl';
-        $this->qr->setPaymentLink($paymentLink);
-        verify($paymentLink === $this->qr->getPaymentLink())->true();
+        $this->model->setPaymentLink($paymentLink);
+        verify($paymentLink === $this->model->getPaymentLink())->true();
     }
 
     /**
@@ -293,7 +335,10 @@ class QrTest extends UnitTest
      */
     public function testItCanSetContents(): void
     {
-        verify($this->qr->setContents('12345'))->isInstanceOf(Qr::class);
+        $this->tester->assertObjectHasMethod('setContents', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setContents', $this->model);
+
+        verify($this->model->setContents('12345'))->isInstanceOf(Qr::class);
     }
 
     /**
@@ -301,9 +346,12 @@ class QrTest extends UnitTest
      */
     public function testItCanGetContents(): void
     {
+        $this->tester->assertObjectHasMethod('getContents', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getContents', $this->model);
+
         $contents = '12345';
-        $this->qr->setContents($contents);
-        verify($contents === $this->qr->getContents())->true();
+        $this->model->setContents($contents);
+        verify($contents === $this->model->getContents())->true();
     }
 
 }

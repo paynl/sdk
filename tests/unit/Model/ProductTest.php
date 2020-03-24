@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PayNL\Sdk\Model;
 
-use Codeception\Test\Unit as UnitTest;
+use Codeception\{
+    Lib\ModelTestTrait,
+    Test\Unit as UnitTest
+};
 use PayNL\Sdk\Model\{
-    ModelInterface,
     Amount,
     Product
 };
-use JsonSerializable;
-use PayNL\Sdk\Common\JsonSerializeTrait;
 
 /**
  * Class ProductTest
@@ -20,38 +20,20 @@ use PayNL\Sdk\Common\JsonSerializeTrait;
  */
 class ProductTest extends UnitTest
 {
+    use ModelTestTrait;
+
     /**
      * @var Product
      */
-    protected $product;
+    protected $model;
 
+    /**
+     * @return void
+     */
     public function _before(): void
     {
-        $this->product = new Product();
-    }
-
-    /**
-     * @return void
-     */
-    public function testItIsAModel(): void
-    {
-        verify($this->product)->isInstanceOf(ModelInterface::class);
-    }
-
-    /**
-     * @return void
-     */
-    public function testIsItJsonSerializable(): void
-    {
-        verify($this->product)->isInstanceOf(JsonSerializable::class);
-    }
-
-    /**
-     * @return void
-     */
-    public function testItHasJsonSerializeTrait(): void
-    {
-        verify(in_array(JsonSerializeTrait::class, class_uses($this->product), true))->true();
+        $this->markAsJsonSerializable();
+        $this->model = new Product();
     }
 
     /**
@@ -59,7 +41,10 @@ class ProductTest extends UnitTest
      */
     public function testItCanSetAnId(): void
     {
-        expect($this->product->setId('P-0000-0001'))->isInstanceOf(Product::class);
+        $this->tester->assertObjectHasMethod('setId', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setId', $this->model);
+
+        expect($this->model->setId('P-0000-0001'))->isInstanceOf(Product::class);
     }
 
     /**
@@ -69,11 +54,14 @@ class ProductTest extends UnitTest
      */
     public function testItCanGetAnId(): void
     {
-        $this->product->setId('P-0000-0001');
+        $this->tester->assertObjectHasMethod('getId', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getId', $this->model);
 
-        verify($this->product->getId())->string();
-        verify($this->product->getId())->notEmpty();
-        verify($this->product->getId())->equals('P-0000-0001');
+        $this->model->setId('P-0000-0001');
+
+        verify($this->model->getId())->string();
+        verify($this->model->getId())->notEmpty();
+        verify($this->model->getId())->equals('P-0000-0001');
     }
 
     /**
@@ -81,7 +69,10 @@ class ProductTest extends UnitTest
      */
     public function testItCanSetADescription(): void
     {
-        expect($this->product->setDescription('Lightsaber'))->isInstanceOf(Product::class);
+        $this->tester->assertObjectHasMethod('setDescription', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setDescription', $this->model);
+
+        expect($this->model->setDescription('Lightsaber'))->isInstanceOf(Product::class);
     }
 
     /**
@@ -91,11 +82,14 @@ class ProductTest extends UnitTest
      */
     public function testItCanGetADescription(): void
     {
-        $this->product->setDescription('Lightsaber');
+        $this->tester->assertObjectHasMethod('getDescription', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getDescription', $this->model);
 
-        verify($this->product->getDescription())->string();
-        verify($this->product->getDescription())->notEmpty();
-        verify($this->product->getDescription())->equals('Lightsaber');
+        $this->model->setDescription('Lightsaber');
+
+        verify($this->model->getDescription())->string();
+        verify($this->model->getDescription())->notEmpty();
+        verify($this->model->getDescription())->equals('Lightsaber');
     }
 
     /**
@@ -103,7 +97,10 @@ class ProductTest extends UnitTest
      */
     public function testItCanSetAPrice(): void
     {
-        expect($this->product->setPrice(new Amount()))->isInstanceOf(Product::class);
+        $this->tester->assertObjectHasMethod('setPrice', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setPrice', $this->model);
+
+        expect($this->model->setPrice(new Amount()))->isInstanceOf(Product::class);
     }
 
     /**
@@ -113,10 +110,13 @@ class ProductTest extends UnitTest
      */
     public function testItCanGetAPrice(): void
     {
-        $this->product->setPrice(new Amount());
+        $this->tester->assertObjectHasMethod('getPrice', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getPrice', $this->model);
 
-        verify($this->product->getPrice())->notEmpty();
-        verify($this->product->getPrice())->isInstanceOf(Amount::class);
+        $this->model->setPrice(new Amount());
+
+        verify($this->model->getPrice())->notEmpty();
+        verify($this->model->getPrice())->isInstanceOf(Amount::class);
     }
 
     /**
@@ -124,7 +124,10 @@ class ProductTest extends UnitTest
      */
     public function testItCanSetAQuantity(): void
     {
-        expect($this->product->setQuantity(10))->isInstanceOf(Product::class);
+        $this->tester->assertObjectHasMethod('setQuantity', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setQuantity', $this->model);
+
+        expect($this->model->setQuantity(10))->isInstanceOf(Product::class);
     }
 
     /**
@@ -134,11 +137,14 @@ class ProductTest extends UnitTest
      */
     public function testItCanGetAQuantity(): void
     {
-        $this->product->setQuantity(4.5);
+        $this->tester->assertObjectHasMethod('getQuantity', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getQuantity', $this->model);
 
-        verify($this->product->getQuantity())->float();
-        verify($this->product->getQuantity())->notEmpty();
-        verify($this->product->getQuantity())->equals(4.5);
+        $this->model->setQuantity(4.5);
+
+        verify($this->model->getQuantity())->float();
+        verify($this->model->getQuantity())->notEmpty();
+        verify($this->model->getQuantity())->equals(4.5);
     }
 
     /**
@@ -146,7 +152,10 @@ class ProductTest extends UnitTest
      */
     public function testItCanSetAVat(): void
     {
-        expect($this->product->setVatCode('L'))->isInstanceOf(Product::class);
+        $this->tester->assertObjectHasMethod('setVatCode', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setVatCode', $this->model);
+
+        expect($this->model->setVatCode('L'))->isInstanceOf(Product::class);
     }
 
     /**
@@ -156,10 +165,13 @@ class ProductTest extends UnitTest
      */
     public function testItCanGetAVat(): void
     {
-        $this->product->setVatCode('L');
+        $this->tester->assertObjectHasMethod('getVatCode', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getVatCode', $this->model);
 
-        verify($this->product->getVatCode())->string();
-        verify($this->product->getVatCode())->notEmpty();
-        verify($this->product->getVatCode())->equals('L');
+        $this->model->setVatCode('L');
+
+        verify($this->model->getVatCode())->string();
+        verify($this->model->getVatCode())->notEmpty();
+        verify($this->model->getVatCode())->equals('L');
     }
 }

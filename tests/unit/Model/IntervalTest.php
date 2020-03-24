@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PayNL\Sdk\Model;
 
-use Codeception\Test\Unit as UnitTest;
-use PayNL\Sdk\Model\{
-    ModelInterface,
-    Interval
+use Codeception\{
+    Lib\ModelTestTrait,
+    Test\Unit as UnitTest
 };
-use JsonSerializable;
+use PayNL\Sdk\Model\Interval;
 
 /**
  * Class IntervalTest
@@ -18,30 +17,19 @@ use JsonSerializable;
  */
 class IntervalTest extends UnitTest
 {
+    use ModelTestTrait;
+
     /**
      * @var Interval
      */
-    protected $interval;
+    protected $model;
 
+    /**
+     * @return void
+     */
     public function _before(): void
     {
-        $this->interval = new Interval();
-    }
-
-    /**
-     * @return void
-     */
-    public function testItIsAModel(): void
-    {
-        verify($this->interval)->isInstanceOf(ModelInterface::class);
-    }
-
-    /**
-     * @return void
-     */
-    public function testIsItNotJsonSerializable(): void
-    {
-        verify($this->interval)->isNotInstanceOf(JsonSerializable::class);
+        $this->model = new Interval();
     }
 
     /**
@@ -49,7 +37,10 @@ class IntervalTest extends UnitTest
      */
     public function testItCanSetAPeriod(): void
     {
-        expect($this->interval->setPeriod('Month'))->isInstanceOf(Interval::class);
+        $this->tester->assertObjectHasMethod('setPeriod', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setPeriod', $this->model);
+
+        expect($this->model->setPeriod('Month'))->isInstanceOf(Interval::class);
     }
 
     /**
@@ -59,11 +50,14 @@ class IntervalTest extends UnitTest
      */
     public function testItCanGetAPeriod(): void
     {
-        $this->interval->setPeriod('Month');
+        $this->tester->assertObjectHasMethod('getPeriod', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getPeriod', $this->model);
 
-        verify($this->interval->getPeriod())->string();
-        verify($this->interval->getPeriod())->notEmpty();
-        verify($this->interval->getPeriod())->equals('Month');
+        $this->model->setPeriod('Month');
+
+        verify($this->model->getPeriod())->string();
+        verify($this->model->getPeriod())->notEmpty();
+        verify($this->model->getPeriod())->equals('Month');
     }
 
     /**
@@ -71,7 +65,10 @@ class IntervalTest extends UnitTest
      */
     public function testItCanSetAQuantity(): void
     {
-        expect($this->interval->setQuantity(2))->isInstanceOf(Interval::class);
+        $this->tester->assertObjectHasMethod('setQuantity', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setQuantity', $this->model);
+
+        expect($this->model->setQuantity(2))->isInstanceOf(Interval::class);
     }
 
     /**
@@ -81,11 +78,14 @@ class IntervalTest extends UnitTest
      */
     public function testItCanGetAQuantity(): void
     {
-        $this->interval->setQuantity(2);
+        $this->tester->assertObjectHasMethod('getQuantity', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getQuantity', $this->model);
 
-        verify($this->interval->getQuantity())->int();
-        verify($this->interval->getQuantity())->notEmpty();
-        verify($this->interval->getQuantity())->equals(2);
+        $this->model->setQuantity(2);
+
+        verify($this->model->getQuantity())->int();
+        verify($this->model->getQuantity())->notEmpty();
+        verify($this->model->getQuantity())->equals(2);
     }
 
     /**
@@ -93,7 +93,10 @@ class IntervalTest extends UnitTest
      */
     public function testItCanSetAValue(): void
     {
-        expect($this->interval->setValue(2))->isInstanceOf(Interval::class);
+        $this->tester->assertObjectHasMethod('setValue', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setValue', $this->model);
+
+        expect($this->model->setValue(2))->isInstanceOf(Interval::class);
     }
 
     /**
@@ -103,10 +106,13 @@ class IntervalTest extends UnitTest
      */
     public function testItCanGetAValue(): void
     {
-        $this->interval->setValue(2);
+        $this->tester->assertObjectHasMethod('getValue', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getValue', $this->model);
 
-        verify($this->interval->getValue())->int();
-        verify($this->interval->getValue())->notEmpty();
-        verify($this->interval->getValue())->equals(2);
+        $this->model->setValue(2);
+
+        verify($this->model->getValue())->int();
+        verify($this->model->getValue())->notEmpty();
+        verify($this->model->getValue())->equals(2);
     }
 }

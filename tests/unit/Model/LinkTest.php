@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PayNL\Sdk\Model;
 
-use Codeception\Test\Unit as UnitTest;
-use PayNL\Sdk\Model\{
-    ModelInterface,
-    Link
+use Codeception\{
+    Lib\ModelTestTrait,
+    Test\Unit as UnitTest
 };
-use JsonSerializable;
+use PayNL\Sdk\Model\Link;
 
 /**
  * Class LinkTest
@@ -18,30 +17,19 @@ use JsonSerializable;
  */
 class LinkTest extends UnitTest
 {
+    use ModelTestTrait;
+
     /**
      * @var Link
      */
-    protected $link;
+    protected $model;
 
+    /**
+     * @return void
+     */
     public function _before(): void
     {
-        $this->link = new Link();
-    }
-
-    /**
-     * @return void
-     */
-    public function testItIsAModel(): void
-    {
-        verify($this->link)->isInstanceOf(ModelInterface::class);
-    }
-
-    /**
-     * @return void
-     */
-    public function testIsItNotJsonSerializable(): void
-    {
-        verify($this->link)->isNotInstanceOf(JsonSerializable::class);
+        $this->model = new Link();
     }
 
     /**
@@ -49,8 +37,10 @@ class LinkTest extends UnitTest
      */
     public function testItCanSetARel(): void
     {
-        verify(method_exists($this->link, 'setRel'))->true();
-        expect($this->link->setRel('self'))->isInstanceOf(Link::class);
+        $this->tester->assertObjectHasMethod('setRel', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setRel', $this->model);
+
+        expect($this->model->setRel('self'))->isInstanceOf(Link::class);
     }
 
     /**
@@ -60,13 +50,14 @@ class LinkTest extends UnitTest
      */
     public function testItCanGetARel(): void
     {
-        verify(method_exists($this->link, 'getRel'))->true();
+        $this->tester->assertObjectHasMethod('getRel', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getRel', $this->model);
 
-        $this->link->setRel('self');
+        $this->model->setRel('self');
 
-        verify($this->link->getRel())->string();
-        verify($this->link->getRel())->notEmpty();
-        verify($this->link->getRel())->equals('self');
+        verify($this->model->getRel())->string();
+        verify($this->model->getRel())->notEmpty();
+        verify($this->model->getRel())->equals('self');
     }
 
     /**
@@ -74,8 +65,10 @@ class LinkTest extends UnitTest
      */
     public function testItCanSetAType(): void
     {
-        verify(method_exists($this->link, 'setType'))->true();
-        expect($this->link->setType('GET'))->isInstanceOf(Link::class);
+        $this->tester->assertObjectHasMethod('setType', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setType', $this->model);
+
+        expect($this->model->setType('GET'))->isInstanceOf(Link::class);
     }
 
     /**
@@ -85,13 +78,14 @@ class LinkTest extends UnitTest
      */
     public function testItCanGetAType(): void
     {
-        verify(method_exists($this->link, 'getType'))->true();
+        $this->tester->assertObjectHasMethod('getType', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getType', $this->model);
 
-        $this->link->setType('GET');
+        $this->model->setType('GET');
 
-        verify($this->link->getType())->string();
-        verify($this->link->getType())->notEmpty();
-        verify($this->link->getType())->equals('GET');
+        verify($this->model->getType())->string();
+        verify($this->model->getType())->notEmpty();
+        verify($this->model->getType())->equals('GET');
     }
 
     /**
@@ -99,8 +93,10 @@ class LinkTest extends UnitTest
      */
     public function testItCanSetAnUrl(): void
     {
-        verify(method_exists($this->link, 'setUrl'))->true();
-        expect($this->link->setUrl('http://www.pay.nl'))->isInstanceOf(Link::class);
+        $this->tester->assertObjectHasMethod('setUrl', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setUrl', $this->model);
+
+        expect($this->model->setUrl('http://www.pay.nl'))->isInstanceOf(Link::class);
     }
 
     /**
@@ -110,12 +106,13 @@ class LinkTest extends UnitTest
      */
     public function testItCanGetAnUrl(): void
     {
-        verify(method_exists($this->link, 'getUrl'))->true();
+        $this->tester->assertObjectHasMethod('getUrl', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getUrl', $this->model);
 
-        $this->link->setUrl('http://www.pay.nl');
+        $this->model->setUrl('http://www.pay.nl');
 
-        verify($this->link->getUrl())->string();
-        verify($this->link->getUrl())->notEmpty();
-        verify($this->link->getUrl())->equals('http://www.pay.nl');
+        verify($this->model->getUrl())->string();
+        verify($this->model->getUrl())->notEmpty();
+        verify($this->model->getUrl())->equals('http://www.pay.nl');
     }
 }

@@ -20,11 +20,16 @@ class AmountTest extends UnitTest
     use ModelTestTrait;
 
     /**
+     * @var Amount
+     */
+    protected $model;
+
+    /**
      * @return void
      */
     public function _before(): void
     {
-        $this->shouldItBeJsonSerializable = true;
+        $this->markAsJsonSerializable();
         $this->model = new Amount();
     }
 
@@ -33,6 +38,9 @@ class AmountTest extends UnitTest
      */
     public function testItCanSetAnAmount(): void
     {
+        $this->tester->assertObjectHasMethod('setAmount', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setAmount', $this->model);
+
         expect($this->model->setAmount(100))->isInstanceOf(Amount::class);
     }
 
@@ -43,6 +51,9 @@ class AmountTest extends UnitTest
      */
     public function testItCanGetAnAmount(): void
     {
+        $this->tester->assertObjectHasMethod('getAmount', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getAmount', $this->model);
+
         // check initial value
         verify($this->model->getAmount())->int();
         verify($this->model->getAmount())->isEmpty();
@@ -59,6 +70,9 @@ class AmountTest extends UnitTest
      */
     public function testItCanSetACurrency(): void
     {
+        $this->tester->assertObjectHasMethod('setCurrency', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setCurrency', $this->model);
+
         expect($this->model->setCurrency('USD'))->isInstanceOf(Amount::class);
     }
 
@@ -69,7 +83,10 @@ class AmountTest extends UnitTest
      */
     public function testItCanGetACurrency(): void
     {
-        // check initial value
+        $this->tester->assertObjectHasMethod('getCurrency', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getCurrency', $this->model);
+
+// check initial value
         verify($this->model->getCurrency())->string();
         verify($this->model->getCurrency())->notEmpty();
         verify($this->model->getCurrency())->equals('EUR');

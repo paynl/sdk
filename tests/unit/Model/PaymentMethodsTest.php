@@ -4,18 +4,16 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PayNL\Sdk\Model;
 
-use Codeception\Test\Unit as UnitTest;
-use PayNL\Sdk\Common\AbstractTotalCollection;
-use PayNL\Sdk\Common\JsonSerializeTrait;
+use Codeception\{
+    Lib\ModelTestTrait,
+    Lib\CollectionTestTrait,
+    Test\Unit as UnitTest
+};
 use PayNL\Sdk\Model\{
     LinksTrait,
-    ModelInterface,
-    Links,
     PaymentMethod,
     PaymentMethods
 };
-use JsonSerializable, Countable, ArrayAccess, IteratorAggregate;
-use UnitTester;
 
 /**
  * Class PaymentMethodsTest
@@ -24,44 +22,24 @@ use UnitTester;
  */
 class PaymentMethodsTest extends UnitTest
 {
-    /** @var UnitTester */
-    protected $tester;
+    use ModelTestTrait, CollectionTestTrait {
+        testItCanBeAccessedLikeAnArray as traitTestItCanBeAccessedLikeAnArray;
+    }
 
     /**
      * @var PaymentMethods
      */
-    protected $paymentMethods;
+    protected $model;
 
     /**
      * @return void
      */
     public function _before(): void
     {
-        $this->paymentMethods = new PaymentMethods();
-    }
-
-    /**
-     * @return void
-     */
-    public function testItIsAModel(): void
-    {
-        verify($this->paymentMethods)->isInstanceOf(ModelInterface::class);
-    }
-
-    /**
-     * @return void
-     */
-    public function testItIsATotalCollection(): void
-    {
-        verify($this->paymentMethods)->isInstanceOf(AbstractTotalCollection::class);
-    }
-
-    /**
-     * @return void
-     */
-    public function testIsItJsonSerializable(): void
-    {
-        verify($this->paymentMethods)->isInstanceOf(JsonSerializable::class);
+        $this->markAsTotalCollection()
+            ->markAsJsonSerializable()
+        ;
+        $this->model = new PaymentMethods();
     }
 
     /**
@@ -69,24 +47,7 @@ class PaymentMethodsTest extends UnitTest
      */
     public function testItHasLinksTrait(): void
     {
-        verify(in_array(LinksTrait::class, class_uses($this->paymentMethods), true))->true();
-    }
-
-    /**
-     * @return void
-     */
-    public function testItHasJsonSerializableTrait(): void
-    {
-        verify(in_array(JsonSerializeTrait::class, class_uses($this->paymentMethods), true))->true();
-    }
-
-    /**
-     * @return void
-     */
-    public function testItCanSetLinks(): void
-    {
-        verify(method_exists($this->paymentMethods, 'setLinks'))->true();
-        verify($this->paymentMethods->setLinks(new Links()))->isInstanceOf(PaymentMethods::class);
+        $this->tester->assertObjectUsesTrait($this->model, LinksTrait::class);
     }
 
     /**
@@ -147,8 +108,10 @@ class PaymentMethodsTest extends UnitTest
      */
     public function testItCanAddPaymentMethod(): void
     {
-        verify(method_exists($this->paymentMethods, 'addPaymentMethod'))->true();
-        verify($this->paymentMethods->addPaymentMethod($this->getIDeal()))->isInstanceOf(PaymentMethods::class);
+        $this->tester->assertObjectHasMethod('addPaymentMethod', $this->model);
+        $this->tester->assertObjectMethodIsPublic('addPaymentMethod', $this->model);
+
+        verify($this->model->addPaymentMethod($this->getIDeal()))->isInstanceOf(PaymentMethods::class);
     }
 
     /**
@@ -158,9 +121,11 @@ class PaymentMethodsTest extends UnitTest
      */
     public function testItCanSetPaymentMethods(): void
     {
-        verify(method_exists($this->paymentMethods, 'setPaymentMethods'))->true();
-        verify($this->paymentMethods->setPaymentMethods([]))->isInstanceOf(PaymentMethods::class);
-        verify($this->paymentMethods->setPaymentMethods([ $this->getIDeal() ]))->isInstanceOf(PaymentMethods::class);
+        $this->tester->assertObjectHasMethod('setPaymentMethods', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setPaymentMethods', $this->model);
+
+        verify($this->model->setPaymentMethods([]))->isInstanceOf(PaymentMethods::class);
+        verify($this->model->setPaymentMethods([ $this->getIDeal() ]))->isInstanceOf(PaymentMethods::class);
     }
 
     /**
@@ -170,58 +135,12 @@ class PaymentMethodsTest extends UnitTest
      */
     public function testItCanGetPaymentMethods(): void
     {
-        verify(method_exists($this->paymentMethods, 'getPaymentMethods'))->true();
-        $this->paymentMethods->add($this->getIDeal());
-        verify($this->paymentMethods->getPaymentMethods())->array();
-        verify($this->paymentMethods->getPaymentMethods())->count(1);
-    }
+        $this->tester->assertObjectHasMethod('getPaymentMethods', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getPaymentMethods', $this->model);
 
-    /**
-     * @return void
-     */
-    public function testItCanSetTotal(): void
-    {
-        verify(method_exists($this->paymentMethods, 'setTotal'))->true();
-        verify($this->paymentMethods->setTotal(1))->isInstanceOf(PaymentMethods::class);
-    }
-
-    /**
-     * @depends testItCanSetTotal
-     *
-     * @return void
-     */
-    public function testItCanGetTotal(): void
-    {
-        verify(method_exists($this->paymentMethods, 'getTotal'))->true();
-
-        $this->paymentMethods->setTotal(1);
-
-        verify($this->paymentMethods->getTotal())->int();
-        verify($this->paymentMethods->getTotal())->notEmpty();
-        verify($this->paymentMethods->getTotal())->equals(1);
-    }
-
-
-    /**
-     * @depends testItCanSetPaymentMethods
-     *
-     * @return void
-     */
-    public function testItIsCountable(): void
-    {
-        verify($this->paymentMethods)->isInstanceOf(Countable::class);
-        $this->paymentMethods
-            ->setPaymentMethods([
-                $this->getIDeal()
-                    ->setSubMethods(
-                        (new PaymentMethods())->setPaymentMethods([
-                            $this->getABNAmro(),
-                            $this->getASNBank()
-                        ])
-                    )
-            ]);
-
-        verify(count($this->paymentMethods))->equals(1);
+        $this->model->add($this->getIDeal());
+        verify($this->model->getPaymentMethods())->array();
+        verify($this->model->getPaymentMethods())->count(1);
     }
 
     /**
@@ -231,10 +150,11 @@ class PaymentMethodsTest extends UnitTest
      */
     public function testItCanBeAccessedLikeAnArray(): void
     {
-        verify($this->paymentMethods)->isInstanceOf(ArrayAccess::class);
+        $this->traitTestItCanBeAccessedLikeAnArray();
+
         $paymentProfileIDeal = $this->getIDeal();
 
-        $this->paymentMethods
+        $this->model
             ->setPaymentMethods([
                 $paymentProfileIDeal
                     ->setSubMethods(
@@ -246,39 +166,25 @@ class PaymentMethodsTest extends UnitTest
             ]);
 
         // offsetExists
-        verify(isset($this->paymentMethods[$paymentProfileIDeal->getId()]))->true();
+        verify(isset($this->model[$paymentProfileIDeal->getId()]))->true();
         $nonExistingKey = 'non_existing_key';
         verify($paymentProfileIDeal->getId())->notEquals($nonExistingKey);
-        verify($this->paymentMethods)->hasntKey($nonExistingKey);
+        verify($this->model)->hasntKey($nonExistingKey);
 
         // offsetGet
-        verify($this->paymentMethods[$paymentProfileIDeal->getId()])->isInstanceOf(PaymentMethod::class);
-        verify($this->paymentMethods[$paymentProfileIDeal->getId()])->equals($paymentProfileIDeal);
+        verify($this->model[$paymentProfileIDeal->getId()])->isInstanceOf(PaymentMethod::class);
+        verify($this->model[$paymentProfileIDeal->getId()])->equals($paymentProfileIDeal);
 
         // offsetSet
         $paymentProfilePayPal = $this->getPayPal();
-        verify($this->paymentMethods)->hasntKey($paymentProfilePayPal->getId());
-        $this->paymentMethods[$paymentProfilePayPal->getId()] = $this->getPayPal();
-        verify($this->paymentMethods)->hasKey($paymentProfilePayPal->getId());
-        verify($this->paymentMethods)->count(2);
+        verify($this->model)->hasntKey($paymentProfilePayPal->getId());
+        $this->model[$paymentProfilePayPal->getId()] = $this->getPayPal();
+        verify($this->model)->hasKey($paymentProfilePayPal->getId());
+        verify($this->model)->count(2);
 
         // offsetUnset
-        unset($this->paymentMethods[$paymentProfileIDeal->getId()]);
-        verify($this->paymentMethods)->count(1);
-        verify($this->paymentMethods)->hasntKey($paymentProfileIDeal->getId());
-    }
-
-    /**
-     * @depends testItCanSetPaymentMethods
-     *
-     * @return void
-     */
-    public function testItCanBeIterated(): void
-    {
-        verify($this->paymentMethods)->isInstanceOf(IteratorAggregate::class);
-
-        $this->paymentMethods->setPaymentMethods([ $this->getPayPal() ]);
-
-        verify(is_iterable($this->paymentMethods))->true();
+        unset($this->model[$paymentProfileIDeal->getId()]);
+        verify($this->model)->count(1);
+        verify($this->model)->hasntKey($paymentProfileIDeal->getId());
     }
 }

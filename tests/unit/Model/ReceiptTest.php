@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PayNL\Sdk\Model;
 
-use Codeception\Test\Unit as UnitTest;
+use Codeception\{
+    Lib\ModelTestTrait,
+    Test\Unit as UnitTest
+};
 use PayNL\Sdk\Model\{
-    ModelInterface,
     Card,
     PaymentMethod,
     Receipt
 };
-use JsonSerializable;
-use UnitTester;
 
 /**
  * Class ReceiptTest
@@ -21,33 +21,19 @@ use UnitTester;
  */
 class ReceiptTest extends UnitTest
 {
-    /** @var UnitTester */
-    protected $tester;
+    use ModelTestTrait;
 
     /**
      * @var Receipt
      */
-    protected $receipt;
+    protected $model;
 
+    /**
+     * @return void
+     */
     public function _before(): void
     {
-        $this->receipt = new Receipt();
-    }
-
-    /**
-     * @return void
-     */
-    public function testItIsAModel(): void
-    {
-        verify($this->receipt)->isInstanceOf(ModelInterface::class);
-    }
-
-    /**
-     * @return void
-     */
-    public function testIsItNotJsonSerializable(): void
-    {
-        verify($this->receipt)->isNotInstanceOf(JsonSerializable::class);
+        $this->model = new Receipt();
     }
 
     /**
@@ -55,9 +41,12 @@ class ReceiptTest extends UnitTest
      */
     public function testItCanSetAnId(): void
     {
+        $this->tester->assertObjectHasMethod('setId', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setId', $this->model);
+
         $id = 'TG9yZW0lMjBpcHN1bSUyMGRvbG9yJTIwc2l0JTIwYW1ldCwlMjBjb25zZWN0ZXR1ciUyMGFkaXBpc2NpbmclMjBlbGl0Lg==';
 
-        verify($this->receipt->setId($id))->isInstanceOf(Receipt::class);
+        verify($this->model->setId($id))->isInstanceOf(Receipt::class);
     }
 
     /**
@@ -67,13 +56,16 @@ class ReceiptTest extends UnitTest
      */
     public function testItCanGetAnId(): void
     {
+        $this->tester->assertObjectHasMethod('getId', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getId', $this->model);
+
         $id = 'TG9yZW0lMjBpcHN1bSUyMGRvbG9yJTIwc2l0JTIwYW1ldCwlMjBjb25zZWN0ZXR1ciUyMGFkaXBpc2NpbmclMjBlbGl0Lg==';
 
-        $this->receipt->setId($id);
+        $this->model->setId($id);
 
-        verify($this->receipt->getId())->string();
-        verify($this->receipt->getId())->notEmpty();
-        verify($this->receipt->getId())->equals($id);
+        verify($this->model->getId())->string();
+        verify($this->model->getId())->notEmpty();
+        verify($this->model->getId())->equals($id);
     }
 
     /**
@@ -81,7 +73,10 @@ class ReceiptTest extends UnitTest
      */
     public function testItCanSetASignature(): void
     {
-        expect($this->receipt->setSignature('esfjrherNQEWRN8uSDbD*$Rb8iu'))->isInstanceOf(Receipt::class);
+        $this->tester->assertObjectHasMethod('setSignature', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setSignature', $this->model);
+
+        expect($this->model->setSignature('esfjrherNQEWRN8uSDbD*$Rb8iu'))->isInstanceOf(Receipt::class);
     }
 
     /**
@@ -91,11 +86,14 @@ class ReceiptTest extends UnitTest
      */
     public function testItCanGetASignature(): void
     {
-        $this->receipt->setSignature('esfjrherNQEWRN8uSDbD*$Rb8iu');
+        $this->tester->assertObjectHasMethod('getSignature', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getSignature', $this->model);
 
-        verify($this->receipt->getSignature())->string();
-        verify($this->receipt->getSignature())->notEmpty();
-        verify($this->receipt->getSignature())->equals('esfjrherNQEWRN8uSDbD*$Rb8iu');
+        $this->model->setSignature('esfjrherNQEWRN8uSDbD*$Rb8iu');
+
+        verify($this->model->getSignature())->string();
+        verify($this->model->getSignature())->notEmpty();
+        verify($this->model->getSignature())->equals('esfjrherNQEWRN8uSDbD*$Rb8iu');
     }
 
     /**
@@ -103,7 +101,10 @@ class ReceiptTest extends UnitTest
      */
     public function testItCanSetAnApprovalId(): void
     {
-        expect($this->receipt->setApprovalId('Hd8sa39934'))->isInstanceOf(Receipt::class);
+        $this->tester->assertObjectHasMethod('setApprovalId', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setApprovalId', $this->model);
+
+        expect($this->model->setApprovalId('Hd8sa39934'))->isInstanceOf(Receipt::class);
     }
 
     /**
@@ -113,11 +114,14 @@ class ReceiptTest extends UnitTest
      */
     public function testItCanGetAnApprovalId(): void
     {
-        $this->receipt->setApprovalId('Hd8sa39934');
+        $this->tester->assertObjectHasMethod('getApprovalId', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getApprovalId', $this->model);
 
-        verify($this->receipt->getApprovalId())->string();
-        verify($this->receipt->getApprovalId())->notEmpty();
-        verify($this->receipt->getApprovalId())->equals('Hd8sa39934');
+        $this->model->setApprovalId('Hd8sa39934');
+
+        verify($this->model->getApprovalId())->string();
+        verify($this->model->getApprovalId())->notEmpty();
+        verify($this->model->getApprovalId())->equals('Hd8sa39934');
     }
 
     /**
@@ -125,9 +129,12 @@ class ReceiptTest extends UnitTest
      */
     public function testItCanSetACard(): void
     {
+        $this->tester->assertObjectHasMethod('setCard', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setCard', $this->model);
+
         /** @var Card $card */
         $card = $this->tester->grabService('modelManager')->get('Card');
-        verify($this->receipt->setCard($card))->isInstanceOf(Receipt::class);
+        verify($this->model->setCard($card))->isInstanceOf(Receipt::class);
     }
 
     /**
@@ -137,14 +144,17 @@ class ReceiptTest extends UnitTest
      */
     public function testItCanGetACard(): void
     {
+        $this->tester->assertObjectHasMethod('getCard', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getCard', $this->model);
+
         /** @var Card $cardMock */
         $cardMock = $this->tester->grabService('modelManager')->get('Card');
         $cardMock->setName('Visa');
-        $this->receipt->setCard($cardMock);
+        $this->model->setCard($cardMock);
 
-        verify($this->receipt->getCard())->notEmpty();
-        verify($this->receipt->getCard())->isInstanceOf(Card::class);
-        verify($this->receipt->getCard())->equals($cardMock);
+        verify($this->model->getCard())->notEmpty();
+        verify($this->model->getCard())->isInstanceOf(Card::class);
+        verify($this->model->getCard())->equals($cardMock);
     }
 
     /**
@@ -152,8 +162,11 @@ class ReceiptTest extends UnitTest
      */
     public function testItCanSetAPaymentMethod(): void
     {
+        $this->tester->assertObjectHasMethod('setPaymentMethod', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setPaymentMethod', $this->model);
+
         $paymentMethodMock = $this->tester->grabService('modelManager')->get('PaymentMethod');
-        expect($this->receipt->setPaymentMethod($paymentMethodMock))->isInstanceOf(Receipt::class);
+        expect($this->model->setPaymentMethod($paymentMethodMock))->isInstanceOf(Receipt::class);
     }
 
     /**
@@ -163,10 +176,13 @@ class ReceiptTest extends UnitTest
      */
     public function testItCanGetAPaymentMethod(): void
     {
-        $paymentMethodMock = $this->tester->grabService('modelManager')->get('PaymentMethod');
-        $this->receipt->setPaymentMethod($paymentMethodMock);
+        $this->tester->assertObjectHasMethod('getPaymentMethod', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getPaymentMethod', $this->model);
 
-        verify($this->receipt->getPaymentMethod())->notEmpty();
-        verify($this->receipt->getPaymentMethod())->isInstanceOf(PaymentMethod::class);
+        $paymentMethodMock = $this->tester->grabService('modelManager')->get('PaymentMethod');
+        $this->model->setPaymentMethod($paymentMethodMock);
+
+        verify($this->model->getPaymentMethod())->notEmpty();
+        verify($this->model->getPaymentMethod())->isInstanceOf(PaymentMethod::class);
     }
 }

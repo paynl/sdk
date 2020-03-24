@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PayNL\Sdk\Model;
 
-use Codeception\Test\Unit as UnitTest;
-use PayNL\Sdk\Common\DateTime;
-use PayNL\Sdk\Model\{
-    ModelInterface,
-    TransactionStatus
+use Codeception\{
+    Lib\ModelTestTrait,
+    Test\Unit as UnitTest
 };
-use Exception, JsonSerializable, UnitTester, ReflectionException;
-use PayNL\Sdk\Exception\InvalidArgumentException;
+use PayNL\Sdk\{
+    Common\DateTime,
+    Model\TransactionStatus,
+    Exception\InvalidArgumentException
+};
 
 /**
  * Class StatusTest
@@ -20,38 +21,19 @@ use PayNL\Sdk\Exception\InvalidArgumentException;
  */
 class TransactionStatusTest extends UnitTest
 {
+    use ModelTestTrait;
+
     /**
      * @var TransactionStatus
      */
-    protected $status;
-
-    /**
-     * @var UnitTester
-     */
-    protected $tester;
+    protected $model;
 
     /**
      * @return void
      */
     public function _before(): void
     {
-        $this->status = new TransactionStatus();
-    }
-
-    /**
-     * @return void
-     */
-    public function testItIsAModel(): void
-    {
-        verify($this->status)->isInstanceOf(ModelInterface::class);
-    }
-
-    /**
-     * @return void
-     */
-    public function testIsItNotJsonSerializable(): void
-    {
-        verify($this->status)->isNotInstanceOf(JsonSerializable::class);
+        $this->model = new TransactionStatus();
     }
 
     /**
@@ -59,7 +41,7 @@ class TransactionStatusTest extends UnitTest
      */
     public function testItCanGetAllowedStatus(): void
     {
-        $output = $this->tester->invokeMethod($this->status, 'getAllowedStatus');
+        $output = $this->tester->invokeMethod($this->model, 'getAllowedStatus');
         verify($output)->array();
         verify($output)->notEmpty();
         verify($output)->containsOnly('int');
@@ -68,66 +50,63 @@ class TransactionStatusTest extends UnitTest
     /**
      * @depends testItCanGetAllowedStatus
      *
-     * @throws ReflectionException
-     *
      * @return void
      */
     public function testItCanSetACode(): void
     {
-        expect($this->status->setCode(TransactionStatus::STATUS_PAID))->isInstanceOf(TransactionStatus::class);
+        $this->tester->assertObjectHasMethod('setCode', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setCode', $this->model);
+
+        expect($this->model->setCode(TransactionStatus::STATUS_PAID))->isInstanceOf(TransactionStatus::class);
     }
 
     /**
-     * @throws ReflectionException
      *
      * @return void
      */
     public function testItThrowsAnExceptionWhenCodeIsNotAllowed(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->status->setCode(1000);
+        $this->model->setCode(1000);
     }
 
     /**
      * @depends testItCanSetACode
      *
-     * @throws ReflectionException
-     *
      * @return void
      */
     public function testItCanGetACode(): void
     {
-        $this->status->setCode(TransactionStatus::STATUS_PAID);
+        $this->tester->assertObjectHasMethod('getCode', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getCode', $this->model);
 
-        verify($this->status->getCode())->int();
-        verify($this->status->getCode())->notEmpty();
-        verify($this->status->getCode())->equals(TransactionStatus::STATUS_PAID);
+        $this->model->setCode(TransactionStatus::STATUS_PAID);
+
+        verify($this->model->getCode())->int();
+        verify($this->model->getCode())->notEmpty();
+        verify($this->model->getCode())->equals(TransactionStatus::STATUS_PAID);
     }
 
     /**
      * @depends testItCanSetACode
      * @depends testItCanGetACode
      *
-     * @throws ReflectionException
-     *
      * @return void
      */
     public function testItConvertsCodeToString(): void
     {
-        $this->status->setCode('100');
-        verify($this->status->getCode())->int();
-        verify($this->status->getCode())->equals(100);
+        $this->model->setCode('100');
+        verify($this->model->getCode())->int();
+        verify($this->model->getCode())->equals(100);
     }
 
     /**
-     * @throws ReflectionException
-     *
      * @return void
      */
     public function testItThrowsAnExceptionWhenGivenCodeIsNotAStringNorAnInteger(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->status->setCode([]);
+        $this->model->setCode([]);
     }
 
     /**
@@ -135,7 +114,10 @@ class TransactionStatusTest extends UnitTest
      */
     public function testItCanSetAName(): void
     {
-        expect($this->status->setName('Paid'))->isInstanceOf(TransactionStatus::class);
+        $this->tester->assertObjectHasMethod('setName', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setName', $this->model);
+
+        expect($this->model->setName('Paid'))->isInstanceOf(TransactionStatus::class);
     }
 
     /**
@@ -145,36 +127,41 @@ class TransactionStatusTest extends UnitTest
      */
     public function testItCanGetAName(): void
     {
-        $this->status->setName('Paid');
+        $this->tester->assertObjectHasMethod('getName', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getName', $this->model);
 
-        verify($this->status->getName())->string();
-        verify($this->status->getName())->notEmpty();
-        verify($this->status->getName())->equals('Paid');
+        $this->model->setName('Paid');
+
+        verify($this->model->getName())->string();
+        verify($this->model->getName())->notEmpty();
+        verify($this->model->getName())->equals('Paid');
     }
 
     /**
-     * @throws Exception
-     *
      * @return void
      */
     public function testItCanSetADate(): void
     {
-        expect($this->status->setDate(DateTime::now()))->isInstanceOf(TransactionStatus::class);
+        $this->tester->assertObjectHasMethod('setDate', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setDate', $this->model);
+
+        expect($this->model->setDate(DateTime::now()))->isInstanceOf(TransactionStatus::class);
     }
 
     /**
      * @depends testItCanSetADate
      *
-     * @throws Exception
-     *
      * @return void
      */
     public function testItCanGetADate(): void
     {
-        $this->status->setDate(DateTime::now());
+        $this->tester->assertObjectHasMethod('getDate', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getDate', $this->model);
 
-        verify($this->status->getDate())->notEmpty();
-        verify($this->status->getDate())->isInstanceOf(DateTime::class);
+        $this->model->setDate(DateTime::now());
+
+        verify($this->model->getDate())->notEmpty();
+        verify($this->model->getDate())->isInstanceOf(DateTime::class);
     }
 
     /**
@@ -182,7 +169,10 @@ class TransactionStatusTest extends UnitTest
      */
     public function testItCanSetAReason(): void
     {
-        expect($this->status->setReason('Lorem ipsum dolor sit amet'))->isInstanceOf(TransactionStatus::class);
+        $this->tester->assertObjectHasMethod('setReason', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setReason', $this->model);
+
+        expect($this->model->setReason('Lorem ipsum dolor sit amet'))->isInstanceOf(TransactionStatus::class);
     }
 
     /**
@@ -192,41 +182,46 @@ class TransactionStatusTest extends UnitTest
      */
     public function testItCanGetAReason(): void
     {
-        $this->status->setReason('Lorem ipsum dolor sit amet');
+        $this->tester->assertObjectHasMethod('getReason', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getReason', $this->model);
 
-        verify($this->status->getReason())->string();
-        verify($this->status->getReason())->notEmpty();
-        verify($this->status->getReason())->equals('Lorem ipsum dolor sit amet');
+        $this->model->setReason('Lorem ipsum dolor sit amet');
+
+        verify($this->model->getReason())->string();
+        verify($this->model->getReason())->notEmpty();
+        verify($this->model->getReason())->equals('Lorem ipsum dolor sit amet');
     }
 
     /**
      * @depends testItCanSetACode
-     *
-     * @throws ReflectionException
      *
      * @return void
      */
     public function testItCanCheckStatusByString(): void
     {
-        $this->status->setCode(TransactionStatus::STATUS_PAID);
+        $this->tester->assertObjectHasMethod('isStatus', $this->model);
+        $this->tester->assertObjectMethodIsPublic('isStatus', $this->model);
 
-        verify($this->status->isStatus('STATUS_PAID'))->bool();
-        verify($this->status->isStatus('STATUS_PAID'))->true();
+        $this->model->setCode(TransactionStatus::STATUS_PAID);
+
+        verify($this->model->isStatus('STATUS_PAID'))->bool();
+        verify($this->model->isStatus('STATUS_PAID'))->true();
     }
 
     /**
      * @depends testItCanSetACode
      *
-     * @throws ReflectionException
-     *
      * @return void
      */
     public function testItCanCheckStatusByInteger(): void
     {
-        $this->status->setCode(TransactionStatus::STATUS_PAID);
+        $this->tester->assertObjectHasMethod('isStatus', $this->model);
+        $this->tester->assertObjectMethodIsPublic('isStatus', $this->model);
 
-        verify($this->status->isStatus(TransactionStatus::STATUS_PAID))->bool();
-        verify($this->status->isStatus('STATUS_PAID'))->true();
+        $this->model->setCode(TransactionStatus::STATUS_PAID);
+
+        verify($this->model->isStatus(TransactionStatus::STATUS_PAID))->bool();
+        verify($this->model->isStatus('STATUS_PAID'))->true();
     }
 
     /**
@@ -236,6 +231,6 @@ class TransactionStatusTest extends UnitTest
     {
         $this->expectException(InvalidArgumentException::class);
 
-        $this->status->isStatus([]);
+        $this->model->isStatus([]);
     }
 }

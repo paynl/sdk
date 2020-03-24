@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PayNL\Sdk\Model;
 
-use Codeception\Test\Unit as UnitTest;
+use Codeception\{
+    Lib\ModelTestTrait,
+    Test\Unit as UnitTest
+};
 use PayNL\Sdk\Model\{
-    ModelInterface,
     Amount,
     Voucher
 };
-use JsonSerializable;
 
 /**
  * Class VoucherTest
@@ -19,32 +20,20 @@ use JsonSerializable;
  */
 class VoucherTest extends UnitTest
 {
+    use ModelTestTrait;
+
     /**
      * @var Voucher
      */
-    protected $voucher;
+    protected $model;
 
+    /**
+     * @return void
+     */
     public function _before(): void
     {
-        $this->voucher = new Voucher();
-    }
-
-    /**
-     * @return void
-     */
-    public function testItIsAModel(): void
-    {
-        verify($this->voucher)->isInstanceOf(ModelInterface::class);
-    }
-
-    /**
-     * @return void
-     */
-    public function testIsItJsonSerializable(): void
-    {
-        verify($this->voucher)->isInstanceOf(JsonSerializable::class);
-
-        verify($this->voucher->jsonSerialize())->array();
+        $this->markAsJsonSerializable();
+        $this->model = new Voucher();
     }
 
     /**
@@ -52,7 +41,10 @@ class VoucherTest extends UnitTest
      */
     public function testItCanSetAnAmount(): void
     {
-        expect($this->voucher->setAmount(new Amount()))->isInstanceOf(Voucher::class);
+        $this->tester->assertObjectHasMethod('setAmount', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setAmount', $this->model);
+
+        expect($this->model->setAmount(new Amount()))->isInstanceOf(Voucher::class);
     }
 
     /**
@@ -62,10 +54,13 @@ class VoucherTest extends UnitTest
      */
     public function testItCanGetAnAmount(): void
     {
-        $this->voucher->setAmount(new Amount());
+        $this->tester->assertObjectHasMethod('getAmount', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getAmount', $this->model);
 
-        verify($this->voucher->getAmount())->notEmpty();
-        verify($this->voucher->getAmount())->isInstanceOf(Amount::class);
+        $this->model->setAmount(new Amount());
+
+        verify($this->model->getAmount())->notEmpty();
+        verify($this->model->getAmount())->isInstanceOf(Amount::class);
     }
 
     /**
@@ -73,7 +68,10 @@ class VoucherTest extends UnitTest
      */
     public function testItCanSetAPinCode(): void
     {
-        expect($this->voucher->setPinCode('1234'))->isInstanceOf(Voucher::class);
+        $this->tester->assertObjectHasMethod('setPinCode', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setPinCode', $this->model);
+
+        expect($this->model->setPinCode('1234'))->isInstanceOf(Voucher::class);
     }
 
     /**
@@ -83,11 +81,14 @@ class VoucherTest extends UnitTest
      */
     public function testItCanGetAPinCode(): void
     {
-        $this->voucher->setPinCode('1234');
+        $this->tester->assertObjectHasMethod('getPinCode', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getPinCode', $this->model);
 
-        verify($this->voucher->getPinCode())->string();
-        verify($this->voucher->getPinCode())->notEmpty();
-        verify($this->voucher->getPinCode())->equals('1234');
+        $this->model->setPinCode('1234');
+
+        verify($this->model->getPinCode())->string();
+        verify($this->model->getPinCode())->notEmpty();
+        verify($this->model->getPinCode())->equals('1234');
     }
 
     /**
@@ -95,7 +96,10 @@ class VoucherTest extends UnitTest
      */
     public function testItCanSetAPosId(): void
     {
-        expect($this->voucher->setPosId('1234'))->isInstanceOf(Voucher::class);
+        $this->tester->assertObjectHasMethod('setPosId', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setPosId', $this->model);
+
+        expect($this->model->setPosId('1234'))->isInstanceOf(Voucher::class);
     }
 
     /**
@@ -105,10 +109,13 @@ class VoucherTest extends UnitTest
      */
     public function testItCanGetAPosId(): void
     {
-        $this->voucher->setPosId('1234');
+        $this->tester->assertObjectHasMethod('getPosId', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getPosId', $this->model);
 
-        verify($this->voucher->getPosId())->string();
-        verify($this->voucher->getPosId())->notEmpty();
-        verify($this->voucher->getPosId())->equals('1234');
+        $this->model->setPosId('1234');
+
+        verify($this->model->getPosId())->string();
+        verify($this->model->getPosId())->notEmpty();
+        verify($this->model->getPosId())->equals('1234');
     }
 }

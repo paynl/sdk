@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PayNL\Sdk\Model;
 
-use Codeception\Lib\ModelTestTrait;
-use Codeception\Test\Unit as UnitTest;
+use Codeception\{
+    Lib\ModelTestTrait,
+    Test\Unit as UnitTest
+};
 use PayNL\Sdk\Model\Statistics;
 
 /**
@@ -28,6 +30,9 @@ class StatisticsTest extends UnitTest
      */
     public function testItCanSetAnObject(): void
     {
+        $this->tester->assertObjectHasMethod('setObject', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setObject', $this->model);
+
         verify($this->model->setObject('12345'))->isInstanceOf(Statistics::class);
     }
 
@@ -36,6 +41,9 @@ class StatisticsTest extends UnitTest
      */
     public function testItCanSetInfo(): void
     {
+        $this->tester->assertObjectHasMethod('setInfo', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setInfo', $this->model);
+
         expect($this->model->setInfo('Lorem ipsum dolor sit amet, consectetur adipiscing elit'))
             ->isInstanceOf(Statistics::class)
         ;
@@ -48,6 +56,9 @@ class StatisticsTest extends UnitTest
      */
     public function testItCanGetInfo(): void
     {
+        $this->tester->assertObjectHasMethod('getInfo', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getInfo', $this->model);
+
         $this->model->setInfo('Lorem ipsum dolor sit amet, consectetur adipiscing elit');
 
         verify($this->model->getInfo())->string();
@@ -62,6 +73,9 @@ class StatisticsTest extends UnitTest
      */
     public function testItCanGetAnObject(): void
     {
+        $this->tester->assertObjectHasMethod('getObject', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getObject', $this->model);
+
         $this->model->setObject('12345');
         verify($this->model->getObject())->string();
         verify($this->model->getObject())->notEmpty();
@@ -73,6 +87,9 @@ class StatisticsTest extends UnitTest
      */
     public function testItCanSetATool(): void
     {
+        $this->tester->assertObjectHasMethod('setTool', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setTool', $this->model);
+
         verify($this->model->setTool('12345'))->isInstanceOf(Statistics::class);
     }
 
@@ -83,6 +100,9 @@ class StatisticsTest extends UnitTest
      */
     public function testItCanGetATool(): void
     {
+        $this->tester->assertObjectHasMethod('getTool', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getTool', $this->model);
+
         $this->model->setTool('12345');
         verify($this->model->getTool())->string();
         verify($this->model->getTool())->notEmpty();
@@ -94,6 +114,9 @@ class StatisticsTest extends UnitTest
      */
     public function testItCanSetExtra1(): void
     {
+        $this->tester->assertObjectHasMethod('setExtra1', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setExtra1', $this->model);
+
         verify($this->model->setExtra1('Lorem ipsum dolor sit amet, consectetur adipiscing elit'))
             ->isInstanceOf(Statistics::class);
     }
@@ -105,6 +128,9 @@ class StatisticsTest extends UnitTest
      */
     public function testItCanGetExtra1(): void
     {
+        $this->tester->assertObjectHasMethod('getExtra1', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getExtra1', $this->model);
+
         $this->model->setExtra1('Lorem ipsum dolor sit amet, consectetur adipiscing elit');
 
         verify($this->model->getExtra1())->string();
@@ -117,6 +143,9 @@ class StatisticsTest extends UnitTest
      */
     public function testItCanSetExtra2(): void
     {
+        $this->tester->assertObjectHasMethod('setExtra2', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setExtra2', $this->model);
+
         expect($this->model->setExtra2('Lorem ipsum dolor sit amet, consectetur adipiscing elit'))
             ->isInstanceOf(Statistics::class)
         ;
@@ -129,6 +158,9 @@ class StatisticsTest extends UnitTest
      */
     public function testItCanGetExtra2(): void
     {
+        $this->tester->assertObjectHasMethod('getExtra2', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getExtra2', $this->model);
+
         $this->model->setExtra2('Lorem ipsum dolor sit amet, consectetur adipiscing elit');
 
         verify($this->model->getExtra2())->string();
@@ -141,6 +173,9 @@ class StatisticsTest extends UnitTest
      */
     public function testItCanSetExtra3(): void
     {
+        $this->tester->assertObjectHasMethod('setExtra3', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setExtra3', $this->model);
+
         expect($this->model->setExtra3('Lorem ipsum dolor sit amet, consectetur adipiscing elit'))
             ->isInstanceOf(Statistics::class)
         ;
@@ -153,6 +188,9 @@ class StatisticsTest extends UnitTest
      */
     public function testItCanGetExtra3(): void
     {
+        $this->tester->assertObjectHasMethod('getExtra3', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getExtra3', $this->model);
+
         $this->model->setExtra3('Lorem ipsum dolor sit amet, consectetur adipiscing elit');
 
         verify($this->model->getExtra3())->string();

@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PayNL\Sdk\Model;
 
-use Codeception\Test\Unit as UnitTest;
-use PayNL\Sdk\Model\{
-    ModelInterface,
-    Terminal
+use Codeception\{
+    Lib\ModelTestTrait,
+    Test\Unit as UnitTest
 };
-use JsonSerializable;
+use PayNL\Sdk\Model\Terminal;
 
 /**
  * Class TerminalTest
@@ -18,32 +17,20 @@ use JsonSerializable;
  */
 class TerminalTest extends UnitTest
 {
+    use ModelTestTrait;
+
     /**
      * @var Terminal
      */
-    protected $terminal;
+    protected $model;
 
+    /**
+     * @return void
+     */
     public function _before(): void
     {
-        $this->terminal = new Terminal();
-    }
-
-    /**
-     * @return void
-     */
-    public function testItIsAModel(): void
-    {
-        verify($this->terminal)->isInstanceOf(ModelInterface::class);
-    }
-
-    /**
-     * @return void
-     */
-    public function testIsItJsonSerializable(): void
-    {
-        verify($this->terminal)->isInstanceOf(JsonSerializable::class);
-
-        verify($this->terminal->jsonSerialize())->array();
+        $this->markAsJsonSerializable();
+        $this->model = new Terminal();
     }
 
     /**
@@ -51,7 +38,10 @@ class TerminalTest extends UnitTest
      */
     public function testItCanSetAnId(): void
     {
-        expect($this->terminal->setId('T-0000'))->isInstanceOf(Terminal::class);
+        $this->tester->assertObjectHasMethod('setId', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setId', $this->model);
+
+        expect($this->model->setId('T-0000'))->isInstanceOf(Terminal::class);
     }
 
     /**
@@ -61,11 +51,14 @@ class TerminalTest extends UnitTest
      */
     public function testItCanGetAnId(): void
     {
-        $this->terminal->setId('T-0000');
+        $this->tester->assertObjectHasMethod('getId', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getId', $this->model);
 
-        verify($this->terminal->getId())->string();
-        verify($this->terminal->getId())->notEmpty();
-        verify($this->terminal->getId())->equals('T-0000');
+        $this->model->setId('T-0000');
+
+        verify($this->model->getId())->string();
+        verify($this->model->getId())->notEmpty();
+        verify($this->model->getId())->equals('T-0000');
     }
 
     /**
@@ -73,7 +66,10 @@ class TerminalTest extends UnitTest
      */
     public function testItCanSetAName(): void
     {
-        expect($this->terminal->setName('Terminal #5'))->isInstanceOf(Terminal::class);
+        $this->tester->assertObjectHasMethod('setName', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setName', $this->model);
+
+        expect($this->model->setName('Terminal #5'))->isInstanceOf(Terminal::class);
     }
 
     /**
@@ -83,11 +79,14 @@ class TerminalTest extends UnitTest
      */
     public function testItCanGetAName(): void
     {
-        $this->terminal->setName('Terminal #5');
+        $this->tester->assertObjectHasMethod('getName', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getName', $this->model);
 
-        verify($this->terminal->getName())->string();
-        verify($this->terminal->getName())->notEmpty();
-        verify($this->terminal->getName())->equals('Terminal #5');
+        $this->model->setName('Terminal #5');
+
+        verify($this->model->getName())->string();
+        verify($this->model->getName())->notEmpty();
+        verify($this->model->getName())->equals('Terminal #5');
     }
 
     /**
@@ -95,7 +94,10 @@ class TerminalTest extends UnitTest
      */
     public function testItCanSetAEcrProtocol(): void
     {
-        expect($this->terminal->setEcrProtocol('WEB'))->isInstanceOf(Terminal::class);
+        $this->tester->assertObjectHasMethod('setEcrProtocol', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setEcrProtocol', $this->model);
+
+        expect($this->model->setEcrProtocol('WEB'))->isInstanceOf(Terminal::class);
     }
 
     /**
@@ -105,11 +107,14 @@ class TerminalTest extends UnitTest
      */
     public function testItCanGetAEcrProtocol(): void
     {
-        $this->terminal->setEcrProtocol('WEB');
+        $this->tester->assertObjectHasMethod('getEcrProtocol', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getEcrProtocol', $this->model);
 
-        verify($this->terminal->getEcrProtocol())->string();
-        verify($this->terminal->getEcrProtocol())->notEmpty();
-        verify($this->terminal->getEcrProtocol())->equals('WEB');
+        $this->model->setEcrProtocol('WEB');
+
+        verify($this->model->getEcrProtocol())->string();
+        verify($this->model->getEcrProtocol())->notEmpty();
+        verify($this->model->getEcrProtocol())->equals('WEB');
     }
 
     /**
@@ -117,7 +122,10 @@ class TerminalTest extends UnitTest
      */
     public function testItCanSetAState(): void
     {
-        expect($this->terminal->setState('active'))->isInstanceOf(Terminal::class);
+        $this->tester->assertObjectHasMethod('setState', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setState', $this->model);
+
+        expect($this->model->setState('active'))->isInstanceOf(Terminal::class);
     }
 
     /**
@@ -127,10 +135,13 @@ class TerminalTest extends UnitTest
      */
     public function testItCanGetAState(): void
     {
-        $this->terminal->setState('active');
+        $this->tester->assertObjectHasMethod('getState', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getState', $this->model);
 
-        verify($this->terminal->getState())->string();
-        verify($this->terminal->getState())->notEmpty();
-        verify($this->terminal->getState())->equals('active');
+        $this->model->setState('active');
+
+        verify($this->model->getState())->string();
+        verify($this->model->getState())->notEmpty();
+        verify($this->model->getState())->equals('active');
     }
 }

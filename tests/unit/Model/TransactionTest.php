@@ -42,7 +42,7 @@ class TransactionTest extends UnitTest
      */
     public function _before(): void
     {
-        $this->shouldItBeJsonSerializable = true;
+        $this->markAsJsonSerializable();
 
         $this->model = new Transaction();
     }

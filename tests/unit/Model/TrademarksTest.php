@@ -10,7 +10,6 @@ use Codeception\{
     Test\Unit as UnitTest
 };
 use PayNL\Sdk\Model\{
-    LinksTrait,
     Trademarks,
     Trademark
 };

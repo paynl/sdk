@@ -4,19 +4,17 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PayNL\Sdk\Model;
 
-use Codeception\Test\Unit as UnitTest;
-use PayNL\Sdk\Common\AbstractTotalCollection;
+use Codeception\{
+    Lib\ModelTestTrait,
+    Lib\CollectionTestTrait,
+    Test\Unit as UnitTest
+};
 use PayNL\Sdk\Model\{
-    ModelInterface,
-    Links,
+    LinksTrait,
     Terminal,
     Terminals
 };
-use PayNL\Sdk\Hydrator\{
-    Terminal as TerminalHydrator,
-    Links as LinksHydrator
-};
-use JsonSerializable, Countable, ArrayAccess, IteratorAggregate;
+use TypeError;
 
 /**
  * Class TerminalsTest
@@ -25,74 +23,44 @@ use JsonSerializable, Countable, ArrayAccess, IteratorAggregate;
  */
 class TerminalsTest extends UnitTest
 {
+    use ModelTestTrait, CollectionTestTrait {
+        testItCanBeAccessedLikeAnArray as traitTestItCanBeAccessedLikeAnArray;
+        testItCanGetCollectionName as traitTestItCanGetCollectionName;
+    }
+
     /**
      * @var Terminals
      */
-    protected $terminals;
+    protected $model;
 
     /**
      * @return void
      */
     public function _before(): void
     {
-        $this->terminals = new Terminals();
+        $this->markAsTotalCollection();
+        $this->model = new Terminals();
     }
 
     /**
      * @return void
      */
-    public function testItIsAModel(): void
+    public function testItIsLinksAware(): void
     {
-        verify($this->terminals)->isInstanceOf(ModelInterface::class);
+        $this->tester->assertObjectUsesTrait($this->model, LinksTrait::class);
     }
 
     /**
-     * @return void
-     */
-    public function testItIsATotalCollection(): void
-    {
-        verify($this->terminals)->isInstanceOf(AbstractTotalCollection::class);
-    }
-
-    /**
-     * @return void
-     */
-    public function testIsItNotJsonSerializable(): void
-    {
-        verify($this->terminals)->isNotInstanceOf(JsonSerializable::class);
-    }
-
-    /**
-     * @return void
-     */
-    public function testItCanSetLinks(): void
-    {
-        verify(method_exists($this->terminals, 'setLinks'))->true();
-        verify($this->terminals->setLinks(new Links()))->isInstanceOf(Terminals::class);
-    }
-
-    /**
-     * @depends testItCanSetLinks
+     * @param string $id
      *
-     * @return void
+     * @return Terminal
      */
-    public function testItCanGetLinks(): void
+    private function getMockTerminal(string $id): Terminal
     {
-        verify(method_exists($this->terminals, 'getLinks'))->true();
-
-        $this->terminals->setLinks(
-            (new LinksHydrator())->hydrate([
-                [
-                    'rel'  => 'self',
-                    'type' => 'GET',
-                    'url'  => 'http://some.url.com',
-                ],
-            ], new Links())
-        );
-
-        verify($this->terminals->getLinks())->isInstanceOf(Links::class);
-        verify($this->terminals->getLinks())->count(1);
-        verify($this->terminals->getLinks())->hasKey('self');
+        /** @var Terminal $terminal */
+        $terminal = $this->tester->grabService('modelManager')->build(Terminal::class);
+        $terminal->setId($id);
+        return $terminal;
     }
 
     /**
@@ -100,13 +68,15 @@ class TerminalsTest extends UnitTest
      */
     public function testItCanAddTerminal(): void
     {
-        verify(method_exists($this->terminals, 'addTerminal'))->true();
-        verify($this->terminals->addTerminal((new TerminalHydrator())->hydrate([
-            'id'          => 'TT-0000-0000',
-            'name'        => 'Test terminal',
-            'ecrProtocol' => 'WEB',
-            'state'       => 'active',
-        ], new Terminal())))->isInstanceOf(Terminals::class);
+        $this->tester->assertObjectHasMethod('addTerminal', $this->model);
+        $this->tester->assertObjectMethodIsPublic('addTerminal', $this->model);
+
+        $mockTerminal = $this->getMockTerminal('foo');
+
+        $terminals = $this->model->addTerminal($mockTerminal);
+        verify($terminals)->object();
+        verify($terminals)->same($this->model);
+        verify($terminals)->hasKey($mockTerminal->getId());
     }
 
     /**
@@ -116,8 +86,53 @@ class TerminalsTest extends UnitTest
      */
     public function testItCanSetTerminals(): void
     {
-        verify(method_exists($this->terminals, 'setTerminals'))->true();
-        verify($this->terminals->setTerminals([]))->isInstanceOf(Terminals::class);
+        $this->tester->assertObjectHasMethod('setTerminals', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setTerminals', $this->model);
+
+        $mockTerminal = $this->getMockTerminal('foo');
+
+        $terminals = $this->model->setTerminals([$mockTerminal]);
+        verify($terminals)->object();
+        verify($terminals)->same($this->model);
+        verify($terminals)->containsOnlyInstancesOf(Terminal::class);
+        verify($terminals)->notEmpty();
+        verify($terminals)->count(1);
+
+        $terminals = $this->model->setTerminals([
+            $this->getMockTerminal('bar'),
+            $this->getMockTerminal('baz'),
+        ]);
+        verify($terminals)->object();
+        verify($terminals)->same($this->model);
+        verify($terminals)->containsOnlyInstancesOf(Terminal::class);
+        verify($terminals)->count(2);
+        verify($terminals)->notContains($mockTerminal);
+    }
+
+    /**
+     * @depends testItCanAddTerminal
+     * @depends testItCanSetTerminals
+     *
+     * @return void
+     */
+    public function testSetTerminalsThrowsTypeError(): void
+    {
+        $this->expectException(TypeError::class);
+        $this->model->setTerminals([$this->getMockTerminal('foo'), []]);
+    }
+
+    /**
+     * @depends testItCanAddTerminal
+     * @depends testItCanSetTerminals
+     *
+     * @return void
+     */
+    public function testItCanSetEmptyTerminals(): void
+    {
+        $links = $this->model->setTerminals([]);
+        verify($links)->isInstanceOf(Terminals::class);
+        verify($links)->same($this->model);
+        verify($links)->count(0);
     }
 
     /**
@@ -127,66 +142,17 @@ class TerminalsTest extends UnitTest
      */
     public function testItCanGetTerminals(): void
     {
-        verify(method_exists($this->terminals, 'getTerminals'))->true();
+        $this->tester->assertObjectHasMethod('getTerminals', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getTerminals', $this->model);
 
-        $this->terminals->setTerminals([
-            (new TerminalHydrator())->hydrate([
-                'id'          => 'TT-0000-0000',
-                'name'        => 'Test terminal',
-                'ecrProtocol' => 'WEB',
-                'state'       => 'active',
-            ], new Terminal()),
-        ]);
+        $terminal = $this->getMockTerminal('foo');
 
-        verify($this->terminals->getTerminals())->array();
-        verify($this->terminals->getTerminals())->count(1);
-    }
-
-    /**
-     * @return void
-     */
-    public function testItCanSetTotal(): void
-    {
-        verify(method_exists($this->terminals, 'setTotal'))->true();
-        verify($this->terminals->setTotal(1))->isInstanceOf(Terminals::class);
-    }
-
-    /**
-     * @depends testItCanSetTotal
-     *
-     * @return void
-     */
-    public function testItCanGetTotal(): void
-    {
-        verify(method_exists($this->terminals, 'getTotal'))->true();
-
-        $this->terminals->setTotal(1);
-
-        verify($this->terminals->getTotal())->int();
-        verify($this->terminals->getTotal())->notEmpty();
-        verify($this->terminals->getTotal())->equals(1);
-    }
-
-
-    /**
-     * @depends testItCanSetTerminals
-     *
-     * @return void
-     */
-    public function testItIsCountable(): void
-    {
-        verify($this->terminals)->isInstanceOf(Countable::class);
-
-        $this->terminals->setTerminals([
-            (new TerminalHydrator())->hydrate([
-                'id'          => 'TT-0000-0000',
-                'name'        => 'Test terminal',
-                'ecrProtocol' => 'WEB',
-                'state'       => 'active',
-            ], new Terminal()),
-        ])->setTotal(1);
-
-        verify(count($this->terminals))->equals(1);
+        $this->model->setTerminals([$terminal]);
+        $terminals = $this->model->getTerminals();
+        verify($terminals)->array();
+        verify($terminals)->count(1);
+        verify($terminals)->hasKey('foo');
+        verify($terminals)->containsOnlyInstancesOf(Terminal::class);
     }
 
     /**
@@ -196,58 +162,34 @@ class TerminalsTest extends UnitTest
      */
     public function testItCanBeAccessedLikeAnArray(): void
     {
-        verify($this->terminals)->isInstanceOf(ArrayAccess::class);
+        $this->traitTestItCanBeAccessedLikeAnArray();
 
-        $this->terminals->setTerminals([
-            (new TerminalHydrator())->hydrate([
-                'id'          => 'TT-0000-0000',
-                'name'        => 'Test terminal',
-                'ecrProtocol' => 'WEB',
-                'state'       => 'active',
-            ], new Terminal()),
-        ])->setTotal(1);
+        $this->model->setTerminals([ $this->getMockTerminal('foo') ]);
 
         // offsetExists
-        verify(isset($this->terminals['TT-0000-0000']))->true();
-        verify(isset($this->terminals['non_existing_key']))->false();
+        verify(isset($this->model['foo']))->true();
+        verify(isset($this->model['bar']))->false();
 
         // offsetGet
-        verify($this->terminals['TT-0000-0000'])->isInstanceOf(Terminal::class);
+        verify($this->model['foo'])->isInstanceOf(Terminal::class);
 
         // offsetSet
-        $this->terminals['TT-0000-0001'] = (new TerminalHydrator())->hydrate([
-            'id'          => 'TT-0000-0001',
-            'name'        => 'Test terminal',
-            'ecrProtocol' => 'WEB',
-            'state'       => 'active',
-        ], new Terminal());
-        verify($this->terminals)->hasKey('TT-0000-0001');
-        verify($this->terminals)->count(2);
+        $this->model['baz'] = $this->getMockTerminal('baz');
+        verify($this->model)->hasKey('baz');
+        verify($this->model)->count(2);
 
         // offsetUnset
-        unset($this->terminals['TT-0000-0000']);
-        verify($this->terminals)->count(1);
-        verify($this->terminals)->hasntKey('TT-0000-0000');
+        unset($this->model['foo']);
+        verify($this->model)->count(1);
+        verify($this->model)->hasntKey('foo');
     }
 
     /**
-     * @depends testItCanSetTerminals
-     *
-     * @return void
+     * @inheritDoc
      */
-    public function testItCanBeIterated(): void
+    public function testItCanGetCollectionName(): void
     {
-        verify($this->terminals)->isInstanceOf(IteratorAggregate::class);
-
-        $this->terminals->setTerminals([
-            (new TerminalHydrator())->hydrate([
-                'id'          => 'TT-0000-0000',
-                'name'        => 'Test terminal',
-                'ecrProtocol' => 'WEB',
-                'state'       => 'active',
-            ], new Terminal()),
-        ])->setTotal(1);
-
-        verify(is_iterable($this->terminals))->true();
+        $this->traitTestItCanGetCollectionName();
+        verify($this->model->getCollectionName())->equals('terminals');
     }
 }

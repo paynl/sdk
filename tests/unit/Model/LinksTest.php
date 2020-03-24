@@ -25,6 +25,7 @@ class LinksTest extends UnitTest
     use ModelTestTrait,
         CollectionTestTrait {
         testItCanBeAccessedLikeAnArray as traitTestItCanBeAccessedLikeAnArray;
+        testItCanGetCollectionName as traitTestItCanGetCollectionName;
     }
 
     /**
@@ -61,6 +62,9 @@ class LinksTest extends UnitTest
      */
     public function testItCanAddLink(): void
     {
+        $this->tester->assertObjectHasMethod('addLink', $this->model);
+        $this->tester->assertObjectMethodIsPublic('addLink', $this->model);
+
         $link = $this->getMockLink();
         $links = $this->model->addLink($link);
         verify($links)->object();
@@ -75,6 +79,9 @@ class LinksTest extends UnitTest
      */
     public function testItCanSetLinks(): void
     {
+        $this->tester->assertObjectHasMethod('setLinks', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setLinks', $this->model);
+
         $mockLink = $this->getMockLink('foo');
 
         $result = $this->model->setLinks([ $mockLink ]);
@@ -97,6 +104,7 @@ class LinksTest extends UnitTest
 
     /**
      * @depends testItCanAddLink
+     * @depends testItCanSetLinks
      *
      * @return void
      */
@@ -108,12 +116,12 @@ class LinksTest extends UnitTest
 
     /**
      * @depends testItCanAddLink
+     * @depends testItCanSetLinks
      *
      * @return void
      */
     public function testItCanSetEmptyLinks(): void
     {
-        $this->tester->assertObjectHasMethod('setLinks', $this->model);
         $links = $this->model->setLinks([]);
         verify($links)->isInstanceOf(Links::class);
         verify($links)->same($this->model);
@@ -169,5 +177,14 @@ class LinksTest extends UnitTest
         unset($this->model['foo']);
         verify($this->model)->count(1);
         verify($this->model)->hasntKey('foo');
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function testItCanGetCollectionName(): void
+    {
+        $this->traitTestItCanGetCollectionName();
+        verify($this->model->getCollectionName())->equals('links');
     }
 }

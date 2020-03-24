@@ -4,18 +4,25 @@ declare(strict_types=1);
 
 namespace Codeception\Lib;
 
-use ArrayAccess;
-use Countable;
 use Doctrine\Common\Collections\ArrayCollection;
-use IteratorAggregate;
-use PayNL\Sdk\Common\AbstractTotalCollection;
-use PayNL\Sdk\Common\CollectionInterface;
-use PayNL\Sdk\Model\ModelInterface;
+use PayNL\Sdk\Common\{
+    AbstractTotalCollection,
+    CollectionInterface
+};
+use ArrayAccess,
+    Countable,
+    IteratorAggregate
+;
 
+/**
+ * Trait CollectionTestTrait
+ *
+ * @package Codeception\Lib
+ */
 trait CollectionTestTrait
 {
     /**
-     * @var ArrayCollection
+     * @var CollectionInterface
      */
     protected $model;
 
@@ -81,6 +88,18 @@ trait CollectionTestTrait
         if (true === $this->shouldItBeATotalCollection) {
             verify($this->model)->isInstanceOf(AbstractTotalCollection::class);
         }
+    }
+
+    /**
+     * @depends testItIsACollection
+     *
+     * @return void
+     */
+    public function testItCanGetCollectionName(): void
+    {
+        $collectionName = $this->model->getCollectionName();
+        verify($collectionName)->string();
+        verify($collectionName)->notEmpty();
     }
 
     /**

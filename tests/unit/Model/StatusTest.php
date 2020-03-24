@@ -4,14 +4,16 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PayNL\Sdk\Model;
 
-use Codeception\Test\Unit as UnitTest;
-use PayNL\Sdk\Common\DateTime;
-use PayNL\Sdk\Model\{
-    ModelInterface,
-    Status
+use Codeception\{
+    Lib\ModelTestTrait,
+    Test\Unit as UnitTest
 };
-use Exception, JsonSerializable;
-use PayNL\Sdk\Exception\InvalidArgumentException;
+use PayNL\Sdk\{
+    Common\DateTime,
+    Model\Status,
+    Exception\InvalidArgumentException
+};
+use Mockery;
 
 /**
  * Class StatusTest
@@ -20,132 +22,174 @@ use PayNL\Sdk\Exception\InvalidArgumentException;
  */
 class StatusTest extends UnitTest
 {
+    use ModelTestTrait;
+
     /**
      * @var Status
      */
-    protected $status;
+    protected $model;
 
     /**
      * @return void
      */
     public function _before(): void
     {
-        $this->status = new Status();
+        $this->model = new Status();
     }
 
     /**
      * @return void
      */
-    public function testItIsAModel(): void
+    public function testItCanSetCode(): void
     {
-        verify($this->status)->isInstanceOf(ModelInterface::class);
+        $this->tester->assertObjectHasMethod('setCode', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setCode', $this->model);
+
+        $status = $this->model->setCode('100');
+        verify($status)->object();
+        verify($status)->same($this->model);
+
+        $status = $this->model->setCode(200);
+        verify($status)->object();
+        verify($status)->same($this->model);
     }
 
     /**
+     * @depends testItCanSetCode
+     *
      * @return void
      */
-    public function testIsItNotJsonSerializable(): void
-    {
-        verify($this->status)->isNotInstanceOf(JsonSerializable::class);
-    }
-
-    /**
-     * @return void
-     */
-    public function testItCanSetACode(): void
-    {
-        expect($this->status->setCode('100'))->isInstanceOf(Status::class);
-    }
-
-    /**
-     * @return void
-     */
-    public function testItThrowsAnExceptionWhenCodeIsNotAString(): void
+    public function testItThrowsAnExceptionWhenCodeIsNotCorrect(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->status->setCode(100);
+        $this->model->setCode([]);
     }
 
     /**
-     * @depends testItCanSetACode
+     * @depends testItCanSetCode
      *
      * @return void
      */
-    public function testItCanGetACode(): void
+    public function testItCanGetCode(): void
     {
-        $this->status->setCode('100');
+        $this->tester->assertObjectHasMethod('getCode', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getCode', $this->model);
 
-        verify($this->status->getCode())->string();
-        verify($this->status->getCode())->notEmpty();
-        verify($this->status->getCode())->equals('100');
+        $code = $this->model->getCode();
+        verify($code)->string();
+        verify($code)->isEmpty();
+        verify($code)->equals('');
+
+        $this->model->setCode('100');
+        $code = $this->model->getCode();
+        verify($code)->string();
+        verify($code)->notEmpty();
+        verify($code)->equals('100');
+
+        $this->model->setCode(200);
+        $code = $this->model->getCode();
+        verify($code)->string();
+        verify($code)->notEmpty();
+        verify($code)->equals('200');
     }
 
     /**
      * @return void
      */
-    public function testItCanSetAName(): void
+    public function testItCanSetName(): void
     {
-        expect($this->status->setName('Paid'))->isInstanceOf(Status::class);
+        $this->tester->assertObjectHasMethod('setName', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setName', $this->model);
+
+        $status = $this->model->setName('foo');
+        verify($status)->object();
+        verify($status)->same($this->model);
     }
 
     /**
-     * @depends testItCanSetAName
+     * @depends testItCanSetName
      *
      * @return void
      */
-    public function testItCanGetAName(): void
+    public function testItCanGetName(): void
     {
-        $this->status->setName('Paid');
+        $this->tester->assertObjectHasMethod('getName', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getName', $this->model);
 
-        verify($this->status->getName())->string();
-        verify($this->status->getName())->notEmpty();
-        verify($this->status->getName())->equals('Paid');
-    }
+        $name = $this->model->getName();
+        verify($name)->string();
+        verify($name)->isEmpty();
 
-    /**
-     * @throws Exception
-     *
-     * @return void
-     */
-    public function testItCanSetADate(): void
-    {
-        expect($this->status->setDate(DateTime::now()))->isInstanceOf(Status::class);
-    }
-
-    /**
-     * @depends testItCanSetADate
-     *
-     * @throws Exception
-     *
-     * @return void
-     */
-    public function testItCanGetADate(): void
-    {
-        $this->status->setDate(DateTime::now());
-
-        verify($this->status->getDate())->notEmpty();
-        verify($this->status->getDate())->isInstanceOf(DateTime::class);
+        $this->model->setName('foo');
+        $name = $this->model->getName();
+        verify($name)->string();
+        verify($name)->notEmpty();
+        verify($name)->equals('foo');
     }
 
     /**
      * @return void
      */
-    public function testItCanSetAReason(): void
+    public function testItCanSetDate(): void
     {
-        expect($this->status->setReason('Lorem ipsum dolor sit amet'))->isInstanceOf(Status::class);
+        $this->tester->assertObjectHasMethod('setDate', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setDate', $this->model);
+
+        $dateTimeMock = Mockery::mock(DateTime::class);
+        $status = $this->model->setDate($dateTimeMock);
+        verify($status)->object();
+        verify($status)->same($this->model);
     }
 
     /**
-     * @depends testItCanSetAReason
+     * @depends testItCanSetDate
      *
      * @return void
      */
-    public function testItCanGetAReason(): void
+    public function testItCanGetDate(): void
     {
-        $this->status->setReason('Lorem ipsum dolor sit amet');
+        $this->tester->assertObjectHasMethod('getDate', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getDate', $this->model);
 
-        verify($this->status->getReason())->string();
-        verify($this->status->getReason())->notEmpty();
-        verify($this->status->getReason())->equals('Lorem ipsum dolor sit amet');
+        $dateTimeMock = Mockery::mock(DateTime::class);
+        $this->model->setDate($dateTimeMock);
+        $date = $this->model->getDate();
+        verify($date)->notEmpty();
+        verify($date)->isInstanceOf(DateTime::class);
+        verify($date)->same($dateTimeMock);
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanSetReason(): void
+    {
+        $this->tester->assertObjectHasMethod('setReason', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setReason', $this->model);
+
+        $status = $this->model->setReason('Lorem ipsum dolor sit amet');
+        verify($status)->object();
+        verify($status)->same($this->model);
+    }
+
+    /**
+     * @depends testItCanSetReason
+     *
+     * @return void
+     */
+    public function testItCanGetReason(): void
+    {
+        $this->tester->assertObjectHasMethod('getReason', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getReason', $this->model);
+
+        $reason = $this->model->getReason();
+        verify($reason)->string();
+        verify($reason)->isEmpty();
+
+        $this->model->setReason('Lorem ipsum dolor sit amet');
+        $reason = $this->model->getReason();
+        verify($reason)->string();
+        verify($reason)->notEmpty();
+        verify($reason)->equals('Lorem ipsum dolor sit amet');
     }
 }

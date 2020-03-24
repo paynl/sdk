@@ -10,9 +10,7 @@ use PayNL\Sdk\Model\{
     Links,
     Service
 };
-use PayNL\Sdk\DateTime;
 use Exception, JsonSerializable;
-use PayNL\Sdk\Hydrator\Links as LinksHydrator;
 
 /**
  * Class ServiceTest
@@ -50,34 +48,9 @@ class ServiceTest extends UnitTest
     /**
      * @return void
      */
-    public function testItCanSetLinks(): void
+    public function testItUsesLinksTrait(): void
     {
-        verify(method_exists($this->service, 'setLinks'))->true();
-        verify($this->service->setLinks(new Links()))->isInstanceOf(Service::class);
-    }
-
-    /**
-     * @depends testItCanSetLinks
-     *
-     * @return void
-     */
-    public function testItCanGetLinks(): void
-    {
-        verify(method_exists($this->service, 'getLinks'))->true();
-
-        $this->service->setLinks(
-            (new LinksHydrator())->hydrate([
-                [
-                    'rel'  => 'self',
-                    'type' => 'GET',
-                    'url'  => 'http://some.url.com',
-                ],
-            ], new Links())
-        );
-
-        verify($this->service->getLinks())->isInstanceOf(Links::class);
-        verify($this->service->getLinks())->count(1);
-        verify($this->service->getLinks())->hasKey('self');
+        verify(in_array(LinksTrait::class, class_uses($this->service), true))->true();
     }
 
     /**

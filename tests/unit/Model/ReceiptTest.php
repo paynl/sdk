@@ -12,6 +12,7 @@ use PayNL\Sdk\Model\{
     Receipt
 };
 use JsonSerializable;
+use UnitTester;
 
 /**
  * Class ReceiptTest
@@ -20,6 +21,9 @@ use JsonSerializable;
  */
 class ReceiptTest extends UnitTest
 {
+    /** @var UnitTester */
+    protected $tester;
+
     /**
      * @var Receipt
      */
@@ -53,7 +57,7 @@ class ReceiptTest extends UnitTest
     {
         $id = 'TG9yZW0lMjBpcHN1bSUyMGRvbG9yJTIwc2l0JTIwYW1ldCwlMjBjb25zZWN0ZXR1ciUyMGFkaXBpc2NpbmclMjBlbGl0Lg==';
 
-        expect($this->receipt->setId($id))->isInstanceOf(Receipt::class);
+        verify($this->receipt->setId($id))->isInstanceOf(Receipt::class);
     }
 
     /**
@@ -97,17 +101,17 @@ class ReceiptTest extends UnitTest
     /**
      * @return void
      */
-    public function testItCanSetAApprovalId(): void
+    public function testItCanSetAnApprovalId(): void
     {
         expect($this->receipt->setApprovalId('Hd8sa39934'))->isInstanceOf(Receipt::class);
     }
 
     /**
-     * @depends testItCanSetAApprovalId
+     * @depends testItCanSetAnApprovalId
      *
      * @return void
      */
-    public function testItCanGetAApprovalId(): void
+    public function testItCanGetAnApprovalId(): void
     {
         $this->receipt->setApprovalId('Hd8sa39934');
 
@@ -121,7 +125,9 @@ class ReceiptTest extends UnitTest
      */
     public function testItCanSetACard(): void
     {
-        expect($this->receipt->setCard(new Card()))->isInstanceOf(Receipt::class);
+        /** @var Card $card */
+        $card = $this->tester->grabService('modelManager')->get('Card');
+        verify($this->receipt->setCard($card))->isInstanceOf(Receipt::class);
     }
 
     /**
@@ -131,10 +137,14 @@ class ReceiptTest extends UnitTest
      */
     public function testItCanGetACard(): void
     {
-        $this->receipt->setCard(new Card());
+        /** @var Card $cardMock */
+        $cardMock = $this->tester->grabService('modelManager')->get('Card');
+        $cardMock->setName('Visa');
+        $this->receipt->setCard($cardMock);
 
         verify($this->receipt->getCard())->notEmpty();
         verify($this->receipt->getCard())->isInstanceOf(Card::class);
+        verify($this->receipt->getCard())->equals($cardMock);
     }
 
     /**
@@ -142,7 +152,8 @@ class ReceiptTest extends UnitTest
      */
     public function testItCanSetAPaymentMethod(): void
     {
-        expect($this->receipt->setPaymentMethod(new PaymentMethod()))->isInstanceOf(Receipt::class);
+        $paymentMethodMock = $this->tester->grabService('modelManager')->get('PaymentMethod');
+        expect($this->receipt->setPaymentMethod($paymentMethodMock))->isInstanceOf(Receipt::class);
     }
 
     /**
@@ -152,7 +163,8 @@ class ReceiptTest extends UnitTest
      */
     public function testItCanGetAPaymentMethod(): void
     {
-        $this->receipt->setPaymentMethod(new PaymentMethod());
+        $paymentMethodMock = $this->tester->grabService('modelManager')->get('PaymentMethod');
+        $this->receipt->setPaymentMethod($paymentMethodMock);
 
         verify($this->receipt->getPaymentMethod())->notEmpty();
         verify($this->receipt->getPaymentMethod())->isInstanceOf(PaymentMethod::class);

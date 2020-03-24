@@ -23,7 +23,7 @@ trait ModelTestTrait
     /**
      * @var bool
      */
-    protected $shouldItBeJsonSerializable;
+    protected $shouldItBeJsonSerializable = false;
 
     /**
      * @var ModelInterface
@@ -38,20 +38,17 @@ trait ModelTestTrait
         verify($this->model)->isInstanceOf(ModelInterface::class);
     }
 
+    protected function markAsJsonSerializeable(): self
+    {
+        $this->shouldItBeJsonSerializable = true;
+        return $this;
+    }
+
     /**
      * @return void
      */
     public function testItShouldBeJsonSerializable(): void
     {
-        if (null === $this->shouldItBeJsonSerializable) {
-            Assert::fail(
-                sprintf(
-                    'Model test "%s" should set if it should or shouldn\'t be JsonSerializable',
-                    __CLASS__
-                )
-            );
-        }
-
         if (true === $this->shouldItBeJsonSerializable) {
             $this->tester->assertObjectIsJsonSerializable($this->model);
         } else {

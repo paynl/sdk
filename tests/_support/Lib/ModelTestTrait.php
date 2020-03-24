@@ -40,7 +40,7 @@ trait ModelTestTrait
     /**
      * @return $this
      */
-    protected function markAsJsonSerializeable(): self
+    protected function markAsJsonSerializable(): self
     {
         $this->shouldItBeJsonSerializable = true;
         return $this;

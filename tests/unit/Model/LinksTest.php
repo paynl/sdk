@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PayNL\Sdk\Model;
 
-use Codeception\Test\Unit as UnitTest;
-use Codeception\Lib\ModelTestTrait;
-use Doctrine\Common\Collections\ArrayCollection;
+use Codeception\{
+    Test\Unit as UnitTest,
+    Lib\ModelTestTrait,
+    Lib\CollectionTestTrait
+};
 use PayNL\Sdk\Model\{
-    ModelInterface,
     Link,
     Links
 };
-use PayNL\Sdk\Common\CollectionInterface;
-use JsonSerializable, Countable, ArrayAccess, IteratorAggregate;
+use TypeError;
 
 /**
  * Class LinksTest
@@ -22,7 +22,10 @@ use JsonSerializable, Countable, ArrayAccess, IteratorAggregate;
  */
 class LinksTest extends UnitTest
 {
-    use ModelTestTrait;
+    use ModelTestTrait,
+        CollectionTestTrait {
+        testItCanBeAccessedLikeAnArray as traitTestItCanBeAccessedLikeAnArray;
+    }
 
     /**
      * @var Links
@@ -34,24 +37,7 @@ class LinksTest extends UnitTest
      */
     public function _before(): void
     {
-        $this->shouldItBeJsonSerializable = false;
         $this->model = new Links();
-    }
-
-    /**
-     * @return void
-     */
-    public function testItIsAnArrayCollection(): void
-    {
-        verify($this->model)->isInstanceOf(ArrayCollection::class);
-    }
-
-    /**
-     * @return void
-     */
-    public function testItIsACollection(): void
-    {
-        verify($this->model)->isInstanceOf(CollectionInterface::class);
     }
 
     /**
@@ -60,10 +46,10 @@ class LinksTest extends UnitTest
      * @param string $url
      * @return Link
      */
-    private function getLink($key = 'self', $type = 'GET', $url = 'http://some.url.com'): Link
+    private function getMockLink($key = 'self', $type = 'GET', $url = 'http://some.url.com'): Link
     {
         /** @var Link $mockLink */
-        $mockLink = $this->tester->grabService('modelManager')->get('Link');
+        $mockLink = $this->tester->grabService('modelManager')->build('Link');
         $mockLink->setRel($key);
         $mockLink->setType($type);
         $mockLink->setUrl($url);
@@ -73,32 +59,65 @@ class LinksTest extends UnitTest
     /**
      * @return void
      */
-    public function testItCanSetLinks(): void
+    public function testItCanAddLink(): void
     {
-        $result = $this->model->setLinks([ $this->getLink() ]);
-        verify($result)->isInstanceOf(Links::class);
+        $link = $this->getMockLink();
+        $links = $this->model->addLink($link);
+        verify($links)->object();
+        verify($links)->same($this->model);
+        verify($links)->hasKey($link->getRel());
     }
 
     /**
-     * @depends testItCanSetLinks
-     * @depends testItIsCountable
+     * @depends testItCanAddLink
+     *
+     * @return void
+     */
+    public function testItCanSetLinks(): void
+    {
+        $mockLink = $this->getMockLink('foo');
+
+        $result = $this->model->setLinks([ $mockLink ]);
+        verify($result)->isInstanceOf(Links::class);
+        verify($result)->same($this->model);
+        verify($result)->containsOnlyInstancesOf(Link::class);
+        verify($result)->notEmpty();
+        verify($result)->count(1);
+
+        $result = $this->model->setLinks([
+            $this->getMockLink('bar'),
+            $this->getMockLink('baz')
+        ]);
+        verify($result)->isInstanceOf(Links::class);
+        verify($result)->containsOnlyInstancesOf(Link::class);
+        verify($result)->same($this->model);
+        verify($result)->count(2);
+        verify($result)->notContains($mockLink);
+    }
+
+    /**
+     * @depends testItCanAddLink
+     *
+     * @return void
+     */
+    public function testSetLinksThrowsTypeError(): void
+    {
+        $this->expectException(TypeError::class);
+        $this->model->setLinks([$this->getMockLink(), []]);
+    }
+
+    /**
+     * @depends testItCanAddLink
+     *
      * @return void
      */
     public function testItCanSetEmptyLinks(): void
     {
         $this->tester->assertObjectHasMethod('setLinks', $this->model);
-        verify($this->model->setLinks([]))->isInstanceOf(Links::class);
-        verify($this->model)->count(0);
-    }
-
-    /**
-     * @return void
-     */
-    public function testItCanAddLink(): void
-    {
-        $link = $this->getLink();
-        $this->model->addLink($link);
-        verify($this->model)->hasKey($link->getRel());
+        $links = $this->model->setLinks([]);
+        verify($links)->isInstanceOf(Links::class);
+        verify($links)->same($this->model);
+        verify($links)->count(0);
     }
 
     /**
@@ -108,71 +127,47 @@ class LinksTest extends UnitTest
      */
     public function testItCanGetLinks(): void
     {
-        verify(method_exists($this->model, 'getLinks'))->true();
+        $this->tester->assertObjectHasMethod('getLinks', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getLinks', $this->model);
 
-        $link = $this->getLink();
+        $link = $this->getMockLink();
         $key = $link->getRel();
 
-        $this->model->setLinks([ $this->getLink() ]);
-
-        verify($this->model->getLinks())->array();
-        verify($this->model->getLinks())->count(1);
-        verify($this->model->getLinks())->hasKey($key);
+        $this->model->setLinks([ $this->getMockLink() ]);
+        $links = $this->model->getLinks();
+        verify($links)->array();
+        verify($links)->count(1);
+        verify($links)->hasKey($key);
+        verify($links)->containsOnlyInstancesOf(Link::class);
     }
 
     /**
-     * @depends testItCanSetLinks
-     *
-     * @return void
-     */
-    public function testItIsCountable(): void
-    {
-        verify($this->model)->isInstanceOf(Countable::class);
-        $this->model->setLinks([ $this->getLink() ]);
-        verify(count($this->model))->equals(1);
-    }
-
-    /**
-     * @depends testItCanSetLinks
+     * @depends testItIsAnArrayCollection
      *
      * @return void
      */
     public function testItCanBeAccessedLikeAnArray(): void
     {
-        verify($this->model)->isInstanceOf(ArrayAccess::class);
+        $this->traitTestItCanBeAccessedLikeAnArray();
 
-        $this->model->setLinks([ $this->getLink() ]);
+        $this->model->setLinks([ $this->getMockLink('foo') ]);
 
         // offsetExists
-        verify(isset($this->model['self']))->true();
-        verify(isset($this->model['non_existing_key']))->false();
+        verify(isset($this->model['foo']))->true();
+        verify(isset($this->model['bar']))->false();
 
         // offsetGet
-        verify($this->model['self'])->isInstanceOf(Link::class);
+        verify($this->model['foo'])->isInstanceOf(Link::class);
 
         // offsetSet
 
-        $this->model['new'] = $this->getLink('new', 'GET', 'http://some.other-url.com');
-        verify($this->model)->hasKey('new');
+        $this->model['baz'] = $this->getMockLink('baz', 'GET', 'http://corge.grault.garply');
+        verify($this->model)->hasKey('baz');
         verify($this->model)->count(2);
 
         // offsetUnset
-        unset($this->model['self']);
+        unset($this->model['foo']);
         verify($this->model)->count(1);
-        verify($this->model)->hasntKey('self');
-    }
-
-    /**
-     * @depends testItCanSetLinks
-     *
-     * @return void
-     */
-    public function testItCanBeIterated(): void
-    {
-        verify($this->model)->isInstanceOf(IteratorAggregate::class);
-
-        $this->model->setLinks([ $this->getLink() ]);
-
-        verify(is_iterable($this->model))->true();
+        verify($this->model)->hasntKey('foo');
     }
 }

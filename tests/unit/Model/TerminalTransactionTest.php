@@ -4,9 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PayNL\Sdk\Model;
 
-use Codeception\Test\Unit as UnitTest;
-use PayNL\Sdk\Model\{ModelInterface, Progress, Terminal, TerminalTransaction};
-use JsonSerializable;
+use Codeception\{
+    Lib\ModelTestTrait,
+    Test\Unit as UnitTest
+};
+use PayNL\Sdk\Model\{
+    Progress,
+    Terminal,
+    TerminalTransaction
+};
 
 /**
  * Class TerminalTransactionTest
@@ -15,32 +21,20 @@ use JsonSerializable;
  */
 class TerminalTransactionTest extends UnitTest
 {
+    use ModelTestTrait;
+
     /**
      * @var TerminalTransaction
      */
-    protected $terminalTransaction;
+    protected $model;
 
+    /**
+     * @return void
+     */
     public function _before(): void
     {
-        $this->terminalTransaction = new TerminalTransaction();
-    }
-
-    /**
-     * @return void
-     */
-    public function testItIsAModel(): void
-    {
-        verify($this->terminalTransaction)->isInstanceOf(ModelInterface::class);
-    }
-
-    /**
-     * @return void
-     */
-    public function testIsItJsonSerializable(): void
-    {
-        verify($this->terminalTransaction)->isInstanceOf(\JsonSerializable::class);
-
-        verify($this->terminalTransaction->jsonSerialize())->array();
+        $this->markAsJsonSerializable();
+        $this->model = new TerminalTransaction();
     }
 
     /**
@@ -48,7 +42,10 @@ class TerminalTransactionTest extends UnitTest
      */
     public function testItCanSetAState(): void
     {
-        expect($this->terminalTransaction->setState('active'))->isInstanceOf(TerminalTransaction::class);
+        $this->tester->assertObjectHasMethod('setState', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setState', $this->model);
+
+        expect($this->model->setState('active'))->isInstanceOf(TerminalTransaction::class);
     }
 
     /**
@@ -58,11 +55,14 @@ class TerminalTransactionTest extends UnitTest
      */
     public function testItCanGetAState(): void
     {
-        $this->terminalTransaction->setState('active');
+        $this->tester->assertObjectHasMethod('getState', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getState', $this->model);
 
-        verify($this->terminalTransaction->getState())->string();
-        verify($this->terminalTransaction->getState())->notEmpty();
-        verify($this->terminalTransaction->getState())->equals('active');
+        $this->model->setState('active');
+
+        verify($this->model->getState())->string();
+        verify($this->model->getState())->notEmpty();
+        verify($this->model->getState())->equals('active');
     }
 
     /**
@@ -70,7 +70,10 @@ class TerminalTransactionTest extends UnitTest
      */
     public function testItCanSetATransactionId(): void
     {
-        expect($this->terminalTransaction->setTerminalTransactionId('TT-0000-0000'))->isInstanceOf(TerminalTransaction::class);
+        $this->tester->assertObjectHasMethod('setTerminalTransactionId', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setTerminalTransactionId', $this->model);
+
+        expect($this->model->setTerminalTransactionId('TT-0000-0000'))->isInstanceOf(TerminalTransaction::class);
     }
 
     /**
@@ -80,11 +83,14 @@ class TerminalTransactionTest extends UnitTest
      */
     public function testItCanGetATransactionId(): void
     {
-        $this->terminalTransaction->setTerminalTransactionId('TT-0000-0000');
+        $this->tester->assertObjectHasMethod('getTerminalTransactionId', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getTerminalTransactionId', $this->model);
 
-        verify($this->terminalTransaction->getTerminalTransactionId())->string();
-        verify($this->terminalTransaction->getTerminalTransactionId())->notEmpty();
-        verify($this->terminalTransaction->getTerminalTransactionId())->equals('TT-0000-0000');
+        $this->model->setTerminalTransactionId('TT-0000-0000');
+
+        verify($this->model->getTerminalTransactionId())->string();
+        verify($this->model->getTerminalTransactionId())->notEmpty();
+        verify($this->model->getTerminalTransactionId())->equals('TT-0000-0000');
     }
 
     /**
@@ -92,7 +98,10 @@ class TerminalTransactionTest extends UnitTest
      */
     public function testItCanSetATransactionHash(): void
     {
-        expect($this->terminalTransaction->setTransactionHash('spec-hash'))->isInstanceOf(TerminalTransaction::class);
+        $this->tester->assertObjectHasMethod('setTransactionHash', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setTransactionHash', $this->model);
+
+        expect($this->model->setTransactionHash('spec-hash'))->isInstanceOf(TerminalTransaction::class);
     }
 
     /**
@@ -102,11 +111,14 @@ class TerminalTransactionTest extends UnitTest
      */
     public function testItCanGetATransactionHash(): void
     {
-        $this->terminalTransaction->setTransactionHash('spec-hash');
+        $this->tester->assertObjectHasMethod('getTransactionHash', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getTransactionHash', $this->model);
 
-        verify($this->terminalTransaction->getTransactionHash())->string();
-        verify($this->terminalTransaction->getTransactionHash())->notEmpty();
-        verify($this->terminalTransaction->getTransactionHash())->equals('spec-hash');
+        $this->model->setTransactionHash('spec-hash');
+
+        verify($this->model->getTransactionHash())->string();
+        verify($this->model->getTransactionHash())->notEmpty();
+        verify($this->model->getTransactionHash())->equals('spec-hash');
     }
 
     /**
@@ -114,7 +126,10 @@ class TerminalTransactionTest extends UnitTest
      */
     public function testItCanSetAIssuerUrl(): void
     {
-        expect($this->terminalTransaction->setIssuerUrl('https://www.pay.nl/issuer-url'))
+        $this->tester->assertObjectHasMethod('setIssuerUrl', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setIssuerUrl', $this->model);
+
+        expect($this->model->setIssuerUrl('https://www.pay.nl/issuer-url'))
             ->isInstanceOf(TerminalTransaction::class)
         ;
     }
@@ -126,11 +141,14 @@ class TerminalTransactionTest extends UnitTest
      */
     public function testItCanGetAIssuerUrl(): void
     {
-        $this->terminalTransaction->setIssuerUrl('https://www.pay.nl/issuer-url');
+        $this->tester->assertObjectHasMethod('getIssuerUrl', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getIssuerUrl', $this->model);
 
-        verify($this->terminalTransaction->getIssuerUrl())->string();
-        verify($this->terminalTransaction->getIssuerUrl())->notEmpty();
-        verify($this->terminalTransaction->getIssuerUrl())->equals('https://www.pay.nl/issuer-url');
+        $this->model->setIssuerUrl('https://www.pay.nl/issuer-url');
+
+        verify($this->model->getIssuerUrl())->string();
+        verify($this->model->getIssuerUrl())->notEmpty();
+        verify($this->model->getIssuerUrl())->equals('https://www.pay.nl/issuer-url');
     }
 
     /**
@@ -138,7 +156,10 @@ class TerminalTransactionTest extends UnitTest
      */
     public function testItCanSetAStatusUrl(): void
     {
-        expect($this->terminalTransaction->setStatusUrl('https://www.pay.nl/status-url'))
+        $this->tester->assertObjectHasMethod('setStatusUrl', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setStatusUrl', $this->model);
+
+        expect($this->model->setStatusUrl('https://www.pay.nl/status-url'))
             ->isInstanceOf(TerminalTransaction::class)
         ;
     }
@@ -150,11 +171,14 @@ class TerminalTransactionTest extends UnitTest
      */
     public function testItCanGetAStatusUrl(): void
     {
-        $this->terminalTransaction->setStatusUrl('https://www.pay.nl/status-url');
+        $this->tester->assertObjectHasMethod('getStatusUrl', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getStatusUrl', $this->model);
 
-        verify($this->terminalTransaction->getStatusUrl())->string();
-        verify($this->terminalTransaction->getStatusUrl())->notEmpty();
-        verify($this->terminalTransaction->getStatusUrl())->equals('https://www.pay.nl/status-url');
+        $this->model->setStatusUrl('https://www.pay.nl/status-url');
+
+        verify($this->model->getStatusUrl())->string();
+        verify($this->model->getStatusUrl())->notEmpty();
+        verify($this->model->getStatusUrl())->equals('https://www.pay.nl/status-url');
     }
 
     /**
@@ -162,7 +186,10 @@ class TerminalTransactionTest extends UnitTest
      */
     public function testItCanSetACancelUrl(): void
     {
-        expect($this->terminalTransaction->setCancelUrl('https://www.pay.nl/cancel-url'))
+        $this->tester->assertObjectHasMethod('setCancelUrl', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setCancelUrl', $this->model);
+
+        expect($this->model->setCancelUrl('https://www.pay.nl/cancel-url'))
             ->isInstanceOf(TerminalTransaction::class)
         ;
     }
@@ -174,11 +201,14 @@ class TerminalTransactionTest extends UnitTest
      */
     public function testItCanGetACancelUrl(): void
     {
-        $this->terminalTransaction->setCancelUrl('https://www.pay.nl/cancel-url');
+        $this->tester->assertObjectHasMethod('getCancelUrl', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getCancelUrl', $this->model);
 
-        verify($this->terminalTransaction->getCancelUrl())->string();
-        verify($this->terminalTransaction->getCancelUrl())->notEmpty();
-        verify($this->terminalTransaction->getCancelUrl())->equals('https://www.pay.nl/cancel-url');
+        $this->model->setCancelUrl('https://www.pay.nl/cancel-url');
+
+        verify($this->model->getCancelUrl())->string();
+        verify($this->model->getCancelUrl())->notEmpty();
+        verify($this->model->getCancelUrl())->equals('https://www.pay.nl/cancel-url');
     }
 
     /**
@@ -186,7 +216,10 @@ class TerminalTransactionTest extends UnitTest
      */
     public function testItCanSetANextUrl(): void
     {
-        expect($this->terminalTransaction->setNextUrl('https://www.pay.nl/next-url'))
+        $this->tester->assertObjectHasMethod('setNextUrl', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setNextUrl', $this->model);
+
+        expect($this->model->setNextUrl('https://www.pay.nl/next-url'))
             ->isInstanceOf(TerminalTransaction::class)
         ;
     }
@@ -198,11 +231,14 @@ class TerminalTransactionTest extends UnitTest
      */
     public function testItCanGetANextUrl(): void
     {
-        $this->terminalTransaction->setNextUrl('https://www.pay.nl/next-url');
+        $this->tester->assertObjectHasMethod('getNextUrl', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getNextUrl', $this->model);
 
-        verify($this->terminalTransaction->getNextUrl())->string();
-        verify($this->terminalTransaction->getNextUrl())->notEmpty();
-        verify($this->terminalTransaction->getNextUrl())->equals('https://www.pay.nl/next-url');
+        $this->model->setNextUrl('https://www.pay.nl/next-url');
+
+        verify($this->model->getNextUrl())->string();
+        verify($this->model->getNextUrl())->notEmpty();
+        verify($this->model->getNextUrl())->equals('https://www.pay.nl/next-url');
     }
 
     /**
@@ -210,7 +246,10 @@ class TerminalTransactionTest extends UnitTest
      */
     public function testItCanSetATerminal(): void
     {
-        expect($this->terminalTransaction->setTerminal(new Terminal()))->isInstanceOf(TerminalTransaction::class);
+        $this->tester->assertObjectHasMethod('setTerminal', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setTerminal', $this->model);
+
+        expect($this->model->setTerminal(new Terminal()))->isInstanceOf(TerminalTransaction::class);
     }
 
     /**
@@ -220,10 +259,13 @@ class TerminalTransactionTest extends UnitTest
      */
     public function testItCanGetATerminal(): void
     {
-        $this->terminalTransaction->setTerminal(new Terminal());
+        $this->tester->assertObjectHasMethod('getTerminal', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getTerminal', $this->model);
 
-        verify($this->terminalTransaction->getTerminal())->notEmpty();
-        verify($this->terminalTransaction->getTerminal())->isInstanceOf(Terminal::class);
+        $this->model->setTerminal(new Terminal());
+
+        verify($this->model->getTerminal())->notEmpty();
+        verify($this->model->getTerminal())->isInstanceOf(Terminal::class);
     }
 
     /**
@@ -231,7 +273,10 @@ class TerminalTransactionTest extends UnitTest
      */
     public function testItCanSetProgress(): void
     {
-        expect($this->terminalTransaction->setProgress(new Progress()))->isInstanceOf(TerminalTransaction::class);
+        $this->tester->assertObjectHasMethod('setProgress', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setProgress', $this->model);
+
+        expect($this->model->setProgress(new Progress()))->isInstanceOf(TerminalTransaction::class);
     }
 
     /**
@@ -241,9 +286,12 @@ class TerminalTransactionTest extends UnitTest
      */
     public function testItCanGetProgress(): void
     {
-        $this->terminalTransaction->setProgress(new Progress());
+        $this->tester->assertObjectHasMethod('getProgress', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getProgress', $this->model);
 
-        verify($this->terminalTransaction->getProgress())->notEmpty();
-        verify($this->terminalTransaction->getProgress())->isInstanceOf(Progress::class);
+        $this->model->setProgress(new Progress());
+
+        verify($this->model->getProgress())->notEmpty();
+        verify($this->model->getProgress())->isInstanceOf(Progress::class);
     }
 }

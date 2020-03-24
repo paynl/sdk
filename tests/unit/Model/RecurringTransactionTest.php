@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PayNL\Sdk\Model;
 
-use Codeception\Test\Unit as UnitTest;
+use Codeception\{
+    Lib\ModelTestTrait,
+    Test\Unit as UnitTest
+};
 use PayNL\Sdk\Model\{
-    ModelInterface,
     Amount,
     RecurringTransaction
 };
-use JsonSerializable;
-use PayNL\Sdk\Common\JsonSerializeTrait;
-use UnitTester;
 
 /**
  * Class RecurringTransactionTest
@@ -21,41 +20,20 @@ use UnitTester;
  */
 class RecurringTransactionTest extends UnitTest
 {
-    /** @var UnitTester */
-    protected $tester;
+    use ModelTestTrait;
 
     /**
      * @var RecurringTransaction
      */
-    protected $recurringTransaction;
+    protected $model;
 
+    /**
+     * @return void
+     */
     public function _before(): void
     {
-        $this->recurringTransaction = new RecurringTransaction();
-    }
-
-    /**
-     * @return void
-     */
-    public function testItIsAModel(): void
-    {
-        verify($this->recurringTransaction)->isInstanceOf(ModelInterface::class);
-    }
-
-    /**
-     * @return void
-     */
-    public function testIsItJsonSerializable(): void
-    {
-        verify($this->recurringTransaction)->isInstanceOf(JsonSerializable::class);
-    }
-
-    /**
-     * @return void
-     */
-    public function testItHasJsonSerializeTrait(): void
-    {
-        verify(in_array(JsonSerializeTrait::class, class_uses($this->recurringTransaction), true))->true();
+        $this->markAsJsonSerializable();
+        $this->model = new RecurringTransaction();
     }
 
     /**
@@ -63,8 +41,11 @@ class RecurringTransactionTest extends UnitTest
      */
     public function testItCanSetAnAmount(): void
     {
+        $this->tester->assertObjectHasMethod('setAmount', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setAmount', $this->model);
+
         $amountMock = $this->tester->grabService('modelManager')->get('Amount');
-        verify($this->recurringTransaction->setAmount($amountMock))->isInstanceOf(RecurringTransaction::class);
+        verify($this->model->setAmount($amountMock))->isInstanceOf(RecurringTransaction::class);
     }
 
     /**
@@ -74,11 +55,14 @@ class RecurringTransactionTest extends UnitTest
      */
     public function testItCanGetAnAmount(): void
     {
-        $amountMock = $this->tester->grabService('modelManager')->get('Amount');
-        $this->recurringTransaction->setAmount($amountMock);
+        $this->tester->assertObjectHasMethod('getAmount', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getAmount', $this->model);
 
-        verify($this->recurringTransaction->getAmount())->notEmpty();
-        verify($this->recurringTransaction->getAmount())->isInstanceOf(Amount::class);
+        $amountMock = $this->tester->grabService('modelManager')->get('Amount');
+        $this->model->setAmount($amountMock);
+
+        verify($this->model->getAmount())->notEmpty();
+        verify($this->model->getAmount())->isInstanceOf(Amount::class);
     }
 
     /**
@@ -86,7 +70,10 @@ class RecurringTransactionTest extends UnitTest
      */
     public function testItCanSetADescription(): void
     {
-        expect($this->recurringTransaction->setDescription('Recurring'))->isInstanceOf(RecurringTransaction::class);
+        $this->tester->assertObjectHasMethod('setDescription', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setDescription', $this->model);
+
+        expect($this->model->setDescription('Recurring'))->isInstanceOf(RecurringTransaction::class);
     }
 
     /**
@@ -96,11 +83,14 @@ class RecurringTransactionTest extends UnitTest
      */
     public function testItCanGetADescription(): void
     {
-        $this->recurringTransaction->setDescription('Recurring');
+        $this->tester->assertObjectHasMethod('getDescription', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getDescription', $this->model);
 
-        verify($this->recurringTransaction->getDescription())->string();
-        verify($this->recurringTransaction->getDescription())->notEmpty();
-        verify($this->recurringTransaction->getDescription())->equals('Recurring');
+        $this->model->setDescription('Recurring');
+
+        verify($this->model->getDescription())->string();
+        verify($this->model->getDescription())->notEmpty();
+        verify($this->model->getDescription())->equals('Recurring');
     }
 
     /**
@@ -108,7 +98,10 @@ class RecurringTransactionTest extends UnitTest
      */
     public function testItCanSetExtra1(): void
     {
-        expect($this->recurringTransaction->setExtra1('Extra'))->isInstanceOf(RecurringTransaction::class);
+        $this->tester->assertObjectHasMethod('setExtra1', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setExtra1', $this->model);
+
+        expect($this->model->setExtra1('Extra'))->isInstanceOf(RecurringTransaction::class);
     }
 
     /**
@@ -118,11 +111,14 @@ class RecurringTransactionTest extends UnitTest
      */
     public function testItCanGetExtra1(): void
     {
-        $this->recurringTransaction->setExtra1('Extra');
+        $this->tester->assertObjectHasMethod('getExtra1', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getExtra1', $this->model);
 
-        verify($this->recurringTransaction->getExtra1())->string();
-        verify($this->recurringTransaction->getExtra1())->notEmpty();
-        verify($this->recurringTransaction->getExtra1())->equals('Extra');
+        $this->model->setExtra1('Extra');
+
+        verify($this->model->getExtra1())->string();
+        verify($this->model->getExtra1())->notEmpty();
+        verify($this->model->getExtra1())->equals('Extra');
     }
 
     /**
@@ -130,7 +126,10 @@ class RecurringTransactionTest extends UnitTest
      */
     public function testItCanSetExtra2(): void
     {
-        expect($this->recurringTransaction->setExtra2('Extra'))->isInstanceOf(RecurringTransaction::class);
+        $this->tester->assertObjectHasMethod('setExtra2', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setExtra2', $this->model);
+
+        expect($this->model->setExtra2('Extra'))->isInstanceOf(RecurringTransaction::class);
     }
 
     /**
@@ -140,11 +139,14 @@ class RecurringTransactionTest extends UnitTest
      */
     public function testItCanGetExtra2(): void
     {
-        $this->recurringTransaction->setExtra2('Extra');
+        $this->tester->assertObjectHasMethod('getExtra2', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getExtra2', $this->model);
 
-        verify($this->recurringTransaction->getExtra2())->string();
-        verify($this->recurringTransaction->getExtra2())->notEmpty();
-        verify($this->recurringTransaction->getExtra2())->equals('Extra');
+        $this->model->setExtra2('Extra');
+
+        verify($this->model->getExtra2())->string();
+        verify($this->model->getExtra2())->notEmpty();
+        verify($this->model->getExtra2())->equals('Extra');
     }
 
     /**
@@ -152,7 +154,10 @@ class RecurringTransactionTest extends UnitTest
      */
     public function testItCanSetExtra3(): void
     {
-        expect($this->recurringTransaction->setExtra3('Extra'))->isInstanceOf(RecurringTransaction::class);
+        $this->tester->assertObjectHasMethod('setExtra3', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setExtra3', $this->model);
+
+        expect($this->model->setExtra3('Extra'))->isInstanceOf(RecurringTransaction::class);
     }
 
     /**
@@ -162,10 +167,13 @@ class RecurringTransactionTest extends UnitTest
      */
     public function testItCanGetExtra3(): void
     {
-        $this->recurringTransaction->setExtra3('Extra');
+        $this->tester->assertObjectHasMethod('getExtra3', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getExtra3', $this->model);
 
-        verify($this->recurringTransaction->getExtra3())->string();
-        verify($this->recurringTransaction->getExtra3())->notEmpty();
-        verify($this->recurringTransaction->getExtra3())->equals('Extra');
+        $this->model->setExtra3('Extra');
+
+        verify($this->model->getExtra3())->string();
+        verify($this->model->getExtra3())->notEmpty();
+        verify($this->model->getExtra3())->equals('Extra');
     }
 }

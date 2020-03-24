@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PayNL\Sdk\Model;
 
-use Codeception\Test\Unit as UnitTest;
-use PayNL\Sdk\Model\{LinksTrait, ModelInterface, Currency};
-use JsonSerializable;
-use UnitTester;
+use Codeception\{
+    Lib\ModelTestTrait,
+    Test\Unit as UnitTest
+};
+use PayNL\Sdk\Model\{
+    LinksTrait,
+    Currency
+};
 
 /**
  * Class CurrencyTest
@@ -16,38 +20,24 @@ use UnitTester;
  */
 class CurrencyTest extends UnitTest
 {
-    /** @var UnitTester */
-    protected $tester;
+    use ModelTestTrait;
 
     /**
      * @var Currency
      */
-    protected $currency;
-
-    public function _before(): void
-    {
-        $this->currency = new Currency();
-    }
+    protected $model;
 
     /**
      * @return void
      */
-    public function testItIsAModel(): void
+    public function _before(): void
     {
-        verify($this->currency)->isInstanceOf(ModelInterface::class);
+        $this->model = new Currency();
     }
 
     public function testItUsesLinksTrait(): void
     {
-        verify(in_array(LinksTrait::class, class_uses($this->currency), true))->true();
-    }
-
-    /**
-     * @return void
-     */
-    public function testIsItNotJsonSerializable(): void
-    {
-        verify($this->currency)->isNotInstanceOf(JsonSerializable::class);
+        $this->tester->assertObjectUsesTrait($this->model, LinksTrait::class);
     }
 
     /**
@@ -55,8 +45,10 @@ class CurrencyTest extends UnitTest
      */
     public function testItCanSetAnAbbreviation(): void
     {
-        $this->tester->assertObjectHasMethod('setAbbreviation', $this->currency);
-        verify($this->currency->setAbbreviation('EUR'))->isInstanceOf(Currency::class);
+        $this->tester->assertObjectHasMethod('setAbbreviation', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setAbbreviation', $this->model);
+
+        verify($this->model->setAbbreviation('EUR'))->isInstanceOf(Currency::class);
     }
 
     /**
@@ -66,12 +58,14 @@ class CurrencyTest extends UnitTest
      */
     public function testItCanGetAnAbbreviation(): void
     {
-        $this->currency->setAbbreviation('EUR');
+        $this->tester->assertObjectHasMethod('getAbbreviation', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getAbbreviation', $this->model);
 
-        $this->tester->assertObjectHasMethod('getAbbreviation', $this->currency);
-        verify($this->currency->getAbbreviation())->string();
-        verify($this->currency->getAbbreviation())->notEmpty();
-        verify($this->currency->getAbbreviation())->equals('EUR');
+        $this->model->setAbbreviation('EUR');
+
+        verify($this->model->getAbbreviation())->string();
+        verify($this->model->getAbbreviation())->notEmpty();
+        verify($this->model->getAbbreviation())->equals('EUR');
     }
 
     /**
@@ -79,8 +73,10 @@ class CurrencyTest extends UnitTest
      */
     public function testItCanSetADescription(): void
     {
-        $this->tester->assertObjectHasMethod('setDescription', $this->currency);
-        verify($this->currency->setDescription('Euro'))->isInstanceOf(Currency::class);
+        $this->tester->assertObjectHasMethod('setDescription', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setDescription', $this->model);
+
+        verify($this->model->setDescription('Euro'))->isInstanceOf(Currency::class);
     }
 
     /**
@@ -90,11 +86,13 @@ class CurrencyTest extends UnitTest
      */
     public function testItCanGetADescription(): void
     {
-        $this->currency->setDescription('Euro');
+        $this->tester->assertObjectHasMethod('getDescription', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getDescription', $this->model);
 
-        $this->tester->assertObjectHasMethod('getDescription', $this->currency);
-        verify($this->currency->getDescription())->string();
-        verify($this->currency->getDescription())->notEmpty();
-        verify($this->currency->getDescription())->equals('Euro');
+        $this->model->setDescription('Euro');
+
+        verify($this->model->getDescription())->string();
+        verify($this->model->getDescription())->notEmpty();
+        verify($this->model->getDescription())->equals('Euro');
     }
 }

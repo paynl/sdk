@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PayNL\Sdk\Model;
 
-use Codeception\Test\Unit as UnitTest;
+use Codeception\{
+    Lib\ModelTestTrait,
+    Lib\CollectionTestTrait,
+    Test\Unit as UnitTest
+};
 use PayNL\Sdk\Model\{
     LinksTrait,
-    ModelInterface,
     Service,
     Services
 };
 
-use JsonSerializable, Countable, ArrayAccess, IteratorAggregate, Exception;
 use Mockery;
-use PayNL\Sdk\Common\AbstractTotalCollection;
-use UnitTester;
 use PayNL\Sdk\Common\DateTime;
 
 /**
@@ -25,44 +25,22 @@ use PayNL\Sdk\Common\DateTime;
  */
 class ServicesTest extends UnitTest
 {
-    /** @var UnitTester */
-    protected $tester;
+    use ModelTestTrait, CollectionTestTrait {
+        testItCanBeAccessedLikeAnArray as traitTestItCanBeAccessedLikeAnArray;
+    }
 
     /**
      * @var Services
      */
-    protected $services;
+    protected $model;
 
     /**
      * @return void
      */
     public function _before(): void
     {
-        $this->services = new Services();
-    }
-
-    /**
-     * @return void
-     */
-    public function testItIsAModel(): void
-    {
-        verify($this->services)->isInstanceOf(ModelInterface::class);
-    }
-
-    /**
-     * @return void
-     */
-    public function testItIsAnAbstractCollection(): void
-    {
-        verify($this->services)->isInstanceOf(AbstractTotalCollection::class);
-    }
-
-    /**
-     * @return void
-     */
-    public function testIsItNotJsonSerializable(): void
-    {
-        verify($this->services)->isNotInstanceOf(JsonSerializable::class);
+        $this->markAsTotalCollection();
+        $this->model = new Services();
     }
 
     /**
@@ -70,14 +48,20 @@ class ServicesTest extends UnitTest
      */
     public function testItUsesLinksTrait(): void
     {
-        verify(in_array(LinksTrait::class, class_uses($this->services), true))->true();
+        $this->tester->assertObjectUsesTrait($this->model, LinksTrait::class);
     }
 
+    /**
+     * @return Service
+     */
     private function getServiceMock(): Service
     {
         return $this->tester->grabService('modelManager')->get('Service');
     }
 
+    /**
+     * @return Service
+     */
     private function getFirstService(): Service
     {
         return ($this->getServiceMock())
@@ -89,6 +73,9 @@ class ServicesTest extends UnitTest
             ->setCreatedAt(Mockery::mock(DateTime::class));
     }
 
+    /**
+     * @return Service
+     */
     private function getSecondService(): Service
     {
         return ($this->getServiceMock())
@@ -101,14 +88,14 @@ class ServicesTest extends UnitTest
     }
 
     /**
-     * @throws Exception
-     *
      * @return void
      */
     public function testItCanAddService(): void
     {
-        verify(method_exists($this->services, 'addService'))->true();
-        verify($this->services->addService($this->getFirstService()))
+        $this->tester->assertObjectHasMethod('addService', $this->model);
+        $this->tester->assertObjectMethodIsPublic('addService', $this->model);
+
+        verify($this->model->addService($this->getFirstService()))
             ->isInstanceOf(Services::class);
     }
 
@@ -119,113 +106,56 @@ class ServicesTest extends UnitTest
      */
     public function testItCanSetServices(): void
     {
-        verify(method_exists($this->services, 'setServices'))->true();
-        verify($this->services->setServices([]))->isInstanceOf(Services::class);
+        $this->tester->assertObjectHasMethod('setServices', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setServices', $this->model);
+
+        verify($this->model->setServices([]))->isInstanceOf(Services::class);
     }
 
     /**
      * @depends testItCanSetServices
-     *
-     * @throws Exception
      *
      * @return void
      */
     public function testItCanGetServices(): void
     {
-        verify(method_exists($this->services, 'getServices'))->true();
+        $this->tester->assertObjectHasMethod('getServices', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getServices', $this->model);
 
-        $this->services->addService($this->getFirstService());
+        $this->model->addService($this->getFirstService());
 
-        verify($this->services->getServices())->array();
-        verify($this->services->getServices())->count(1);
-    }
-
-    /**
-     * @return void
-     */
-    public function testItCanSetTotal(): void
-    {
-        verify(method_exists($this->services, 'setTotal'))->true();
-        verify($this->services->setTotal(1))->isInstanceOf(Services::class);
-    }
-
-    /**
-     * @depends testItCanSetTotal
-     *
-     * @return void
-     */
-    public function testItCanGetTotal(): void
-    {
-        $this->services->setTotal(1);
-
-        verify($this->services->getTotal())->int();
-        verify($this->services->getTotal())->notEmpty();
-        verify($this->services->getTotal())->equals(1);
-    }
-
-
-    /**
-     * @depends testItCanSetServices
-     *
-     * @throws Exception
-     *
-     * @return void
-     */
-    public function testItIsCountable(): void
-    {
-        verify($this->services)->isInstanceOf(Countable::class);
-
-        $this->services->setServices([ $this->getFirstService() ])->setTotal(1);
-
-        verify(count($this->services))->equals(1);
+        verify($this->model->getServices())->array();
+        verify($this->model->getServices())->count(1);
     }
 
     /**
      * @depends testItCanSetServices
-     *
-     * @throws Exception
      *
      * @return void
      */
     public function testItCanBeAccessedLikeAnArray(): void
     {
-        verify($this->services)->isInstanceOf(ArrayAccess::class);
+        $this->traitTestItCanBeAccessedLikeAnArray();
 
         $firstService = $this->getFirstService();
-        $this->services->setServices([ $firstService ])->setTotal(1);
+        $this->model->setServices([ $firstService ])->setTotal(1);
 
         // offsetExists
-        verify(isset($this->services[$firstService->getId()]))->true();
-        verify(isset($this->services['non_existing_key']))->false();
+        verify(isset($this->model[$firstService->getId()]))->true();
+        verify(isset($this->model['non_existing_key']))->false();
 
         // offsetGet
-        verify($this->services[$firstService->getId()])->isInstanceOf(Service::class);
+        verify($this->model[$firstService->getId()])->isInstanceOf(Service::class);
 
         // offsetSet
         $secondService = $this->getSecondService();
-        $this->services[$secondService->getId()] = $secondService;
-        verify($this->services)->hasKey($secondService->getId());
-        verify($this->services)->count(2);
+        $this->model[$secondService->getId()] = $secondService;
+        verify($this->model)->hasKey($secondService->getId());
+        verify($this->model)->count(2);
 
         // offsetUnset
-        unset($this->services[$firstService->getId()]);
-        verify($this->services)->count(1);
-        verify($this->services)->hasntKey($firstService->getId());
-    }
-
-    /**
-     * @depends testItCanSetServices
-     *
-     * @throws Exception
-     *
-     * @return void
-     */
-    public function testItCanBeIterated(): void
-    {
-        verify($this->services)->isInstanceOf(IteratorAggregate::class);
-
-        $this->services->setServices([ $this->getFirstService() ])->setTotal(1);
-
-        verify(is_iterable($this->services))->true();
+        unset($this->model[$firstService->getId()]);
+        verify($this->model)->count(1);
+        verify($this->model)->hasntKey($firstService->getId());
     }
 }

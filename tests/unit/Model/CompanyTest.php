@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PayNL\Sdk\Model;
 
-use Codeception\Test\Unit as UnitTest;
-use PayNL\Sdk\Model\{
-    ModelInterface,
-    Company
+use Codeception\{
+    Lib\ModelTestTrait,
+    Test\Unit as UnitTest
 };
-use JsonSerializable;
+use PayNL\Sdk\Model\Company;
 
 /**
  * Class CompanyTest
@@ -18,32 +17,20 @@ use JsonSerializable;
  */
 class CompanyTest extends UnitTest
 {
+    use ModelTestTrait;
+
     /**
      * @var Company
      */
-    protected $company;
+    protected $model;
 
+    /**
+     * @return void
+     */
     public function _before(): void
     {
-        $this->company = new Company();
-    }
-
-    /**
-     * @return void
-     */
-    public function testItIsAModel(): void
-    {
-        verify($this->company)->isInstanceOf(ModelInterface::class);
-    }
-
-    /**
-     * @return void
-     */
-    public function testIsItJsonSerializable(): void
-    {
-        verify($this->company)->isInstanceOf(JsonSerializable::class);
-
-        verify($this->company->jsonSerialize())->array();
+        $this->markAsJsonSerializable();
+        $this->model = new Company();
     }
 
     /**
@@ -51,7 +38,10 @@ class CompanyTest extends UnitTest
      */
     public function testItCanSetAName(): void
     {
-        expect($this->company->setName('PAY.'))->isInstanceOf(Company::class);
+        $this->tester->assertObjectHasMethod('setName', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setName', $this->model);
+
+        expect($this->model->setName('PAY.'))->isInstanceOf(Company::class);
     }
 
     /**
@@ -61,11 +51,14 @@ class CompanyTest extends UnitTest
      */
     public function testItCanGetAName(): void
     {
-        $this->company->setName('PAY.');
+        $this->tester->assertObjectHasMethod('getName', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getName', $this->model);
 
-        verify($this->company->getName())->string();
-        verify($this->company->getName())->notEmpty();
-        verify($this->company->getName())->equals('PAY.');
+        $this->model->setName('PAY.');
+
+        verify($this->model->getName())->string();
+        verify($this->model->getName())->notEmpty();
+        verify($this->model->getName())->equals('PAY.');
     }
 
     /**
@@ -73,7 +66,10 @@ class CompanyTest extends UnitTest
      */
     public function testItCanSetACoc(): void
     {
-        expect($this->company->setCoc('24283498'))->isInstanceOf(Company::class);
+        $this->tester->assertObjectHasMethod('setCoc', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setCoc', $this->model);
+
+        expect($this->model->setCoc('24283498'))->isInstanceOf(Company::class);
     }
 
     /**
@@ -83,11 +79,14 @@ class CompanyTest extends UnitTest
      */
     public function testItCanGetACoc(): void
     {
-        $this->company->setCoc('24283498');
+        $this->tester->assertObjectHasMethod('getCoc', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getCoc', $this->model);
 
-        verify($this->company->getCoc())->string();
-        verify($this->company->getCoc())->notEmpty();
-        verify($this->company->getCoc())->equals('24283498');
+        $this->model->setCoc('24283498');
+
+        verify($this->model->getCoc())->string();
+        verify($this->model->getCoc())->notEmpty();
+        verify($this->model->getCoc())->equals('24283498');
     }
 
     /**
@@ -95,7 +94,10 @@ class CompanyTest extends UnitTest
      */
     public function testItCanSetAVat(): void
     {
-        expect($this->company->setVat('NL807960147B01'))->isInstanceOf(Company::class);
+        $this->tester->assertObjectHasMethod('setVat', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setVat', $this->model);
+
+        expect($this->model->setVat('NL807960147B01'))->isInstanceOf(Company::class);
     }
 
     /**
@@ -105,11 +107,14 @@ class CompanyTest extends UnitTest
      */
     public function testItCanGetAVat(): void
     {
-        $this->company->setVat('NL807960147B01');
+        $this->tester->assertObjectHasMethod('getVat', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getVat', $this->model);
 
-        verify($this->company->getVat())->string();
-        verify($this->company->getVat())->notEmpty();
-        verify($this->company->getVat())->equals('NL807960147B01');
+        $this->model->setVat('NL807960147B01');
+
+        verify($this->model->getVat())->string();
+        verify($this->model->getVat())->notEmpty();
+        verify($this->model->getVat())->equals('NL807960147B01');
     }
 
     /**
@@ -117,7 +122,10 @@ class CompanyTest extends UnitTest
      */
     public function testItCanSetACountryCode(): void
     {
-        expect($this->company->setCountryCode('NL'))->isInstanceOf(Company::class);
+        $this->tester->assertObjectHasMethod('setCountryCode', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setCountryCode', $this->model);
+
+        expect($this->model->setCountryCode('NL'))->isInstanceOf(Company::class);
     }
 
     /**
@@ -127,10 +135,13 @@ class CompanyTest extends UnitTest
      */
     public function testItCanGetACountryCode(): void
     {
-        $this->company->setCountryCode('NL');
+        $this->tester->assertObjectHasMethod('getCountryCode', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getCountryCode', $this->model);
 
-        verify($this->company->getCountryCode())->string();
-        verify($this->company->getCountryCode())->notEmpty();
-        verify($this->company->getCountryCode())->equals('NL');
+        $this->model->setCountryCode('NL');
+
+        verify($this->model->getCountryCode())->string();
+        verify($this->model->getCountryCode())->notEmpty();
+        verify($this->model->getCountryCode())->equals('NL');
     }
 }

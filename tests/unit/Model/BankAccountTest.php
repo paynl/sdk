@@ -20,6 +20,11 @@ class BankAccountTest extends UnitTest
     use ModelTestTrait;
 
     /**
+     * @var BankAccount
+     */
+    protected $model;
+
+    /**
      * @return void
      */
     public function _before(): void
@@ -33,6 +38,9 @@ class BankAccountTest extends UnitTest
      */
     public function testItCanSetABank(): void
     {
+        $this->tester->assertObjectHasMethod('setBank', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setBank', $this->model);
+
         expect($this->model->setBank('Rabobank'))->isInstanceOf(BankAccount::class);
     }
 
@@ -43,6 +51,9 @@ class BankAccountTest extends UnitTest
      */
     public function testItCanGetABank(): void
     {
+        $this->tester->assertObjectHasMethod('getBank', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getBank', $this->model);
+
         $this->model->setBank('Rabobank');
 
         verify($this->model->getBank())->string();
@@ -55,6 +66,9 @@ class BankAccountTest extends UnitTest
      */
     public function testItCanSetAnIban(): void
     {
+        $this->tester->assertObjectHasMethod('setIban', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setIban', $this->model);
+
         expect($this->model->setIban('NL00RABO0000000000'))->isInstanceOf(BankAccount::class);
     }
 
@@ -65,6 +79,9 @@ class BankAccountTest extends UnitTest
      */
     public function testItCanGetAnIban(): void
     {
+        $this->tester->assertObjectHasMethod('getIban', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getIban', $this->model);
+
         $this->model->setIban('NL00RABO0000000000');
 
         verify($this->model->getIban())->string();
@@ -77,6 +94,9 @@ class BankAccountTest extends UnitTest
      */
     public function testItCanSetABic(): void
     {
+        $this->tester->assertObjectHasMethod('setBic', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setBic', $this->model);
+
         expect($this->model->setBic('RABONL2U'))->isInstanceOf(BankAccount::class);
     }
 
@@ -87,6 +107,9 @@ class BankAccountTest extends UnitTest
      */
     public function testItCanGetABic(): void
     {
+        $this->tester->assertObjectHasMethod('getBic', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getBic', $this->model);
+
         $this->model->setBic('RABONL2U');
 
         verify($this->model->getBic())->string();
@@ -99,6 +122,9 @@ class BankAccountTest extends UnitTest
      */
     public function testItCanSetAnOwner(): void
     {
+        $this->tester->assertObjectHasMethod('setOwner', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setOwner', $this->model);
+
         expect($this->model->setOwner('The Republic'))->isInstanceOf(BankAccount::class);
     }
 
@@ -109,6 +135,9 @@ class BankAccountTest extends UnitTest
      */
     public function testItCanGetAnOwner(): void
     {
+        $this->tester->assertObjectHasMethod('getOwner', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getOwner', $this->model);
+
         $this->model->setOwner('The Republic');
 
         verify($this->model->getOwner())->string();
@@ -121,6 +150,9 @@ class BankAccountTest extends UnitTest
      */
     public function testItCanSetAReturnUrl(): void
     {
+        $this->tester->assertObjectHasMethod('setReturnUrl', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setReturnUrl', $this->model);
+
         expect($this->model->setReturnUrl('https://www.pay.nl'))->isInstanceOf(BankAccount::class);
     }
 
@@ -131,6 +163,9 @@ class BankAccountTest extends UnitTest
      */
     public function testItCanGetAReturnUrl(): void
     {
+        $this->tester->assertObjectHasMethod('getReturnUrl', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getReturnUrl', $this->model);
+
         $this->model->setReturnUrl('https://www.pay.nl');
 
         verify($this->model->getReturnUrl())->string();

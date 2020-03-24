@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PayNL\Sdk\Model;
 
-use Codeception\Test\Unit as UnitTest;
+use Codeception\{
+    Lib\ModelTestTrait,
+    Test\Unit as UnitTest
+};
 use PayNL\Sdk\Model\{
     ModelInterface,
     PaymentMethod,
@@ -22,38 +25,20 @@ use UnitTester;
  */
 class PaymentMethodTest extends UnitTest
 {
-    /** @var UnitTester */
-    protected $tester;
+    use ModelTestTrait;
 
     /**
      * @var PaymentMethod
      */
-    protected $paymentMethod;
+    protected $model;
 
+    /**
+     * @return void
+     */
     public function _before(): void
     {
-        $this->paymentMethod = new PaymentMethod();
-    }
-
-    /**
-     * @return void
-     */
-    public function testItIsAModel(): void
-    {
-        verify($this->paymentMethod)->isInstanceOf(ModelInterface::class);
-    }
-
-    /**
-     * @return void
-     */
-    public function testIsItJsonSerializable(): void
-    {
-        verify($this->paymentMethod)->isInstanceOf(JsonSerializable::class);
-    }
-
-    public function testItHasJsonSerializeTrait(): void
-    {
-        verify(in_array(JsonSerializeTrait::class, class_uses($this->paymentMethod), true))->true();
+        $this->markAsJsonSerializable();
+        $this->model = new PaymentMethod();
     }
 
     /**
@@ -61,7 +46,10 @@ class PaymentMethodTest extends UnitTest
      */
     public function testItCanSetAnId(): void
     {
-        expect($this->paymentMethod->setId(10))->isInstanceOf(PaymentMethod::class);
+        $this->tester->assertObjectHasMethod('setId', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setId', $this->model);
+
+        expect($this->model->setId(10))->isInstanceOf(PaymentMethod::class);
     }
 
     /**
@@ -71,11 +59,14 @@ class PaymentMethodTest extends UnitTest
      */
     public function testItCanGetAnId(): void
     {
-        $this->paymentMethod->setId(10);
+        $this->tester->assertObjectHasMethod('getId', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getId', $this->model);
 
-        verify($this->paymentMethod->getId())->int();
-        verify($this->paymentMethod->getId())->notEmpty();
-        verify($this->paymentMethod->getId())->equals(10);
+        $this->model->setId(10);
+
+        verify($this->model->getId())->int();
+        verify($this->model->getId())->notEmpty();
+        verify($this->model->getId())->equals(10);
     }
 
     /**
@@ -83,8 +74,11 @@ class PaymentMethodTest extends UnitTest
      */
     public function testItCanSetASubId(): void
     {
-        verify($this->paymentMethod->setSubId(8))->isInstanceOf(PaymentMethod::class);
-        verify($this->paymentMethod->setSubId('8'))->isInstanceOf(PaymentMethod::class);
+        $this->tester->assertObjectHasMethod('setSubId', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setSubId', $this->model);
+
+        verify($this->model->setSubId(8))->isInstanceOf(PaymentMethod::class);
+        verify($this->model->setSubId('8'))->isInstanceOf(PaymentMethod::class);
     }
 
     /**
@@ -94,13 +88,16 @@ class PaymentMethodTest extends UnitTest
      */
     public function testItCanGetASubId(): void
     {
-        verify($this->paymentMethod->getSubId())->isEmpty();
+        $this->tester->assertObjectHasMethod('getSubId', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getSubId', $this->model);
 
-        $this->paymentMethod->setSubId(8);
+        verify($this->model->getSubId())->isEmpty();
 
-        verify($this->paymentMethod->getSubId())->string();
-        verify($this->paymentMethod->getSubId())->notEmpty();
-        verify($this->paymentMethod->getSubId())->equals('8');
+        $this->model->setSubId(8);
+
+        verify($this->model->getSubId())->string();
+        verify($this->model->getSubId())->notEmpty();
+        verify($this->model->getSubId())->equals('8');
     }
 
     /**
@@ -112,7 +109,7 @@ class PaymentMethodTest extends UnitTest
     {
         $this->expectException(InvalidArgumentException::class);
 
-        $this->paymentMethod->setSubId(array());
+        $this->model->setSubId(array());
     }
 
     /**
@@ -120,7 +117,10 @@ class PaymentMethodTest extends UnitTest
      */
     public function testItCanSetAName(): void
     {
-        expect($this->paymentMethod->setName('iDeal'))->isInstanceOf(PaymentMethod::class);
+        $this->tester->assertObjectHasMethod('setName', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setName', $this->model);
+
+        expect($this->model->setName('iDeal'))->isInstanceOf(PaymentMethod::class);
     }
 
     /**
@@ -130,11 +130,14 @@ class PaymentMethodTest extends UnitTest
      */
     public function testItCanGetAName(): void
     {
-        $this->paymentMethod->setName('iDeal');
+        $this->tester->assertObjectHasMethod('getName', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getName', $this->model);
 
-        verify($this->paymentMethod->getName())->string();
-        verify($this->paymentMethod->getName())->notEmpty();
-        verify($this->paymentMethod->getName())->equals('iDeal');
+        $this->model->setName('iDeal');
+
+        verify($this->model->getName())->string();
+        verify($this->model->getName())->notEmpty();
+        verify($this->model->getName())->equals('iDeal');
     }
 
     /**
@@ -142,7 +145,10 @@ class PaymentMethodTest extends UnitTest
      */
     public function testItCanSetAnImage(): void
     {
-        expect($this->paymentMethod->setImage('http://www.pay.nl/link-to-image'))->isInstanceOf(PaymentMethod::class);
+        $this->tester->assertObjectHasMethod('setImage', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setImage', $this->model);
+
+        expect($this->model->setImage('http://www.pay.nl/link-to-image'))->isInstanceOf(PaymentMethod::class);
     }
 
     /**
@@ -152,11 +158,14 @@ class PaymentMethodTest extends UnitTest
      */
     public function testItCanGetAnImage(): void
     {
-        $this->paymentMethod->setImage('http://www.pay.nl/link-to-image');
+        $this->tester->assertObjectHasMethod('getImage', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getImage', $this->model);
 
-        verify($this->paymentMethod->getImage())->string();
-        verify($this->paymentMethod->getImage())->notEmpty();
-        verify($this->paymentMethod->getImage())->equals('http://www.pay.nl/link-to-image');
+        $this->model->setImage('http://www.pay.nl/link-to-image');
+
+        verify($this->model->getImage())->string();
+        verify($this->model->getImage())->notEmpty();
+        verify($this->model->getImage())->equals('http://www.pay.nl/link-to-image');
     }
 
     /**
@@ -164,7 +173,10 @@ class PaymentMethodTest extends UnitTest
      */
     public function testItCanSetCountryCodes(): void
     {
-        expect($this->paymentMethod->setCountryCodes([]))->isInstanceOf(PaymentMethod::class);
+        $this->tester->assertObjectHasMethod('setCountryCodes', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setCountryCodes', $this->model);
+
+        expect($this->model->setCountryCodes([]))->isInstanceOf(PaymentMethod::class);
     }
 
     /**
@@ -174,14 +186,17 @@ class PaymentMethodTest extends UnitTest
      */
     public function testItCanGetCountryCodes(): void
     {
-        $this->paymentMethod->setCountryCodes([ 'NL', 'BE' ]);
+        $this->tester->assertObjectHasMethod('getCountryCodes', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getCountryCodes', $this->model);
 
-        verify($this->paymentMethod->getCountryCodes())->array();
-        verify($this->paymentMethod->getCountryCodes())->notEmpty();
-        verify($this->paymentMethod->getCountryCodes())->count(2);
-        verify($this->paymentMethod->getCountryCodes())->contains('NL');
-        verify($this->paymentMethod->getCountryCodes())->contains('BE');
-        verify($this->paymentMethod->getCountryCodes())->containsOnly('string');
+        $this->model->setCountryCodes([ 'NL', 'BE' ]);
+
+        verify($this->model->getCountryCodes())->array();
+        verify($this->model->getCountryCodes())->notEmpty();
+        verify($this->model->getCountryCodes())->count(2);
+        verify($this->model->getCountryCodes())->contains('NL');
+        verify($this->model->getCountryCodes())->contains('BE');
+        verify($this->model->getCountryCodes())->containsOnly('string');
     }
 
     /**
@@ -192,12 +207,15 @@ class PaymentMethodTest extends UnitTest
      */
     public function testItCanAddCountryCode(): void
     {
-        $this->paymentMethod->setCountryCodes([ 'NL', 'BE', 'DE' ]);
+        $this->tester->assertObjectHasMethod('addCountryCode', $this->model);
+        $this->tester->assertObjectMethodIsPublic('addCountryCode', $this->model);
 
-        $this->paymentMethod->addCountryCode('FR');
+        $this->model->setCountryCodes([ 'NL', 'BE', 'DE' ]);
 
-        verify($this->paymentMethod->getCountryCodes())->count(4);
-        verify($this->paymentMethod->getCountryCodes())->contains('FR');
+        $this->model->addCountryCode('FR');
+
+        verify($this->model->getCountryCodes())->count(4);
+        verify($this->model->getCountryCodes())->contains('FR');
     }
 
     /**
@@ -205,8 +223,11 @@ class PaymentMethodTest extends UnitTest
      */
     public function testItCanGetSubMethods(): void
     {
-        verify($this->paymentMethod->getSubMethods())->isInstanceOf(PaymentMethods::class);
-        verify($this->paymentMethod->getSubMethods())->count(0);
+        $this->tester->assertObjectHasMethod('getSubMethods', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getSubMethods', $this->model);
+
+        verify($this->model->getSubMethods())->isInstanceOf(PaymentMethods::class);
+        verify($this->model->getSubMethods())->count(0);
     }
 
     /**
@@ -216,11 +237,14 @@ class PaymentMethodTest extends UnitTest
      */
     public function testItCanSetSubMethods(): void
     {
-        $methods = $this->paymentMethod->getSubMethods();
+        $this->tester->assertObjectHasMethod('setSubMethods', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setSubMethods', $this->model);
 
-        expect($this->paymentMethod->setSubMethods(new PaymentMethods()))->isInstanceOf(PaymentMethod::class);
+        $methods = $this->model->getSubMethods();
 
-        verify($this->paymentMethod->getSubMethods())->notSame($methods);
+        expect($this->model->setSubMethods(new PaymentMethods()))->isInstanceOf(PaymentMethod::class);
+
+        verify($this->model->getSubMethods())->notSame($methods);
     }
 
     /**
@@ -230,16 +254,19 @@ class PaymentMethodTest extends UnitTest
      */
     public function testItCanAddSubMethod(): void
     {
+        $this->tester->assertObjectHasMethod('addSubMethod', $this->model);
+        $this->tester->assertObjectMethodIsPublic('addSubMethod', $this->model);
+
         /** @var PaymentMethod $payPalPaymentMethod */
         $payPalPaymentMethod = $this->tester->grabService('modelManager')->get('PaymentMethod');
         $payPalPaymentMethod
             ->setId(138)
             ->setName('PayPal');
 
-        $this->paymentMethod->addSubMethod($payPalPaymentMethod);
+        $this->model->addSubMethod($payPalPaymentMethod);
 
-        verify($this->paymentMethod->getSubMethods())->count(1);
-        verify($this->paymentMethod->getSubMethods())->hasKey($payPalPaymentMethod->getId());
-        verify($this->paymentMethod->getSubMethods())->containsOnlyInstancesOf(PaymentMethod::class);
+        verify($this->model->getSubMethods())->count(1);
+        verify($this->model->getSubMethods())->hasKey($payPalPaymentMethod->getId());
+        verify($this->model->getSubMethods())->containsOnlyInstancesOf(PaymentMethod::class);
     }
 }

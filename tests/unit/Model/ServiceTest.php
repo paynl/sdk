@@ -7,9 +7,10 @@ namespace Tests\Unit\PayNL\Sdk\Model;
 use Codeception\Test\Unit as UnitTest;
 use PayNL\Sdk\Model\{
     ModelInterface,
-    Links,
+    LinksTrait,
     Service
 };
+use PayNL\Sdk\Common\DateTime;
 use Exception, JsonSerializable;
 
 /**
@@ -127,7 +128,7 @@ class ServiceTest extends UnitTest
      */
     public function testItCanSetTestMode(): void
     {
-        expect($this->service->setTestMode(1))->isInstanceOf(Service::class);
+        expect($this->service->setTestMode(true))->isInstanceOf(Service::class);
     }
 
     /**

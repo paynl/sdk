@@ -12,15 +12,20 @@ use PayNL\GuzzleHttp\{
     Psr7\Response as Psr7Response,
     Handler\MockHandler
 };
+use Codeception\TestAsset\Dummy;
 use Codeception\TestAsset\DummyFilter;
 use PayNL\Sdk\{Exception\InvalidArgumentException,
+    Exception\MissingParamException,
+    Exception\RuntimeException,
     Filter\FilterInterface,
     Response\Response,
     Request\RequestInterface,
     Request\AbstractRequest,
-    Response\ResponseInterface,
-    Transformer\TransformerInterface};
-use TypeError, UnitTester;
+    Response\ResponseInterface};
+use TypeError,
+    UnitTester,
+    Exception
+;
 
 /**
  * Class AbstractRequestTest
@@ -59,12 +64,40 @@ class AbstractRequestTest extends UnitTest
             {
                 return 'api/some/endpoint';
             }
+        };
+    }
 
-            public function getTransformer(): TransformerInterface
+    /**
+     * @return void
+     */
+    public function testItCanConstruct(): void
+    {
+        $options = [
+            'format'  => 'xml',
+            'headers' => [
+                'X-Custom-Header' => 'foo-bar',
+            ],
+        ];
+
+        $request = new class($options) extends AbstractRequest
+        {
+            public function getMethod(): string
             {
-                return new Simple();
+                return 'GET';
+            }
+
+            public function getUri(): string
+            {
+                return 'foo/bar';
+            }
+
+            public function init(): void
+            {
+                $this->setUri('baz/corge');
             }
         };
+        verify($request)->object();
+        verify($request)->isInstanceOf(AbstractRequest::class);
     }
 
     /**
@@ -73,6 +106,149 @@ class AbstractRequestTest extends UnitTest
     public function testItImplementsInterface(): void
     {
         verify($this->anonymousClassFromAbstract)->isInstanceOf(RequestInterface::class);
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanSetRequiredParams(): void
+    {
+        $this->tester->assertObjectHasMethod('setRequiredParams', $this->anonymousClassFromAbstract);
+        $this->tester->assertObjectMethodIsPublic('setRequiredParams', $this->anonymousClassFromAbstract);
+
+        $request = $this->anonymousClassFromAbstract->setRequiredParams([
+            'paramName' => '.*'
+        ]);
+        verify($request)->object();
+        verify($request)->same($this->anonymousClassFromAbstract);
+    }
+
+    /**
+     * @depends testItCanSetRequiredParams
+     *
+     * @return void
+     */
+    public function testItCanGetRequiredParams(): void
+    {
+        $this->tester->assertObjectHasMethod('getRequiredParams', $this->anonymousClassFromAbstract);
+        $this->tester->assertObjectMethodIsPublic('getRequiredParams', $this->anonymousClassFromAbstract);
+
+        $requiredParams = $this->anonymousClassFromAbstract->getRequiredParams();
+        verify($requiredParams)->array();
+        verify($requiredParams)->isEmpty();
+
+        $this->anonymousClassFromAbstract->setRequiredParams([
+            'paramName' => '.*'
+        ]);
+        $requiredParams = $this->anonymousClassFromAbstract->getRequiredParams();
+        verify($requiredParams)->array();
+        verify($requiredParams)->notEmpty();
+        verify($requiredParams)->hasKey('paramName');
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanGetParams(): void
+    {
+        $this->tester->assertObjectHasMethod('getParams', $this->anonymousClassFromAbstract);
+        $this->tester->assertObjectMethodIsPublic('getParams', $this->anonymousClassFromAbstract);
+
+        $params = $this->anonymousClassFromAbstract->getParams();
+        verify($params)->array();
+        verify($params)->isEmpty();
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanCheckForParam(): void
+    {
+        $this->tester->assertObjectHasMethod('hasParam', $this->anonymousClassFromAbstract);
+        $this->tester->assertObjectMethodIsPublic('hasParam', $this->anonymousClassFromAbstract);
+
+        $output = $this->anonymousClassFromAbstract->hasParam('foo');
+        verify($output)->bool();
+        verify($output)->false();
+    }
+
+    /**
+     * @depends testItCanCheckForParam
+     *
+     * @return void
+     */
+    public function testItCanGetParam(): void
+    {
+        $this->tester->assertObjectHasMethod('getParam', $this->anonymousClassFromAbstract);
+        $this->tester->assertObjectMethodIsPublic('getParam', $this->anonymousClassFromAbstract);
+
+        $value = $this->anonymousClassFromAbstract->getParam('foo');
+        verify($value)->null();
+
+        $this->anonymousClassFromAbstract->setParams(['foo' => 'bar']);
+        $value = $this->anonymousClassFromAbstract->getParam('foo');
+        verify($value)->string();
+        verify($value)->equals('bar');
+    }
+
+    /**
+     * @depends testItCanGetRequiredParams
+     * @depends testItCanSetRequiredParams
+     * @depends testItCanGetParam
+     *
+     * @return void
+     */
+    public function testItCanSetParams(): void
+    {
+        $this->tester->assertObjectHasMethod('setParams', $this->anonymousClassFromAbstract);
+        $this->tester->assertObjectMethodIsPublic('setParams', $this->anonymousClassFromAbstract);
+
+        $request = $this->anonymousClassFromAbstract->setParams([
+            'key' => 'value',
+        ]);
+        verify($request)->object();
+        verify($request)->same($this->anonymousClassFromAbstract);
+
+        $this->anonymousClassFromAbstract->setRequiredParams([
+            'param' => '[a-z]+',
+        ]);
+        $request = $this->anonymousClassFromAbstract->setParams([
+            'param' => 'value',
+        ]);
+        verify($request)->object();
+        verify($request)->same($this->anonymousClassFromAbstract);
+    }
+
+    /**
+     * @depends testItCanSetParams
+     *
+     * @return void
+     */
+    public function testSetParamsThrowsExceptionWhenMissingRequiredParam(): void
+    {
+        $this->anonymousClassFromAbstract->setRequiredParams([
+            'foo' => '.*',
+        ]);
+
+        $this->expectException(MissingParamException::class);
+        $this->anonymousClassFromAbstract->setParams([]);
+    }
+
+    /**
+     * @depends testItCanSetParams
+     *
+     * @return void
+     */
+    public function testSetParamsThrowsExceptionWhenParamValueIsNotCorrect(): void
+    {
+        $this->anonymousClassFromAbstract->setRequiredParams([
+            'foo' => '[a-z]+',
+        ]);
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->anonymousClassFromAbstract->setParams([
+            'foo' => 'BAR',
+        ]);
     }
 
     /**
@@ -339,6 +515,75 @@ class AbstractRequestTest extends UnitTest
         $this->anonymousClassFromAbstract->setBody('test');
 
         verify($this->anonymousClassFromAbstract->getBody())->notEmpty();
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanValidateTheStringBody(): void
+    {
+        $this->tester->assertObjectHasMethod('validateBody', $this->anonymousClassFromAbstract);
+        $this->tester->assertObjectMethodIsProtected('validateBody', $this->anonymousClassFromAbstract);
+
+        try {
+            $this->tester->invokeMethod($this->anonymousClassFromAbstract, 'validateBody', ['foo bar']);
+        } catch (Exception $e) {
+            $this->fail();
+        }
+        verify(true)->true();
+    }
+
+    /**
+     * @depends testItCanSetABody
+     *
+     * @return void
+     */
+    public function testItCanValidateTheObjectBody(): void
+    {
+        $this->anonymousClassFromAbstract->setValidatorManager($this->tester->grabService('validatorManager'));
+
+        /** @var Dummy $dummy */
+        $dummy = $this->tester->grabService('dummyManager')->get(Dummy::class);
+        $dummy->setRequiredMember('foo');
+
+        try {
+            $this->tester->invokeMethod($this->anonymousClassFromAbstract, 'validateBody', [$dummy]);
+        } catch (Exception $e) {
+            $this->fail();
+        }
+        verify(true)->true();
+    }
+
+    public function testValidateBodyThrowsAnExceptionWhenBodyIsInvalid(): void
+    {
+        $this->anonymousClassFromAbstract->setValidatorManager($this->tester->grabService('validatorManager'));
+
+        /** @var Dummy $dummy */
+        $dummy = $this->tester->grabService('dummyManager')->get(Dummy::class);
+
+        $this->expectException(RuntimeException::class);
+        $this->tester->invokeMethod($this->anonymousClassFromAbstract, 'validateBody', [$dummy]);
+    }
+
+    /**
+     * @depends testItCanSetABody
+     * @depends testItCanGetABody
+     *
+     * @return void
+     */
+    public function testItCanGetABodyObject(): void
+    {
+        $this->anonymousClassFromAbstract->setValidatorManager($this->tester->grabService('validatorManager'));
+
+        /** @var Dummy $dummy */
+        $dummy = $this->tester->grabService('dummyManager')->get(Dummy::class);
+        $dummy->setRequiredMember('foo bar');
+
+        $this->anonymousClassFromAbstract->setBody($dummy);
+
+        $output = $this->anonymousClassFromAbstract->getBody();
+        verify($output)->string();
+        verify($output)->equals('{"requiredMember":"foo bar"}');
     }
 
     /**

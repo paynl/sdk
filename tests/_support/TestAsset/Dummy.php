@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Codeception\TestAsset;
 
+use JsonSerializable;
+
 /**
  * Class Dummy
  *
  * @package Codeception\TestAsset
  */
-class Dummy implements DummyInterface
+class Dummy implements DummyInterface, JsonSerializable
 {
     protected $options = [];
 
@@ -52,6 +54,16 @@ class Dummy implements DummyInterface
      */
     public function getRequiredMember(): string
     {
-        return $this->requiredMember;
+        return (string)$this->requiredMember;
+    }
+
+    /**
+     * @return array
+     */
+    public function jsonSerialize(): array
+    {
+        return [
+            'requiredMember' => $this->getRequiredMember(),
+        ];
     }
 }

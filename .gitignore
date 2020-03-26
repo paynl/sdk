@@ -2,3 +2,5 @@ samples/config.php
 .idea/*
 vendor/
 composer.lock
+index.php
+config.php

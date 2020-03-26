@@ -305,6 +305,35 @@ class Transaction
     }
 
     /**
+     * Gets details of a transaction
+     *
+     * @param string $transactionId
+     * @param string|null $entranceCode
+     *
+     * @return Result\Details
+     * @throws Error\Api
+     * @throws Error\Error
+     * @throws Error\Required\ApiToken    
+     */
+    public static function details(
+        $transactionId,
+        $entranceCode = null
+    )
+    {
+        
+        $api = new Api\Details();
+        
+        $api->setTransactionId($transactionId);
+      
+        if ($entranceCode !== null) {
+            $api->setEntranceCode($entranceCode);
+        }        
+        $result = $api->doRequest();       
+        
+        return new Result\Details($result);
+    }
+
+    /**
      * Get the transaction in an exchange script.
      * This will work for all kinds of exchange calls (GET, POST AND POST_XML)
      *

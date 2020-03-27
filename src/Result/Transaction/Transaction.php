@@ -98,7 +98,7 @@ class Transaction extends Result
     }
 
     /**
-     * Check whether the payment is a partial payment.
+     * Check whether the payment is partial refunded
      *
      * @return bool
      */
@@ -108,6 +108,8 @@ class Transaction extends Result
     }
 
   /**
+   * Check whether the payment is a partial payment.
+   *
    * @return bool
    */
     public function isPartialPayment()

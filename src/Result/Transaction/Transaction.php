@@ -98,6 +98,8 @@ class Transaction extends Result
     }
 
     /**
+     * Check whether the payment is a partial payment.
+     *
      * @return bool
      */
     public function isPartiallyRefunded()

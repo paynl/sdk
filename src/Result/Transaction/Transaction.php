@@ -105,6 +105,14 @@ class Transaction extends Result
         return $this->data['paymentDetails']['stateName'] === 'PARTIAL_REFUND';
     }
 
+  /**
+   * @return bool
+   */
+    public function isPartialPayment()
+    {
+        return $this->data['paymentDetails']['stateName'] === 'PARTIAL_PAYMENT';
+    }
+
     /**
      * @return float The amount of the transaction (in EUR)
      */

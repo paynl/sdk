@@ -32,16 +32,22 @@ class ManagerFactoryTest extends UnitTest
         verify($manager)->isInstanceOf(AbstractPluginManager::class);
     }
 
-    public function testInvokeThrowsException1(): void
+    public function testInvokeThrowsExceptionMissingConfigKey(): void
     {
         $this->expectException(ServiceNotCreatedException::class);
 
         ($this->factory)($this->tester->getServiceManager(), '\\PayNL\\Sdk\\NonExistingClassName');
     }
 
-    public function testInvokeThrowsException2(): void
+    public function testInvokeThrowsException(): void
     {
         $this->expectException(ServiceNotCreatedException::class);
         ($this->factory)($this->tester->getServiceManager(), 'failingManager');
+    }
+
+    public function testInvokeCannotCreateNonAbstractPluginManagers(): void
+    {
+        $this->expectException(ServiceNotCreatedException::class);
+
     }
 }

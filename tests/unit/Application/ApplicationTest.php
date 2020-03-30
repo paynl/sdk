@@ -126,6 +126,26 @@ class ApplicationTest extends UnitTest
     }
 
     /**
+     * @return void
+     */
+    public function testItCanSetRequestWithBody(): void
+    {
+        $this->application->setRequest('GetCurrency', ['currencyId' => 'EUR'], [], ['Currency' => []]);
+        $request = $this->application->getRequest();
+        verify($request->getBody())->equals('{}');
+    }
+
+    /**
+     * @return void
+     */
+    public function testItThrowsExceptionSettingRequestWithInvalidBody(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->application->setRequest('GetCurrency', ['currencyId' => 'EUR'], [], $this);
+        $request = $this->application->getRequest();
+    }
+
+    /**
      * @depends testItCanGetRequest
      *
      * @return void
@@ -146,6 +166,9 @@ class ApplicationTest extends UnitTest
         $this->application->setRequest(new \stdClass());
     }
 
+    /**
+     * @return void
+     */
     public function testItCanRun(): void
     {
         $this->application->setRequest('GetCurrency', ['currencyId' => 'EUR']);

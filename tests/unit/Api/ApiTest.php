@@ -14,7 +14,8 @@ use PayNL\Sdk\{Api\Api,
     AuthAdapter\Basic,
     Request\Request,
     Request\RequestInterface,
-    Response\Response};
+    Response\Response,
+    Response\ResponseInterface};
 use UnitTester, Exception;
 
 /**
@@ -167,6 +168,26 @@ class ApiTest extends UnitTest
         $response = $this->api->setDebug(true)
             ->doHandle($mockRequest, $mockResponse)
         ;
+
+        verify($response instanceof Response);
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanDoHandleXMLFormat(): void
+    {
+        /** @var Request $mockRequest */
+        $mockRequest = $this->tester->grabService('requestManager')->get('Request', ['uri' => 'http://127.0.0.1']);
+        $mockRequest->setMethod(RequestInterface::METHOD_GET);
+        $mockRequest->setFormat(RequestInterface::FORMAT_XML);
+
+        /** @var Response $mockResponse */
+        $mockResponse = $this->tester->grabService('Response');
+        $mockResponse->setFormat(ResponseInterface::FORMAT_XML);
+
+        $this->api->setDebug(true);
+        $response = $this->api->doHandle($mockRequest, $mockResponse);
 
         verify($response instanceof Response);
     }

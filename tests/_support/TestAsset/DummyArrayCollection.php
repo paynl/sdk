@@ -16,5 +16,12 @@ use PayNL\Sdk\Common\JsonSerializeTrait;
 class DummyArrayCollection extends ArrayCollection implements JsonSerializable
 {
     use JsonSerializeTrait;
+
+    public function toArray()
+    {
+        return [
+            'foo' => 'bar'
+        ];
+    }
 }
 

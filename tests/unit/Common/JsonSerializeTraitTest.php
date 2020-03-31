@@ -38,12 +38,18 @@ class JsonSerializeTraitTest extends UnitTest
         $this->dummyArrayCollection = new DummyArrayCollection();
     }
 
+    /**
+     * @return void
+     */
     public function testItCanCheckInterface(): void
     {
         $this->tester->assertObjectHasMethod('checkInterfaceImplementation', $this->dummyJsonSerializable);
         $this->tester->assertObjectMethodIsProtected('checkInterfaceImplementation', $this->dummyJsonSerializable);
     }
 
+    /**
+     * @return void
+     */
     public function testCheckInterfaceThrowsException(): void
     {
         $cls = new class() {
@@ -69,6 +75,9 @@ class JsonSerializeTraitTest extends UnitTest
         verify($json)->equals('{"foo":"bar","baz":"qux","collection":{"foo":"bar"}}');
     }
 
+    /**
+     * @return void
+     */
     public function testItCanJsonSerializeArrayCollection(): void
     {
         $json = json_encode($this->dummyArrayCollection);
@@ -77,6 +86,9 @@ class JsonSerializeTraitTest extends UnitTest
         verify($json)->equals('{"foo":"bar"}');
     }
 
+    /**
+     * @return void
+     */
     public function testItCanFilterEmptyProperties(): void
     {
         $cls = new class() implements JsonSerializable {

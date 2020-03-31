@@ -31,6 +31,9 @@ class DummyJsonSerializable implements JsonSerializable
      */
     protected $quux = [];
 
+    /**
+     * @var DummyArrayCollection
+     */
     protected $collection;
 
     /**

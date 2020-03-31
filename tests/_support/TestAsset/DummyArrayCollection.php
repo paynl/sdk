@@ -17,6 +17,9 @@ class DummyArrayCollection extends ArrayCollection implements JsonSerializable
 {
     use JsonSerializeTrait;
 
+    /**
+     * @inheritDoc
+     */
     public function toArray()
     {
         return [

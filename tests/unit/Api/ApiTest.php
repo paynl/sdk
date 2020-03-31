@@ -94,61 +94,6 @@ class ApiTest extends UnitTest
         verify($this->api->getAuthAdapter())->isInstanceOf(AdapterInterface::class);
     }
 
-//    /**
-//     * @return void
-//     */
-//    public function testItCanConstructWithAnAdapter(): void
-//    {
-//        $api = $this->api;
-//        verify($api)->isInstanceOf(Api::class);
-//
-//        $adapter = $api->getAuthAdapter();
-//        verify($adapter)->isInstanceOf(AdapterInterface::class);
-//
-//        verify($adapter->getUsername())->equals('harry');
-//        verify($adapter->getPassword())->equals('deSchrikVanElkeCowboy');
-//
-//        verify($adapter->getHeaderString())->equals('Basic ' . base64_encode("{$adapter->getUsername()}:{$adapter->getPassword()}"));
-//    }
-
-//    /**
-//     * @return void
-//     */
-//    public function testItCanConstructWithUsernameAndPassword(): void
-//    {
-//        $api = new Api('LukeSkywalker', 'LookingForMyDad');
-//        verify($api)->isInstanceOf(Api::class);
-//
-//        $adapter = $api->getAuthAdapter();
-//        verify($adapter)->isInstanceOf(AdapterInterface::class);
-//
-//        verify($adapter->getUsername())->equals('LukeSkywalker');
-//        verify($adapter->getPassword())->equals('LookingForMyDad');
-//
-//        verify($adapter->getHeaderString())->equals('Basic ' . base64_encode("{$adapter->getUsername()}:{$adapter->getPassword()}"));
-//    }
-
-//    /**
-//     * @return void
-//     */
-//    public function testItThrowsAnExceptionWhenConstructorGetInvalidArguments(): void
-//    {
-//        $this->expectException(InvalidArgumentException::class);
-//        new Api([]);
-//    }
-
-//    /**
-//     * @depends testItCanConstructWithAnAdapter
-//     * @depends testItCanConstructWithUsernameAndPassword
-//     *
-//     * @return void
-//     */
-//    public function testItCanInitiateAHttpClient(): void
-//    {
-//        $this->tester->invokeMethod($this->api, 'initClient');
-//        verify($this->api->getClient())->isInstanceOf(Client::class);
-//    }
-
     /**
      * @depends testItCanSetAuthAdapter
      * @depends testItCanSetGuzzleClient
@@ -186,7 +131,6 @@ class ApiTest extends UnitTest
         $mockResponse = $this->tester->grabService('Response');
         $mockResponse->setFormat(ResponseInterface::FORMAT_XML);
 
-        $this->api->setDebug(true);
         $response = $this->api->doHandle($mockRequest, $mockResponse);
 
         verify($response instanceof Response);

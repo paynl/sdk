@@ -24,20 +24,19 @@ class DateTime extends stdDateTime implements JsonSerializable
      * @param string $time
      * @param DateTimeZone|null $timezone
      *
-     * @return DateTime
+     * @return DateTime|false
      *
+     * @throws Exception
      * @internal Dirty hack to "override" the parents static function because it always returns itself...
      */
-    public static function createFromFormat($format, $time, $timezone = null): self
+    public static function createFromFormat($format, $time, DateTimeZone $timezone = null)
     {
         /** @var stdDateTime $dateTime */
         $dateTime = parent::createFromFormat($format, $time, $timezone);
-
-        try {
+        if($dateTime !== false) {
             return (new self())->setTimestamp($dateTime->getTimestamp());
-        } catch (Exception $e) {
-            // does nothing, theoretically this does not occur
         }
+        return false;
     }
 
     /**
@@ -58,13 +57,10 @@ class DateTime extends stdDateTime implements JsonSerializable
 
     /**
      * @return DateTime
+     * @throws Exception
      */
     public static function now(): self
     {
-        try {
-            return new self();
-        } catch (Exception $e) {
-            // does nothing, theoretically this does not occur
-        }
+        return new self();
     }
 }

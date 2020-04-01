@@ -28,7 +28,7 @@ class DateTimeTest extends UnitTest
     protected $dateTimeObject;
 
     /**
-     * @throws \Exception
+     * @throws Exception
      *
      * @return void
      */
@@ -61,6 +61,18 @@ class DateTimeTest extends UnitTest
      *
      * @return void
      */
+    public function testItCannotCreateFromInvalidFormat(): void
+    {
+        $dateTime = DateTime::createFromFormat(DateTime::ATOM, 'abc');
+        verify($dateTime)->bool();
+        verify($dateTime)->false();
+    }
+
+    /**
+     * @throws Exception
+     *
+     * @return void
+     */
     public function testItIsJsonSerializable(): void
     {
         $datetime = DateTime::createFromFormat('Y-m-d H:i:s', '2019-08-09 00:00:00');
@@ -78,6 +90,7 @@ class DateTimeTest extends UnitTest
 
     /**
      * @return void
+     * @throws Exception
      */
     public function testItCanInitNow(): void
     {

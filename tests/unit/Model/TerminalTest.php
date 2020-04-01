@@ -8,6 +8,7 @@ use Codeception\{
     Lib\ModelTestTrait,
     Test\Unit as UnitTest
 };
+use PayNL\Sdk\Exception\InvalidServiceException;
 use PayNL\Sdk\Model\Terminal;
 
 /**
@@ -126,6 +127,14 @@ class TerminalTest extends UnitTest
         $this->tester->assertObjectMethodIsPublic('setState', $this->model);
 
         expect($this->model->setState('active'))->isInstanceOf(Terminal::class);
+    }
+
+    public function testItThrowsAnExceptionSettingInvalidState(): void
+    {
+        $state = 'foo';
+        $this->assertArrayNotHasKey($state, array_flip($this->model::STATES));
+        $this->expectException(InvalidServiceException::class);
+        $this->model->setState($state);
     }
 
     /**

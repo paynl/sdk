@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PayNL\Sdk\Hydrator;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Exception;
 use Codeception\{Test\Unit as UnitTest,
     TestAsset\ComplexModel,
     TestAsset\SimpleDateTime,
@@ -149,22 +151,29 @@ class EntityTest extends UnitTest
 
     /**
      * @return void
+     * @throws Exception
      */
     public function testItCanExtract(): void
     {
         /** @var ComplexModel $complexModel */
         $complexModel = $this->modelManager->get('complexModel');
+
+        $simpleCollection = new SimpleCollection();
+        $simpleCollection->addSimpleModel((new SimpleModel())->setCorge('garply'));
+        $simpleCollection->add('grault');
+
+        $arrayCollection = new ArrayCollection();
+        $arrayCollection->set('garply', 'waldo');
+
         $complexModel->setFoo('bar')
             ->setBar((new SimpleDependencyObject())
                  ->setQux('quux')
             )
             ->setBaz(SimpleDateTime::now())
-            ->setCorge((new SimpleCollection())
-               ->addSimpleModel((new SimpleModel())
-                    ->setCorge('garply')
-               )
-            )
+            ->setCorge($simpleCollection)
+            ->setArrayCollection($arrayCollection)
         ;
+
 
         $data = $this->hydrator->extract($complexModel);
 
@@ -183,7 +192,12 @@ class EntityTest extends UnitTest
         verify($data)->hasKey('corge');
         verify($data['corge'])->array();
         verify($data['corge'])->hasKey('simpleModels');
-        verify($data['corge']['simpleModels'])->count(1);
         verify($data['corge']['simpleModels'])->array();
+        verify($data['corge']['simpleModels'])->count(2);
+        verify($data['arrayCollection'])->array();
+        verify($data['arrayCollection'])->count(1);
+        verify($data['arrayCollection'])->hasKey('garply');
+        verify($data['arrayCollection']['garply'])->string();
+        verify($data['arrayCollection']['garply'])->equals('waldo');
     }
 }

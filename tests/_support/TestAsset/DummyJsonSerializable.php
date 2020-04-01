@@ -16,5 +16,32 @@ class DummyJsonSerializable implements JsonSerializable
 {
     use JsonSerializeTrait;
 
-    public $foo = 'bar';
+    /**
+     * @var string
+     */
+    protected $foo = 'bar';
+
+    /**
+     * @var string
+     */
+    protected $baz = 'qux';
+
+    /**
+     * @var array
+     */
+    protected $quux = [];
+
+    /**
+     * @var DummyArrayCollection
+     */
+    protected $collection;
+
+    /**
+     * DummyJsonSerializable constructor.
+     */
+    public function __construct()
+    {
+        $this->collection = new DummyArrayCollection();
+    }
+
 }

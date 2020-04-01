@@ -210,4 +210,22 @@ class ServicePaymentLinkTest extends UnitTest
         verify($this->model->getStatistics())->isInstanceOf(Statistics::class);
         verify($this->model->getStatistics())->equals($statisticsMock);
     }
+
+    /**
+     *
+     */
+    public function testItCanGetUrl(): void
+    {
+        verify($this->model->setUrl('https://www.pay.nl'))->isInstanceOf(ServicePaymentLink::class);
+    }
+
+    /**
+     * @depends testItCanGetUrl
+     */
+    public function testItCanSetUrl(): void
+    {
+        $url = 'https://www.pay.nl';
+        $this->model->setUrl($url);
+        verify($this->model->getUrl())->equals($url);
+    }
 }

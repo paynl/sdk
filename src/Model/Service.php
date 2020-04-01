@@ -124,17 +124,6 @@ class Service implements ModelInterface
      */
     public function setTestMode(bool $testMode): self
     {
-        $allowedMethods = [Integration::TEST_MODE_OFF, Integration::TEST_MODE_ON];
-        if (false === in_array($testMode, $allowedMethods, true)) {
-            throw new InvalidArgumentException(
-                sprintf(
-                    'Test mode "%s" given to %s is not valid, choose one of: "%s"',
-                    $testMode,
-                    __METHOD__,
-                    implode('", "', $allowedMethods)
-                )
-            );
-        }
         $this->testMode = $testMode;
         return $this;
     }

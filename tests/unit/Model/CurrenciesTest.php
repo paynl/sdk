@@ -99,7 +99,7 @@ class CurrenciesTest extends UnitTest
         $this->tester->assertObjectHasMethod('setCurrencies', $this->model);
         $this->tester->assertObjectMethodIsPublic('setCurrencies', $this->model);
 
-        verify($this->model->setCurrencies([$this->eurCurrency()]))->isInstanceOf(Currencies::class);
+        verify($this->model->setCurrencies([]))->isInstanceOf(Currencies::class);
     }
 
     /**

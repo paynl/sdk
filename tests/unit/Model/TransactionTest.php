@@ -831,7 +831,7 @@ class TransactionTest extends UnitTest
     }
 
     /**
-     * depends testItCanSetStatus
+     * @depends testItCanSetStatus
      *
      * @dataProvider _statusCases
      *

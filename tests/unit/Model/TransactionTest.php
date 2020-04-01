@@ -831,7 +831,7 @@ class TransactionTest extends UnitTest
     }
 
     /**
-     * @depends testItCanSetStatus
+     * depends testItCanSetStatus
      *
      * @dataProvider _statusCases
      *
@@ -847,6 +847,17 @@ class TransactionTest extends UnitTest
         verify([$this->model, $methodName])->callable();
         verify($this->model->$methodName())->bool();
         verify($this->model->$methodName())->true();
+    }
+
+    public function testItReturnsFalseWithNoStatusSet(): void
+    {
+        $result = $this->model->__call('isPending');
+        verify($result)->bool();
+        verify($result)->false();
+
+        $result = $this->model->__call('isSomethingElse');
+        verify($result)->bool();
+        verify($result)->false();
     }
 
     /**

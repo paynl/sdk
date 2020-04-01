@@ -68,8 +68,6 @@ abstract class AbstractScalar implements FilterInterface
             case 'string':
                 // do nothing
                 break;
-            default:
-                throw $exception;
         }
 
         $this->value = $value;

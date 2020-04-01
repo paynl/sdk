@@ -47,18 +47,14 @@ class Entity extends AbstractHydrator implements OptionsAwareInterface
      *
      * @param ModelInterface $model
      *
-     * @throws LogicException when a property within the object does not have a DocBlock
-     *
      * @return array
+     * @throws ReflectionException
+     *
+     * @throws LogicException when a property within the object does not have a DocBlock
      */
     protected function load(ModelInterface $model): array
     {
-        $ref = null;
-        try {
-            $ref = new ReflectionClass($model);
-        } catch (ReflectionException $re) {
-            // do nothing, model always exist
-        }
+        $ref = new ReflectionClass($model);
 
         $properties = $ref->getProperties();
 

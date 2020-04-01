@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Codeception\TestAsset;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use PayNL\Sdk\Model\LinksTrait;
 use PayNL\Sdk\Model\ModelInterface;
 use DateTime;
@@ -36,6 +37,12 @@ class ComplexModel implements ModelInterface
      * @var SimpleCollection
      */
     protected $corge;
+
+    /**
+     * @var ArrayCollection
+     */
+    protected $arrayCollection;
+
 
     /**
      * @return string
@@ -83,6 +90,11 @@ class ComplexModel implements ModelInterface
         return $this->baz;
     }
 
+    public function getArrayCollection(): ArrayCollection
+    {
+        return $this->arrayCollection;
+    }
+
     /**
      * @param DateTime $baz
      *
@@ -110,6 +122,12 @@ class ComplexModel implements ModelInterface
     public function setCorge(SimpleCollection $corge): self
     {
         $this->corge = $corge;
+        return $this;
+    }
+
+    public function setArrayCollection(ArrayCollection $arrayCollection): self
+    {
+        $this->arrayCollection = $arrayCollection;
         return $this;
     }
 }

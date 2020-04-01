@@ -40,6 +40,17 @@ class Transaction extends Result
         return $this->isCanceled();
     }
 
+  /**
+   *
+   * Check whether the status of the transaction is chargeback
+   *
+   * @return bool
+   */
+    public function isChargeBack()
+    {
+      return $this->data['paymentDetails']['stateName'] === 'CHARGEBACK';
+    }
+
     /**
      * @return bool Transaction is Canceled
      */

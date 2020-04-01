@@ -849,6 +849,17 @@ class TransactionTest extends UnitTest
         verify($this->model->$methodName())->true();
     }
 
+    public function testItReturnsFalseWithNoStatusSet(): void
+    {
+        $result = $this->model->__call('isPending');
+        verify($result)->bool();
+        verify($result)->false();
+
+        $result = $this->model->__call('isSomethingElse');
+        verify($result)->bool();
+        verify($result)->false();
+    }
+
     /**
      * @return void
      */

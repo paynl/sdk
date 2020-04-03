@@ -24,7 +24,7 @@ class ConfigProvider implements ConfigProviderInterface
         return [
             'service_manager'        => $this->getDependencyConfig(),
             'service_loader_options' => [
-                'filterManager' => [
+                Manager::class => [
                     'service_manager' => 'filterManager',
                     'config_key'      => 'filters',
                     'class_method'    => 'getFilterConfig',

@@ -26,6 +26,11 @@ abstract class AbstractPluginManager extends Manager
     protected $instanceOf = '';
 
     /**
+     * @var string
+     */
+    protected $configKey = '';
+
+    /**
      * AbstractPluginManager constructor.
      *
      * @param ContainerInterface|null $parentLocator
@@ -36,6 +41,8 @@ abstract class AbstractPluginManager extends Manager
         parent::__construct($config);
 
         $this->creationContext = $parentLocator instanceof ContainerInterface ? $parentLocator : $this;
+
+        $this->setConfigKey($config['loader_options']['config_key'] ?? '');
     }
 
     /**
@@ -91,6 +98,25 @@ abstract class AbstractPluginManager extends Manager
     protected function getInstanceOf(): string
     {
         return $this->instanceOf;
+    }
+
+    /**
+     * @return string
+     */
+    public function getConfigKey(): string
+    {
+        return $this->configKey;
+    }
+
+    /**
+     * @param string $configKey
+     *
+     * @return AbstractPluginManager
+     */
+    protected function setConfigKey(string $configKey): self
+    {
+        $this->configKey = $configKey;
+        return $this;
     }
 
     /**

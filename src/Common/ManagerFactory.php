@@ -8,15 +8,7 @@ use Psr\Container\ContainerInterface;
 use PayNL\Sdk\{
     Service\AbstractPluginManager,
     Service\Config as ServiceConfig,
-    Exception\ServiceNotCreatedException,
-    Hydrator\Manager as HydratorManager,
-    Request\Manager as RequestManager,
-    Model\Manager as ModelManager,
-    AuthAdapter\Manager as AuthAdapterManager,
-    Transformer\Manager as TransformerManager,
-    Mapper\Manager as MapperManager,
-    Validator\Manager as ValidatorManager,
-    Filter\Manager as FilterManager
+    Exception\ServiceNotCreatedException
 };
 
 /**
@@ -26,20 +18,6 @@ use PayNL\Sdk\{
  */
 class ManagerFactory implements FactoryInterface
 {
-    /*
-     * Constant definition of config keys corresponding to their manager
-     */
-    protected const CONFIG_KEYS = [
-        HydratorManager::class    => 'hydrators',
-        TransformerManager::class => 'transformers',
-        AuthAdapterManager::class => 'authAdapters',
-        RequestManager::class     => 'requests',
-        ModelManager::class       => 'models',
-        MapperManager::class      => 'mappers',
-        ValidatorManager::class   => 'validators',
-        FilterManager::class      => 'filters',
-    ];
-
     /**
      * @inheritDoc
      *
@@ -47,16 +25,11 @@ class ManagerFactory implements FactoryInterface
      */
     public function __invoke(ContainerInterface $container, string $requestedName, array $options = null): AbstractPluginManager
     {
-        $configKey = self::CONFIG_KEYS[$requestedName] ?? null;
-        if (null === $configKey) {
-            throw new ServiceNotCreatedException(
-                sprintf(
-                    'Manager "%s" is not supported',
-                    $requestedName
-                )
-            );
+        if (true === $container->get('config')->get('service_loader_options')->has($requestedName)) {
+            $options = array_merge($options ?? [], ['loader_options' => $container->get('config')->get('service_loader_options')->get($requestedName)]);
         }
 
+        /** @var AbstractPluginManager $manager */
         $manager = new $requestedName($container, $options ?? []);
 
         if (false === ($manager instanceof AbstractPluginManager)) {
@@ -78,6 +51,8 @@ class ManagerFactory implements FactoryInterface
         }
 
         $config = $container->get('config');
+
+        $configKey = $manager->getConfigKey();
         if (false === array_key_exists($configKey, $config) || false === is_array($config[$configKey])) {
             return $manager;
         }

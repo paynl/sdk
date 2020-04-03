@@ -61,5 +61,8 @@ class ManagerConfigTest extends UnitTest
 
         verify($config['services'])->hasKey(ServiceManager::class);
         verify($config['services'][ServiceManager::class])->same($manager);
+
+        $this->assertIsCallable($config['factories']['ServiceManager']);
+        verify(($config['factories']['ServiceManager'])($manager))->same($manager);
     }
 }

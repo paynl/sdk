@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Common;
 
-use Traversable;
-
 /**
  * Interface OptionsAwareInterface
  *
@@ -19,7 +17,7 @@ interface OptionsAwareInterface
     public function getOptions(): array;
 
     /**
-     * @param array|Traversable $options
+     * @param mixed $options
      *
      * @return static
      */

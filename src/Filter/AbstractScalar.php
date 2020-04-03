@@ -70,7 +70,7 @@ abstract class AbstractScalar implements FilterInterface
                 break;
         }
 
-        $this->value = $value;
+        $this->value = (string)$value;
         return $this;
     }
 

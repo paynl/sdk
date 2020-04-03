@@ -21,6 +21,8 @@ class ManagerFactory implements FactoryInterface
     /**
      * @inheritDoc
      *
+     * @throws ServiceNotCreatedException
+     *
      * @return AbstractPluginManager
      */
     public function __invoke(ContainerInterface $container, string $requestedName, array $options = null): AbstractPluginManager

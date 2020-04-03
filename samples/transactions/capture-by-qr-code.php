@@ -8,7 +8,7 @@ $response = $app
     ->setRequest(
         'CaptureTransactionByQr',
         [
-            'transactionId' => (isset($config) ? $config->get('transactionId') : ''),
+            'transactionId' => (isset($config) === true ? $config->get('transactionId') : ''),
         ],
         null,
         [
@@ -54,7 +54,8 @@ $response = $app
                 'yy8yC2eraOiMqIpgxI2NBbMwZhEHeAUDJEi5hrN6YqRWExCIMwiDMghhxaZqMsparCIAzCIDsPgkSU6ioVwTFVRdbUm8' .
                 'cgDOI4iCoUhqgbgR27rbho3XbhGIRBGEQDZFcIBnFbMIjb4n++V9eqMLoQXAAAAABJRU5ErkJggg==',
             ],
-        ])
+        ]
+    )
     ->run()
 ;
 

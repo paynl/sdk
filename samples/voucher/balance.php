@@ -8,7 +8,7 @@ $response = $app
     ->setRequest(
         'CheckVoucherBalance',
         [
-            'cardNumber' => (isset($config) ? $config->get('cardNumber') : ''),
+            'cardNumber' => (isset($config) === true ? $config->get('cardNumber') : ''),
         ],
         null,
         [

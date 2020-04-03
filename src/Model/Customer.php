@@ -269,6 +269,8 @@ class Customer implements ModelInterface, JsonSerializable
     /**
      * @param int $trustLevel
      *
+     * @throws InvalidArgumentException
+     *
      * @return Customer
      */
     public function setTrustLevel(int $trustLevel): self

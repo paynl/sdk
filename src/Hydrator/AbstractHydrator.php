@@ -67,11 +67,11 @@ abstract class AbstractHydrator extends ClassMethods implements DebugAwareInterf
     /**
      * @param string|stdDateTime $dateTime
      *
-     * @return DateTime
+     * @return DateTime|false
      *
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    protected function getSdkDateTime($dateTime): DateTime
+    protected function getSdkDateTime($dateTime)
     {
         if ($dateTime instanceof DateTime) {
             return $dateTime;

@@ -29,7 +29,7 @@ class DateTime extends stdDateTime implements JsonSerializable
      * @throws Exception
      * @internal Dirty hack to "override" the parents static function because it always returns itself...
      */
-    public static function createFromFormat($format, $time, DateTimeZone $timezone = null)
+    public static function createFromFormat($format, $time, $timezone = null)
     {
         /** @var stdDateTime $dateTime */
         $dateTime = parent::createFromFormat($format, $time, $timezone);

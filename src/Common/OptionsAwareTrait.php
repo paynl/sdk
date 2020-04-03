@@ -54,8 +54,10 @@ trait OptionsAwareTrait
      * @inheritDoc
      *
      * @throws InvalidArgumentException
+     *
+     * @return static
      */
-    public function setOptions($options)
+    public function setOptions($options): self
     {
         if (false === is_array($options) && false === ($options instanceof Traversable)) {
             throw new InvalidArgumentException(

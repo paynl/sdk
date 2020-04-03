@@ -12,7 +12,7 @@ $response = $app
     ->setRequest(
         'CreateRecurringDirectdebit',
         [
-            'incassoOrderId' => (isset($config) ? $config->get('incassoOrderId') : ''),
+            'incassoOrderId' => (isset($config) === true ? $config->get('incassoOrderId') : ''),
         ],
         null,
         [

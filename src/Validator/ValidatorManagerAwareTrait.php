@@ -19,11 +19,13 @@ trait ValidatorManagerAwareTrait
     protected $validatorManager;
 
     /**
+     * @throws RuntimeException
+     *
      * @return Manager
      */
     public function getValidatorManager(): Manager
     {
-        if($this->validatorManager === null) {
+        if ($this->validatorManager === null) {
             throw new RuntimeException('ValidatorManager was not set');
         }
         return $this->validatorManager;

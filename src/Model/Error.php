@@ -12,7 +12,7 @@ namespace PayNL\Sdk\Model;
 class Error implements ModelInterface
 {
     /**
-     * @var int
+     * @var integer
      */
     protected $code;
 

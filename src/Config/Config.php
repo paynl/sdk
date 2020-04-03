@@ -181,7 +181,7 @@ class Config implements Countable, Iterator, ArrayAccess
 
     /**
      * @inheritDoc
-     * 
+     *
      * @return mixed
      */
     public function key()

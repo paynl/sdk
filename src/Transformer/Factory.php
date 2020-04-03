@@ -24,7 +24,7 @@ class Factory implements FactoryInterface
         $transformer = new $requestedName($container);
 
         if ($transformer instanceof OptionsAwareInterface) {
-            $transformer->setOptions($options ?: []);
+            $transformer->setOptions($options ?? []);
         }
 
         return $transformer;

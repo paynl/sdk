@@ -26,6 +26,9 @@ class Entity extends AbstractHydrator implements OptionsAwareInterface
 {
     use OptionsAwareTrait;
 
+    /**
+     * @var array
+     */
     protected $collectionMap = [];
 
     /**
@@ -47,10 +50,9 @@ class Entity extends AbstractHydrator implements OptionsAwareInterface
      *
      * @param ModelInterface $model
      *
-     * @return array
-     * @throws ReflectionException
-     *
      * @throws LogicException when a property within the object does not have a DocBlock
+     *
+     * @return array
      */
     protected function load(ModelInterface $model): array
     {

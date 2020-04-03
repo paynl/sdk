@@ -27,5 +27,6 @@ return [
     'terminalId'            => 'TH-3640-7060',
     'terminalTransactionId' => 'TT-9288-4049-2210',
     'transactionId'         => 'EX-3338-5372-0550',
-    'cardNumber'            => '1234567800273867546', //voucher
+    //voucher
+    'cardNumber'            => '1234567800273867546',
 ];

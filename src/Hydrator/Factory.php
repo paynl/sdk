@@ -48,7 +48,7 @@ class Factory implements FactoryInterface
             $hydratorCollectionMap = [];
             $config = $container->get('config');
             if (true === $config->has('hydrator_collection_map')) {
-               $hydratorCollectionMap = $config->get('hydrator_collection_map')->toArray();
+                $hydratorCollectionMap = $config->get('hydrator_collection_map')->toArray();
             }
 
             $hydrator->setOptions(array_merge($options ?? [], ['collectionMap' => $hydratorCollectionMap]));

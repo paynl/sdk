@@ -33,6 +33,8 @@ class Basic implements AdapterInterface
 
     /**
      * @inheritDoc
+     *
+     * @throws InvalidArgumentException
      */
     public function setUsername(string $username)
     {
@@ -56,6 +58,8 @@ class Basic implements AdapterInterface
 
     /**
      * @inheritDoc
+     *
+     * @throws InvalidArgumentException
      */
     public function setPassword(string $password)
     {

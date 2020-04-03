@@ -41,8 +41,8 @@ class Misc
 
         $class = $namespace = $buffer = '';
         $counter = 0;
-        while (!$class) {
-            if (feof($handle)) {
+        while (true === empty($class)) {
+            if (true === feof($handle)) {
                 break;
             }
 

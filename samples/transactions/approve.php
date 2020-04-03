@@ -6,7 +6,7 @@ $app = require __DIR__ . '/../init_application.php';
 
 $response = $app
     ->setRequest('ApproveTransaction', [
-        'transactionId' => (isset($config) ? $config->get('transactionId') : ''),
+        'transactionId' => (isset($config) === true ? $config->get('transactionId') : ''),
     ])
     ->run()
 ;

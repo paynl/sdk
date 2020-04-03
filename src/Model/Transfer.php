@@ -87,6 +87,4 @@ class Transfer implements ModelInterface, JsonSerializable
         $this->data = $data;
         return $this;
     }
-
-
 }

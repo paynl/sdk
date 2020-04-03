@@ -8,14 +8,14 @@ $response = $app
     ->setRequest(
         'GetPaymentMethods',
         [
-            'serviceId' => (isset($config) ? $config->get('serviceId') : ''),
+            'serviceId' => (isset($config) === true ? $config->get('serviceId') : ''),
         ],
         // filters
         [
-//            'country' => [
-//                'NL',
-//                'BE',
-//            ],
+        // 'country' => [
+        //     'NL',
+        //     'BE',
+        // ],
         ]
     )
     ->run()

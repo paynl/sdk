@@ -38,7 +38,7 @@ class Manager implements ContainerInterface
     /**
      * Whether or not changes may be made to this instance.
      *
-     * @var bool
+     * @var boolean
      */
     protected $allowOverride = false;
 
@@ -63,7 +63,7 @@ class Manager implements ContainerInterface
     protected $services = [];
 
     /**
-     * @var bool
+     * @var boolean
      */
     protected $configured = false;
 
@@ -173,7 +173,7 @@ class Manager implements ContainerInterface
         $intersecting = false === empty($this->aliases) && array_intersect_key($this->aliases, $aliases);
         $this->aliases = array_merge($this->aliases, $aliases);
 
-        if ($intersecting) {
+        if (true === $intersecting) {
             $this->resolveAliases($this->aliases);
             return;
         }
@@ -237,7 +237,7 @@ class Manager implements ContainerInterface
     private function resolveInitializers(array $initializers): void
     {
         foreach ($initializers as $initializer) {
-            if (true === is_string($initializer) && class_exists($initializer)) {
+            if (true === is_string($initializer) && true === class_exists($initializer)) {
                 $initializer = new $initializer();
             }
 
@@ -263,7 +263,7 @@ class Manager implements ContainerInterface
                 sprintf(
                     'An invalid initializer was registered. Expected a callable, or an instance of "%s", got "%s"',
                     InitializerInterface::class,
-                    (true === is_object($initializer) ? get_class($initializer) : gettype($initializer))
+                    (is_object($initializer) === true ? get_class($initializer) : gettype($initializer))
                 )
             );
         }
@@ -272,7 +272,7 @@ class Manager implements ContainerInterface
     /**
      * @inheritDoc
      *
-     * @throw InvalidArgumentException when given name is not a string
+     * @throws InvalidArgumentException when given name is not a string
      */
     public function has($name): bool
     {
@@ -472,19 +472,19 @@ class Manager implements ContainerInterface
             return;
         }
 
-        if (isset($config['services'])) {
+        if (true === isset($config['services'])) {
             $this->validateOverrideSet(array_keys($config['services']), 'service');
         }
 
-        if (isset($config['aliases'])) {
+        if (true === isset($config['aliases'])) {
             $this->validateOverrideSet(array_keys($config['aliases']), 'alias');
         }
 
-        if (isset($config['invokables'])) {
+        if (true === isset($config['invokables'])) {
             $this->validateOverrideSet(array_keys($config['invokables']), 'invokable class');
         }
 
-        if (isset($config['factories'])) {
+        if (true === isset($config['factories'])) {
             $this->validateOverrideSet(array_keys($config['factories']), 'factory');
         }
     }

@@ -13,9 +13,9 @@ $response = $app
             'Qr' => [
                 'uuid'          => '310021cb-3167-1271-4142-434430313233',
                 'secret'        => '0123456789ABCDEF0123456789ABCDEF01234567',
-// members below are optional
-//                'padChar'       => '0',
-//                'referenceType' => 'string',
+                // members below are optional
+                //  'padChar'       => '0',
+                //  'referenceType' => 'string',
             ],
         ]
     )

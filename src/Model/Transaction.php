@@ -566,6 +566,8 @@ class Transaction implements ModelInterface, JsonSerializable
      * @param string $name
      * @param array $arguments
      *
+     * @throws BadMethodCallException
+     *
      * @return bool
      */
     public function __call(string $name, array $arguments = [])

@@ -8,14 +8,14 @@ $response = $app
     ->setRequest(
         'TokenizeTransaction',
         [
-            'transactionId' => (isset($config) ? $config->get('transactionId') : ''),
+            'transactionId' => (isset($config) === true ? $config->get('transactionId') : ''),
         ],
         null,
         [
             'CompanyCard' => [
                 // Choose one of the following keys to fill the correct data:
                 'id'    => 'VY-6036-0071-6000',
-//                'token' => '9572a3ac8a41b05646f0acaf613735f2ef6630dbb1fb94b4a4119af2d67ca65b'
+                // 'token' => '9572a3ac8a41b05646f0acaf613735f2ef6630dbb1fb94b4a4119af2d67ca65b'
             ],
         ]
     )

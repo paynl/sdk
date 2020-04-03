@@ -36,6 +36,11 @@ class Manager extends AbstractPluginManager
 
     /**
      * @inheritDoc
+     *
+     * @throws ServiceNotCreatedException
+     * @throws ServiceNotFoundException
+     * @throws MapperSourceServiceNotFoundException
+     * @throws MapperTargetServiceNotFoundException
      */
     public function configure(array $config): ServiceManager
     {
@@ -120,7 +125,7 @@ class Manager extends AbstractPluginManager
      */
     protected function validateOverrides(array $config): void
     {
-        if (isset($config['mapping'])) {
+        if (true === isset($config['mapping'])) {
             $this->validateOverrideSet(array_keys($config['mapping']), 'mapping');
         }
         parent::validateOverrides($config);

@@ -52,15 +52,19 @@ trait OptionsAwareTrait
 
     /**
      * @inheritDoc
+     *
+     * @throws InvalidArgumentException
+     *
+     * @return static
      */
-    public function setOptions($options)
+    public function setOptions($options): self
     {
         if (false === is_array($options) && false === ($options instanceof Traversable)) {
             throw new InvalidArgumentException(
                 sprintf(
                     'Given options should be an array or an instance of %s, %s given',
                     Traversable::class,
-                    is_object($options) ? get_class($options) : gettype($options)
+                    (is_object($options) === true ? get_class($options) : gettype($options))
                 )
             );
         }

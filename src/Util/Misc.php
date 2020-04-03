@@ -38,11 +38,14 @@ class Misc
         }
 
         $handle = fopen($file, 'rb');
+        if (false === $handle) {
+            return '';
+        }
 
         $class = $namespace = $buffer = '';
         $counter = 0;
-        while (!$class) {
-            if (feof($handle)) {
+        while (true === empty($class)) {
+            if (true === feof($handle)) {
                 break;
             }
 
@@ -76,7 +79,7 @@ class Misc
             }
         }
 
-        $filename = substr(basename($file), 0, strpos(basename($file), '.'));
+        $filename = substr(basename($file), 0, (int)strpos(basename($file), '.'));
         if ($filename !== $class) {
             throw new LogicException(
                 sprintf(
@@ -99,6 +102,6 @@ class Misc
     {
         $namespaceSeparator = '\\';
         $parts = explode($namespaceSeparator, $fqn);
-        return array_pop($parts);
+        return array_pop($parts) ?? '';
     }
 }

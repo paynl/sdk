@@ -20,14 +20,15 @@ class Request extends AbstractRequest
      * @param string $method
      * @param array $requiredParams
      * @param array $options
+     *
+     * @throws BadMethodCallException
      */
     public function __construct(
         string $uri,
         string $method = self::METHOD_GET,
         array $requiredParams = [],
         array $options = []
-    )
-    {
+    ) {
         if ('' === $uri) {
             throw new BadMethodCallException(
                 'URI can not be empty'

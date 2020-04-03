@@ -47,7 +47,11 @@
     </rule>
     <rule ref="Generic.NamingConventions.ConstructorName" />
     <rule ref="Generic.PHP.DeprecatedFunctions" />
-    <rule ref="Generic.Strings.UnnecessaryStringConcat" />
+    <rule ref="Generic.Strings.UnnecessaryStringConcat">
+        <properties>
+            <property name="allowMultiline" value="true" />
+        </properties>
+    </rule>
     <rule ref="Generic.CodeAnalysis.AssignmentInCondition" />
     <rule ref="Generic.CodeAnalysis.EmptyPHPStatement" />
     <rule ref="Generic.CodeAnalysis.EmptyStatement" />

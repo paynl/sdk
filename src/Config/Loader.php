@@ -45,12 +45,14 @@ class Loader
      * Loader constructor.
      *
      * @param array|Config $applicationConfig
+     *
+     * @throws Exception\InvalidArgumentException
      */
     public function __construct($applicationConfig = [])
     {
         if (true === is_array($applicationConfig)) {
             $applicationConfig = new Config($applicationConfig);
-        } elseif (! ($applicationConfig instanceof Config)) {
+        } elseif (($applicationConfig instanceof Config) === false) {
             throw new Exception\InvalidArgumentException('Config not correct');
         }
 
@@ -65,13 +67,15 @@ class Loader
     /**
      * @param string|array|Traversable $paths
      *
+     * @throws Exception\InvalidArgumentException
+     *
      * @return Loader
      */
     public function addPaths($paths): self
     {
         if (true === is_string($paths)) {
             $paths = [$paths];
-        } elseif (! is_iterable($paths)) {
+        } elseif (false === is_iterable($paths)) {
             throw new Exception\InvalidArgumentException(
                 sprintf(
                     'Given paths to "%s" must be iterable or a string',
@@ -107,6 +111,8 @@ class Loader
 
     /**
      * @param string $path
+     *
+     * @throws Exception\ConfigNotFoundException
      *
      * @return Loader
      *

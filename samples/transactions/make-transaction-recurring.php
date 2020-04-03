@@ -8,7 +8,7 @@ $response = $app
     ->setRequest(
         'MakeTransactionRecurring',
         [
-            'transactionId' => (isset($config) ? $config->get('transactionId') : ''),
+            'transactionId' => (isset($config) === true ? $config->get('transactionId') : ''),
         ],
         null,
         [

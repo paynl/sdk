@@ -18,5 +18,4 @@ class Country extends AbstractArray
     {
         return 'country';
     }
-
 }

@@ -62,6 +62,16 @@ class MiscTest extends UnitTest
         return __DIR__ . '/../../_support/TestAsset/FailingConfigProvider.php';
     }
 
+    private function getEmptyFilename(): string
+    {
+        return __DIR__ . '/../../_support/TestAsset/EmptyFile.php';
+    }
+
+    private function getBraceSkippingFilename(): string
+    {
+        return __DIR__ . '/../../_support/TestAsset/BraceSkippingFile.php';
+    }
+
     protected function _before()
     {
         $this->misc = new Misc();
@@ -89,6 +99,18 @@ class MiscTest extends UnitTest
         $this->expectException(InvalidArgumentException::class);
         $this->misc::getClassNameByFile($this->getExistingUnreadableFilename());
         @chmod($this->getExistingUnreadableFilename(), $this->originalFilePermissions);
+    }
+
+    public function testItHandlesBreakingAfterEndOfFile(): void
+    {
+        $this->expectException(LogicException::class);
+        $this->misc::getClassNameByFile($this->getEmptyFilename());
+    }
+
+    public function testItHandlesSkippingForBraces(): void
+    {
+        $this->expectException(LogicException::class);
+        $this->misc::getClassNameByFile($this->getBraceSkippingFilename());
     }
 
     /**

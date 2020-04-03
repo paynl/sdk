@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PayNL\Sdk\Service;
 
-use Codeception\{
-    Test\Unit as UnitTest,
+use Codeception\{Test\Unit as UnitTest,
     Lib\ManagerTestTrait,
     TestAsset\Dummy,
+    TestAsset\DummyFilter,
     TestAsset\DummyInterface,
     TestAsset\DummyService,
-    TestAsset\SimpleModel
-};
+    TestAsset\SimpleModel};
 use PayNL\Sdk\{
     Exception\InvalidServiceException,
     Exception\ServiceNotFoundException,
@@ -185,5 +184,11 @@ class AbstractPluginManagerTest extends UnitTest
     {
         $this->expectException(ServiceNotFoundException::class);
         $this->manager->get('bar');
+    }
+
+    public function testGetANamedServiceSetsFactoryWhenNameExists(): void
+    {
+        $this->manager->setAlias('dummyFilter', DummyFilter::class);
+        $this->manager->get('dummyFilter');
     }
 }

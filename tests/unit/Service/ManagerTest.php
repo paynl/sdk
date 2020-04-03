@@ -306,6 +306,22 @@ class ManagerTest extends UnitTest
         verify(true)->true();
     }
 
+
+    /**
+     * @depends testItCanConfigureAliases
+     *
+     * @return void
+     */
+    public function testICanConfigureIntersectingAliases(): void
+    {
+        try {
+        $this->tester->invokeMethod($this->manager, 'configureAliases', [[ 'foo_bar' => 'bar_foo' ]]);
+        } catch (Exception $e) {
+            $this->fail();
+        }
+        verify(true)->true();
+    }
+
     /**
      * @return void
      */
@@ -349,6 +365,12 @@ class ManagerTest extends UnitTest
         $this->tester->invokeMethod($this->manager, 'resolveInitializers', [[
             (new FailingModel()),
         ]]);
+    }
+
+    public function testResolveInvalidInitializersThrowsAnException(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->tester->invokeMethod($this->manager, 'resolveInitializers', [[ 'Invalid' ]]);
     }
 
     /**

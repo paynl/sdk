@@ -6,6 +6,7 @@ namespace Tests\Unit\PayNL\Sdk\Transformer;
 
 use Codeception\Test\Unit as UnitTest;
 use Codeception\Lib\FactoryTestTrait;
+use Codeception\TestAsset\DummyOptionsAwareTransformer;
 use Codeception\TestAsset\DummyTransformer;
 use PayNL\Sdk\{Service\Manager as ServiceManager, Transformer\Factory, Transformer\TransformerInterface};
 use UnitTester;
@@ -44,6 +45,12 @@ class FactoryTest extends UnitTest
     public function testItCanFilterATransformer(): void
     {
         $filter = ($this->factory)($this->serviceManagerMock, DummyTransformer::class);
+        verify($filter)->isInstanceOf(TransformerInterface::class);
+    }
+
+    public function testItCanFilterAOptionsAwareTransformer(): void
+    {
+        $filter = ($this->factory)($this->serviceManagerMock, DummyOptionsAwareTransformer::class);
         verify($filter)->isInstanceOf(TransformerInterface::class);
     }
 

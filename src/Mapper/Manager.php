@@ -41,6 +41,8 @@ class Manager extends AbstractPluginManager
      * @throws ServiceNotFoundException
      * @throws MapperSourceServiceNotFoundException
      * @throws MapperTargetServiceNotFoundException
+     *
+     * @SuppressWarnings(PHPMD.StaticAccess)
      */
     public function configure(array $config): ServiceManager
     {

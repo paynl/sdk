@@ -68,6 +68,7 @@
       "Codeception\\TestAsset\\": "tests/_support/TestAsset"
     },
     "files": [
+      "./samples/print_response.function.php"
     ]
   },
   "minimum-stability": "stable",

@@ -24,10 +24,10 @@ class ConfigProvider implements ProviderInterface
         return [
             'service_manager' => $this->getDependencyConfig(),
             'service_loader_options' => [
-                'mapperManager' => [
+                Manager::class => [
                     'service_manager' => 'mapperManager',
-                    'config_key'    => 'mappers',
-                    'class_method'  => 'getMapperConfig',
+                    'config_key'      => 'mappers',
+                    'class_method'    => 'getMapperConfig',
                 ],
             ],
         ];

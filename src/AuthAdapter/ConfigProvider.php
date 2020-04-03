@@ -24,7 +24,7 @@ class ConfigProvider implements ConfigProviderInterface
         return [
             'service_manager'        => $this->getDependencyConfig(),
             'service_loader_options' => [
-                'authAdapterManager' => [
+                Manager::class => [
                     'service_manager' => 'authAdapterManager',
                     'config_key'      => 'authAdapters',
                     'class_method'    => 'getAuthAdapterConfig',

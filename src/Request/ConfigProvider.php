@@ -25,10 +25,10 @@ class ConfigProvider implements ConfigProviderInterface
         return [
             'service_manager' => $this->getDependencyConfig(),
             'service_loader_options' => [
-                'requestManager' => [
+                Manager::class => [
                     'service_manager' => 'requestManager',
-                    'config_key' => 'requests',
-                    'class_method' => 'getRequestConfig'
+                    'config_key'      => 'requests',
+                    'class_method'    => 'getRequestConfig'
                 ],
             ],
             'request' => [

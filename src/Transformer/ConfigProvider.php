@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Transformer;
 
-use PayNL\Sdk\Config\ProviderInterface as ConfigProviderInterface;
-use PayNL\Sdk\Common\ManagerFactory;
+use PayNL\Sdk\{
+    Common\ManagerFactory,
+    Config\ProviderInterface as ConfigProviderInterface
+};
 
 /**
  * Class ConfigProvider
@@ -22,7 +24,7 @@ class ConfigProvider implements ConfigProviderInterface
         return [
             'service_manager' => $this->getDependencyConfig(),
             'service_loader_options' => [
-                'transformerManager' => [
+                Manager::class => [
                     'service_manager' => 'transformerManager',
                     'config_key'      => 'transformers',
                     'class_method'    => 'getTransformerConfig',

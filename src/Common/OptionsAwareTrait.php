@@ -52,6 +52,8 @@ trait OptionsAwareTrait
 
     /**
      * @inheritDoc
+     *
+     * @throws InvalidArgumentException
      */
     public function setOptions($options)
     {
@@ -60,7 +62,7 @@ trait OptionsAwareTrait
                 sprintf(
                     'Given options should be an array or an instance of %s, %s given',
                     Traversable::class,
-                    is_object($options) ? get_class($options) : gettype($options)
+                    (is_object($options) === true ? get_class($options) : gettype($options))
                 )
             );
         }

@@ -72,6 +72,8 @@ class Application
      *
      * @param mixed $configuration
      *
+     * @throws InvalidArgumentException
+     *
      * @return Application
      */
     public static function init($configuration = []): self
@@ -85,7 +87,7 @@ class Application
                     '%s, %s given',
                     __METHOD__,
                     Config::class,
-                    is_object($configuration) ? get_class($configuration) : gettype($configuration)
+                    (is_object($configuration) === true ? get_class($configuration) : gettype($configuration))
                 )
             );
         }
@@ -148,7 +150,6 @@ class Application
     public function setRequest($request, array $params = null, array $filters = null, $body = null): self
     {
         if (true === is_string($request)) {
-
             // do we've got a body given? And if yes, is it correct?
             if (null !== $body) {
                 if (true === is_array($body)) {
@@ -163,7 +164,7 @@ class Application
                         sprintf(
                             'Given body should be a string, an array or an instance of %s, %s given',
                             ModelInterface::class,
-                            is_object($body) ? get_class($body) : gettype($body)
+                            (is_object($body) === true ? get_class($body) : gettype($body))
                         )
                     );
                 }
@@ -178,13 +179,13 @@ class Application
             ;
 
             $request->setBody($body);
-        } elseif (! ($request instanceof AbstractRequest)) {
+        } elseif (($request instanceof AbstractRequest) === false) {
             throw new InvalidArgumentException(
                 sprintf(
                     'Given request should correspond to a request class name or alias, or should be an ' .
                     'instance of %s, %s given',
                     AbstractRequest::class,
-                    is_object($request) ? get_class($request) : gettype($request)
+                    (is_object($request) === true ? get_class($request) : gettype($request))
                 )
             );
         }

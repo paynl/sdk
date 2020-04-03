@@ -153,7 +153,7 @@ class ConfigProvider implements ConfigProviderInterface
                 'uri' => '/ispay/ip?value=%ip%',
                 'method' => RequestInterface::METHOD_GET,
                 'requiredParams' => [
-                    'ip' => '[0-9\.]+', // TODO: correct regex implement
+                    'ip' => '[0-9\.]+',
                 ],
             ],
         ];

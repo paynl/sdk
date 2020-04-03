@@ -33,7 +33,7 @@ class DateTime extends stdDateTime implements JsonSerializable
     {
         /** @var stdDateTime $dateTime */
         $dateTime = parent::createFromFormat($format, $time, $timezone);
-        if($dateTime !== false) {
+        if ($dateTime !== false) {
             return (new self())->setTimestamp($dateTime->getTimestamp());
         }
         return false;

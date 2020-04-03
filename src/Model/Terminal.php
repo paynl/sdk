@@ -123,6 +123,8 @@ class Terminal implements ModelInterface, JsonSerializable
     /**
      * @param string $state
      *
+     * @throws InvalidServiceException
+     *
      * @return Terminal
      */
     public function setState(string $state): self

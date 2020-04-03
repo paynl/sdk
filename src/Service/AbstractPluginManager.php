@@ -87,7 +87,7 @@ abstract class AbstractPluginManager extends Manager
                 'Plugin manager "%s" expects an instance of "%s", but "%s" was given',
                 __CLASS__,
                 $this->instanceOf,
-                true === is_object($instance) ? get_class($instance) : gettype($instance)
+                (is_object($instance) === true ? get_class($instance) : gettype($instance))
             )
         );
     }
@@ -122,6 +122,8 @@ abstract class AbstractPluginManager extends Manager
     /**
      * @inheritDoc
      *
+     * @throws ServiceNotFoundException
+     *
      * @param array|null $options
      */
     public function get($name, array $options = null)
@@ -140,7 +142,7 @@ abstract class AbstractPluginManager extends Manager
             $this->setFactory($name, InvokableFactory::class);
         }
 
-        $instance = (true === empty($options) ? parent::get($name) : $this->build($name, $options));
+        $instance = (empty($options) === true ? parent::get($name) : $this->build($name, $options));
         $this->validate($instance);
         return $instance;
     }

@@ -11,7 +11,8 @@ if (false === function_exists('print_response')) {
      *
      * @return void
      */
-    function print_response(ResponseInterface $response) {
+    function print_response(ResponseInterface $response)
+    {
         echo '<pre>' . PHP_EOL .
             var_export($response->getBody(), true) . PHP_EOL .
             '</pre>' . PHP_EOL

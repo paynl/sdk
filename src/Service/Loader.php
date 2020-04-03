@@ -94,7 +94,7 @@ class Loader
             'configuration'   => [],
         ];
 
-        if ($key === 'service_manager' && $this->defaultServiceConfig) {
+        if ($key === 'service_manager' && null !== $this->defaultServiceConfig) {
             $this->serviceManagers[$smKey]['configuration']['default_config'] = $this->defaultServiceConfig;
         }
 
@@ -156,7 +156,7 @@ class Loader
 
                 /** @var ServiceManager $instance */
                 $instance = $this->defaultServiceManager->get($sm['service_manager']);
-                if (! $instance instanceof ServiceManager) {
+                if (($instance instanceof ServiceManager) === false) {
                     throw new Exception\ServiceNotFoundException(
                         sprintf(
                             'Could not find service manager with name %s',
@@ -230,7 +230,7 @@ class Loader
                 sprintf(
                     'Invalid service manager config class provided, expected "%s" but got "%s"',
                     ServiceConfig::class,
-                    (is_object($config) ? get_class($config) : gettype($config))
+                    (is_object($config) === true ? get_class($config) : gettype($config))
                 )
             );
         }

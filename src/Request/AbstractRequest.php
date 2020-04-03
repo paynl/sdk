@@ -165,6 +165,9 @@ abstract class AbstractRequest implements
     /**
      * @param array $params
      *
+     * @throws MissingParamException
+     * @throws InvalidArgumentException
+     *
      * @return static
      */
     public function setParams(array $params): self
@@ -173,7 +176,12 @@ abstract class AbstractRequest implements
 
         foreach ($this->getRequiredParams() as $paramName => $paramDefinition) {
             if (false === $this->hasParam($paramName)) {
-                throw new MissingParamException('Missing param!');
+                throw new MissingParamException(
+                    sprintf(
+                        'Missing param "%s"',
+                        $paramName
+                    )
+                );
             }
 
             if (true === is_string($paramDefinition)
@@ -439,7 +447,7 @@ abstract class AbstractRequest implements
         $encoder = new JsonEncoder();
         $contentTypeHeader = 'application/json';
         $context = [
-            'json_encode_options' => JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | (true === $this->isDebug() ? JSON_PRETTY_PRINT : 0),
+            'json_encode_options' => JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | ($this->isDebug() === true ? JSON_PRETTY_PRINT : 0),
         ];
 
         if (static::FORMAT_XML === $this->getFormat()) {
@@ -480,7 +488,7 @@ abstract class AbstractRequest implements
             $guzzleRequest = new Request($this->getMethod(), $uri, $this->getHeaders(), $this->getBody());
 
             $this->dumpDebugInfo('Requested URL: ' . rtrim((string)$guzzleClient->getConfig('base_uri'), '/') . '/' . $guzzleRequest->getUri());
-            $this->dumpDebugInfo('Headers:' . PHP_EOL . PHP_EOL . implode(PHP_EOL, array_map(static function($item, $key) {
+            $this->dumpDebugInfo('Headers:' . PHP_EOL . PHP_EOL . implode(PHP_EOL, array_map(static function ($item, $key) {
                 return "{$key}: {$item}";
             }, $this->getHeaders(), array_keys($this->getHeaders()))));
 
@@ -552,6 +560,8 @@ abstract class AbstractRequest implements
      *  the required properties
      *
      * @param mixed $body
+     *
+     * @throws RuntimeException when the body is an object and it's invalid
      *
      * @return void
      */

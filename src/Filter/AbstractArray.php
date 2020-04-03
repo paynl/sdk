@@ -51,6 +51,8 @@ abstract class AbstractArray implements FilterInterface
 
     /**
      * @inheritDoc
+     *
+     * @throws InvalidArgumentException
      */
     public function setValue($value): FilterInterface
     {

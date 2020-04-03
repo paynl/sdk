@@ -101,7 +101,7 @@ class LoaderFactory implements FactoryInterface
                     'The given options to %s must be an array or an instance of %s, %s given',
                     __METHOD__,
                     Config::class,
-                    (is_object($options) ? get_class($options) : gettype($options))
+                    (is_object($options) === true ? get_class($options) : gettype($options))
                 )
             );
         }
@@ -123,6 +123,8 @@ class LoaderFactory implements FactoryInterface
     /**
      * @param Config $options
      * @param string $name
+     *
+     * @throws Exception\ServiceNotCreatedException
      *
      * @return void
      */

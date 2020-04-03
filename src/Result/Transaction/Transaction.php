@@ -109,11 +109,23 @@ class Transaction extends Result
     }
 
     /**
+     * Check whether the payment is partial refunded
+     *
      * @return bool
      */
     public function isPartiallyRefunded()
     {
         return $this->data['paymentDetails']['stateName'] === 'PARTIAL_REFUND';
+    }
+
+  /**
+   * Check whether the payment is a partial payment.
+   *
+   * @return bool
+   */
+    public function isPartialPayment()
+    {
+        return $this->data['paymentDetails']['stateName'] === 'PARTIAL_PAYMENT';
     }
 
     /**

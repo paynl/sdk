@@ -849,12 +849,23 @@ class TransactionTest extends UnitTest
         verify($this->model->$methodName())->true();
     }
 
+    /**
+     * @depends testItCanCheckForStatusByMethodCall
+     * @return void
+     */
     public function testItReturnsFalseWithNoStatusSet(): void
     {
         $result = $this->model->__call('isPending');
         verify($result)->bool();
         verify($result)->false();
+    }
 
+    /**
+     * @depends testItCanCheckForStatusByMethodCall
+     * @return void;
+     */
+    public function testItReturnsFalseWithNonExistingStatusSet(): void
+    {
         $result = $this->model->__call('isSomethingElse');
         verify($result)->bool();
         verify($result)->false();

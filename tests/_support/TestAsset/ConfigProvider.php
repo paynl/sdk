@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Codeception\TestAsset;
 
-use PayNL\Sdk\{
+use PayNL\Sdk\{Config\Config,
     Config\ProviderInterface,
     Exception\ServiceNotCreatedException,
     Service\AbstractPluginManager,
-    Service\Config as ServiceConfig
-};
+    Service\Config as ServiceConfig};
 use Psr\Container\ContainerInterface;
 
 /**
@@ -36,6 +35,21 @@ class ConfigProvider implements ProviderInterface
                     'service_manager' => 'dummyManager',
                     'config_key' => 'dummies',
                     'class_method' => 'getDummyConfig',
+                ],
+                'fooManager' => [
+                    'service_manager' => 'fooManager',
+                    'config_key' => 'foos',
+                    'class_method' => 'getFooConfig',
+                ],
+                'barManager' => [
+                    'service_manager' => 'barManager',
+                    'config_key' => 'bars',
+                    'class_method' => 'getBarConfig',
+                ],
+                'bazManager' => [
+                    'service_manager' => 'bazManager',
+                    'config_key' => 'bazs',
+                    'class_method' => 'getBazConfig',
                 ],
             ],
             'models' => [
@@ -83,6 +97,9 @@ class ConfigProvider implements ProviderInterface
                 'simpleManager'  => SimplePluginManager::class,
                 'dummyManager' => DummyPluginManager::class,
                 'failingManager' => FailingPluginManager::class,
+                'fooManager' => DummyPluginManager::class,
+                'barManager' => DummyPluginManager::class,
+                'bazManager' => DummyPluginManager::class,
             ],
             'factories' => [
                 DummyPluginManager::class => [$this, 'createManager'],
@@ -90,6 +107,9 @@ class ConfigProvider implements ProviderInterface
                     return new FailingPluginManager();
                 },
                 SimplePluginManager::class => [$this, 'createManager'],
+            ],
+            'configuration_classes' => [
+                DummyConfig::class,
             ],
         ];
     }
@@ -186,6 +206,38 @@ class ConfigProvider implements ProviderInterface
                 'Dummy' => Dummy::class,
             ],
         ];
+    }
+
+    /**
+     * @return ServiceConfig
+     */
+    public function getFooConfig(): ServiceConfig
+    {
+        return new ServiceConfig([
+            'invokables' => [
+                'BarInvokables' => InvokableObject::class,
+            ]
+        ]);
+    }
+
+    /**
+     * @return Config
+     */
+    public function getBarConfig(): Config
+    {
+        return new Config([
+            'invokables' => [
+                'BarInvokables' => InvokableObject::class,
+            ]
+        ]);
+    }
+
+    /**
+     * @return string
+     */
+    public function getBazConfig(): string
+    {
+        return 'corge';
     }
 
     /**

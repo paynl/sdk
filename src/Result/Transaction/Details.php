@@ -13,7 +13,7 @@ class Details extends Result
 {   
 
     /**
-     * @return string Full array paymentDetails
+     * @return array Full array paymentDetails
      */
     public function getPaymentDetails()
     {
@@ -117,7 +117,7 @@ class Details extends Result
     }   
 
     /**
-     * @return string The amount
+     * @return array The amount
      */
     public function getAmount()
     {            
@@ -142,7 +142,7 @@ class Details extends Result
 
 
     /**
-     * @return string The amountOriginal
+     * @return array The amountOriginal
      */
     public function getAmountOriginal()
     {            
@@ -166,7 +166,7 @@ class Details extends Result
     }  
 
     /**
-     * @return string The amountPaidOriginal
+     * @return array The amountPaidOriginal
      */
     public function getAmountPaidOriginal()
     {            
@@ -190,7 +190,7 @@ class Details extends Result
     }  
 
     /**
-     * @return string The amountPaid
+     * @return array The amountPaid
      */
     public function getAmountPaid()
     {            
@@ -214,7 +214,7 @@ class Details extends Result
     }  
 
     /**
-     * @return string The amountRefundOriginal
+     * @return array The amountRefundOriginal
      */
     public function getAmountRefundOriginal()
     {            
@@ -238,7 +238,7 @@ class Details extends Result
     }  
 
      /**
-     * @return string The amountRefund
+     * @return array The amountRefund
      */
     public function getAmountRefund()
     {            
@@ -262,7 +262,7 @@ class Details extends Result
     }      
 
     /**
-     *  @return TransactionDetails[]
+     *  @return array class TransactionDetails[]
      */
     public function getTransactionDetails()
     {

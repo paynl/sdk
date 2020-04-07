@@ -118,7 +118,7 @@ class transactionDetails extends Result
     } 
 
     /**
-     * @return string The amount
+     * @return array The amount
      */
     public function getAmount()
     {            

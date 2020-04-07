@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PayNL\Sdk\Service;
 
-use Codeception\{
-    Test\Unit as UnitTest,
+use Codeception\{Test\Unit as UnitTest,
     TestAsset\Dummy,
+    TestAsset\DummyConfig,
     TestAsset\DummyService
 };
 use PayNL\Sdk\{
@@ -115,6 +115,7 @@ class LoaderTest extends UnitTest
 
     /**
      * @depends testItCanConvertServiceConfigToArray
+     *
      * @return void
      */
     public function testConvertNonServiceConfigThrowsException(): void
@@ -176,9 +177,92 @@ class LoaderTest extends UnitTest
         verify($serviceConfig->get('invokables'))->contains(Dummy::class);
     }
 
+    /**
+     * depends testItCanMergeServiceConfig
+     *
+     * @return void
+     */
+    public function testItCanMergeConfigurationClasses(): void
+    {
+        /*
+        $serviceManagerMock = Mockery::mock(ServiceManager::class);
+        $this->loader->addServiceManager($serviceManagerMock, 'foo', 'getServiceConfig');
+        $this->loader->preLoad();
+
+        $this->tester->invokeMethod($this->loader, 'mergeServiceConfig',[
+                'foo',
+                    'service_manager' => DummyConfig::class,
+                    [
+                    'config_key'      => 'configuration_classes',
+                    'class_method'    => 'grault',
+                    'configuration'   => new Config([
+                        'configuration_classes' => DummyConfig::class
+                    ])
+                ],
+                [
+                    'dummies' => [
+                        'invokables' => [
+                            'Dummy2' => Dummy::class,
+                        ],
+                    ],
+                ]
+            ]
+        );
+        */
+    }
+
+    /**
+     * @depends testItCanPreLoad
+     *
+     * @return void
+     */
     public function testItCanPreloadServiceConfig(): void
     {
+        $serviceManagerMock = Mockery::mock(ServiceManager::class);
+        $this->loader->addServiceManager($serviceManagerMock, 'foo', 'getServiceConfig');
+        try {
+            $this->loader->preLoad();
+        } catch (Exception $e) {
+            $this->fail();
+        }
 
+        verify(true)->true();
+    }
+
+    /**
+     * @depends testItCanPreLoad
+     *
+     * @return void
+     */
+    public function testItCanPreloadConfig(): void
+    {
+        $serviceManagerMock = Mockery::mock(ServiceManager::class);
+        $this->loader->addServiceManager($serviceManagerMock, 'foo', 'getConfig');
+        try {
+            $this->loader->preLoad();
+        } catch (Exception $e) {
+            $this->fail();
+        }
+
+        verify(true)->true();
+    }
+
+    /**
+     * @depends testItCanPreLoad
+     *
+     * @return void
+     */
+    public function testItCanPreloadString(): void
+    {
+        $serviceManagerMock = Mockery::mock(ServiceManager::class);
+        $this->loader->addServiceManager($serviceManagerMock, 'foo', 'getString');
+        try {
+            $this->loader->preLoad();
+        } catch (Exception $e) {
+            $this->fail();
+        }
+
+        verify(true)->true();
     }
 
     /**

@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Codeception\TestAsset;
 
-use PayNL\Sdk\{
+use PayNL\Sdk\{Config\Config,
     Config\ProviderInterface,
     Exception\ServiceNotCreatedException,
     Service\AbstractPluginManager,
-    Service\Config as ServiceConfig
-};
+    Service\Config as ServiceConfig};
 use Psr\Container\ContainerInterface;
 
 /**
@@ -186,6 +185,30 @@ class ConfigProvider implements ProviderInterface
                 'Dummy' => Dummy::class,
             ],
         ];
+    }
+
+    /**
+     * @return ServiceConfig
+     */
+    public function getServiceConfig(): ServiceConfig
+    {
+        return new ServiceConfig();
+    }
+
+    /**
+     * @return Config
+     */
+    public function getConfig(): Config
+    {
+        return new Config();
+    }
+
+    /**
+     * @return string
+     */
+    public function getString(): string
+    {
+        return 'test';
     }
 
     /**

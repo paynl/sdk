@@ -109,14 +109,14 @@ class Loader
         /** @var ConfigLoader $configLoader */
         $configLoader = $this->defaultServiceManager->get('configLoader');
 
-        foreach ($this->serviceManagers as $key => $sm) {
+        foreach ($this->serviceManagers as $key => $serviceManager) {
             // search for config provider
             foreach ($configLoader->getConfigs() as $className => $provider) {
-                if (false === method_exists($provider, $sm['class_method'])) {
+                if (false === method_exists($provider, $serviceManager['class_method'])) {
                     continue;
                 }
 
-                $config = $provider->{$sm['class_method']}();
+                $config = $provider->{$serviceManager['class_method']}();
 
                 if ($config instanceof ServiceConfig) {
                     $config = $this->serviceConfigToArray($config);
@@ -131,7 +131,7 @@ class Loader
                     continue 2;
                 }
 
-                $this->serviceManagers[$key]['configuration'][$className . '::' . $sm['class_method'] . '()'] = $config;
+                $this->serviceManagers[$key]['configuration'][$className . '::' . $serviceManager['class_method'] . '()'] = $config;
             }
         }
     }

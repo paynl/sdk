@@ -129,6 +129,7 @@ abstract class AbstractPluginManager extends Manager
     public function get($name, array $options = null)
     {
         if (false === $this->has($name)) {
+            $name = $this->resolvedAliases[$name] ?? $name;
             if (false === class_exists($name)) {
                 throw new ServiceNotFoundException(
                     sprintf(

@@ -94,13 +94,10 @@ class RequiredMembers extends AbstractValidator implements HydratorAwareInterfac
         } catch (ReflectionException $re) {
             // does nothing because non-existing class names
             // can't be entered
+            return [];
         }
 
         $requiredClassMembers = [];
-
-        if (null === $ref) {
-            return $requiredClassMembers;
-        }
 
         foreach ($ref->getProperties() as $property) {
             $docComment = $property->getDocComment();

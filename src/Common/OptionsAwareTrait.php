@@ -64,7 +64,7 @@ trait OptionsAwareTrait
                 sprintf(
                     'Given options should be an array or an instance of %s, %s given',
                     Traversable::class,
-                    get_class($options)
+                    gettype($options)
                 )
             );
         }

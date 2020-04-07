@@ -20,7 +20,6 @@ class Misc
      *
      * @throws InvalidArgumentException when given file can not be found or read
      * @throws LogicException when the class name is not the same as the terminating class file name
-     * @throw \Exception
      *  (PSR-4 3.3 - https://www.php-fig.org/psr/psr-4/)
      *
      * @SuppressWarnings(PHPMD.NPathComplexity)

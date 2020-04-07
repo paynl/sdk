@@ -63,21 +63,20 @@ class Api
 
         if (!empty($auth)) {
             $curl->setBasicAuthentication($auth['username'], $auth['password']);
-        }
-
-
+        }      
+        
         $curl->setOpt(CURLOPT_SSL_VERIFYPEER, Config::getVerifyPeer());
 
         $result = $curl->post($uri, $data);
-
+        
         if (isset($result->status) && $result->status === 'FALSE') {
             throw new Error\Api($result->error);
-        }
+        }      
 
         if ($curl->error) {
             throw new Error\Error($curl->errorMessage);
         }
-
+        
         return $this->processResult($result);
     }
 
@@ -91,7 +90,7 @@ class Api
             Helper::requireServiceId();
 
             $this->data['serviceId'] = Config::getServiceId();
-        }
+        }       
         return $this->data;
     }
 

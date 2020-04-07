@@ -6,6 +6,7 @@ namespace PayNL\Sdk\Util;
 
 use PayNL\Sdk\Exception\InvalidArgumentException;
 use PayNL\Sdk\Exception\LogicException;
+use PHPUnit\Framework\Exception;
 
 /**
  * Class Misc
@@ -19,6 +20,7 @@ class Misc
      *
      * @throws InvalidArgumentException when given file can not be found or read
      * @throws LogicException when the class name is not the same as the terminating class file name
+     * @throw \Exception
      *  (PSR-4 3.3 - https://www.php-fig.org/psr/psr-4/)
      *
      * @SuppressWarnings(PHPMD.NPathComplexity)
@@ -28,18 +30,15 @@ class Misc
      */
     public static function getClassNameByFile(string $file): string
     {
-        if (false === file_exists($file) || false === is_readable($file)) {
+        try {
+            $handle = fopen($file, 'rb');
+        } catch(Exception $exception) {
             throw new InvalidArgumentException(
                 sprintf(
                     'Class can not be found because file "%s" does not exist or can not be read',
                     $file
                 )
             );
-        }
-
-        $handle = fopen($file, 'rb');
-        if (false === $handle) {
-            return '';
         }
 
         $class = $namespace = $buffer = '';

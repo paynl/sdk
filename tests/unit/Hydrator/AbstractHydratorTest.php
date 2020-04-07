@@ -191,7 +191,10 @@ class AbstractHydratorTest extends UnitTest
      */
     public function testGetSdkDateTimeThrowsAnErrorWithInvalidInput(): void
     {
-        $this->expectException(Error::class);
-        $this->tester->invokeMethod($this->anonymousClassFromAbstract, 'getSdkDateTime', ['2020-03-11T13:39:40']);
+        verify($this->tester->invokeMethod(
+            $this->anonymousClassFromAbstract,
+            'getSdkDateTime',
+            ['2020-03-11T13:39:40']
+        ))->false();
     }
 }

@@ -29,6 +29,7 @@ use PayNL\Sdk\{
     Service\Manager
 };
 use Exception;
+use Zend\ServiceManager\ServiceManager;
 
 class ManagerTest extends UnitTest
 {
@@ -44,6 +45,7 @@ class ManagerTest extends UnitTest
             'aliases' => [
                 'foo_bar' => InvokableObject::class,
                 'corge' => 'foo_bar',
+                'thud' => 'foo',
             ],
             'factories' => [
                 InvokableObject::class => SampleFactory::class,
@@ -309,6 +311,43 @@ class ManagerTest extends UnitTest
     /**
      * @return void
      */
+    public function testItCanConfigureAlreadyHavingAliases(): void
+    {
+        $serviceManager = new class() extends Manager {
+            protected $aliases = [
+                'foo' => 'bar',
+                'bar' => Dummy::class,
+            ];
+        };
+
+        try {
+            new $serviceManager();
+        } catch (Exception $e) {
+            $this->fail();
+        }
+        verify(true)->true();
+
+    }
+
+
+    /**
+     * @depends testItCanConfigureAliases
+     *
+     * @return void
+     */
+    public function testICanConfigureIntersectingAliases(): void
+    {
+        try {
+            $this->tester->invokeMethod($this->manager, 'configureAliases', [[ 'foo_bar' => 'bar_foo' ]]);
+        } catch (Exception $e) {
+            $this->fail();
+        }
+        verify(true)->true();
+    }
+
+    /**
+     * @return void
+     */
     public function testItCanResolveInitializers(): void
     {
         $this->tester->assertClassHasMethod('resolveInitializers', Manager::class);
@@ -354,13 +393,22 @@ class ManagerTest extends UnitTest
     /**
      * @return void
      */
+    public function testResolveInvalidInitializersThrowsAnException(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->tester->invokeMethod($this->manager, 'resolveInitializers', [[ 'Invalid' ]]);
+    }
+
+    /**
+     * @return void
+     */
     public function testItCanCheckANamedServiceOrFactoryExists(): void
     {
         $serviceExist = $this->manager->has('foo');
         verify($serviceExist)->bool();
         verify($serviceExist)->true();
 
-        $serviceExist = $this->manager->has('thud');
+        $serviceExist = $this->manager->has('baz');
         verify($serviceExist)->bool();
         verify($serviceExist)->false();
 
@@ -429,13 +477,13 @@ class ManagerTest extends UnitTest
     }
 
     /**
-     * @depends testItCanCreateAnInstance
+     * depends testItCanCreateAnInstance
      *
      * @return void
      */
     public function testItCanGetGetANamedService(): void
     {
-        $service = $this->manager->get('foo');
+        $service = $this->manager->get('thud');
         verify($service)->object();
         verify($service)->isInstanceOf(DummyService::class);
 

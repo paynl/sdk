@@ -137,6 +137,17 @@ class RequiredMembersTest extends UnitTest
     }
 
     /**
+     * @depends testItCanCheckForRequiredMembers
+     * @return void
+     */
+    public function testRequiredMembersIsEmptyOnNonExistingClass(): void
+    {
+        $data = $this->tester->invokeMethod($this->validator, 'getRequiredMembers', ['NonExistingClass']);
+        verify($data)->array();
+        verify($data)->isEmpty();
+    }
+
+    /**
      * @return void
      */
     public function testValidateWithEmptyMembers(): void

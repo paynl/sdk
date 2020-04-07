@@ -115,6 +115,16 @@ class LoaderTest extends UnitTest
 
     /**
      * @depends testItCanConvertServiceConfigToArray
+     * @return void
+     */
+    public function testConvertNonServiceConfigThrowsException(): void
+    {
+        $this->expectException(RuntimeException::class);
+        $this->tester->invokeMethod($this->loader, 'serviceConfigToArray', ['foo' => 'bar']);
+    }
+
+    /**
+     * @depends testItCanConvertServiceConfigToArray
      *
      * @return void
      */
@@ -164,6 +174,11 @@ class LoaderTest extends UnitTest
         verify($serviceConfig->get('invokables'))->notEmpty();
         verify($serviceConfig->get('invokables'))->hasKey('Dummy2');
         verify($serviceConfig->get('invokables'))->contains(Dummy::class);
+    }
+
+    public function testItCanPreloadServiceConfig(): void
+    {
+
     }
 
     /**

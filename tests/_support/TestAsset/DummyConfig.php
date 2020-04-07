@@ -1,27 +1,24 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Codeception\TestAsset;
 
-use PayNL\Sdk\Config\Config;
+use PayNL\Sdk\Service\Config as ServiceConfig;
 
-class DummyConfig extends Config
+class DummyConfig extends ServiceConfig
 {
-    public function __invoke(): array
-    {
-        return [
-            'foo',
-            [
-                'service_manager' => 'corge',
-                'config_key'      => 'dummies',
-                'class_method'    => 'grault',
-            ],
-            [
-                'dummies' => [
-                    'invokables' => [
-                        'Dummy2' => Dummy::class,
-                    ],
-                ],
-            ]
-        ];
-    }
+    /**
+     * @var array
+     */
+    protected $config = [
+        'aliases'      => [],
+        'factories'    => [],
+        'initializers' => [],
+        'invokables'   => [
+            'DummyInvokable' => InvokableObject::class,
+        ],
+        'mapping'      => [],
+        'services'     => [],
+    ];
 }

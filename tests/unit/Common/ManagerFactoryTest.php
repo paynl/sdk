@@ -4,12 +4,21 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PayNL\Sdk\Common;
 
-use Codeception\Test\Unit as UnitTest;
-use PayNL\Sdk\AuthAdapter\Manager;
-use PayNL\Sdk\Common\ManagerFactory;
-use Codeception\Lib\FactoryTestTrait;
-use PayNL\Sdk\Exception\ServiceNotCreatedException;
-use PayNL\Sdk\Service\AbstractPluginManager;
+use Codeception\{
+    Lib\FactoryTestTrait,
+    TestAsset\DummyPluginManager,
+    TestAsset\FailingPluginManager,
+    TestAsset\Dummy,
+    Test\Unit as UnitTest
+};
+use PayNL\Sdk\{
+    Config\Config,
+    Common\ManagerFactory,
+    Exception\ServiceNotCreatedException,
+    Exception\ServiceNotFoundException,
+    Service\AbstractPluginManager
+};
+use Psr\Container\ContainerInterface;
 use UnitTester;
 
 class ManagerFactoryTest extends UnitTest
@@ -21,33 +30,120 @@ class ManagerFactoryTest extends UnitTest
      */
     protected $tester;
 
+    /**
+     * @return void
+     */
     public function _before(): void
     {
         $this->factory = new ManagerFactory();
     }
 
+    /**
+     * @return void
+     */
     public function testItInitiatesAnAbstractPluginManager(): void
     {
-        $manager = ($this->factory)($this->tester->getServiceManager(), Manager::class);
+        $manager = ($this->factory)($this->tester->getServiceManager(), DummyPluginManager::class);
         verify($manager)->isInstanceOf(AbstractPluginManager::class);
     }
 
+    /**
+     * @return void
+     */
     public function testInvokeThrowsExceptionMissingConfigKey(): void
     {
-        $this->expectException(ServiceNotCreatedException::class);
+        $this->expectException(ServiceNotFoundException::class);
 
         ($this->factory)($this->tester->getServiceManager(), '\\PayNL\\Sdk\\NonExistingClassName');
     }
 
+    /**
+     * @return void
+     */
     public function testInvokeThrowsException(): void
     {
         $this->expectException(ServiceNotCreatedException::class);
-        ($this->factory)($this->tester->getServiceManager(), 'failingManager');
+        ($this->factory)($this->tester->getServiceManager(), FailingPluginManager::class);
     }
 
-    public function testInvokeCannotCreateNonAbstractPluginManagers(): void
+    /**
+     * @return void
+     */
+    public function testItCanInitiateManagerWithContainerWithoutServiceLoaderAndConfig(): void
     {
-        $this->expectException(ServiceNotCreatedException::class);
+        $kliko = new class() implements ContainerInterface
+        {
+            public function get($id)
+            {
+            }
 
+            public function has($id)
+            {
+                return false;
+            }
+        };
+
+        $manager = ($this->factory)($kliko, DummyPluginManager::class);
+        verify($manager)->isInstanceOf(DummyPluginManager::class);
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanInitiateManagerWithoutContainerAndWithoutConfigKey(): void
+    {
+        $container = new class() implements ContainerInterface
+        {
+            public function get($id)
+            {
+                if ('config' === $id) {
+                    return new Config([
+                        'service_loader_options' => [
+                        ],
+                    ]);
+                }
+            }
+
+            public function has($id)
+            {
+                return 'config' === $id;
+            }
+        };
+
+        $manager = ($this->factory)($container, DummyPluginManager::class);
+        verify($manager)->isInstanceOf(DummyPluginManager::class);
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanInitiateManagerWithoutContainer(): void
+    {
+        $container = new class() implements ContainerInterface
+        {
+            public function get($id)
+            {
+                if ('config' === $id) {
+                    return new Config([
+                        'service_loader_options' => [
+                        ],
+                        'dummies' => [
+                            'invokables' => [
+                                'DummyInvokable' => Dummy::class,
+                            ],
+                        ]
+                    ]);
+                }
+            }
+
+            public function has($id)
+            {
+                return 'config' === $id;
+            }
+        };
+
+        $manager = ($this->factory)($container, DummyPluginManager::class);
+        verify($manager)->isInstanceOf(DummyPluginManager::class);
+        verify($manager->has('DummyInvokable'));
     }
 }

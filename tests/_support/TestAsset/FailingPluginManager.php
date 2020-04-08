@@ -14,4 +14,19 @@ use PayNL\Sdk\Service\Manager;
 class FailingPluginManager extends Manager
 {
     protected $instanceOf = InvokableObject::class;
+
+    /**
+     * FailingPluginManager constructor.
+     *
+     * @param $container
+     * @param array $config
+     */
+    public function __construct($container = null, array $config = [])
+    {
+        if (true === is_array($container)) {
+            $config = $container;
+            $container = null;
+        }
+        parent::__construct($config);
+    }
 }

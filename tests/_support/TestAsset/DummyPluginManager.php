@@ -14,4 +14,13 @@ use PayNL\Sdk\Service\AbstractPluginManager;
 class DummyPluginManager extends AbstractPluginManager
 {
     protected $instanceOf = DummyInterface::class;
+
+    /**
+     * @return string
+     */
+    public function getConfigKey(): string
+    {
+        // make it fixed for tests
+        return 'dummies';
+    }
 }

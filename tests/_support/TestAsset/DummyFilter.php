@@ -6,7 +6,7 @@ namespace Codeception\TestAsset;
 
 use PayNL\Sdk\Filter\FilterInterface;
 
-class DummyFilter implements FilterInterface
+class DummyFilter implements FilterInterface, DummyInterface
 {
     private $value;
 

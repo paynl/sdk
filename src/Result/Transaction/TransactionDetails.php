@@ -118,9 +118,10 @@ class transactionDetails extends Result
     } 
 
     /**
-     * @return string The amount
+     * @return array The amount value and amount currency
      */
     public function getAmount()
+
     {            
         return (isset($this->data['amount'])) ? $this->data['amount'] : '';       
     }   

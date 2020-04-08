@@ -117,7 +117,7 @@ class Details extends Result
     }   
 
     /**
-     * @return array The amount
+     * @return array The amount value and amount currency
      */
     public function getAmount()
     {            
@@ -142,7 +142,7 @@ class Details extends Result
 
 
     /**
-     * @return array The amountOriginal
+     * @return array The amountOriginal value and amountOriginal currency
      */
     public function getAmountOriginal()
     {            
@@ -166,7 +166,7 @@ class Details extends Result
     }  
 
     /**
-     * @return array The amountPaidOriginal
+     * @return array The amountPaidOriginal value and amountPaidOriginal currency
      */
     public function getAmountPaidOriginal()
     {            
@@ -190,7 +190,7 @@ class Details extends Result
     }  
 
     /**
-     * @return array The amountPaid
+     * @return array The amountPaid value and amountPaid currency
      */
     public function getAmountPaid()
     {            
@@ -214,7 +214,7 @@ class Details extends Result
     }  
 
     /**
-     * @return array The amountRefundOriginal
+     * @return array The amountRefundOriginal value and amountRefundOriginal currency
      */
     public function getAmountRefundOriginal()
     {            
@@ -238,7 +238,7 @@ class Details extends Result
     }  
 
      /**
-     * @return array The amountRefund
+     * @return array The amountRefund value and amountRefund currency
      */
     public function getAmountRefund()
     {            

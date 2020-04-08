@@ -315,7 +315,7 @@ class ConfigProvider implements ConfigProviderInterface
                     'transactionId' => 'EX-\d{4}-\d{4}-\d{4}',
                 ],
             ],
-            'CancelTransaction' => [
+            'VoidTransaction' => [
                 'uri' => '/transactions/%transactionId%/void',
                 'method' => RequestInterface::METHOD_PATCH,
                 'requiredParams' => [
@@ -375,6 +375,13 @@ class ConfigProvider implements ConfigProviderInterface
                     'transactionId' => 'EX-\d{4}-\d{4}-\d{4}',
                 ],
             ],
+            'CancelTransaction' => [
+                'uri' => '/transactions/%transactionId%/cancel',
+                'method' => RequestInterface::METHOD_PATCH,
+                'requiredParams' => [
+                    'transactionId' => 'EX-\d{4}-\d{4}-\d{4}',
+                ],
+            ]
         ];
     }
 

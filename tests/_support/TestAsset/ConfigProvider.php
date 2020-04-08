@@ -211,6 +211,30 @@ class ConfigProvider implements ProviderInterface
     /**
      * @return ServiceConfig
      */
+    public function getServiceConfig(): ServiceConfig
+    {
+        return new ServiceConfig();
+    }
+
+    /**
+     * @return Config
+     */
+    public function getConfig(): Config
+    {
+        return new Config();
+    }
+
+    /**
+     * @return string
+     */
+    public function getString(): string
+    {
+        return 'test';
+    }
+
+    /**
+     * @return ServiceConfig
+     */
     public function getFooConfig(): ServiceConfig
     {
         return new ServiceConfig([

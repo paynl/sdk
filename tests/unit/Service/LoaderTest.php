@@ -115,6 +115,7 @@ class LoaderTest extends UnitTest
 
     /**
      * @depends testItCanConvertServiceConfigToArray
+     *
      * @return void
      */
     public function testConvertNonServiceConfigThrowsException(): void
@@ -176,9 +177,58 @@ class LoaderTest extends UnitTest
         verify($serviceConfig->get('invokables'))->contains(Dummy::class);
     }
 
+    /**
+     * @depends testItCanPreLoad
+     *
+     * @return void
+     */
     public function testItCanPreloadServiceConfig(): void
     {
+        $serviceManagerMock = Mockery::mock(ServiceManager::class);
+        $this->loader->addServiceManager($serviceManagerMock, 'foo', 'getServiceConfig');
+        try {
+            $this->loader->preLoad();
+        } catch (Exception $e) {
+            $this->fail();
+        }
 
+        verify(true)->true();
+    }
+
+    /**
+     * @depends testItCanPreLoad
+     *
+     * @return void
+     */
+    public function testItCanPreloadConfig(): void
+    {
+        $serviceManagerMock = Mockery::mock(ServiceManager::class);
+        $this->loader->addServiceManager($serviceManagerMock, 'foo', 'getConfig');
+        try {
+            $this->loader->preLoad();
+        } catch (Exception $e) {
+            $this->fail();
+        }
+
+        verify(true)->true();
+    }
+
+    /**
+     * @depends testItCanPreLoad
+     *
+     * @return void
+     */
+    public function testItCanPreloadString(): void
+    {
+        $serviceManagerMock = Mockery::mock(ServiceManager::class);
+        $this->loader->addServiceManager($serviceManagerMock, 'foo', 'getString');
+        try {
+            $this->loader->preLoad();
+        } catch (Exception $e) {
+            $this->fail();
+        }
+
+        verify(true)->true();
     }
 
     /**

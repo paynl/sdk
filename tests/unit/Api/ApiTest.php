@@ -123,7 +123,8 @@ class ApiTest extends UnitTest
     public function testItCanDoHandleXMLFormat(): void
     {
         /** @var Request $mockRequest */
-        $mockRequest = $this->tester->grabService('requestManager')->get('Request', ['uri' => 'http://127.0.0.1']);
+        $mockRequest = $this->make(Request::class);
+        $mockRequest->setUri('/foo');
         $mockRequest->setMethod(RequestInterface::METHOD_GET);
         $mockRequest->setFormat(RequestInterface::FORMAT_XML);
 

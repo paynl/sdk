@@ -6,6 +6,8 @@ namespace PayNL\Sdk\Common;
 
 use Psr\Container\ContainerInterface;
 use PayNL\Sdk\{
+    Config\Config,
+    Exception\ServiceNotFoundException,
     Service\AbstractPluginManager,
     Service\Config as ServiceConfig,
     Exception\ServiceNotCreatedException
@@ -27,8 +29,19 @@ class ManagerFactory implements FactoryInterface
      */
     public function __invoke(ContainerInterface $container, string $requestedName, array $options = null): AbstractPluginManager
     {
-        if (true === $container->get('config')->get('service_loader_options')->has($requestedName)) {
+        if (true === $container->has('config') &&
+            true === $container->get('config')->get('service_loader_options')->has($requestedName)
+        ) {
             $options = array_merge($options ?? [], ['loader_options' => $container->get('config')->get('service_loader_options')->get($requestedName)]);
+        }
+
+        if (false === class_exists($requestedName)) {
+            throw new ServiceNotFoundException(
+                sprintf(
+                    'Manager "%s" does not exist',
+                    $requestedName
+                )
+            );
         }
 
         /** @var AbstractPluginManager $manager */
@@ -55,6 +68,10 @@ class ManagerFactory implements FactoryInterface
         $config = $container->get('config');
 
         $configKey = $manager->getConfigKey();
+        if ($config instanceof Config) {
+            $config = $config->toArray();
+        }
+
         if (false === array_key_exists($configKey, $config) || false === is_array($config[$configKey])) {
             return $manager;
         }

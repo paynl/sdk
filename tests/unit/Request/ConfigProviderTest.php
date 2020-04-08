@@ -55,6 +55,7 @@ class ConfigProviderTest extends UnitTest
      */
     public function testItHasRequestConfig(): void
     {
+        $this->tester->assertObjectHasMethod('getRequestConfig', $this->configProvider);
         $this->testInvokedFunctionWithKeys('getRequestConfig', [
             'aliases',
             'initializers',
@@ -68,6 +69,7 @@ class ConfigProviderTest extends UnitTest
      */
     public function testItHasCurrencyServicesConfig(): void
     {
+        $this->tester->assertObjectHasMethod('getCurrencyServicesConfig', $this->configProvider);
         $this->testInvokedFunctionWithKeys('getCurrencyServicesConfig', [
             'GetAllCurrencies',
             'GetCurrency'
@@ -79,6 +81,7 @@ class ConfigProviderTest extends UnitTest
      */
     public function testItHasDirectdebitServicesConfig(): void
     {
+        $this->tester->assertObjectHasMethod('getDirectdebitServicesConfig', $this->configProvider);
         $this->testInvokedFunctionWithKeys('getDirectdebitServicesConfig', [
             'CreateDirectdebit',
             'CreateRecurringDirectdebit',
@@ -90,6 +93,7 @@ class ConfigProviderTest extends UnitTest
 
     public function testItHasIsPayServicesConfig(): void
     {
+        $this->tester->assertObjectHasMethod('getIsPayServicesConfig', $this->configProvider);
         $this->testInvokedFunctionWithKeys('getIsPayServicesConfig', [
             'IsPay'
         ]);
@@ -97,6 +101,7 @@ class ConfigProviderTest extends UnitTest
 
     public function testItHasMerchantServicesConfig(): void
     {
+        $this->tester->assertObjectHasMethod('getMerchantServicesConfig', $this->configProvider);
         $this->testInvokedFunctionWithKeys('getMerchantServicesConfig', [
             'AddTrademark',
             'DeleteTrademark',
@@ -106,6 +111,7 @@ class ConfigProviderTest extends UnitTest
 
     public function testItHasPinServicesConfig(): void
     {
+        $this->tester->assertObjectHasMethod('getPinServicesConfig', $this->configProvider);
         $this->testInvokedFunctionWithKeys('getPinServicesConfig', [
             'ConfirmTerminalTransaction',
             'GetReceipt',
@@ -117,6 +123,7 @@ class ConfigProviderTest extends UnitTest
 
     public function testItHasQrServicesConfig(): void
     {
+        $this->tester->assertObjectHasMethod('getQrServicesConfig', $this->configProvider);
         $this->testInvokedFunctionWithKeys('getQrServicesConfig', [
             'DecodeQr',
             'EncodeQr',
@@ -126,6 +133,7 @@ class ConfigProviderTest extends UnitTest
 
     public function testItHasRefundServicesConfig(): void
     {
+        $this->tester->assertObjectHasMethod('getRefundServicesConfig', $this->configProvider);
         $this->testInvokedFunctionWithKeys('getRefundServicesConfig', [
             'GetRefund'
         ]);
@@ -133,6 +141,7 @@ class ConfigProviderTest extends UnitTest
 
     public function testItHasServiceServicesConfig(): void
     {
+        $this->tester->assertObjectHasMethod('getServiceServicesConfig', $this->configProvider);
         $this->testInvokedFunctionWithKeys('getServiceServicesConfig', [
             'CreatePaymentLink',
             'GetService',
@@ -143,9 +152,10 @@ class ConfigProviderTest extends UnitTest
 
     public function testItHasTransactionServicesConfig(): void
     {
+        $this->tester->assertObjectHasMethod('getTransactionServicesConfig', $this->configProvider);
         $this->testInvokedFunctionWithKeys('getTransactionServicesConfig', [
             'ApproveTransaction',
-            'CancelTransaction',
+            'VoidTransaction',
             'CaptureTransaction',
             'CreateTransaction',
             'DeclineTransaction',
@@ -153,12 +163,14 @@ class ConfigProviderTest extends UnitTest
             'CaptureTransactionByQr',
             'MakeTransactionRecurring',
             'RefundTransaction',
-            'TokenizeTransaction'
+            'TokenizeTransaction',
+            'CancelTransaction'
         ]);
     }
 
     public function testItHasVouchersServicesConfig(): void
     {
+        $this->tester->assertObjectHasMethod('getVouchersServicesConfig', $this->configProvider);
         $this->testInvokedFunctionWithKeys('getVouchersServicesConfig', [
             'ActivateVoucher',
             'CheckVoucherBalance',

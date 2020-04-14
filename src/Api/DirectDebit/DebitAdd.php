@@ -5,7 +5,7 @@ namespace Paynl\Api\DirectDebit;
 use Paynl\Error\Required;
 
 /**
- * @author Andy Pieters <andy@pay.nl>
+ * @author PAY. <support@pay.nl>
  */
 class DebitAdd extends DirectDebit
 {

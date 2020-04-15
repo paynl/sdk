@@ -20,22 +20,18 @@ class Factory implements FactoryInterface
     /**
      * @inheritDoc
      *
+     * @throws ServiceNotCreatedException when the mapper configuration can't be found
+     *
      * @return AbstractMapper
      */
     public function __invoke(ContainerInterface $container, string $requestedName, array $options = null): AbstractMapper
     {
         $mapConfig = $container->get('mapperManager')->getMapping();
 
-        if (false === is_array($mapConfig) || true === empty($mapConfig)) {
-            throw new ServiceNotCreatedException(
-                'No map config is set'
-            );
-        }
-
         if (false === array_key_exists($requestedName, $mapConfig)) {
             throw new ServiceNotCreatedException(
                 sprintf(
-                    'No entry found within map config for "%s"',
+                    'No map configuration found for "%s"',
                     $requestedName
                 )
             );

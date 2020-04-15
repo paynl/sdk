@@ -19,5 +19,4 @@ class Manager extends AbstractPluginManager
      * @see AbstractPluginManager::$instanceOf
      */
     protected $instanceOf = ModelInterface::class;
-
 }

@@ -4,13 +4,17 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PayNL\Sdk\Model;
 
-use Codeception\Test\Unit as UnitTest;
+use Codeception\{
+    Lib\ModelTestTrait,
+    Test\Unit as UnitTest
+};
+use PayNL\Sdk\Exception\InvalidArgumentException;
 use PayNL\Sdk\Model\{
-    ModelInterface,
+    Company,
     BankAccount,
     Customer
 };
-use DateTime, JsonSerializable;
+use DateTime;
 
 /**
  * Class CustomerTest
@@ -19,54 +23,109 @@ use DateTime, JsonSerializable;
  */
 class CustomerTest extends UnitTest
 {
+    use ModelTestTrait;
+
     /**
      * @var Customer
      */
-    protected $customer;
+    protected $model;
 
+    /**
+     * @return void
+     */
     public function _before(): void
     {
-        $this->customer = new Customer();
+        $this->markAsJsonSerializable();
+        $this->model = new Customer();
     }
 
     /**
      * @return void
      */
-    public function testItIsAModel(): void
+    public function testItCanGetTypes(): void
     {
-        verify($this->customer)->isInstanceOf(ModelInterface::class);
+        $this->tester->assertObjectHasMethod('getTypes', $this->model);
+        $this->tester->assertObjectMethodIsProtected('getTypes', $this->model);
+
+        $types = $this->tester->invokeMethod($this->model, 'getTypes');
+        verify($types)->array();
+        verify($types)->notEmpty();
+        verify($types)->count(2);
+        verify($types)->contains(Customer::TYPE_BUSINESS);
+        verify($types)->contains(Customer::TYPE_CONSUMER);
+    }
+
+    /**
+     * @depends testItCanGetTypes
+     * @return void
+     */
+    public function testItCanSetType(): void
+    {
+        $this->tester->assertObjectHasMethod('setType', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setType', $this->model);
+
+        $types = $this->tester->invokeMethod($this->model, 'getTypes');
+        verify($this->model->setType(Customer::TYPE_BUSINESS))->isInstanceOf(Customer::class);
+    }
+
+    /**
+     * @depends testItCanSetType
+     * @return void
+     */
+    public function testItCanGetType(): void
+    {
+        $this->tester->assertObjectHasMethod('getType', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getType', $this->model);
+
+        $types = $this->tester->invokeMethod($this->model, 'getTypes');
+        $this->model->setType(Customer::TYPE_BUSINESS);
+        $type = $this->model->getType();
+        verify($type)->string();
+        verify($type)->equals(Customer::TYPE_BUSINESS);
+    }
+
+    /**
+     * @depends testItCanSetType
+     * @return void
+     */
+    public function testItCannotSetProhibitedTypes(): void
+    {
+        $this->tester->assertObjectHasMethod('setType', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setType', $this->model);
+
+        $type = 'IllegalType';
+        $types = $this->tester->invokeMethod($this->model, 'getTypes');
+        verify(in_array($type, $types, true))->false();
+        $this->expectException(InvalidArgumentException::class);
+        $this->model->setType($type);
     }
 
     /**
      * @return void
      */
-    public function testIsItJsonSerializable(): void
+    public function testItCanSetName(): void
     {
-        verify($this->customer)->isInstanceOf(JsonSerializable::class);
+        $this->tester->assertObjectHasMethod('setName', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setName', $this->model);
 
-        verify($this->customer->jsonSerialize())->array();
+        expect($this->model->setName('Q.G.'))->isInstanceOf(Customer::class);
     }
 
     /**
-     * @return void
-     */
-    public function testItCanSetInitials(): void
-    {
-        expect($this->customer->setName('Q.G.'))->isInstanceOf(Customer::class);
-    }
-
-    /**
-     * @depends testItCanSetInitials
+     * @depends testItCanSetName
      *
      * @return void
      */
-    public function testItCanGetInitials(): void
+    public function testItCanGetName(): void
     {
-        $this->customer->setName('Q.G.');
+        $this->tester->assertObjectHasMethod('getName', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getName', $this->model);
 
-        verify($this->customer->getName())->string();
-        verify($this->customer->getName())->notEmpty();
-        verify($this->customer->getName())->equals('Q.G.');
+        $this->model->setName('Q.G.');
+
+        verify($this->model->getName())->string();
+        verify($this->model->getName())->notEmpty();
+        verify($this->model->getName())->equals('Q.G.');
     }
 
     /**
@@ -74,7 +133,10 @@ class CustomerTest extends UnitTest
      */
     public function testItCanSetALastName(): void
     {
-        expect($this->customer->setLastName('Jinn'))->isInstanceOf(Customer::class);
+        $this->tester->assertObjectHasMethod('setLastName', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setLastName', $this->model);
+
+        expect($this->model->setLastName('Jinn'))->isInstanceOf(Customer::class);
     }
 
     /**
@@ -84,11 +146,14 @@ class CustomerTest extends UnitTest
      */
     public function testItCanGetALastName(): void
     {
-        $this->customer->setLastName('Jinn');
+        $this->tester->assertObjectHasMethod('getLastName', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getLastName', $this->model);
 
-        verify($this->customer->getLastName())->string();
-        verify($this->customer->getLastName())->notEmpty();
-        verify($this->customer->getLastName())->equals('Jinn');
+        $this->model->setLastName('Jinn');
+
+        verify($this->model->getLastName())->string();
+        verify($this->model->getLastName())->notEmpty();
+        verify($this->model->getLastName())->equals('Jinn');
     }
 
     /**
@@ -96,7 +161,10 @@ class CustomerTest extends UnitTest
      */
     public function testItCanSetABirthDate(): void
     {
-        expect($this->customer->setBirthDate(DateTime::createFromFormat('Y-m-d', '1970-01-01')))
+        $this->tester->assertObjectHasMethod('setBirthDate', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setBirthDate', $this->model);
+
+        expect($this->model->setBirthDate(DateTime::createFromFormat('Y-m-d', '1970-01-01')))
             ->isInstanceOf(Customer::class)
         ;
     }
@@ -108,12 +176,15 @@ class CustomerTest extends UnitTest
      */
     public function testItCanGetABirthDate(): void
     {
-        $birthDate = DateTime::createFromFormat('Y-m-d', '1970-01-01');
-        $this->customer->setBirthDate($birthDate);
+        $this->tester->assertObjectHasMethod('getBirthDate', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getBirthDate', $this->model);
 
-        verify($this->customer->getBirthDate())->isInstanceOf(DateTime::class);
-        verify($this->customer->getBirthDate())->notEmpty();
-        verify($this->customer->getBirthDate())->equals($birthDate);
+        $birthDate = DateTime::createFromFormat('Y-m-d', '1970-01-01');
+        $this->model->setBirthDate($birthDate);
+
+        verify($this->model->getBirthDate())->isInstanceOf(DateTime::class);
+        verify($this->model->getBirthDate())->notEmpty();
+        verify($this->model->getBirthDate())->equals($birthDate);
     }
 
     /**
@@ -121,7 +192,10 @@ class CustomerTest extends UnitTest
      */
     public function testItCanSetAGender(): void
     {
-        expect($this->customer->setGender('male'))->isInstanceOf(Customer::class);
+        $this->tester->assertObjectHasMethod('setGender', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setGender', $this->model);
+
+        expect($this->model->setGender('male'))->isInstanceOf(Customer::class);
     }
 
     /**
@@ -131,11 +205,14 @@ class CustomerTest extends UnitTest
      */
     public function testItCanGetAGender(): void
     {
-        $this->customer->setGender('male');
+        $this->tester->assertObjectHasMethod('getGender', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getGender', $this->model);
 
-        verify($this->customer->getGender())->string();
-        verify($this->customer->getGender())->notEmpty();
-        verify($this->customer->getGender())->equals('male');
+        $this->model->setGender('male');
+
+        verify($this->model->getGender())->string();
+        verify($this->model->getGender())->notEmpty();
+        verify($this->model->getGender())->equals('male');
     }
 
     /**
@@ -143,7 +220,10 @@ class CustomerTest extends UnitTest
      */
     public function testItCanSetAPhone(): void
     {
-        expect($this->customer->setPhone('+31 (0)88 - 88 666 66'))->isInstanceOf(Customer::class);
+        $this->tester->assertObjectHasMethod('setPhone', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setPhone', $this->model);
+
+        expect($this->model->setPhone('+31 (0)88 - 88 666 66'))->isInstanceOf(Customer::class);
     }
 
     /**
@@ -153,11 +233,14 @@ class CustomerTest extends UnitTest
      */
     public function testItCanGetAPhone(): void
     {
-        $this->customer->setPhone('+31 (0)88 - 88 666 66');
+        $this->tester->assertObjectHasMethod('getPhone', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getPhone', $this->model);
 
-        verify($this->customer->getPhone())->string();
-        verify($this->customer->getPhone())->notEmpty();
-        verify($this->customer->getPhone())->equals('+31 (0)88 - 88 666 66');
+        $this->model->setPhone('+31 (0)88 - 88 666 66');
+
+        verify($this->model->getPhone())->string();
+        verify($this->model->getPhone())->notEmpty();
+        verify($this->model->getPhone())->equals('+31 (0)88 - 88 666 66');
     }
 
     /**
@@ -165,7 +248,10 @@ class CustomerTest extends UnitTest
      */
     public function testItCanSetAnIp(): void
     {
-        expect($this->customer->setIp('127.0.0.1'))->isInstanceOf(Customer::class);
+        $this->tester->assertObjectHasMethod('setIp', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setIp', $this->model);
+
+        expect($this->model->setIp('127.0.0.1'))->isInstanceOf(Customer::class);
     }
 
     /**
@@ -175,11 +261,14 @@ class CustomerTest extends UnitTest
      */
     public function testItCanGetAnIp(): void
     {
-        $this->customer->setIp('127.0.0.1');
+        $this->tester->assertObjectHasMethod('getIp', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getIp', $this->model);
 
-        verify($this->customer->getIp())->string();
-        verify($this->customer->getIp())->notEmpty();
-        verify($this->customer->getIp())->equals('127.0.0.1');
+        $this->model->setIp('127.0.0.1');
+
+        verify($this->model->getIp())->string();
+        verify($this->model->getIp())->notEmpty();
+        verify($this->model->getIp())->equals('127.0.0.1');
     }
 
     /**
@@ -187,7 +276,10 @@ class CustomerTest extends UnitTest
      */
     public function testItCanSetAnEmail(): void
     {
-        expect($this->customer->setEmail('qui.gon@jedi-counsil.gov'))->isInstanceOf(Customer::class);
+        $this->tester->assertObjectHasMethod('setEmail', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setEmail', $this->model);
+
+        expect($this->model->setEmail('qui.gon@jedi-counsil.gov'))->isInstanceOf(Customer::class);
     }
 
     /**
@@ -197,11 +289,14 @@ class CustomerTest extends UnitTest
      */
     public function testItCanGetAnEmail(): void
     {
-        $this->customer->setEmail('qui.gon@jedi-counsil.gov');
+        $this->tester->assertObjectHasMethod('getEmail', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getEmail', $this->model);
 
-        verify($this->customer->getEmail())->string();
-        verify($this->customer->getEmail())->notEmpty();
-        verify($this->customer->getEmail())->equals('qui.gon@jedi-counsil.gov');
+        $this->model->setEmail('qui.gon@jedi-counsil.gov');
+
+        verify($this->model->getEmail())->string();
+        verify($this->model->getEmail())->notEmpty();
+        verify($this->model->getEmail())->equals('qui.gon@jedi-counsil.gov');
     }
 
     /**
@@ -209,7 +304,10 @@ class CustomerTest extends UnitTest
      */
     public function testItCanSetATrustLevel(): void
     {
-        expect($this->customer->setTrustLevel(-5))->isInstanceOf(Customer::class);
+        $this->tester->assertObjectHasMethod('setTrustLevel', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setTrustLevel', $this->model);
+
+        expect($this->model->setTrustLevel(-5))->isInstanceOf(Customer::class);
     }
 
     /**
@@ -219,11 +317,28 @@ class CustomerTest extends UnitTest
      */
     public function testItCanGetATrustLevel(): void
     {
-        $this->customer->setTrustLevel(-5);
+        $this->tester->assertObjectHasMethod('getTrustLevel', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getTrustLevel', $this->model);
 
-        verify($this->customer->getTrustLevel())->int();
-        verify($this->customer->getTrustLevel())->notEmpty();
-        verify($this->customer->getTrustLevel())->equals(-5);
+        $this->model->setTrustLevel(-5);
+
+        verify($this->model->getTrustLevel())->int();
+        verify($this->model->getTrustLevel())->notEmpty();
+        verify($this->model->getTrustLevel())->equals(-5);
+    }
+
+    /**
+     * @depends testItCanSetATrustLevel
+     * @return void
+     */
+    public function testItCannotSetInvalidTrustLevel(): void
+    {
+        $this->tester->assertObjectHasMethod('setTrustLevel', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setTrustLevel', $this->model);
+
+        $invalidTrustLevel = 11;
+        $this->expectException(InvalidArgumentException::class);
+        $this->model->setTrustLevel($invalidTrustLevel);
     }
 
     /**
@@ -231,7 +346,10 @@ class CustomerTest extends UnitTest
      */
     public function testItCanSetABankAccount(): void
     {
-        expect($this->customer->setBankAccount(new BankAccount()))->isInstanceOf(Customer::class);
+        $this->tester->assertObjectHasMethod('setBankAccount', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setBankAccount', $this->model);
+
+        expect($this->model->setBankAccount(new BankAccount()))->isInstanceOf(Customer::class);
     }
 
     /**
@@ -241,10 +359,13 @@ class CustomerTest extends UnitTest
      */
     public function testItCanGetABankAccount(): void
     {
-        $this->customer->setBankAccount(new BankAccount());
+        $this->tester->assertObjectHasMethod('getBankAccount', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getBankAccount', $this->model);
 
-        verify($this->customer->getBankAccount())->notEmpty();
-        verify($this->customer->getBankAccount())->isInstanceOf(BankAccount::class);
+        $this->model->setBankAccount(new BankAccount());
+
+        verify($this->model->getBankAccount())->notEmpty();
+        verify($this->model->getBankAccount())->isInstanceOf(BankAccount::class);
     }
 
     /**
@@ -252,7 +373,10 @@ class CustomerTest extends UnitTest
      */
     public function testItCanSetAReference(): void
     {
-        expect($this->customer->setReference(1234))->isInstanceOf(Customer::class);
+        $this->tester->assertObjectHasMethod('setReference', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setReference', $this->model);
+
+        expect($this->model->setReference('1234'))->isInstanceOf(Customer::class);
     }
 
     /**
@@ -262,32 +386,42 @@ class CustomerTest extends UnitTest
      */
     public function testItCanGetAReference(): void
     {
-        $this->customer->setReference(1234);
+        $this->tester->assertObjectHasMethod('getReference', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getReference', $this->model);
 
-        verify($this->customer->getReference())->int();
-        verify($this->customer->getReference())->notEmpty();
-        verify($this->customer->getReference())->equals(1234);
+        $this->model->setReference('1234');
+
+        verify($this->model->getReference())->string();
+        verify($this->model->getReference())->notEmpty();
+        verify($this->model->getReference())->equals('1234');
     }
 
     /**
      * @return void
      */
-    public function testItCanSetALanguage(): void
+    public function testItCanSetACompany(): void
     {
-        expect($this->customer->setLanguage('nl'))->isInstanceOf(Customer::class);
+        $this->tester->assertObjectHasMethod('setCompany', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setCompany', $this->model);
+
+        $company = $this->tester->getServiceManager()->get('modelManager')->build('Company');
+        verify($this->model->setCompany($company))->isInstanceOf(Customer::class);
     }
 
     /**
-     * @depends testItCanSetALanguage
-     *
+     * @depends testItCanSetACompany
      * @return void
      */
-    public function testItCanGetALanguage(): void
+    public function testItCanGetACompany(): void
     {
-        $this->customer->setLanguage('nl');
+        $this->tester->assertObjectHasMethod('getCompany', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getCompany', $this->model);
 
-        verify($this->customer->getLanguage())->string();
-        verify($this->customer->getLanguage())->notEmpty();
-        verify($this->customer->getLanguage())->equals('nl');
+        /** @var Company $company */
+        $company = $this->tester->getServiceManager()->get('modelManager')->build('Company');
+        $company->setName('TestCompany');
+        $this->model->setCompany($company);
+        verify($this->model->getCompany())->isInstanceOf(Company::class);
+        verify($this->model->getCompany())->equals($company);
     }
 }

@@ -6,7 +6,7 @@ $app = require __DIR__ . '/../init_application.php';
 
 $response = $app
     ->setRequest('ConfirmTerminalTransaction', [
-        'terminalTransactionId' => (isset($config) ? $config->get('terminalTransactionId') : ''),
+        'terminalTransactionId' => (isset($config) === true ? $config->get('terminalTransactionId') : ''),
     ])
     ->run()
 ;

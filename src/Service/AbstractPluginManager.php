@@ -26,6 +26,11 @@ abstract class AbstractPluginManager extends Manager
     protected $instanceOf = '';
 
     /**
+     * @var string
+     */
+    protected $configKey = '';
+
+    /**
      * AbstractPluginManager constructor.
      *
      * @param ContainerInterface|null $parentLocator
@@ -36,6 +41,8 @@ abstract class AbstractPluginManager extends Manager
         parent::__construct($config);
 
         $this->creationContext = $parentLocator instanceof ContainerInterface ? $parentLocator : $this;
+
+        $this->setConfigKey($config['loader_options']['config_key'] ?? '');
     }
 
     /**
@@ -70,7 +77,8 @@ abstract class AbstractPluginManager extends Manager
      */
     public function validate($instance): void
     {
-        if (true === empty($this->instanceOf) || $instance instanceof $this->instanceOf) {
+        $instanceOf = $this->getInstanceOf();
+        if (true === empty($instanceOf) || $instance instanceof $instanceOf) {
             return;
         }
 
@@ -79,19 +87,49 @@ abstract class AbstractPluginManager extends Manager
                 'Plugin manager "%s" expects an instance of "%s", but "%s" was given',
                 __CLASS__,
                 $this->instanceOf,
-                true === is_object($instance) ? get_class($instance) : gettype($instance)
+                (is_object($instance) === true ? get_class($instance) : gettype($instance))
             )
         );
     }
 
     /**
+     * @return string
+     */
+    protected function getInstanceOf(): string
+    {
+        return $this->instanceOf;
+    }
+
+    /**
+     * @return string
+     */
+    public function getConfigKey(): string
+    {
+        return $this->configKey;
+    }
+
+    /**
+     * @param string $configKey
+     *
+     * @return AbstractPluginManager
+     */
+    protected function setConfigKey(string $configKey): self
+    {
+        $this->configKey = $configKey;
+        return $this;
+    }
+
+    /**
      * @inheritDoc
+     *
+     * @throws ServiceNotFoundException
      *
      * @param array|null $options
      */
     public function get($name, array $options = null)
     {
         if (false === $this->has($name)) {
+            $name = $this->resolvedAliases[$name] ?? $name;
             if (false === class_exists($name)) {
                 throw new ServiceNotFoundException(
                     sprintf(
@@ -105,7 +143,7 @@ abstract class AbstractPluginManager extends Manager
             $this->setFactory($name, InvokableFactory::class);
         }
 
-        $instance = (true === empty($options) ? parent::get($name) : $this->build($name, $options));
+        $instance = (empty($options) === true ? parent::get($name) : $this->build($name, $options));
         $this->validate($instance);
         return $instance;
     }

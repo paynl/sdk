@@ -94,7 +94,7 @@ class Loader
             'configuration'   => [],
         ];
 
-        if ($key === 'service_manager' && $this->defaultServiceConfig) {
+        if ($key === 'service_manager' && null !== $this->defaultServiceConfig) {
             $this->serviceManagers[$smKey]['configuration']['default_config'] = $this->defaultServiceConfig;
         }
 
@@ -109,14 +109,14 @@ class Loader
         /** @var ConfigLoader $configLoader */
         $configLoader = $this->defaultServiceManager->get('configLoader');
 
-        foreach ($this->serviceManagers as $key => $sm) {
+        foreach ($this->serviceManagers as $key => $serviceManager) {
             // search for config provider
             foreach ($configLoader->getConfigs() as $className => $provider) {
-                if (false === method_exists($provider, $sm['class_method'])) {
+                if (false === method_exists($provider, $serviceManager['class_method'])) {
                     continue;
                 }
 
-                $config = $provider->{$sm['class_method']}();
+                $config = $provider->{$serviceManager['class_method']}();
 
                 if ($config instanceof ServiceConfig) {
                     $config = $this->serviceConfigToArray($config);
@@ -131,7 +131,7 @@ class Loader
                     continue 2;
                 }
 
-                $this->serviceManagers[$key]['configuration'][$className . '::' . $sm['class_method'] . '()'] = $config;
+                $this->serviceManagers[$key]['configuration'][$className . '::' . $serviceManager['class_method'] . '()'] = $config;
             }
         }
     }
@@ -156,7 +156,7 @@ class Loader
 
                 /** @var ServiceManager $instance */
                 $instance = $this->defaultServiceManager->get($sm['service_manager']);
-                if (! $instance instanceof ServiceManager) {
+                if (($instance instanceof ServiceManager) === false) {
                     throw new Exception\ServiceNotFoundException(
                         sprintf(
                             'Could not find service manager with name %s',
@@ -194,7 +194,7 @@ class Loader
             $this->serviceManagers[$key]['configuration']['merged_config'] = $config[$metadata['config_key']];
         }
 
-        $serviceConfig = new Config();//[];
+        $serviceConfig = new Config();
         foreach ($this->serviceManagers[$key]['configuration'] as $configs) {
             if (true === is_array($configs)) {
                 $configs = new Config($configs);
@@ -230,7 +230,7 @@ class Loader
                 sprintf(
                     'Invalid service manager config class provided, expected "%s" but got "%s"',
                     ServiceConfig::class,
-                    (is_object($config) ? get_class($config) : gettype($config))
+                    (is_object($config) === true ? get_class($config) : gettype($config))
                 )
             );
         }

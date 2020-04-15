@@ -94,8 +94,6 @@ class Address implements ModelInterface, JsonSerializable
     /**
      * @param string|int $streetNumber
      *
-     * @throws InvalidArgumentException when the given argument is not a string nor an integer
-     *
      * @return Address
      */
     public function setStreetNumber($streetNumber): self

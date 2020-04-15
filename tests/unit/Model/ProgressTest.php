@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PayNL\Sdk\Model;
 
-use Codeception\Test\Unit as UnitTest;
-use PayNL\Sdk\Model\{
-    ModelInterface,
-    Progress
+use Codeception\{
+    Lib\ModelTestTrait,
+    Test\Unit as UnitTest
 };
-use JsonSerializable;
+use PayNL\Sdk\Model\Progress;
 
 /**
  * Class ProgressTest
@@ -18,32 +17,20 @@ use JsonSerializable;
  */
 class ProgressTest extends UnitTest
 {
+    use ModelTestTrait;
+
     /**
      * @var Progress
      */
-    protected $progress;
+    protected $model;
 
+    /**
+     * @return void
+     */
     public function _before(): void
     {
-        $this->progress = new Progress();
-    }
-
-    /**
-     * @return void
-     */
-    public function testItIsAModel(): void
-    {
-        verify($this->progress)->isInstanceOf(ModelInterface::class);
-    }
-
-    /**
-     * @return void
-     */
-    public function testIsItJsonSerializable(): void
-    {
-        verify($this->progress)->isInstanceOf(JsonSerializable::class);
-
-        verify($this->progress->jsonSerialize())->array();
+        $this->markAsJsonSerializable();
+        $this->model = new Progress();
     }
 
     /**
@@ -51,7 +38,10 @@ class ProgressTest extends UnitTest
      */
     public function testItCanSetAPercentage(): void
     {
-        expect($this->progress->setPercentage(10))->isInstanceOf(Progress::class);
+        $this->tester->assertObjectHasMethod('setPercentage', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setPercentage', $this->model);
+
+        expect($this->model->setPercentage(10))->isInstanceOf(Progress::class);
     }
 
     /**
@@ -61,11 +51,14 @@ class ProgressTest extends UnitTest
      */
     public function testItCanGetAPercentage(): void
     {
-        $this->progress->setPercentage(10);
+        $this->tester->assertObjectHasMethod('getPercentage', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getPercentage', $this->model);
 
-        verify($this->progress->getPercentage())->int();
-        verify($this->progress->getPercentage())->notEmpty();
-        verify($this->progress->getPercentage())->equals(10);
+        $this->model->setPercentage(10);
+
+        verify($this->model->getPercentage())->int();
+        verify($this->model->getPercentage())->notEmpty();
+        verify($this->model->getPercentage())->equals(10);
     }
 
     /**
@@ -73,7 +66,10 @@ class ProgressTest extends UnitTest
      */
     public function testItCanSetSecondsPast(): void
     {
-        expect($this->progress->setSecondsPassed(2))->isInstanceOf(Progress::class);
+        $this->tester->assertObjectHasMethod('setSecondsPassed', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setSecondsPassed', $this->model);
+
+        expect($this->model->setSecondsPassed(2))->isInstanceOf(Progress::class);
     }
 
     /**
@@ -83,11 +79,14 @@ class ProgressTest extends UnitTest
      */
     public function testItCanGetSecondsPast(): void
     {
-        $this->progress->setSecondsPassed(2);
+        $this->tester->assertObjectHasMethod('getSecondsPassed', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getSecondsPassed', $this->model);
 
-        verify($this->progress->getSecondsPassed())->int();
-        verify($this->progress->getSecondsPassed())->notEmpty();
-        verify($this->progress->getSecondsPassed())->equals(2);
+        $this->model->setSecondsPassed(2);
+
+        verify($this->model->getSecondsPassed())->int();
+        verify($this->model->getSecondsPassed())->notEmpty();
+        verify($this->model->getSecondsPassed())->equals(2);
     }
 
     /**
@@ -95,7 +94,10 @@ class ProgressTest extends UnitTest
      */
     public function testItCanSetAPercentagePerSecond(): void
     {
-        expect($this->progress->setPercentagePerSecond(100/120))->isInstanceOf(Progress::class);
+        $this->tester->assertObjectHasMethod('setPercentagePerSecond', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setPercentagePerSecond', $this->model);
+
+        expect($this->model->setPercentagePerSecond(100/120))->isInstanceOf(Progress::class);
     }
 
     /**
@@ -105,10 +107,13 @@ class ProgressTest extends UnitTest
      */
     public function testItCanGetAPercentagePerSecond(): void
     {
-        $this->progress->setPercentagePerSecond(100/120);
+        $this->tester->assertObjectHasMethod('getPercentagePerSecond', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getPercentagePerSecond', $this->model);
 
-        verify($this->progress->getPercentagePerSecond())->float();
-        verify($this->progress->getPercentagePerSecond())->notEmpty();
-        verify($this->progress->getPercentagePerSecond())->equals(100/120);
+        $this->model->setPercentagePerSecond(100/120);
+
+        verify($this->model->getPercentagePerSecond())->float();
+        verify($this->model->getPercentagePerSecond())->notEmpty();
+        verify($this->model->getPercentagePerSecond())->equals(100/120);
     }
 }

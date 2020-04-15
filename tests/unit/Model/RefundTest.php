@@ -4,17 +4,19 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PayNL\Sdk\Model;
 
-use Codeception\Test\Unit as UnitTest;
-use PayNL\Sdk\DateTime;
+use Codeception\{
+    Lib\ModelTestTrait,
+    Test\Unit as UnitTest
+};
+use Mockery;
 use PayNL\Sdk\Model\{
-    ModelInterface,
     Amount,
     BankAccount,
-    Product,
+    Products,
     Refund,
     Status
 };
-use JsonSerializable, TypeError, stdClass;
+use DateTime;
 
 /**
  * Class RefundTest
@@ -23,32 +25,47 @@ use JsonSerializable, TypeError, stdClass;
  */
 class RefundTest extends UnitTest
 {
+    use ModelTestTrait;
+
     /**
      * @var Refund
      */
-    protected $refund;
+    protected $model;
 
+    /**
+     * @return void
+     */
     public function _before(): void
     {
-        $this->refund = new Refund();
+        $this->markAsJsonSerializable();
+        $this->model = new Refund();
     }
 
     /**
      * @return void
      */
-    public function testItIsAModel(): void
+    public function testItCanSetAnId(): void
     {
-        verify($this->refund)->isInstanceOf(ModelInterface::class);
+        $this->tester->assertObjectHasMethod('setId', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setId', $this->model);
+
+        verify($this->model->setId('12345'))->isInstanceOf(Refund::class);
     }
 
     /**
+     * @depends testItCanSetAnId
      * @return void
      */
-    public function testIsItJsonSerializable(): void
+    public function testItCanGetAnId(): void
     {
-        verify($this->refund)->isInstanceOf(JsonSerializable::class);
+        $this->tester->assertObjectHasMethod('getId', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getId', $this->model);
 
-        verify($this->refund->jsonSerialize())->array();
+        $refundId = '12345';
+        $this->model->setId($refundId);
+        verify($this->model->getId())->notEmpty();
+        verify($this->model->getId())->string();
+        verify($this->model->getId())->equals($refundId);
     }
 
     /**
@@ -56,7 +73,10 @@ class RefundTest extends UnitTest
      */
     public function testItCanSetAPaymentSessionId(): void
     {
-        expect($this->refund->setPaymentSessionId('100000000'))->isInstanceOf(Refund::class);
+        $this->tester->assertObjectHasMethod('setPaymentSessionId', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setPaymentSessionId', $this->model);
+
+        expect($this->model->setPaymentSessionId('100000000'))->isInstanceOf(Refund::class);
     }
 
     /**
@@ -66,11 +86,14 @@ class RefundTest extends UnitTest
      */
     public function testItCanGetAPaymentSessionId(): void
     {
-        $this->refund->setPaymentSessionId('100000000');
+        $this->tester->assertObjectHasMethod('getPaymentSessionId', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getPaymentSessionId', $this->model);
 
-        verify($this->refund->getPaymentSessionId())->string();
-        verify($this->refund->getPaymentSessionId())->notEmpty();
-        verify($this->refund->getPaymentSessionId())->equals('100000000');
+        $this->model->setPaymentSessionId('100000000');
+
+        verify($this->model->getPaymentSessionId())->string();
+        verify($this->model->getPaymentSessionId())->notEmpty();
+        verify($this->model->getPaymentSessionId())->equals('100000000');
     }
 
     /**
@@ -78,7 +101,11 @@ class RefundTest extends UnitTest
      */
     public function testItCanSetAnAmount(): void
     {
-        expect($this->refund->setAmount(new Amount()))->isInstanceOf(Refund::class);
+        $this->tester->assertObjectHasMethod('setAmount', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setAmount', $this->model);
+
+        $amountMock = $this->tester->grabService('modelManager')->get('Amount');
+        verify($this->model->setAmount($amountMock))->isInstanceOf(Refund::class);
     }
 
     /**
@@ -88,10 +115,17 @@ class RefundTest extends UnitTest
      */
     public function testItCanGetAnAmount(): void
     {
-        $this->refund->setAmount(new Amount());
+        $this->tester->assertObjectHasMethod('getAmount', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getAmount', $this->model);
 
-        verify($this->refund->getAmount())->notEmpty();
-        verify($this->refund->getAmount())->isInstanceOf(Amount::class);
+        /** @var Amount $amountMock */
+        $amountMock = $this->tester->grabService('modelManager')->get('Amount');
+        $amountMock->setAmount(12345);
+        $this->model->setAmount($amountMock);
+
+        verify($this->model->getAmount())->notEmpty();
+        verify($this->model->getAmount())->isInstanceOf(Amount::class);
+        verify($this->model->getAmount())->equals($amountMock);
     }
 
     /**
@@ -99,7 +133,10 @@ class RefundTest extends UnitTest
      */
     public function testItCanSetADescription(): void
     {
-        expect($this->refund->setDescription('Refund description'))->isInstanceOf(Refund::class);
+        $this->tester->assertObjectHasMethod('setDescription', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setDescription', $this->model);
+
+        expect($this->model->setDescription('Refund description'))->isInstanceOf(Refund::class);
     }
 
     /**
@@ -109,11 +146,14 @@ class RefundTest extends UnitTest
      */
     public function testItCanGetADescription(): void
     {
-        $this->refund->setDescription('Refund description');
+        $this->tester->assertObjectHasMethod('getDescription', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getDescription', $this->model);
 
-        verify($this->refund->getDescription())->string();
-        verify($this->refund->getDescription())->notEmpty();
-        verify($this->refund->getDescription())->equals('Refund description');
+        $this->model->setDescription('Refund description');
+
+        verify($this->model->getDescription())->string();
+        verify($this->model->getDescription())->notEmpty();
+        verify($this->model->getDescription())->equals('Refund description');
     }
 
     /**
@@ -121,7 +161,11 @@ class RefundTest extends UnitTest
      */
     public function testItCanSetABankAccount(): void
     {
-        expect($this->refund->setBankAccount(new BankAccount()))->isInstanceOf(Refund::class);
+        $this->tester->assertObjectHasMethod('setBankAccount', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setBankAccount', $this->model);
+
+        $bankAccountMock = $this->tester->grabService('modelManager')->get('BankAccount');
+        expect($this->model->setBankAccount($bankAccountMock))->isInstanceOf(Refund::class);
     }
 
     /**
@@ -131,10 +175,17 @@ class RefundTest extends UnitTest
      */
     public function testItCanGetABankAccount(): void
     {
-        $this->refund->setBankAccount(new BankAccount());
+        $this->tester->assertObjectHasMethod('getBankAccount', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getBankAccount', $this->model);
 
-        verify($this->refund->getBankAccount())->notEmpty();
-        verify($this->refund->getBankAccount())->isInstanceOf(BankAccount::class);
+        /** @var BankAccount $bankAccountMock */
+        $bankAccountMock = $this->tester->grabService('modelManager')->get('BankAccount');
+        $bankAccountMock->setBank('Rabobank');
+        $this->model->setBankAccount($bankAccountMock);
+
+        verify($this->model->getBankAccount())->notEmpty();
+        verify($this->model->getBankAccount())->isInstanceOf(BankAccount::class);
+        verify($this->model->getBankAccount())->same($bankAccountMock);
     }
 
     /**
@@ -142,7 +193,11 @@ class RefundTest extends UnitTest
      */
     public function testItCanSetAStatus(): void
     {
-        expect($this->refund->setStatus(new Status()))->isInstanceOf(Refund::class);
+        $this->tester->assertObjectHasMethod('setStatus', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setStatus', $this->model);
+
+        $statusMock = $this->tester->grabService('modelManager')->get('Status');
+        expect($this->model->setStatus($statusMock))->isInstanceOf(Refund::class);
     }
 
     /**
@@ -152,10 +207,17 @@ class RefundTest extends UnitTest
      */
     public function testItCanGetAStatus(): void
     {
-        $this->refund->setStatus(new Status());
+        $this->tester->assertObjectHasMethod('getStatus', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getStatus', $this->model);
 
-        verify($this->refund->getStatus())->notEmpty();
-        verify($this->refund->getStatus())->isInstanceOf(Status::class);
+        /** @var Status $statusMock */
+        $statusMock = $this->tester->grabService('modelManager')->get('Status');
+        $statusMock->setName('John Doe');
+        $this->model->setStatus($statusMock);
+
+        verify($this->model->getStatus())->notEmpty();
+        verify($this->model->getStatus())->isInstanceOf(Status::class);
+        verify($this->model->getStatus())->equals($statusMock);
     }
 
     /**
@@ -163,7 +225,11 @@ class RefundTest extends UnitTest
      */
     public function testItCanAddAProduct(): void
     {
-        expect($this->refund->addProduct(new Product()))->isInstanceOf(Refund::class);
+        $this->tester->assertObjectHasMethod('addProduct', $this->model);
+        $this->tester->assertObjectMethodIsPublic('addProduct', $this->model);
+
+        $productMock = $this->tester->grabService('modelManager')->get('Product');
+        expect($this->model->addProduct($productMock))->isInstanceOf(Refund::class);
     }
 
     /**
@@ -173,20 +239,11 @@ class RefundTest extends UnitTest
      */
     public function testItCanSetProducts(): void
     {
-        expect($this->refund->setProducts([]))->isInstanceOf(Refund::class);
-    }
+        $this->tester->assertObjectHasMethod('setProducts', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setProducts', $this->model);
 
-    /**
-     * @depends testItCanSetProducts
-     *
-     * @return void
-     */
-    public function testItThrowsAnExceptionWhenSettingProducts(): void
-    {
-        $this->expectException(TypeError::class);
-        $this->refund->setProducts([
-            new stdClass(),
-        ]);
+        $productsMock = $this->tester->grabService('modelManager')->get('Products');
+        verify($this->model->setProducts($productsMock))->isInstanceOf(Refund::class);
     }
 
     /**
@@ -196,14 +253,13 @@ class RefundTest extends UnitTest
      */
     public function testItCanGetProducts(): void
     {
-        $this->refund->setProducts([
-            new Product()
-        ]);
+        $this->tester->assertObjectHasMethod('getProducts', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getProducts', $this->model);
 
-        verify($this->refund->getProducts())->array();
-        verify($this->refund->getProducts())->notEmpty();
-        verify($this->refund->getProducts())->count(1);
-        verify($this->refund->getProducts())->containsOnlyInstancesOf(Product::class);
+        /** @var Products $productsMock */
+        $productsMock = $this->tester->grabService('modelManager')->get('Products');
+        $this->model->setProducts($productsMock);
+        verify($this->model->getProducts())->isInstanceOf(Products::class);
     }
 
     /**
@@ -211,7 +267,10 @@ class RefundTest extends UnitTest
      */
     public function testItCanSetAReason(): void
     {
-        expect($this->refund->setReason('Some reason why'))->isInstanceOf(Refund::class);
+        $this->tester->assertObjectHasMethod('setReason', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setReason', $this->model);
+
+        expect($this->model->setReason('Some reason why'))->isInstanceOf(Refund::class);
     }
 
     /**
@@ -221,11 +280,14 @@ class RefundTest extends UnitTest
      */
     public function testItCanGetAReason(): void
     {
-        $this->refund->setReason('Some reason why');
+        $this->tester->assertObjectHasMethod('getReason', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getReason', $this->model);
 
-        verify($this->refund->getReason())->string();
-        verify($this->refund->getReason())->notEmpty();
-        verify($this->refund->getReason())->equals('Some reason why');
+        $this->model->setReason('Some reason why');
+
+        verify($this->model->getReason())->string();
+        verify($this->model->getReason())->notEmpty();
+        verify($this->model->getReason())->equals('Some reason why');
     }
 
     /**
@@ -233,7 +295,11 @@ class RefundTest extends UnitTest
      */
     public function testItCanSetAProcessDate(): void
     {
-        expect($this->refund->setProcessDate(DateTime::createFromFormat('Y-m-d', '2019-09-18')))->isInstanceOf(Refund::class);
+        $this->tester->assertObjectHasMethod('setProcessDate', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setProcessDate', $this->model);
+
+        $dateTimeMock = Mockery::mock('DateTime');
+        expect($this->model->setProcessDate($dateTimeMock))->isInstanceOf(Refund::class);
     }
 
     /**
@@ -243,9 +309,13 @@ class RefundTest extends UnitTest
      */
     public function testItCanGetAProcessDate(): void
     {
-        $this->refund->setProcessDate(DateTime::createFromFormat('Y-m-d', '2019-09-18'));
+        $this->tester->assertObjectHasMethod('getProcessDate', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getProcessDate', $this->model);
 
-        verify($this->refund->getProcessDate())->notEmpty();
-        verify($this->refund->getProcessDate())->isInstanceOf(DateTime::class);
+        $dateTimeMock = Mockery::mock('DateTime');
+        $this->model->setProcessDate($dateTimeMock);
+
+        verify($this->model->getProcessDate())->notEmpty();
+        verify($this->model->getProcessDate())->isInstanceOf(DateTime::class);
     }
 }

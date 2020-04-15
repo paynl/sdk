@@ -14,7 +14,7 @@ use PayNL\Sdk\{
 /**
  * Class Manager
  *
- * @package PayNL\Sdk\Transformer
+ * @package PayNL\Sdk\Request
  */
 class Manager extends AbstractPluginManager
 {

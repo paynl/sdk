@@ -6,10 +6,13 @@ namespace PayNL\Sdk\Mapper;
 
 use PayNL\Sdk\{
     Config\Config,
+    Exception\MapperSourceServiceNotFoundException,
+    Exception\MapperTargetServiceNotFoundException,
     Service\AbstractPluginManager,
     Service\Manager as ServiceManager,
     Exception\ServiceNotFoundException,
-    Exception\ServiceNotCreatedException
+    Exception\ServiceNotCreatedException,
+    Util\Misc
 };
 
 /**
@@ -33,6 +36,13 @@ class Manager extends AbstractPluginManager
 
     /**
      * @inheritDoc
+     *
+     * @throws ServiceNotCreatedException
+     * @throws ServiceNotFoundException
+     * @throws MapperSourceServiceNotFoundException
+     * @throws MapperTargetServiceNotFoundException
+     *
+     * @SuppressWarnings(PHPMD.StaticAccess)
      */
     public function configure(array $config): ServiceManager
     {
@@ -63,15 +73,20 @@ class Manager extends AbstractPluginManager
                 unset($mappingConfig[$mapperAlias]);
 
                 // determine the necessary managers
-                preg_match_all('/((?:^|[A-Z])[a-z]+)/', str_replace([__NAMESPACE__, 'Mapper'], '', $mapper), $matches);
-                if (2 < count($matches[1])) {
+                preg_match_all('/((?:^|[A-Z])[a-z]+)/', Misc::getClassNameByFQN($mapper), $matches);
+                if (2 > count($matches[1])) {
                     throw new ServiceNotFoundException(
-                        'invalid name'
+                        sprintf(
+                            'Mapper name "%s" is not valid',
+                            $mapper
+                        )
                     );
                 }
 
+                // determine the name of the source and target
                 $sourceManagerName = lcfirst(current($matches[1]));
-                $targetManagerName = lcfirst(end($matches[1]));
+                next($matches[1]);
+                $targetManagerName = lcfirst(current($matches[1]));
 
                 $sourceManager = $this->creationContext->get("{$sourceManagerName}Manager");
                 $targetManager = $this->creationContext->get("{$targetManagerName}Manager");
@@ -79,7 +94,7 @@ class Manager extends AbstractPluginManager
                 // check the map
                 foreach ($map as $source => $target) {
                     if (false === $sourceManager->has($source)) {
-                        throw new ServiceNotFoundException(
+                        throw new MapperSourceServiceNotFoundException(
                             sprintf(
                                 'Mapping source service with name "%s" not found in %s',
                                 $source,
@@ -89,7 +104,7 @@ class Manager extends AbstractPluginManager
                     }
 
                     if (false === $targetManager->has($target)) {
-                        throw new ServiceNotFoundException(
+                        throw new MapperTargetServiceNotFoundException(
                             sprintf(
                                 'Mapping target service with name "%s" not found in %s',
                                 $target,
@@ -112,7 +127,7 @@ class Manager extends AbstractPluginManager
      */
     protected function validateOverrides(array $config): void
     {
-        if (isset($config['mapping'])) {
+        if (true === isset($config['mapping'])) {
             $this->validateOverrideSet(array_keys($config['mapping']), 'mapping');
         }
         parent::validateOverrides($config);

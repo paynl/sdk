@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PayNL\Sdk\Model;
 
-use Codeception\Test\Unit as UnitTest;
-use PayNL\Sdk\Model\{
-    ModelInterface,
-    Trademark
+use Codeception\{
+    Lib\ModelTestTrait,
+    Test\Unit as UnitTest
 };
-use JsonSerializable;
+use PayNL\Sdk\Model\Trademark;
 
 /**
  * Class CurrencyTest
@@ -18,32 +17,20 @@ use JsonSerializable;
  */
 class TrademarkTest extends UnitTest
 {
+    use ModelTestTrait;
+
     /**
      * @var Trademark
      */
-    protected $trademark;
+    protected $model;
 
+    /**
+     * @return void
+     */
     public function _before(): void
     {
-        $this->trademark = new Trademark();
-    }
-
-    /**
-     * @return void
-     */
-    public function testItIsAModel(): void
-    {
-        verify($this->trademark)->isInstanceOf(ModelInterface::class);
-    }
-
-    /**
-     * @return void
-     */
-    public function testIsItJsonSerializable(): void
-    {
-        verify($this->trademark)->isInstanceOf(JsonSerializable::class);
-
-        verify($this->trademark->jsonSerialize())->array();
+        $this->markAsJsonSerializable();
+        $this->model = new Trademark();
     }
 
     /**
@@ -51,7 +38,10 @@ class TrademarkTest extends UnitTest
      */
     public function testItCanSetAnId(): void
     {
-        expect($this->trademark->setId('T-1000-0001'))->isInstanceOf(Trademark::class);
+        $this->tester->assertObjectHasMethod('setId', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setId', $this->model);
+
+        expect($this->model->setId('T-1000-0001'))->isInstanceOf(Trademark::class);
     }
 
     /**
@@ -61,11 +51,14 @@ class TrademarkTest extends UnitTest
      */
     public function testItCanGetAnId(): void
     {
-        $this->trademark->setId('T-1000-0001');
+        $this->tester->assertObjectHasMethod('getId', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getId', $this->model);
 
-        verify($this->trademark->getId())->string();
-        verify($this->trademark->getId())->notEmpty();
-        verify($this->trademark->getId())->equals('T-1000-0001');
+        $this->model->setId('T-1000-0001');
+
+        verify($this->model->getId())->string();
+        verify($this->model->getId())->notEmpty();
+        verify($this->model->getId())->equals('T-1000-0001');
     }
 
     /**
@@ -73,7 +66,10 @@ class TrademarkTest extends UnitTest
      */
     public function testItCanSetAName(): void
     {
-        expect($this->trademark->setName('Pay.be'))->isInstanceOf(Trademark::class);
+        $this->tester->assertObjectHasMethod('setName', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setName', $this->model);
+
+        expect($this->model->setName('Pay.be'))->isInstanceOf(Trademark::class);
     }
 
     /**
@@ -83,10 +79,13 @@ class TrademarkTest extends UnitTest
      */
     public function testItCanGetAName(): void
     {
-        $this->trademark->setName('Pay.be');
+        $this->tester->assertObjectHasMethod('getName', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getName', $this->model);
 
-        verify($this->trademark->getName())->string();
-        verify($this->trademark->getName())->notEmpty();
-        verify($this->trademark->getName())->equals('Pay.be');
+        $this->model->setName('Pay.be');
+
+        verify($this->model->getName())->string();
+        verify($this->model->getName())->notEmpty();
+        verify($this->model->getName())->equals('Pay.be');
     }
 }

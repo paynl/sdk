@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PayNL\Sdk\Model;
 
-use Codeception\Test\Unit as UnitTest;
+use Codeception\{
+    Lib\ModelTestTrait,
+    Test\Unit as UnitTest
+};
 use PayNL\Sdk\Model\{
-    ModelInterface,
-    Links,
+    LinksTrait,
     Currency
 };
-use JsonSerializable;
-use PayNL\Sdk\Hydrator\Links as LinksHydrator;
 
 /**
  * Class CurrencyTest
@@ -20,63 +20,24 @@ use PayNL\Sdk\Hydrator\Links as LinksHydrator;
  */
 class CurrencyTest extends UnitTest
 {
+    use ModelTestTrait;
+
     /**
      * @var Currency
      */
-    protected $currency;
+    protected $model;
 
+    /**
+     * @return void
+     */
     public function _before(): void
     {
-        $this->currency = new Currency();
+        $this->model = new Currency();
     }
 
-    /**
-     * @return void
-     */
-    public function testItIsAModel(): void
+    public function testItUsesLinksTrait(): void
     {
-        verify($this->currency)->isInstanceOf(ModelInterface::class);
-    }
-
-    /**
-     * @return void
-     */
-    public function testIsItNotJsonSerializable(): void
-    {
-        verify($this->currency)->isNotInstanceOf(JsonSerializable::class);
-    }
-
-    /**
-     * @return void
-     */
-    public function testItCanSetLinks(): void
-    {
-        verify(method_exists($this->currency, 'setLinks'))->true();
-        verify($this->currency->setLinks(new Links()))->isInstanceOf(Currency::class);
-    }
-
-    /**
-     * @depends testItCanSetLinks
-     *
-     * @return void
-     */
-    public function testItCanGetLinks(): void
-    {
-        verify(method_exists($this->currency, 'getLinks'))->true();
-
-        $this->currency->setLinks(
-            (new LinksHydrator())->hydrate([
-                [
-                    'rel'  => 'self',
-                    'type' => 'GET',
-                    'url'  => 'http://some.url.com',
-                ],
-            ], new Links())
-        );
-
-        verify($this->currency->getLinks())->isInstanceOf(Links::class);
-        verify($this->currency->getLinks())->count(1);
-        verify($this->currency->getLinks())->hasKey('self');
+        $this->tester->assertObjectUsesTrait($this->model, LinksTrait::class);
     }
 
     /**
@@ -84,7 +45,10 @@ class CurrencyTest extends UnitTest
      */
     public function testItCanSetAnAbbreviation(): void
     {
-        expect($this->currency->setAbbreviation('EUR'))->isInstanceOf(Currency::class);
+        $this->tester->assertObjectHasMethod('setAbbreviation', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setAbbreviation', $this->model);
+
+        verify($this->model->setAbbreviation('EUR'))->isInstanceOf(Currency::class);
     }
 
     /**
@@ -94,11 +58,14 @@ class CurrencyTest extends UnitTest
      */
     public function testItCanGetAnAbbreviation(): void
     {
-        $this->currency->setAbbreviation('EUR');
+        $this->tester->assertObjectHasMethod('getAbbreviation', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getAbbreviation', $this->model);
 
-        verify($this->currency->getAbbreviation())->string();
-        verify($this->currency->getAbbreviation())->notEmpty();
-        verify($this->currency->getAbbreviation())->equals('EUR');
+        $this->model->setAbbreviation('EUR');
+
+        verify($this->model->getAbbreviation())->string();
+        verify($this->model->getAbbreviation())->notEmpty();
+        verify($this->model->getAbbreviation())->equals('EUR');
     }
 
     /**
@@ -106,7 +73,10 @@ class CurrencyTest extends UnitTest
      */
     public function testItCanSetADescription(): void
     {
-        expect($this->currency->setDescription('Euro'))->isInstanceOf(Currency::class);
+        $this->tester->assertObjectHasMethod('setDescription', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setDescription', $this->model);
+
+        verify($this->model->setDescription('Euro'))->isInstanceOf(Currency::class);
     }
 
     /**
@@ -116,10 +86,13 @@ class CurrencyTest extends UnitTest
      */
     public function testItCanGetADescription(): void
     {
-        $this->currency->setDescription('Euro');
+        $this->tester->assertObjectHasMethod('getDescription', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getDescription', $this->model);
 
-        verify($this->currency->getDescription())->string();
-        verify($this->currency->getDescription())->notEmpty();
-        verify($this->currency->getDescription())->equals('Euro');
+        $this->model->setDescription('Euro');
+
+        verify($this->model->getDescription())->string();
+        verify($this->model->getDescription())->notEmpty();
+        verify($this->model->getDescription())->equals('Euro');
     }
 }

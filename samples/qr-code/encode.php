@@ -8,7 +8,7 @@ use PayNL\Sdk\Model\Qr;
 
 $requests = [
     'qrUuid' => [
-        'serviceId' => (isset($config) ? $config->get('serviceId') : ''),
+        'serviceId' => (isset($config) === true ? $config->get('serviceId') : ''),
         'secret'    => '0123456789abcdef0123456789abcdef01234567',
         'amount'    => [
             'amount'   => 100,
@@ -17,7 +17,7 @@ $requests = [
         'reference' => 'ABCD0123',
     ],
     'qrIdeal' => [
-        'serviceId' => (isset($config) ? $config->get('serviceId') : ''),
+        'serviceId' => (isset($config) === true ? $config->get('serviceId') : ''),
         'secret'    => '0123456789abcdef0123456789abcdef01234567',
         'amount'    => [
             'amount'   => 100,
@@ -30,7 +30,7 @@ $requests = [
         ],
     ],
     'qrBancontact' => [
-        'serviceId' => (isset($config) ? $config->get('serviceId') : ''),
+        'serviceId' => (isset($config) === true ? $config->get('serviceId') : ''),
         'secret'    => '0123456789abcdef0123456789abcdef01234567',
         'amount'    => [
             'amount'   => 100,

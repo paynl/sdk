@@ -25,10 +25,10 @@ class ConfigProvider implements ConfigProviderInterface
         return [
             'service_manager' => $this->getDependencyConfig(),
             'service_loader_options' => [
-                'requestManager' => [
+                Manager::class => [
                     'service_manager' => 'requestManager',
-                    'config_key' => 'requests',
-                    'class_method' => 'getRequestConfig'
+                    'config_key'      => 'requests',
+                    'class_method'    => 'getRequestConfig'
                 ],
             ],
             'request' => [
@@ -58,6 +58,9 @@ class ConfigProvider implements ConfigProviderInterface
     public function getRequestConfig(): array
     {
         return [
+            'aliases' => [
+                'Request' => Request::class,
+            ],
             'initializers' => [
                 DebugAwareInitializer::class,
             ],
@@ -150,7 +153,7 @@ class ConfigProvider implements ConfigProviderInterface
                 'uri' => '/ispay/ip?value=%ip%',
                 'method' => RequestInterface::METHOD_GET,
                 'requiredParams' => [
-                    'ip' => '[0-9\.]+', // TODO: correct regex implement
+                    'ip' => '[0-9\.]+',
                 ],
             ],
         ];
@@ -312,7 +315,7 @@ class ConfigProvider implements ConfigProviderInterface
                     'transactionId' => 'EX-\d{4}-\d{4}-\d{4}',
                 ],
             ],
-            'CancelTransaction' => [
+            'VoidTransaction' => [
                 'uri' => '/transactions/%transactionId%/void',
                 'method' => RequestInterface::METHOD_PATCH,
                 'requiredParams' => [
@@ -372,6 +375,13 @@ class ConfigProvider implements ConfigProviderInterface
                     'transactionId' => 'EX-\d{4}-\d{4}-\d{4}',
                 ],
             ],
+            'CancelTransaction' => [
+                'uri' => '/transactions/%transactionId%/cancel',
+                'method' => RequestInterface::METHOD_PATCH,
+                'requiredParams' => [
+                    'transactionId' => 'EX-\d{4}-\d{4}-\d{4}',
+                ],
+            ]
         ];
     }
 

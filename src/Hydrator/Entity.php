@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace PayNL\Sdk\Hydrator;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use PayNL\Sdk\{
-    Common\CollectionInterface,
+use PayNL\Sdk\{Common\CollectionInterface,
+    Common\DateTime,
+    Common\OptionsAwareInterface,
+    Common\OptionsAwareTrait,
     Exception\LogicException,
     Exception\RuntimeException,
-    Model\ModelInterface
-};
+    Model\ModelInterface};
 use ReflectionClass,
     ReflectionProperty,
     ReflectionException
@@ -21,26 +22,19 @@ use ReflectionClass,
  *
  * @package PayNL\Sdk\Hydrator
  */
-class Entity extends AbstractHydrator
+class Entity extends AbstractHydrator implements OptionsAwareInterface
 {
+    use OptionsAwareTrait;
+
     /**
      * @var array
      */
-    protected $collectionMap = [
-        // CollectionEntity(Alias) => EntryEntity(Alias)
-        'contactMethods' => 'contactMethod',
-        'currencies'     => 'currency',
-        'directdebits'   => 'directdebit',
-        'errors'         => 'error',
-        'links'          => 'link',
-        'paymentMethods' => 'paymentMethod',
-        'products'       => 'product',
-        'services'       => 'service',
-        'terminals'      => 'terminal',
-        'trademarks'     => 'trademark',
-    ];
+    protected $collectionMap = [];
 
-    protected $scalarTypes = [
+    /**
+     * @var array
+     */
+    protected $supportedNativeTypes = [
         'string',
         'int',
         'integer',
@@ -60,20 +54,9 @@ class Entity extends AbstractHydrator
      *
      * @return array
      */
-    public function load(ModelInterface $model): array
+    protected function load(ModelInterface $model): array
     {
-        $ref = null;
-        try {
-            $ref = new ReflectionClass($model);
-        } catch (ReflectionException $re) {
-            // do nothing, model always exist
-            throw new RuntimeException(
-                sprintf(
-                    'Can not load model "%s"',
-                    get_class($model)
-                )
-            );
-        }
+        $ref = new ReflectionClass($model);
 
         $properties = $ref->getProperties();
 
@@ -125,6 +108,8 @@ class Entity extends AbstractHydrator
             );
         }
 
+        $this->loadCollectionMap();
+
         if (true === array_key_exists('_links', $data)) {
             $data['links'] = $data['_links'];
             unset($data['_links']);
@@ -135,7 +120,7 @@ class Entity extends AbstractHydrator
 
         foreach ($data as $key => $value) {
             $type = $propertyInfo[$key] ?? 'string';
-            if (false === in_array($type, $this->scalarTypes, true)) {
+            if (false === in_array($type, $this->supportedNativeTypes, true)) {
                 if ($type === 'DateTime') {
                     $data[$key] = $this->getSdkDateTime($value);
                     continue;
@@ -177,12 +162,31 @@ class Entity extends AbstractHydrator
     {
         $data = parent::extract($object);
         foreach ($data as $name => $value) {
-            if ($value instanceof ArrayCollection) {
+            if ($value instanceof CollectionInterface) {
+                $data[$name] = [];
+                $context = $this;
+                $data[$name][$value->getCollectionName()] = array_map(static function ($item) use ($context) {
+                    if (true === is_object($item)) {
+                        return $context->extract($item);
+                    }
+                    return $item;
+                }, $value->toArray());
+            } elseif ($value instanceof ArrayCollection) {
                 $data[$name] = $value->toArray();
+            } elseif ($value instanceof DateTime) {
+                $data[$name] = (string)$value;
             } elseif (true === is_object($value)) {
                 $data[$name] = $this->extract($value);
             }
         }
         return $data;
+    }
+
+    private function loadCollectionMap(): void
+    {
+        $collectionMap = $this->getOption('collectionMap');
+        if (null !== $collectionMap) {
+            $this->collectionMap = $collectionMap;
+        }
     }
 }

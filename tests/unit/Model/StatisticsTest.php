@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PayNL\Sdk\Model;
 
-use Codeception\Test\Unit as UnitTest;
-use PayNL\Sdk\Model\{
-    ModelInterface,
-    Statistics
+use Codeception\{
+    Lib\ModelTestTrait,
+    Test\Unit as UnitTest
 };
-use JsonSerializable;
+use PayNL\Sdk\Model\Statistics;
 
 /**
  * Class StatisticsTest
@@ -18,54 +17,23 @@ use JsonSerializable;
  */
 class StatisticsTest extends UnitTest
 {
-    /**
-     * @var Statistics
-     */
-    protected $statistics;
+    use ModelTestTrait;
 
     public function _before(): void
     {
-        $this->statistics = new Statistics();
+        $this->markAsJsonSerializable();
+        $this->model = new Statistics();
     }
 
     /**
      * @return void
      */
-    public function testItIsAModel(): void
+    public function testItCanSetAnObject(): void
     {
-        verify($this->statistics)->isInstanceOf(ModelInterface::class);
-    }
+        $this->tester->assertObjectHasMethod('setObject', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setObject', $this->model);
 
-    /**
-     * @return void
-     */
-    public function testIsItJsonSerializable(): void
-    {
-        verify($this->statistics)->isInstanceOf(JsonSerializable::class);
-
-        verify($this->statistics->jsonSerialize())->array();
-    }
-
-    /**
-     * @return void
-     */
-    public function testItCanSetAPromoterId(): void
-    {
-        expect($this->statistics->setPromoterId('680f74f9-d9e2-11e9-96ef-90b11c281a75'))->isInstanceOf(Statistics::class);
-    }
-
-    /**
-     * @depends testItCanSetAPromoterId
-     *
-     * @return void
-     */
-    public function testItCanGetAPromoterId(): void
-    {
-        $this->statistics->setPromoterId('680f74f9-d9e2-11e9-96ef-90b11c281a75');
-
-        verify($this->statistics->getPromoterId())->string();
-        verify($this->statistics->getPromoterId())->notEmpty();
-        verify($this->statistics->getPromoterId())->equals('680f74f9-d9e2-11e9-96ef-90b11c281a75');
+        verify($this->model->setObject('12345'))->isInstanceOf(Statistics::class);
     }
 
     /**
@@ -73,7 +41,10 @@ class StatisticsTest extends UnitTest
      */
     public function testItCanSetInfo(): void
     {
-        expect($this->statistics->setInfo('Lorem ipsum dolor sit amet, consectetur adipiscing elit'))
+        $this->tester->assertObjectHasMethod('setInfo', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setInfo', $this->model);
+
+        expect($this->model->setInfo('Lorem ipsum dolor sit amet, consectetur adipiscing elit'))
             ->isInstanceOf(Statistics::class)
         ;
     }
@@ -85,11 +56,57 @@ class StatisticsTest extends UnitTest
      */
     public function testItCanGetInfo(): void
     {
-        $this->statistics->setInfo('Lorem ipsum dolor sit amet, consectetur adipiscing elit');
+        $this->tester->assertObjectHasMethod('getInfo', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getInfo', $this->model);
 
-        verify($this->statistics->getInfo())->string();
-        verify($this->statistics->getInfo())->notEmpty();
-        verify($this->statistics->getInfo())->equals('Lorem ipsum dolor sit amet, consectetur adipiscing elit');
+        $this->model->setInfo('Lorem ipsum dolor sit amet, consectetur adipiscing elit');
+
+        verify($this->model->getInfo())->string();
+        verify($this->model->getInfo())->notEmpty();
+        verify($this->model->getInfo())->equals('Lorem ipsum dolor sit amet, consectetur adipiscing elit');
+    }
+
+    /**
+     * @depends testItCanSetAnObject
+     *
+     * @return void
+     */
+    public function testItCanGetAnObject(): void
+    {
+        $this->tester->assertObjectHasMethod('getObject', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getObject', $this->model);
+
+        $this->model->setObject('12345');
+        verify($this->model->getObject())->string();
+        verify($this->model->getObject())->notEmpty();
+        verify($this->model->getObject())->equals('12345');
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanSetATool(): void
+    {
+        $this->tester->assertObjectHasMethod('setTool', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setTool', $this->model);
+
+        verify($this->model->setTool('12345'))->isInstanceOf(Statistics::class);
+    }
+
+    /**
+     * @depends testItCanSetATool
+     *
+     * @return void
+     */
+    public function testItCanGetATool(): void
+    {
+        $this->tester->assertObjectHasMethod('getTool', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getTool', $this->model);
+
+        $this->model->setTool('12345');
+        verify($this->model->getTool())->string();
+        verify($this->model->getTool())->notEmpty();
+        verify($this->model->getTool())->equals('12345');
     }
 
     /**
@@ -97,9 +114,11 @@ class StatisticsTest extends UnitTest
      */
     public function testItCanSetExtra1(): void
     {
-        expect($this->statistics->setExtra1('Lorem ipsum dolor sit amet, consectetur adipiscing elit'))
-            ->isInstanceOf(Statistics::class)
-        ;
+        $this->tester->assertObjectHasMethod('setExtra1', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setExtra1', $this->model);
+
+        verify($this->model->setExtra1('Lorem ipsum dolor sit amet, consectetur adipiscing elit'))
+            ->isInstanceOf(Statistics::class);
     }
 
     /**
@@ -109,11 +128,14 @@ class StatisticsTest extends UnitTest
      */
     public function testItCanGetExtra1(): void
     {
-        $this->statistics->setExtra1('Lorem ipsum dolor sit amet, consectetur adipiscing elit');
+        $this->tester->assertObjectHasMethod('getExtra1', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getExtra1', $this->model);
 
-        verify($this->statistics->getExtra1())->string();
-        verify($this->statistics->getExtra1())->notEmpty();
-        verify($this->statistics->getExtra1())->equals('Lorem ipsum dolor sit amet, consectetur adipiscing elit');
+        $this->model->setExtra1('Lorem ipsum dolor sit amet, consectetur adipiscing elit');
+
+        verify($this->model->getExtra1())->string();
+        verify($this->model->getExtra1())->notEmpty();
+        verify($this->model->getExtra1())->equals('Lorem ipsum dolor sit amet, consectetur adipiscing elit');
     }
 
     /**
@@ -121,7 +143,10 @@ class StatisticsTest extends UnitTest
      */
     public function testItCanSetExtra2(): void
     {
-        expect($this->statistics->setExtra2('Lorem ipsum dolor sit amet, consectetur adipiscing elit'))
+        $this->tester->assertObjectHasMethod('setExtra2', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setExtra2', $this->model);
+
+        expect($this->model->setExtra2('Lorem ipsum dolor sit amet, consectetur adipiscing elit'))
             ->isInstanceOf(Statistics::class)
         ;
     }
@@ -133,11 +158,14 @@ class StatisticsTest extends UnitTest
      */
     public function testItCanGetExtra2(): void
     {
-        $this->statistics->setExtra2('Lorem ipsum dolor sit amet, consectetur adipiscing elit');
+        $this->tester->assertObjectHasMethod('getExtra2', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getExtra2', $this->model);
 
-        verify($this->statistics->getExtra2())->string();
-        verify($this->statistics->getExtra2())->notEmpty();
-        verify($this->statistics->getExtra2())->equals('Lorem ipsum dolor sit amet, consectetur adipiscing elit');
+        $this->model->setExtra2('Lorem ipsum dolor sit amet, consectetur adipiscing elit');
+
+        verify($this->model->getExtra2())->string();
+        verify($this->model->getExtra2())->notEmpty();
+        verify($this->model->getExtra2())->equals('Lorem ipsum dolor sit amet, consectetur adipiscing elit');
     }
 
     /**
@@ -145,7 +173,10 @@ class StatisticsTest extends UnitTest
      */
     public function testItCanSetExtra3(): void
     {
-        expect($this->statistics->setExtra3('Lorem ipsum dolor sit amet, consectetur adipiscing elit'))
+        $this->tester->assertObjectHasMethod('setExtra3', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setExtra3', $this->model);
+
+        expect($this->model->setExtra3('Lorem ipsum dolor sit amet, consectetur adipiscing elit'))
             ->isInstanceOf(Statistics::class)
         ;
     }
@@ -157,38 +188,13 @@ class StatisticsTest extends UnitTest
      */
     public function testItCanGetExtra3(): void
     {
-        $this->statistics->setExtra3('Lorem ipsum dolor sit amet, consectetur adipiscing elit');
+        $this->tester->assertObjectHasMethod('getExtra3', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getExtra3', $this->model);
 
-        verify($this->statistics->getExtra3())->string();
-        verify($this->statistics->getExtra3())->notEmpty();
-        verify($this->statistics->getExtra3())->equals('Lorem ipsum dolor sit amet, consectetur adipiscing elit');
-    }
+        $this->model->setExtra3('Lorem ipsum dolor sit amet, consectetur adipiscing elit');
 
-    /**
-     * @return void
-     */
-    public function testItCanSetTransferData(): void
-    {
-        expect($this->statistics->setTransferData([
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-            'Donec commodo neque id felis semper, vitae.',
-        ]))->isInstanceOf(Statistics::class);
-    }
-
-    /**
-     * @depends testItCanSetTransferData
-     *
-     * @return void
-     */
-    public function testItCanGetTransferData(): void
-    {
-        $this->statistics->setTransferData([
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-            'Donec commodo neque id felis semper, vitae.',
-        ]);
-
-        verify($this->statistics->getTransferData())->array();
-        verify($this->statistics->getTransferData())->notEmpty();
-        verify($this->statistics->getTransferData())->count(2);
+        verify($this->model->getExtra3())->string();
+        verify($this->model->getExtra3())->notEmpty();
+        verify($this->model->getExtra3())->equals('Lorem ipsum dolor sit amet, consectetur adipiscing elit');
     }
 }

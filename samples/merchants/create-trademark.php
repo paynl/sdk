@@ -8,7 +8,7 @@ $response = $app
     ->setRequest(
         'AddTrademark',
         [
-            'merchantId' => (isset($config) ? $config->get('merchantId') : ''),
+            'merchantId' => (isset($config) === true ? $config->get('merchantId') : ''),
         ],
         null,
         [

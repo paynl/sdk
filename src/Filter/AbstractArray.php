@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Filter;
 
+use PayNL\Sdk\Exception\InvalidArgumentException;
+
 /**
  * Class AbstractArray
  *
@@ -17,17 +19,16 @@ abstract class AbstractArray implements FilterInterface
     protected $values = [];
 
     /**
-     * AbstractArray constructor.
-     *
-     * @param array|int|string $value
+     * @inheritDoc
      */
-    public function __construct($value)
+    public function __construct($value = null)
     {
-        $this->setValue($value);
+        if (null !== $value) {
+            $this->setValue($value);
+        }
     }
 
     /**
-     *
      * @return array
      */
     public function getValues(): array
@@ -50,12 +51,23 @@ abstract class AbstractArray implements FilterInterface
 
     /**
      * @inheritDoc
+     *
+     * @throws InvalidArgumentException
      */
-    public function setValue($value)
+    public function setValue($value): FilterInterface
     {
-        if (false === is_array($value)) {
+        if (true === is_scalar($value)) {
             $value = [$value];
+        } elseif (false === is_array($value)) {
+            throw new InvalidArgumentException(
+                sprintf(
+                    'Method "%s" expects value given to be scalar or an array, %s given',
+                    __METHOD__,
+                    gettype($value)
+                )
+            );
         }
+
         return $this->setValues($value);
     }
 

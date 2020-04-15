@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PayNL\Sdk\Model;
 
-use Codeception\Test\Unit as UnitTest;
-use PayNL\Sdk\Model\{
-    ModelInterface,
-    Card
+use Codeception\{
+    Lib\ModelTestTrait,
+    Test\Unit as UnitTest
 };
-use JsonSerializable;
+use PayNL\Sdk\Model\Card;
 
 /**
  * Class CardTest
@@ -18,30 +17,19 @@ use JsonSerializable;
  */
 class CardTest extends UnitTest
 {
+    use ModelTestTrait;
+
     /**
      * @var Card
      */
-    protected $card;
+    protected $model;
 
+    /**
+     * @return void
+     */
     public function _before(): void
     {
-        $this->card = new Card();
-    }
-
-    /**
-     * @return void
-     */
-    public function testItIsAModel(): void
-    {
-        verify($this->card)->isInstanceOf(ModelInterface::class);
-    }
-
-    /**
-     * @return void
-     */
-    public function testIsItNotJsonSerializable(): void
-    {
-        verify($this->card)->isNotInstanceOf(JsonSerializable::class);
+        $this->model = new Card();
     }
 
     /**
@@ -49,7 +37,10 @@ class CardTest extends UnitTest
      */
     public function testItCanSetAnId(): void
     {
-        expect($this->card->setId('1009'))->isInstanceOf(Card::class);
+        $this->tester->assertObjectHasMethod('setId', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setId', $this->model);
+
+        expect($this->model->setId('1009'))->isInstanceOf(Card::class);
     }
 
     /**
@@ -59,11 +50,14 @@ class CardTest extends UnitTest
      */
     public function testItCanGetAnId(): void
     {
-        $this->card->setId('1009');
+        $this->tester->assertObjectHasMethod('getId', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getId', $this->model);
 
-        verify($this->card->getId())->string();
-        verify($this->card->getId())->notEmpty();
-        verify($this->card->getId())->equals('1009');
+        $this->model->setId('1009');
+
+        verify($this->model->getId())->string();
+        verify($this->model->getId())->notEmpty();
+        verify($this->model->getId())->equals('1009');
     }
 
     /**
@@ -71,7 +65,10 @@ class CardTest extends UnitTest
      */
     public function testItCanSetAName(): void
     {
-        expect($this->card->setName('Maestro'))->isInstanceOf(Card::class);
+        $this->tester->assertObjectHasMethod('setName', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setName', $this->model);
+
+        expect($this->model->setName('Maestro'))->isInstanceOf(Card::class);
     }
 
     /**
@@ -81,10 +78,13 @@ class CardTest extends UnitTest
      */
     public function testItCanGetAName(): void
     {
-        $this->card->setName('Maestro');
+        $this->tester->assertObjectHasMethod('getName', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getName', $this->model);
 
-        verify($this->card->getName())->string();
-        verify($this->card->getName())->notEmpty();
-        verify($this->card->getName())->equals('Maestro');
+        $this->model->setName('Maestro');
+
+        verify($this->model->getName())->string();
+        verify($this->model->getName())->notEmpty();
+        verify($this->model->getName())->equals('Maestro');
     }
 }

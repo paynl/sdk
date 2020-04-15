@@ -6,5 +6,7 @@ actor: UnitTester
 modules:
     enabled:
         - Asserts
+        - Sdk
         - \Helper\Unit
+        - Mockery
     step_decorators: ~        

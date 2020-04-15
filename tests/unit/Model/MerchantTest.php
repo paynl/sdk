@@ -4,19 +4,22 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PayNL\Sdk\Model;
 
-use Codeception\Test\Unit as UnitTest;
+use Codeception\{
+    Lib\ModelTestTrait,
+    Test\Unit as UnitTest
+};
 use PayNL\Sdk\Model\{
-    ModelInterface,
-    Links,
+    ContactMethods,
+    LinksTrait,
     Address,
     BankAccount,
     ContactMethod,
     Merchant,
-    Trademark
+    Trademark,
+    Trademarks
 };
-use JsonSerializable, TypeError, stdClass, Exception;
-use PayNL\Sdk\DateTime;
-use PayNL\Sdk\Hydrator\Links as LinksHydrator;
+use Mockery;
+use PayNL\Sdk\Common\DateTime;
 
 /**
  * Class MerchantTest
@@ -25,63 +28,27 @@ use PayNL\Sdk\Hydrator\Links as LinksHydrator;
  */
 class MerchantTest extends UnitTest
 {
+    use ModelTestTrait;
+
     /**
      * @var Merchant
      */
-    protected $merchant;
+    protected $model;
 
+    /**
+     * @return void
+     */
     public function _before(): void
     {
-        $this->merchant = new Merchant();
+        $this->model = new Merchant();
     }
 
     /**
      * @return void
      */
-    public function testItIsAModel(): void
+    public function testItHasLinksTrait(): void
     {
-        verify($this->merchant)->isInstanceOf(ModelInterface::class);
-    }
-
-    /**
-     * @return void
-     */
-    public function testIsItNotJsonSerializable(): void
-    {
-        verify($this->merchant)->isNotInstanceOf(JsonSerializable::class);
-    }
-
-    /**
-     * @return void
-     */
-    public function testItCanSetLinks(): void
-    {
-        verify(method_exists($this->merchant, 'setLinks'))->true();
-        verify($this->merchant->setLinks(new Links()))->isInstanceOf(Merchant::class);
-    }
-
-    /**
-     * @depends testItCanSetLinks
-     *
-     * @return void
-     */
-    public function testItCanGetLinks(): void
-    {
-        verify(method_exists($this->merchant, 'getLinks'))->true();
-
-        $this->merchant->setLinks(
-            (new LinksHydrator())->hydrate([
-                [
-                    'rel'  => 'self',
-                    'type' => 'GET',
-                    'url'  => 'http://some.url.com',
-                ],
-            ], new Links())
-        );
-
-        verify($this->merchant->getLinks())->isInstanceOf(Links::class);
-        verify($this->merchant->getLinks())->count(1);
-        verify($this->merchant->getLinks())->hasKey('self');
+        $this->tester->assertObjectUsesTrait($this->model, LinksTrait::class);
     }
 
     /**
@@ -89,7 +56,10 @@ class MerchantTest extends UnitTest
      */
     public function testItCanSetAnId(): void
     {
-        expect($this->merchant->setId('M-1000-0001'))->isInstanceOf(Merchant::class);
+        $this->tester->assertObjectHasMethod('setId', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setId', $this->model);
+
+        expect($this->model->setId('M-1000-0001'))->isInstanceOf(Merchant::class);
     }
 
     /**
@@ -99,11 +69,14 @@ class MerchantTest extends UnitTest
      */
     public function testItCanGetAnId(): void
     {
-        $this->merchant->setId('M-1000-0001');
+        $this->tester->assertObjectHasMethod('getId', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getId', $this->model);
 
-        verify($this->merchant->getId())->string();
-        verify($this->merchant->getId())->notEmpty();
-        verify($this->merchant->getId())->equals('M-1000-0001');
+        $this->model->setId('M-1000-0001');
+
+        verify($this->model->getId())->string();
+        verify($this->model->getId())->notEmpty();
+        verify($this->model->getId())->equals('M-1000-0001');
     }
 
     /**
@@ -111,7 +84,10 @@ class MerchantTest extends UnitTest
      */
     public function testItCanSetAName(): void
     {
-        expect($this->merchant->setName('D. Duck'))->isInstanceOf(Merchant::class);
+        $this->tester->assertObjectHasMethod('setName', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setName', $this->model);
+
+        expect($this->model->setName('D. Duck'))->isInstanceOf(Merchant::class);
     }
 
     /**
@@ -121,11 +97,14 @@ class MerchantTest extends UnitTest
      */
     public function testItCanGetAName(): void
     {
-        $this->merchant->setName('D. Duck');
+        $this->tester->assertObjectHasMethod('getName', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getName', $this->model);
 
-        verify($this->merchant->getName())->string();
-        verify($this->merchant->getName())->notEmpty();
-        verify($this->merchant->getName())->equals('D. Duck');
+        $this->model->setName('D. Duck');
+
+        verify($this->model->getName())->string();
+        verify($this->model->getName())->notEmpty();
+        verify($this->model->getName())->equals('D. Duck');
     }
 
     /**
@@ -133,7 +112,10 @@ class MerchantTest extends UnitTest
      */
     public function testItCanSetACoc(): void
     {
-        expect($this->merchant->setCoc('1000000'))->isInstanceOf(Merchant::class);
+        $this->tester->assertObjectHasMethod('setCoc', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setCoc', $this->model);
+
+        expect($this->model->setCoc('1000000'))->isInstanceOf(Merchant::class);
     }
 
     /**
@@ -143,11 +125,14 @@ class MerchantTest extends UnitTest
      */
     public function testItCanGetACoc(): void
     {
-        $this->merchant->setCoc('1000000');
+        $this->tester->assertObjectHasMethod('getCoc', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getCoc', $this->model);
 
-        verify($this->merchant->getCoc())->string();
-        verify($this->merchant->getCoc())->notEmpty();
-        verify($this->merchant->getCoc())->equals('1000000');
+        $this->model->setCoc('1000000');
+
+        verify($this->model->getCoc())->string();
+        verify($this->model->getCoc())->notEmpty();
+        verify($this->model->getCoc())->equals('1000000');
     }
 
     /**
@@ -155,7 +140,10 @@ class MerchantTest extends UnitTest
      */
     public function testItCanSetAVat(): void
     {
-        expect($this->merchant->setVat('NL100000000B01'))->isInstanceOf(Merchant::class);
+        $this->tester->assertObjectHasMethod('setVat', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setVat', $this->model);
+
+        expect($this->model->setVat('NL100000000B01'))->isInstanceOf(Merchant::class);
     }
 
     /**
@@ -165,11 +153,14 @@ class MerchantTest extends UnitTest
      */
     public function testItCanGetAVat(): void
     {
-        $this->merchant->setVat('NL100000000B01');
+        $this->tester->assertObjectHasMethod('getVat', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getVat', $this->model);
 
-        verify($this->merchant->getVat())->string();
-        verify($this->merchant->getVat())->notEmpty();
-        verify($this->merchant->getVat())->equals('NL100000000B01');
+        $this->model->setVat('NL100000000B01');
+
+        verify($this->model->getVat())->string();
+        verify($this->model->getVat())->notEmpty();
+        verify($this->model->getVat())->equals('NL100000000B01');
     }
 
     /**
@@ -177,7 +168,10 @@ class MerchantTest extends UnitTest
      */
     public function testItCanSetAWebsite(): void
     {
-        expect($this->merchant->setWebsite('https://www.pay.nl'))->isInstanceOf(Merchant::class);
+        $this->tester->assertObjectHasMethod('setWebsite', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setWebsite', $this->model);
+
+        expect($this->model->setWebsite('https://www.pay.nl'))->isInstanceOf(Merchant::class);
     }
 
     /**
@@ -187,11 +181,14 @@ class MerchantTest extends UnitTest
      */
     public function testItCanGetAWebsite(): void
     {
-        $this->merchant->setWebsite('https://www.pay.nl');
+        $this->tester->assertObjectHasMethod('getWebsite', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getWebsite', $this->model);
 
-        verify($this->merchant->getWebsite())->string();
-        verify($this->merchant->getWebsite())->notEmpty();
-        verify($this->merchant->getWebsite())->equals('https://www.pay.nl');
+        $this->model->setWebsite('https://www.pay.nl');
+
+        verify($this->model->getWebsite())->string();
+        verify($this->model->getWebsite())->notEmpty();
+        verify($this->model->getWebsite())->equals('https://www.pay.nl');
     }
 
     /**
@@ -199,7 +196,10 @@ class MerchantTest extends UnitTest
      */
     public function testItCanSetABankAccount(): void
     {
-        expect($this->merchant->setBankAccount(new BankAccount()))->isInstanceOf(Merchant::class);
+        $this->tester->assertObjectHasMethod('setBankAccount', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setBankAccount', $this->model);
+
+        expect($this->model->setBankAccount(new BankAccount()))->isInstanceOf(Merchant::class);
     }
 
     /**
@@ -209,10 +209,13 @@ class MerchantTest extends UnitTest
      */
     public function testItCanGetABankAccount(): void
     {
-        $this->merchant->setBankAccount(new BankAccount());
+        $this->tester->assertObjectHasMethod('getBankAccount', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getBankAccount', $this->model);
 
-        verify($this->merchant->getBankAccount())->notEmpty();
-        verify($this->merchant->getBankAccount())->isInstanceOf(BankAccount::class);
+        $this->model->setBankAccount(new BankAccount());
+
+        verify($this->model->getBankAccount())->notEmpty();
+        verify($this->model->getBankAccount())->isInstanceOf(BankAccount::class);
     }
 
     /**
@@ -220,7 +223,10 @@ class MerchantTest extends UnitTest
      */
     public function testItCanSetAPostalAddress(): void
     {
-        expect($this->merchant->setPostalAddress(new Address()))->isInstanceOf(Merchant::class);
+        $this->tester->assertObjectHasMethod('setPostalAddress', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setPostalAddress', $this->model);
+
+        expect($this->model->setPostalAddress(new Address()))->isInstanceOf(Merchant::class);
     }
 
     /**
@@ -230,10 +236,13 @@ class MerchantTest extends UnitTest
      */
     public function testItCanGetAPostalAddress(): void
     {
-        $this->merchant->setPostalAddress(new Address());
+        $this->tester->assertObjectHasMethod('getPostalAddress', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getPostalAddress', $this->model);
 
-        verify($this->merchant->getPostalAddress())->notEmpty();
-        verify($this->merchant->getPostalAddress())->isInstanceOf(Address::class);
+        $this->model->setPostalAddress(new Address());
+
+        verify($this->model->getPostalAddress())->notEmpty();
+        verify($this->model->getPostalAddress())->isInstanceOf(Address::class);
     }
 
     /**
@@ -241,7 +250,11 @@ class MerchantTest extends UnitTest
      */
     public function testItCanSetAVisitAddress(): void
     {
-        expect($this->merchant->setVisitAddress(new Address()))->isInstanceOf(Merchant::class);
+        $this->tester->assertObjectHasMethod('setVisitAddress', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setVisitAddress', $this->model);
+
+        $address = $this->tester->grabService('modelManager')->get('Address');
+        verify($this->model->setVisitAddress($address))->isInstanceOf(Merchant::class);
     }
 
     /**
@@ -251,10 +264,14 @@ class MerchantTest extends UnitTest
      */
     public function testItCanGetAVisitAddress(): void
     {
-        $this->merchant->setVisitAddress(new Address());
+        $this->tester->assertObjectHasMethod('getVisitAddress', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getVisitAddress', $this->model);
 
-        verify($this->merchant->getVisitAddress())->notEmpty();
-        verify($this->merchant->getVisitAddress())->isInstanceOf(Address::class);
+        $address = $this->tester->grabService('modelManager')->get('Address');
+        $this->model->setVisitAddress($address);
+
+        verify($this->model->getVisitAddress())->notEmpty();
+        verify($this->model->getVisitAddress())->isInstanceOf(Address::class);
     }
 
     /**
@@ -262,7 +279,26 @@ class MerchantTest extends UnitTest
      */
     public function testItCanAddATrademark(): void
     {
-        $this->merchant->addTrademark(new Trademark());
+        $this->tester->assertObjectHasMethod('addTrademark', $this->model);
+        $this->tester->assertObjectMethodIsPublic('addTrademark', $this->model);
+
+        $trademark = $this->tester->grabService('modelManager')->get('Trademark');
+        $this->model->addTrademark($trademark);
+    }
+
+    /**
+     * @return Trademarks
+     */
+    private function getTrademarks(): Trademarks
+    {
+        /** @var Trademarks $trademarks */
+        $trademarks = $this->tester->grabService('modelManager')->get('Trademarks');
+
+        /** @var Trademark $trademark */
+        $trademark = $this->tester->grabService('modelManager')->get('Trademark');
+        $trademarks->add($trademark);
+
+        return $trademarks;
     }
 
     /**
@@ -272,22 +308,11 @@ class MerchantTest extends UnitTest
      */
     public function testItCanSetTrademarks(): void
     {
-        expect($this->merchant->setTrademarks([
-            new Trademark(),
-        ]))->isInstanceOf(Merchant::class);
-    }
+        $this->tester->assertObjectHasMethod('setTrademarks', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setTrademarks', $this->model);
 
-    /**
-     * @depends testItCanSetTrademarks
-     *
-     * @return void
-     */
-    public function testItThrowsAnExceptionWhenSettingTrademarks(): void
-    {
-        $this->expectException(TypeError::class);
-        $this->merchant->setTrademarks([
-            new stdClass()
-        ]);
+        expect($this->model->setTrademarks($this->getTrademarks()))
+            ->isInstanceOf(Merchant::class);
     }
 
     /**
@@ -297,26 +322,11 @@ class MerchantTest extends UnitTest
      */
     public function testItCanGetTrademarks(): void
     {
-        $this->merchant->setTrademarks([
-            new Trademark(),
-            new Trademark(),
-        ]);
+        $this->tester->assertObjectHasMethod('getTrademarks', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getTrademarks', $this->model);
 
-        verify($this->merchant->getTrademarks())->array();
-        verify($this->merchant->getTrademarks())->count(2);
-        verify($this->merchant->getTrademarks())->containsOnlyInstancesOf(Trademark::class);
-    }
-
-    /**
-     * @depends testItCanSetTrademarks
-     * @depends testItCanGetTrademarks
-     *
-     * @return void
-     */
-    public function testItCanResetTrademarks(): void
-    {
-        expect($this->merchant->setTrademarks([]))->isInstanceOf(Merchant::class);
-        verify($this->merchant->getTrademarks())->isEmpty();
+        $this->model->setTrademarks($this->getTrademarks());
+        verify($this->model->getTrademarks())->isInstanceOf(Trademarks::class);
     }
 
     /**
@@ -324,7 +334,25 @@ class MerchantTest extends UnitTest
      */
     public function testItCanAddAContactMethod(): void
     {
-        $this->merchant->addContactMethod(new ContactMethod());
+        $this->tester->assertObjectHasMethod('addContactMethod', $this->model);
+        $this->tester->assertObjectMethodIsPublic('addContactMethod', $this->model);
+
+        $contactMethod = $this->tester->grabService('modelManager')->get('ContactMethod');
+        verify($this->model->addContactMethod($contactMethod))->isInstanceOf(Merchant::class);
+    }
+
+    /**
+     * @return ContactMethods
+     */
+    private function getContactMethods(): ContactMethods
+    {
+        /** @var ContactMethods $contactMethods */
+        $contactMethods = $this->tester->grabService('modelManager')->get('ContactMethods');
+        /** @var ContactMethod $contactMethod */
+        $contactMethod = $this->tester->grabService('modelManager')->get('ContactMethod');
+        $contactMethods->add($contactMethod);
+
+        return $contactMethods;
     }
 
     /**
@@ -334,22 +362,10 @@ class MerchantTest extends UnitTest
      */
     public function testItCanSetContactMethods(): void
     {
-        expect($this->merchant->setContactMethods([
-            new ContactMethod(),
-        ]))->isInstanceOf(Merchant::class);
-    }
+        $this->tester->assertObjectHasMethod('setContactMethods', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setContactMethods', $this->model);
 
-    /**
-     * @depends testItCanSetContactMethods
-     *
-     * @return void
-     */
-    public function testItThrowsAnExceptionWhenSettingContactMethods(): void
-    {
-        $this->expectException(TypeError::class);
-        $this->merchant->setContactMethods([
-            new stdClass()
-        ]);
+        verify($this->model->setContactMethods($this->getContactMethods()))->isInstanceOf(Merchant::class);
     }
 
     /**
@@ -359,50 +375,41 @@ class MerchantTest extends UnitTest
      */
     public function testItCanGetContactMethods(): void
     {
-        $this->merchant->setContactMethods([
-            new ContactMethod(),
-            new ContactMethod(),
-        ]);
+        $this->tester->assertObjectHasMethod('getContactMethods', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getContactMethods', $this->model);
 
-        verify($this->merchant->getContactMethods())->array();
-        verify($this->merchant->getContactMethods())->count(2);
-        verify($this->merchant->getContactMethods())->containsOnlyInstancesOf(ContactMethod::class);
+        $this->model->setContactMethods($this->getContactMethods());
+        verify($this->model->getContactMethods())->isInstanceOf(ContactMethods::class);
+        verify($this->model->getContactMethods())->notEmpty();
+        verify($this->model->getContactMethods())->containsOnlyInstancesOf(ContactMethod::class);
     }
 
     /**
-     * @depends testItCanSetContactMethods
-     * @depends testItCanGetContactMethods
-     *
-     * @return void
-     */
-    public function testItCanResetContactMethods(): void
-    {
-        expect($this->merchant->setContactMethods([]))->isInstanceOf(Merchant::class);
-        verify($this->merchant->getContactMethods())->isEmpty();
-    }
-
-    /**
-     * @throws Exception
-     *
      * @return void
      */
     public function testItCanSetACreatedDatetime(): void
     {
-        expect($this->merchant->setCreatedAt(new DateTime()))->isInstanceOf(Merchant::class);
+        $this->tester->assertObjectHasMethod('setCreatedAt', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setCreatedAt', $this->model);
+
+        $datetimeMock = Mockery::mock(DateTime::class);
+        verify($this->model->setCreatedAt($datetimeMock))->isInstanceOf(Merchant::class);
     }
 
     /**
      * @depends testItCanSetACreatedDatetime
      *
-     * @throws Exception
-     *
      * @return void
      */
     public function testItCanGetACreatedDatetime(): void
     {
-        $this->merchant->setCreatedAt(new DateTime());
+        $this->tester->assertObjectHasMethod('getCreatedAt', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getCreatedAt', $this->model);
 
-        verify($this->merchant->getCreatedAt())->notEmpty();
-        verify($this->merchant->getCreatedAt())->isInstanceOf(DateTime::class);
+        $datetimeMock = Mockery::mock(DateTime::class);
+        $this->model->setCreatedAt($datetimeMock);
+
+        verify($this->model->getCreatedAt())->notEmpty();
+        verify($this->model->getCreatedAt())->isInstanceOf(DateTime::class);
     }
 }

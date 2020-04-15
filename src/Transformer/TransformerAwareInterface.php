@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Transformer;
 
-
+/**
+ * Interface TransformerAwareInterface
+ *
+ * @package PayNL\Sdk\Transformer
+ */
 interface TransformerAwareInterface
 {
     /**

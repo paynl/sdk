@@ -4,19 +4,16 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PayNL\Sdk\Model;
 
-use Codeception\Test\Unit as UnitTest;
-use PayNL\Sdk\TotalCollection;
+use Codeception\{
+    Lib\ModelTestTrait,
+    Lib\CollectionTestTrait,
+    Test\Unit as UnitTest
+};
 use PayNL\Sdk\Model\{
-    ModelInterface,
-    Links,
+    LinksTrait,
     PaymentMethod,
     PaymentMethods
 };
-use PayNL\Sdk\Hydrator\{
-    PaymentMethod as PaymentMethodHydrator,
-    Links as LinksHydrator
-};
-use JsonSerializable, Countable, ArrayAccess, IteratorAggregate;
 
 /**
  * Class PaymentMethodsTest
@@ -25,74 +22,85 @@ use JsonSerializable, Countable, ArrayAccess, IteratorAggregate;
  */
 class PaymentMethodsTest extends UnitTest
 {
+    use ModelTestTrait, CollectionTestTrait {
+        testItCanBeAccessedLikeAnArray as traitTestItCanBeAccessedLikeAnArray;
+    }
+
     /**
      * @var PaymentMethods
      */
-    protected $paymentMethods;
+    protected $model;
 
     /**
      * @return void
      */
     public function _before(): void
     {
-        $this->paymentMethods = new PaymentMethods();
+        $this->markAsTotalCollection()
+            ->markAsJsonSerializable()
+        ;
+        $this->model = new PaymentMethods();
     }
 
     /**
      * @return void
      */
-    public function testItIsAModel(): void
+    public function testItHasLinksTrait(): void
     {
-        verify($this->paymentMethods)->isInstanceOf(ModelInterface::class);
+        $this->tester->assertObjectUsesTrait($this->model, LinksTrait::class);
     }
 
     /**
-     * @return void
+     * @return PaymentMethod
      */
-    public function testItIsATotalCollection(): void
+    private function getPaymentMethodMock(): PaymentMethod
     {
-        verify($this->paymentMethods)->isInstanceOf(TotalCollection::class);
+        return $this->tester->grabService('modelManager')->get('PaymentMethod');
     }
 
     /**
-     * @return void
+     * @return PaymentMethod
      */
-    public function testIsItNotJsonSerializable(): void
+    private function getIDeal(): PaymentMethod
     {
-        verify($this->paymentMethods)->isNotInstanceOf(JsonSerializable::class);
+        return ($this->getPaymentMethodMock())
+            ->setId(10)
+            ->setSubId(1)
+            ->setName('iDeal')
+            ->setImage('https://admin.pay.nl/images/payment_profiles/10.gif')
+            ->setCountryCodes(['NL']);
     }
 
     /**
-     * @return void
+     * @return PaymentMethod
      */
-    public function testItCanSetLinks(): void
+    private function getABNAmro(): PaymentMethod
     {
-        verify(method_exists($this->paymentMethods, 'setLinks'))->true();
-        verify($this->paymentMethods->setLinks(new Links()))->isInstanceOf(PaymentMethods::class);
+        return ($this->getPaymentMethodMock())
+            ->setId(1)
+            ->setName('ABN Amro')
+            ->setImage('https://admin.pay.nl/images/payment_banks/1.png');
     }
 
     /**
-     * @depends testItCanSetLinks
-     *
-     * @return void
+     * @return PaymentMethod
      */
-    public function testItCanGetLinks(): void
+    private function getASNBank(): PaymentMethod
     {
-        verify(method_exists($this->paymentMethods, 'getLinks'))->true();
+        return ($this->getPaymentMethodMock())
+            ->setId(8)
+            ->setName('ASN Bank')
+            ->setImage('https://admin.pay.nl/images/payment_banks/8.png');
+    }
 
-        $this->paymentMethods->setLinks(
-            (new LinksHydrator())->hydrate([
-                [
-                    'rel'  => 'self',
-                    'type' => 'GET',
-                    'url'  => 'http://some.url.com',
-                ],
-            ], new Links())
-        );
-
-        verify($this->paymentMethods->getLinks())->isInstanceOf(Links::class);
-        verify($this->paymentMethods->getLinks())->count(1);
-        verify($this->paymentMethods->getLinks())->hasKey('self');
+    /**
+     * @return PaymentMethod
+     */
+    private function getPayPal(): PaymentMethod
+    {
+        return ($this->getPaymentMethodMock())
+            ->setId(138)
+            ->setName('PayPal');
     }
 
     /**
@@ -100,28 +108,10 @@ class PaymentMethodsTest extends UnitTest
      */
     public function testItCanAddPaymentMethod(): void
     {
-        verify(method_exists($this->paymentMethods, 'addPaymentMethod'))->true();
-        verify($this->paymentMethods->addPaymentMethod((new PaymentMethodHydrator())->hydrate([
-            'id'           => '10',
-            'subId'        => 1,
-            'name'         => 'iDeal',
-            'image'        => 'https://admin.pay.nl/images/payment_profiles/10.gif',
-            'countryCodes' => [
-                'NL'
-            ],
-            'subMethods' => [
-                [
-                    'id'    => 1,
-                    'name'  => 'ABN Amro',
-                    'image' => 'https://admin.pay.nl/images/payment_banks/1.png'
-                ],
-                [
-                    'id'    => 8,
-                    'name'  => 'ASN Bank',
-                    'image' => 'https://admin.pay.nl/images/payment_banks/8.png'
-                ]
-            ]
-        ], new PaymentMethod())))->isInstanceOf(PaymentMethods::class);
+        $this->tester->assertObjectHasMethod('addPaymentMethod', $this->model);
+        $this->tester->assertObjectMethodIsPublic('addPaymentMethod', $this->model);
+
+        verify($this->model->addPaymentMethod($this->getIDeal()))->isInstanceOf(PaymentMethods::class);
     }
 
     /**
@@ -131,8 +121,11 @@ class PaymentMethodsTest extends UnitTest
      */
     public function testItCanSetPaymentMethods(): void
     {
-        verify(method_exists($this->paymentMethods, 'setPaymentMethods'))->true();
-        verify($this->paymentMethods->setPaymentMethods([]))->isInstanceOf(PaymentMethods::class);
+        $this->tester->assertObjectHasMethod('setPaymentMethods', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setPaymentMethods', $this->model);
+
+        verify($this->model->setPaymentMethods([]))->isInstanceOf(PaymentMethods::class);
+        verify($this->model->setPaymentMethods([ $this->getIDeal() ]))->isInstanceOf(PaymentMethods::class);
     }
 
     /**
@@ -142,96 +135,12 @@ class PaymentMethodsTest extends UnitTest
      */
     public function testItCanGetPaymentMethods(): void
     {
-        verify(method_exists($this->paymentMethods, 'getPaymentMethods'))->true();
+        $this->tester->assertObjectHasMethod('getPaymentMethods', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getPaymentMethods', $this->model);
 
-        $this->paymentMethods->setPaymentMethods([
-            (new PaymentMethodHydrator())->hydrate([
-                'id'           => '10',
-                'subId'        => 1,
-                'name'         => 'iDeal',
-                'image'        => 'https://admin.pay.nl/images/payment_profiles/10.gif',
-                'countryCodes' => [
-                    'NL'
-                ],
-                'subMethods' => [
-                    [
-                        'id'    => 1,
-                        'name'  => 'ABN Amro',
-                        'image' => 'https://admin.pay.nl/images/payment_banks/1.png'
-                    ],
-                    [
-                        'id'    => 8,
-                        'name'  => 'ASN Bank',
-                        'image' => 'https://admin.pay.nl/images/payment_banks/8.png'
-                    ]
-                ]
-            ], new PaymentMethod()),
-        ]);
-
-        verify($this->paymentMethods->getPaymentMethods())->array();
-        verify($this->paymentMethods->getPaymentMethods())->count(1);
-    }
-
-    /**
-     * @return void
-     */
-    public function testItCanSetTotal(): void
-    {
-        verify(method_exists($this->paymentMethods, 'setTotal'))->true();
-        verify($this->paymentMethods->setTotal(1))->isInstanceOf(PaymentMethods::class);
-    }
-
-    /**
-     * @depends testItCanSetTotal
-     *
-     * @return void
-     */
-    public function testItCanGetTotal(): void
-    {
-        verify(method_exists($this->paymentMethods, 'getTotal'))->true();
-
-        $this->paymentMethods->setTotal(1);
-
-        verify($this->paymentMethods->getTotal())->int();
-        verify($this->paymentMethods->getTotal())->notEmpty();
-        verify($this->paymentMethods->getTotal())->equals(1);
-    }
-
-
-    /**
-     * @depends testItCanSetPaymentMethods
-     *
-     * @return void
-     */
-    public function testItIsCountable(): void
-    {
-        verify($this->paymentMethods)->isInstanceOf(Countable::class);
-
-        $this->paymentMethods->setPaymentMethods([
-            (new PaymentMethodHydrator())->hydrate([
-                'id'           => '10',
-                'subId'        => 1,
-                'name'         => 'iDeal',
-                'image'        => 'https://admin.pay.nl/images/payment_profiles/10.gif',
-                'countryCodes' => [
-                    'NL'
-                ],
-                'subMethods' => [
-                    [
-                        'id'    => 1,
-                        'name'  => 'ABN Amro',
-                        'image' => 'https://admin.pay.nl/images/payment_banks/1.png'
-                    ],
-                    [
-                        'id'    => 8,
-                        'name'  => 'ASN Bank',
-                        'image' => 'https://admin.pay.nl/images/payment_banks/8.png'
-                    ]
-                ]
-            ], new PaymentMethod()),
-        ])->setTotal(1);
-
-        verify(count($this->paymentMethods))->equals(1);
+        $this->model->add($this->getIDeal());
+        verify($this->model->getPaymentMethods())->array();
+        verify($this->model->getPaymentMethods())->count(1);
     }
 
     /**
@@ -241,69 +150,41 @@ class PaymentMethodsTest extends UnitTest
      */
     public function testItCanBeAccessedLikeAnArray(): void
     {
-        verify($this->paymentMethods)->isInstanceOf(ArrayAccess::class);
+        $this->traitTestItCanBeAccessedLikeAnArray();
 
-        $this->paymentMethods->setPaymentMethods([
-            (new PaymentMethodHydrator())->hydrate([
-                'id'           => '10',
-                'subId'        => 1,
-                'name'         => 'iDeal',
-                'image'        => 'https://admin.pay.nl/images/payment_profiles/10.gif',
-                'countryCodes' => [
-                    'NL'
-                ],
-                'subMethods' => [
-                    [
-                        'id'    => 1,
-                        'name'  => 'ABN Amro',
-                        'image' => 'https://admin.pay.nl/images/payment_banks/1.png'
-                    ],
-                    [
-                        'id'    => 8,
-                        'name'  => 'ASN Bank',
-                        'image' => 'https://admin.pay.nl/images/payment_banks/8.png'
-                    ]
-                ]
-            ], new PaymentMethod()),
-        ])->setTotal(1);
+        $paymentProfileIDeal = $this->getIDeal();
+
+        $this->model
+            ->setPaymentMethods([
+                $paymentProfileIDeal
+                    ->setSubMethods(
+                        (new PaymentMethods())->setPaymentMethods([
+                            $this->getABNAmro(),
+                            $this->getASNBank()
+                        ])
+                    )
+            ]);
 
         // offsetExists
-        verify(isset($this->paymentMethods[10]))->true();
-        verify(isset($this->paymentMethods['non_existing_key']))->false();
+        verify(isset($this->model[$paymentProfileIDeal->getId()]))->true();
+        $nonExistingKey = 'non_existing_key';
+        verify($paymentProfileIDeal->getId())->notEquals($nonExistingKey);
+        verify($this->model)->hasntKey($nonExistingKey);
 
         // offsetGet
-        verify($this->paymentMethods[10])->isInstanceOf(PaymentMethod::class);
+        verify($this->model[$paymentProfileIDeal->getId()])->isInstanceOf(PaymentMethod::class);
+        verify($this->model[$paymentProfileIDeal->getId()])->equals($paymentProfileIDeal);
 
         // offsetSet
-        $this->paymentMethods[138] = (new PaymentMethodHydrator())->hydrate([
-            'id'       => '138',
-            'name'     => 'PayPal',
-        ], new PaymentMethod());
-        verify($this->paymentMethods)->hasKey(138);
-        verify($this->paymentMethods)->count(2);
+        $paymentProfilePayPal = $this->getPayPal();
+        verify($this->model)->hasntKey($paymentProfilePayPal->getId());
+        $this->model[$paymentProfilePayPal->getId()] = $this->getPayPal();
+        verify($this->model)->hasKey($paymentProfilePayPal->getId());
+        verify($this->model)->count(2);
 
         // offsetUnset
-        unset($this->paymentMethods[10]);
-        verify($this->paymentMethods)->count(1);
-        verify($this->paymentMethods)->hasntKey(10);
-    }
-
-    /**
-     * @depends testItCanSetPaymentMethods
-     *
-     * @return void
-     */
-    public function testItCanBeIterated(): void
-    {
-        verify($this->paymentMethods)->isInstanceOf(IteratorAggregate::class);
-
-        $this->paymentMethods->setPaymentMethods([
-            (new PaymentMethodHydrator())->hydrate([
-                'id'       => '138',
-                'name'     => 'PayPal',
-            ], new PaymentMethod()),
-        ])->setTotal(1);
-
-        verify(is_iterable($this->paymentMethods))->true();
+        unset($this->model[$paymentProfileIDeal->getId()]);
+        verify($this->model)->count(1);
+        verify($this->model)->hasntKey($paymentProfileIDeal->getId());
     }
 }

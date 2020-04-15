@@ -23,6 +23,8 @@ class Factory implements FactoryInterface
 {
     /**
      * @inheritDoc
+     *
+     * @throws ServiceNotFoundException
      */
     public function __invoke(ContainerInterface $container, string $requestedName, array $options = null)
     {

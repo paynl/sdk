@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PayNL\Sdk\Model;
 
-use Codeception\Test\Unit as UnitTest;
-use PayNL\Sdk\Model\{
-    ModelInterface,
-    ContactMethod
+use Codeception\{
+    Lib\ModelTestTrait,
+    Test\Unit as UnitTest
 };
-use JsonSerializable;
+use PayNL\Sdk\Model\ContactMethod;
 
 /**
  * Class ContactMethodTest
@@ -18,33 +17,19 @@ use JsonSerializable;
  */
 class ContactMethodTest extends UnitTest
 {
+    use ModelTestTrait;
+
     /**
      * @var ContactMethod
      */
-    protected $contactMethod;
+    protected $model;
 
     /**
      * @return void
      */
     public function _before(): void
     {
-        $this->contactMethod = new ContactMethod();
-    }
-
-    /**
-     * @return void
-     */
-    public function testItIsAModel(): void
-    {
-        verify($this->contactMethod)->isInstanceOf(ModelInterface::class);
-    }
-
-    /**
-     * @return void
-     */
-    public function testIsItNotJsonSerializable(): void
-    {
-        verify($this->contactMethod)->isNotInstanceOf(JsonSerializable::class);
+        $this->model = new ContactMethod();
     }
 
     /**
@@ -52,7 +37,11 @@ class ContactMethodTest extends UnitTest
      */
     public function testItCanSetAType(): void
     {
-        expect($this->contactMethod->setType('email'))->isInstanceOf(ContactMethod::class);
+        $this->tester->assertObjectHasMethod('setType', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setType', $this->model);
+
+
+        expect($this->model->setType('email'))->isInstanceOf(ContactMethod::class);
     }
 
     /**
@@ -62,11 +51,15 @@ class ContactMethodTest extends UnitTest
      */
     public function testItCanGetAType(): void
     {
-        $this->contactMethod->setType('email');
+        $this->tester->assertObjectHasMethod('getType', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getType', $this->model);
 
-        verify($this->contactMethod->getType())->string();
-        verify($this->contactMethod->getType())->notEmpty();
-        verify($this->contactMethod->getType())->equals('email');
+
+        $this->model->setType('email');
+
+        verify($this->model->getType())->string();
+        verify($this->model->getType())->notEmpty();
+        verify($this->model->getType())->equals('email');
     }
 
     /**
@@ -74,7 +67,11 @@ class ContactMethodTest extends UnitTest
      */
     public function testItCanSetAValue(): void
     {
-        expect($this->contactMethod->setValue('support@pay.nl'))->isInstanceOf(ContactMethod::class);
+        $this->tester->assertObjectHasMethod('setValue', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setValue', $this->model);
+
+
+        expect($this->model->setValue('support@pay.nl'))->isInstanceOf(ContactMethod::class);
     }
 
     /**
@@ -84,11 +81,15 @@ class ContactMethodTest extends UnitTest
      */
     public function testItCanGetAValue(): void
     {
-        $this->contactMethod->setValue('support@pay.nl');
+        $this->tester->assertObjectHasMethod('getValue', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getValue', $this->model);
 
-        verify($this->contactMethod->getValue())->string();
-        verify($this->contactMethod->getValue())->notEmpty();
-        verify($this->contactMethod->getValue())->equals('support@pay.nl');
+
+        $this->model->setValue('support@pay.nl');
+
+        verify($this->model->getValue())->string();
+        verify($this->model->getValue())->notEmpty();
+        verify($this->model->getValue())->equals('support@pay.nl');
     }
 
     /**
@@ -96,7 +97,11 @@ class ContactMethodTest extends UnitTest
      */
     public function testItCanSetADescription(): void
     {
-        expect($this->contactMethod->setDescription('Support desk'))->isInstanceOf(ContactMethod::class);
+        $this->tester->assertObjectHasMethod('setDescription', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setDescription', $this->model);
+
+
+        expect($this->model->setDescription('Support desk'))->isInstanceOf(ContactMethod::class);
     }
 
     /**
@@ -106,10 +111,14 @@ class ContactMethodTest extends UnitTest
      */
     public function testItCanGetADescription(): void
     {
-        $this->contactMethod->setDescription('Support desk');
+        $this->tester->assertObjectHasMethod('getDescription', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getDescription', $this->model);
 
-        verify($this->contactMethod->getDescription())->string();
-        verify($this->contactMethod->getDescription())->notEmpty();
-        verify($this->contactMethod->getDescription())->equals('Support desk');
+
+        $this->model->setDescription('Support desk');
+
+        verify($this->model->getDescription())->string();
+        verify($this->model->getDescription())->notEmpty();
+        verify($this->model->getDescription())->equals('Support desk');
     }
 }

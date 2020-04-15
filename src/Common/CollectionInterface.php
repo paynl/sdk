@@ -15,4 +15,9 @@ interface CollectionInterface
      * @return string
      */
     public function getCollectionName(): string;
+
+    /**
+     * @return array
+     */
+    public function toArray();
 }

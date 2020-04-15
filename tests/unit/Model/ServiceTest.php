@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PayNL\Sdk\Model;
 
-use Codeception\Test\Unit as UnitTest;
-use PayNL\Sdk\Model\{
-    ModelInterface,
-    Links,
-    Service
+use Codeception\{
+    Lib\ModelTestTrait,
+    Test\Unit as UnitTest
 };
-use PayNL\Sdk\DateTime;
-use Exception, JsonSerializable;
-use PayNL\Sdk\Hydrator\Links as LinksHydrator;
+use PayNL\Sdk\{
+    Common\DateTime,
+    Model\LinksTrait,
+    Model\Service
+};
+use Mockery;
 
 /**
  * Class ServiceTest
@@ -21,132 +22,129 @@ use PayNL\Sdk\Hydrator\Links as LinksHydrator;
  */
 class ServiceTest extends UnitTest
 {
+    use ModelTestTrait;
+
     /**
      * @var Service
      */
-    protected $service;
+    protected $model;
 
+    /**
+     * @return void
+     */
     public function _before(): void
     {
-        $this->service = new Service();
+        $this->model = new Service();
     }
 
     /**
      * @return void
      */
-    public function testItIsAModel(): void
+    public function testItIsLinksAware(): void
     {
-        verify($this->service)->isInstanceOf(ModelInterface::class);
+        $this->tester->assertObjectUsesTrait($this->model, LinksTrait::class);
     }
 
     /**
      * @return void
      */
-    public function testIsItNotJsonSerializable(): void
+    public function testItCanSetId(): void
     {
-        verify($this->service)->isNotInstanceOf(JsonSerializable::class);
+        $this->tester->assertObjectHasMethod('setId', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setId', $this->model);
+
+        $service = $this->model->setId('foo');
+        verify($service)->object();
+        verify($service)->same($this->model);
     }
 
     /**
-     * @return void
-     */
-    public function testItCanSetLinks(): void
-    {
-        verify(method_exists($this->service, 'setLinks'))->true();
-        verify($this->service->setLinks(new Links()))->isInstanceOf(Service::class);
-    }
-
-    /**
-     * @depends testItCanSetLinks
+     * @depends testItCanSetId
      *
      * @return void
      */
-    public function testItCanGetLinks(): void
+    public function testItCanGetId(): void
     {
-        verify(method_exists($this->service, 'getLinks'))->true();
+        $this->tester->assertObjectHasMethod('getId', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getId', $this->model);
 
-        $this->service->setLinks(
-            (new LinksHydrator())->hydrate([
-                [
-                    'rel'  => 'self',
-                    'type' => 'GET',
-                    'url'  => 'http://some.url.com',
-                ],
-            ], new Links())
-        );
+        $id = $this->model->getId();
+        verify($id)->string();
+        verify($id)->isEmpty();
 
-        verify($this->service->getLinks())->isInstanceOf(Links::class);
-        verify($this->service->getLinks())->count(1);
-        verify($this->service->getLinks())->hasKey('self');
+        $this->model->setId('foo');
+        $id = $this->model->getId();
+        verify($id)->string();
+        verify($id)->notEmpty();
+        verify($id)->equals('foo');
     }
 
     /**
      * @return void
      */
-    public function testItCanSetAnId(): void
+    public function testItCanSetName(): void
     {
-        expect($this->service->setId('SL-0000-0000'))->isInstanceOf(Service::class);
+        $this->tester->assertObjectHasMethod('setName', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setName', $this->model);
+
+        $service = $this->model->setName('foo');
+        verify($service)->object();
+        verify($service)->same($this->model);
     }
 
     /**
-     * @depends testItCanSetAnId
+     * @depends testItCanSetName
      *
      * @return void
      */
-    public function testItCanGetAnId(): void
+    public function testItCanGetName(): void
     {
-        $this->service->setId('SL-0000-0000');
+        $this->tester->assertObjectHasMethod('getName', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getName', $this->model);
 
-        verify($this->service->getId())->string();
-        verify($this->service->getId())->notEmpty();
-        verify($this->service->getId())->equals('SL-0000-0000');
+        $name = $this->model->getName();
+        verify($name)->string();
+        verify($name)->isEmpty();
+
+        $this->model->setName('foo');
+        $name = $this->model->getName();
+        verify($name)->string();
+        verify($name)->notEmpty();
+        verify($name)->equals('foo');
     }
 
     /**
      * @return void
      */
-    public function testItCanSetAName(): void
+    public function testItCanSetDescription(): void
     {
-        expect($this->service->setName('Service 1'))->isInstanceOf(Service::class);
+        $this->tester->assertObjectHasMethod('setDescription', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setDescription', $this->model);
+
+        $service = $this->model->setDescription('foo');
+        verify($service)->object();
+        verify($service)->same($this->model);
     }
 
     /**
-     * @depends testItCanSetAName
+     * @depends testItCanSetDescription
      *
      * @return void
      */
-    public function testItCanGetAName(): void
+    public function testItCanGetDescription(): void
     {
-        $this->service->setName('Service 1');
+        $this->tester->assertObjectHasMethod('getDescription', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getDescription', $this->model);
 
-        verify($this->service->getName())->string();
-        verify($this->service->getName())->notEmpty();
-        verify($this->service->getName())->equals('Service 1');
-    }
+        $description = $this->model->getDescription();
+        verify($description)->string();
+        verify($description)->isEmpty();
 
-    /**
-     * @return void
-     */
-    public function testItCanSetADescription(): void
-    {
-        expect($this->service->setDescription('Service description'))->isInstanceOf(Service::class);
-    }
-
-    /**
-     * @depends testItCanSetADescription
-     *
-     * @return void
-     */
-    public function testItCanGetADescription(): void
-    {
-        verify($this->service->getDescription())->string();
-        verify($this->service->getDescription())->equals('');
-
-        $this->service->setDescription('Service description');
-
-        verify($this->service->getDescription())->string();
-        verify($this->service->getDescription())->notEmpty();
-        verify($this->service->getDescription())->equals('Service description');
+        $this->model->setDescription('foo');
+        $description = $this->model->getDescription();
+        verify($description)->string();
+        verify($description)->notEmpty();
+        verify($description)->equals('foo');
     }
 
     /**
@@ -154,7 +152,12 @@ class ServiceTest extends UnitTest
      */
     public function testItCanSetTestMode(): void
     {
-        expect($this->service->setTestMode(1))->isInstanceOf(Service::class);
+        $this->tester->assertObjectHasMethod('setTestMode', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setTestMode', $this->model);
+
+        $service = $this->model->setTestMode(true);
+        verify($service)->object();
+        verify($service)->same($this->model);
     }
 
     /**
@@ -164,65 +167,84 @@ class ServiceTest extends UnitTest
      */
     public function testItCanGetTestMode(): void
     {
-        verify($this->service->isTestMode())->int();
-        verify($this->service->isTestMode())->equals(0);
+        $this->tester->assertObjectHasMethod('isTestMode', $this->model);
+        $this->tester->assertObjectMethodIsPublic('isTestMode', $this->model);
 
-        $this->service->setTestMode(1);
+        $testMode = $this->model->isTestMode();
+        verify($testMode)->bool();
+        verify($testMode)->false();
 
-        verify($this->service->isTestMode())->int();
-        verify($this->service->isTestMode())->notEmpty();
-        verify($this->service->isTestMode())->equals(1);
+        $this->model->setTestMode(true);
+        $testMode = $this->model->isTestMode();
+        verify($testMode)->bool();
+        verify($testMode)->true();
     }
 
     /**
      * @return void
      */
-    public function testItCanSetASecret(): void
+    public function testItCanSetSecret(): void
     {
-        expect($this->service->setSecret('uZ3Th4F0rc3!'))->isInstanceOf(Service::class);
+        $this->tester->assertObjectHasMethod('setSecret', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setSecret', $this->model);
+
+        $service = $this->model->setSecret('foo');
+        verify($service)->object();
+        verify($service)->same($this->model);
     }
 
     /**
-     * @depends testItCanSetASecret
+     * @depends testItCanSetSecret
      *
      * @return void
      */
-    public function testItCanGetASecret(): void
+    public function testItCanGetSecret(): void
     {
-        verify($this->service->getSecret())->string();
-        verify($this->service->getSecret())->equals('');
+        $this->tester->assertObjectHasMethod('getSecret', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getSecret', $this->model);
 
-        $this->service->setSecret('uZ3Th4F0rc3!');
+        $secret = $this->model->getSecret();
+        verify($secret)->string();
+        verify($secret)->isEmpty();
 
-        verify($this->service->getSecret())->string();
-        verify($this->service->getSecret())->notEmpty();
-        verify($this->service->getSecret())->equals('uZ3Th4F0rc3!');
+        $this->model->setSecret('foo');
+        $secret = $this->model->getSecret();
+        verify($secret)->string();
+        verify($secret)->notEmpty();
+        verify($secret)->equals('foo');
     }
 
     /**
-     * @throws Exception
-     *
      * @return void
      */
-    public function testItCanSetACreatedAt(): void
+    public function testItCanSetCreatedAt(): void
     {
-        expect($this->service->setCreatedAt(new DateTime()))->isInstanceOf(Service::class);
+        $this->tester->assertObjectHasMethod('setCreatedAt', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setCreatedAt', $this->model);
+
+        $dateTimeMock = Mockery::mock(DateTime::class);
+        $service = $this->model->setCreatedAt($dateTimeMock);
+        verify($service)->object();
+        verify($service)->same($this->model);
     }
 
     /**
-     * @depends testItCanSetACreatedAt
-     *
-     * @throws Exception
+     * @depends testItCanSetCreatedAt
      *
      * @return void
      */
-    public function testItCanGetACreatedAt(): void
+    public function testItCanGetCreatedAt(): void
     {
-        verify($this->service->getCreatedAt())->null();
+        $this->tester->assertObjectHasMethod('getCreatedAt', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getCreatedAt', $this->model);
 
-        $this->service->setCreatedAt(new DateTime());
+        $createdAt = $this->model->getCreatedAt();
+        verify($createdAt)->null();
 
-        verify($this->service->getCreatedAt())->notEmpty();
-        verify($this->service->getCreatedAt())->isInstanceOf(DateTime::class);
+        $dateTimeMock = Mockery::mock(DateTime::class);
+        $this->model->setCreatedAt($dateTimeMock);
+        $createdAt = $this->model->getCreatedAt();
+        verify($createdAt)->notEmpty();
+        verify($createdAt)->isInstanceOf(DateTime::class);
     }
 }

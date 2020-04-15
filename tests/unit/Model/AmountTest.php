@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PayNL\Sdk\Model;
 
-use Codeception\Test\Unit as UnitTest;
-use PayNL\Sdk\Model\{
-    ModelInterface,
-    Amount
+use Codeception\{
+    Lib\ModelTestTrait,
+    Test\Unit as UnitTest
 };
-use JsonSerializable;
+use PayNL\Sdk\Model\Amount;
 
 /**
  * Class AmountTest
@@ -18,32 +17,20 @@ use JsonSerializable;
  */
 class AmountTest extends UnitTest
 {
+    use ModelTestTrait;
+
     /**
      * @var Amount
      */
-    protected $amount;
+    protected $model;
 
+    /**
+     * @return void
+     */
     public function _before(): void
     {
-        $this->amount = new Amount();
-    }
-
-    /**
-     * @return void
-     */
-    public function testItIsAModel(): void
-    {
-        verify($this->amount)->isInstanceOf(ModelInterface::class);
-    }
-
-    /**
-     * @return void
-     */
-    public function testIsItJsonSerializable(): void
-    {
-        verify($this->amount)->isInstanceOf(JsonSerializable::class);
-
-        verify($this->amount->jsonSerialize())->array();
+        $this->markAsJsonSerializable();
+        $this->model = new Amount();
     }
 
     /**
@@ -51,7 +38,10 @@ class AmountTest extends UnitTest
      */
     public function testItCanSetAnAmount(): void
     {
-        expect($this->amount->setAmount(100))->isInstanceOf(Amount::class);
+        $this->tester->assertObjectHasMethod('setAmount', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setAmount', $this->model);
+
+        expect($this->model->setAmount(100))->isInstanceOf(Amount::class);
     }
 
     /**
@@ -61,15 +51,18 @@ class AmountTest extends UnitTest
      */
     public function testItCanGetAnAmount(): void
     {
+        $this->tester->assertObjectHasMethod('getAmount', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getAmount', $this->model);
+
         // check initial value
-        verify($this->amount->getAmount())->int();
-        verify($this->amount->getAmount())->isEmpty();
-        verify($this->amount->getAmount())->equals(0);
+        verify($this->model->getAmount())->int();
+        verify($this->model->getAmount())->isEmpty();
+        verify($this->model->getAmount())->equals(0);
 
         // set new value
-        $this->amount->setAmount(100);
+        $this->model->setAmount(100);
 
-        verify($this->amount->getAmount())->equals(100);
+        verify($this->model->getAmount())->equals(100);
     }
 
     /**
@@ -77,7 +70,10 @@ class AmountTest extends UnitTest
      */
     public function testItCanSetACurrency(): void
     {
-        expect($this->amount->setCurrency('USD'))->isInstanceOf(Amount::class);
+        $this->tester->assertObjectHasMethod('setCurrency', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setCurrency', $this->model);
+
+        expect($this->model->setCurrency('USD'))->isInstanceOf(Amount::class);
     }
 
     /**
@@ -87,14 +83,17 @@ class AmountTest extends UnitTest
      */
     public function testItCanGetACurrency(): void
     {
-        // check initial value
-        verify($this->amount->getCurrency())->string();
-        verify($this->amount->getCurrency())->notEmpty();
-        verify($this->amount->getCurrency())->equals('EUR');
+        $this->tester->assertObjectHasMethod('getCurrency', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getCurrency', $this->model);
+
+// check initial value
+        verify($this->model->getCurrency())->string();
+        verify($this->model->getCurrency())->notEmpty();
+        verify($this->model->getCurrency())->equals('EUR');
 
         // set new value
-        $this->amount->setCurrency('USD');
+        $this->model->setCurrency('USD');
 
-        verify($this->amount->getCurrency())->equals('USD');
+        verify($this->model->getCurrency())->equals('USD');
     }
 }

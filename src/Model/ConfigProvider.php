@@ -26,11 +26,24 @@ class ConfigProvider implements ConfigProviderInterface
         return [
             'service_manager' => $this->getDependencyConfig(),
             'service_loader_options' => [
-                'modelManager' => [
+                Manager::class => [
                     'service_manager' => 'modelManager',
-                    'config_key' => 'models',
-                    'class_method' => 'getModelConfig'
+                    'config_key'      => 'models',
+                    'class_method'    => 'getModelConfig'
                 ],
+            ],
+            'hydrator_collection_map' => [
+                // CollectionEntity(Alias) => EntryEntity(Alias)
+                'contactMethods' => 'contactMethod',
+                'currencies'     => 'currency',
+                'directdebits'   => 'directdebit',
+                'errors'         => 'error',
+                'links'          => 'link',
+                'paymentMethods' => 'paymentMethod',
+                'products'       => 'product',
+                'services'       => 'service',
+                'terminals'      => 'terminal',
+                'trademarks'     => 'trademark'
             ],
         ];
     }

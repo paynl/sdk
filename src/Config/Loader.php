@@ -45,12 +45,14 @@ class Loader
      * Loader constructor.
      *
      * @param array|Config $applicationConfig
+     *
+     * @throws Exception\InvalidArgumentException
      */
     public function __construct($applicationConfig = [])
     {
         if (true === is_array($applicationConfig)) {
             $applicationConfig = new Config($applicationConfig);
-        } elseif (! ($applicationConfig instanceof Config)) {
+        } elseif (($applicationConfig instanceof Config) === false) {
             throw new Exception\InvalidArgumentException('Config not correct');
         }
 
@@ -65,16 +67,18 @@ class Loader
     /**
      * @param string|array|Traversable $paths
      *
+     * @throws Exception\InvalidArgumentException
+     *
      * @return Loader
      */
     public function addPaths($paths): self
     {
         if (true === is_string($paths)) {
             $paths = [$paths];
-        } elseif (! is_iterable($paths)) {
-            throw new Exception\RuntimeException(
+        } elseif (false === is_iterable($paths)) {
+            throw new Exception\InvalidArgumentException(
                 sprintf(
-                    'Given paths to "%s" must be iterable',
+                    'Given paths to "%s" must be iterable or a string',
                     __METHOD__
                 )
             );
@@ -98,7 +102,17 @@ class Loader
     }
 
     /**
+     * @return array
+     */
+    protected function getPaths(): array
+    {
+        return $this->paths;
+    }
+
+    /**
      * @param string $path
+     *
+     * @throws Exception\ConfigNotFoundException
      *
      * @return Loader
      *
@@ -106,13 +120,12 @@ class Loader
      */
     public function addConfigByPath(string $path): self
     {
-        $class = Misc::getClassNameByFile($path);
-        if (false === class_exists($class)) {
+        try {
+            $class = Misc::getClassNameByFile($path);
+        } catch (Exception\ExceptionInterface $e) {
             throw new Exception\ConfigNotFoundException(
-                sprintf(
-                    'Config class with name "%s" can not be found',
-                    $class
-                )
+                'Can not load configuration due to the following:' . PHP_EOL .
+                $e->getMessage()
             );
         }
 
@@ -139,7 +152,7 @@ class Loader
      */
     public function load(): self
     {
-        foreach ($this->paths as $path) {
+        foreach ($this->getPaths() as $path) {
             $this->addConfigByPath($path);
         }
 

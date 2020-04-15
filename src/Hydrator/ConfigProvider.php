@@ -25,7 +25,7 @@ class ConfigProvider implements ConfigProviderInterface
         return [
             'service_manager' => $this->getDependencyConfig(),
             'service_loader_options' => [
-                'hydratorManager' => [
+                Manager::class => [
                     'service_manager' => 'hydratorManager',
                     'config_key'      => 'hydrators',
                     'class_method'    => 'getHydratorConfig'

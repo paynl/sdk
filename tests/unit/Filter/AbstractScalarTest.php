@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace Tests\Unit\PayNL\Sdk\Filter;
 
 use Codeception\Test\Unit as UnitTest;
-use PayNL\Sdk\Exception\InvalidArgumentException;
-use PayNL\Sdk\Filter\AbstractScalar;
-use PayNL\Sdk\Filter\FilterInterface;
+use PayNL\Sdk\{
+    Filter\AbstractScalar,
+    Filter\FilterInterface,
+    Exception\InvalidArgumentException
+};
 use UnitTester;
 
 /**
@@ -32,7 +34,7 @@ class AbstractScalarTest extends UnitTest
      */
     public function _before(): void
     {
-        $this->anonymousClassFromAbstract = new class(1) extends AbstractScalar {
+        $this->anonymousClassFromAbstract = new class('foo') extends AbstractScalar {
             public function getName(): string
             {
                 return 'anonymousClassFilter';
@@ -59,34 +61,50 @@ class AbstractScalarTest extends UnitTest
     /**
      * @return void
      */
-    public function testItTriggersAnExceptionOnWrongInput(): void
+    public function testItCanGetValue(): void
+    {
+        $value = $this->anonymousClassFromAbstract->getValue();
+        verify($value)->string();
+        verify($value)->notEmpty();
+        verify($value)->equals('foo');
+    }
+
+    /**
+     * @depends testItCanGetValue
+     *
+     * @return void
+     */
+    public function testItCanSetValue(): void
+    {
+        verify($this->anonymousClassFromAbstract->setValue('bar'))->isInstanceOf(AbstractScalar::class);
+
+        $value = $this->anonymousClassFromAbstract->getValue();
+        verify($value)->string();
+        verify($value)->equals('bar');
+
+        $this->anonymousClassFromAbstract->setValue(true);
+        $value = $this->anonymousClassFromAbstract->getValue();
+        verify($value)->string();
+        verify($value)->equals('1');
+
+        $this->anonymousClassFromAbstract->setValue(1);
+        $value = $this->anonymousClassFromAbstract->getValue();
+        verify($value)->string();
+        verify($value)->equals('1');
+
+        $this->anonymousClassFromAbstract->setValue(1.99);
+        $value = $this->anonymousClassFromAbstract->getValue();
+        verify($value)->string();
+        verify($value)->equals('1.99');
+    }
+
+    /**
+     * @return void
+     */
+    public function testSetValueThrowsExceptionWithInvalidArgument(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        new class(new \stdClass()) extends AbstractScalar {
-            public function getName(): string
-            {
-            }
-        };
-    }
-
-    /**
-     * @return void
-     */
-    public function testItContainsAValue(): void
-    {
-        verify($this->anonymousClassFromAbstract->getValue())->notEmpty();
-        verify($this->anonymousClassFromAbstract->getValue())->string();
-        verify($this->anonymousClassFromAbstract->getValue())->equals('1');
-    }
-
-    /**
-     * @return void
-     */
-    public function testItCanSetAValue(): void
-    {
-        verify($this->tester->getMethodAccessibility($this->anonymousClassFromAbstract, 'setValue'))->equals('protected');
-        $this->tester->invokeMethod($this->anonymousClassFromAbstract, 'setValue', [ 'newValue' ]);
-        verify($this->anonymousClassFromAbstract->getValue())->equals('newValue');
+        $this->anonymousClassFromAbstract->setValue(new InvalidArgumentException());
     }
 
     /**
@@ -94,6 +112,26 @@ class AbstractScalarTest extends UnitTest
      */
     public function testItCanBeConvertedToAString(): void
     {
-        verify((string)$this->anonymousClassFromAbstract)->string();
+        $filterString = (string)$this->anonymousClassFromAbstract;
+        verify($filterString)->string();
+        verify($filterString)->equals('anonymousClassFilter=foo');
+    }
+
+    /**
+     * @depends testItCanConstruct
+     * @depends testItCanSetValue
+     *
+     * @return void
+     */
+    public function testConstructionThrowsExceptionWhenInvalidValueGiven(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        new class(new InvalidArgumentException()) extends AbstractScalar
+        {
+            public function getName(): string
+            {
+                return '';
+            }
+        };
     }
 }

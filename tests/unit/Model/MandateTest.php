@@ -4,18 +4,19 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PayNL\Sdk\Model;
 
-use Codeception\Test\Unit as UnitTest;
-use PayNL\Sdk\Model\{
-    ModelInterface,
-    Amount,
-    BankAccount,
-    Customer,
-    Interval,
-    Mandate,
-    Statistics
+use Codeception\{
+    Lib\ModelTestTrait,
+    Test\Unit as UnitTest
 };
-use JsonSerializable, Exception;
-use PayNL\Sdk\DateTime;
+use PayNL\Sdk\{
+    Common\DateTime,
+    Model\Amount,
+    Model\Customer,
+    Model\Interval,
+    Model\Mandate,
+    Model\Statistics
+};
+use Mockery;
 
 /**
  * Class MandateTest
@@ -24,194 +25,254 @@ use PayNL\Sdk\DateTime;
  */
 class MandateTest extends UnitTest
 {
+    use ModelTestTrait;
+
     /**
      * @var Mandate
      */
-    protected $mandate;
+    protected $model;
 
+    /**
+     * @return void
+     */
     public function _before(): void
     {
-        $this->mandate = new Mandate();
+        $this->markAsJsonSerializable();
+        $this->model = new Mandate();
     }
 
     /**
      * @return void
      */
-    public function testItIsAModel(): void
+    public function testItCanSetId(): void
     {
-        verify($this->mandate)->isInstanceOf(ModelInterface::class);
+        $this->tester->assertObjectHasMethod('setId', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setId', $this->model);
+
+        $mandate = $this->model->setId('foo');
+        verify($mandate)->object();
+        verify($mandate)->same($this->model);
     }
 
     /**
-     * @return void
-     */
-    public function testIsItJsonSerializable(): void
-    {
-        verify($this->mandate)->isInstanceOf(JsonSerializable::class);
-
-        verify($this->mandate->jsonSerialize())->array();
-    }
-
-    /**
-     * @return void
-     */
-    public function testItCanSetAnId(): void
-    {
-        expect($this->mandate->setId('IO-1000-0000-0001'))->isInstanceOf(Mandate::class);
-    }
-
-    /**
-     * @depends testItCanSetAnId
+     * @depends testItCanSetId
      *
      * @return void
      */
-    public function testItCanGetAnId(): void
+    public function testItCanGetId(): void
     {
-        $this->mandate->setId('IO-1000-0000-0001');
+        $this->tester->assertObjectHasMethod('getId', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getId', $this->model);
 
-        verify($this->mandate->getId())->string();
-        verify($this->mandate->getId())->notEmpty();
-        verify($this->mandate->getId())->equals('IO-1000-0000-0001');
+        $id = $this->model->getId();
+        verify($id)->string();
+        verify($id)->isEmpty();
+
+        $this->model->setId('foo');
+        $id = $this->model->getId();
+        verify($id)->string();
+        verify($id)->notEmpty();
+        verify($id)->equals('foo');
     }
 
     /**
      * @return void
      */
-    public function testItCanSetAType(): void
+    public function testItCanSetType(): void
     {
-        expect($this->mandate->setType('single'))->isInstanceOf(Mandate::class);
+        $this->tester->assertObjectHasMethod('setType', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setType', $this->model);
+
+        $mandate = $this->model->setType('foo');
+        verify($mandate)->object();
+        verify($mandate)->same($this->model);
     }
 
     /**
-     * @depends testItCanSetAType
+     * @depends testItCanSetType
      *
      * @return void
      */
-    public function testItCanGetAType(): void
+    public function testItCanGetType(): void
     {
-        $this->mandate->setType('single');
+        $this->tester->assertObjectHasMethod('getType', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getType', $this->model);
 
-        verify($this->mandate->getType())->string();
-        verify($this->mandate->getType())->notEmpty();
-        verify($this->mandate->getType())->equals('single');
+        $type = $this->model->getType();
+        verify($type)->string();
+        verify($type)->isEmpty();
+
+        $this->model->setType('foo');
+        $type = $this->model->getType();
+        verify($type)->string();
+        verify($type)->notEmpty();
+        verify($type)->equals('foo');
     }
 
     /**
      * @return void
      */
-    public function testItCanSetAServiceId(): void
+    public function testItCanSetServiceId(): void
     {
-        expect($this->mandate->setServiceId('SL-1000-0000-0001'))->isInstanceOf(Mandate::class);
+        $this->tester->assertObjectHasMethod('setServiceId', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setServiceId', $this->model);
+
+        $mandate = $this->model->setServiceId('foo');
+        verify($mandate)->object();
+        verify($mandate)->same($this->model);
     }
 
     /**
-     * @depends testItCanSetAServiceId
+     * @depends testItCanSetServiceId
      *
      * @return void
      */
-    public function testItCanGetAServiceId(): void
+    public function testItCanGetServiceId(): void
     {
-        $this->mandate->setServiceId('SL-1000-0000-0001');
+        $this->tester->assertObjectHasMethod('getServiceId', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getServiceId', $this->model);
 
-        verify($this->mandate->getServiceId())->string();
-        verify($this->mandate->getServiceId())->notEmpty();
-        verify($this->mandate->getServiceId())->equals('SL-1000-0000-0001');
-    }
+        $serviceId = $this->model->getServiceId();
+        verify($serviceId)->string();
+        verify($serviceId)->isEmpty();
 
-    /**
-     * @throws Exception
-     *
-     * @return void
-     */
-    public function testItCanSetAProcessDate(): void
-    {
-        expect($this->mandate->setProcessDate(new DateTime()))->isInstanceOf(Mandate::class);
-    }
-
-    /**
-     * @depends testItCanSetAProcessDate
-     *
-     * @throws Exception
-     *
-     * @return void
-     */
-    public function testItCanGetAProcessDate(): void
-    {
-        $this->mandate->setProcessDate(new DateTime());
-
-        verify($this->mandate->getProcessDate())->notEmpty();
-        verify($this->mandate->getProcessDate())->isInstanceOf(DateTime::class);
-    }
-
-
-
-    /**
-     * @return void
-     */
-    public function testItCanSetAnExchangeUrl(): void
-    {
-        expect($this->mandate->setExchangeUrl('https://www.pay.nl/exchange-url'))->isInstanceOf(Mandate::class);
-    }
-
-    /**
-     * @depends testItCanSetAnExchangeUrl
-     *
-     * @return void
-     */
-    public function testItCanGetAnExchangeUrl(): void
-    {
-        $this->mandate->setExchangeUrl('https://www.pay.nl/exchange-url');
-
-        verify($this->mandate->getExchangeUrl())->string();
-        verify($this->mandate->getExchangeUrl())->notEmpty();
-        verify($this->mandate->getExchangeUrl())->equals('https://www.pay.nl/exchange-url');
-    }
-
-    /**
-     * @throws Exception
-     *
-     * @return void
-     */
-    public function testItCanSetAnAmount(): void
-    {
-        expect($this->mandate->setAmount(new Amount()))->isInstanceOf(Mandate::class);
-    }
-
-    /**
-     * @depends testItCanSetAnAmount
-     *
-     * @throws Exception
-     *
-     * @return void
-     */
-    public function testItCanGetAnAmount(): void
-    {
-        $this->mandate->setAmount(new Amount());
-
-        verify($this->mandate->getAmount())->notEmpty();
-        verify($this->mandate->getAmount())->isInstanceOf(Amount::class);
+        $this->model->setServiceId('foo');
+        $serviceId = $this->model->getServiceId();
+        verify($serviceId)->string();
+        verify($serviceId)->notEmpty();
+        verify($serviceId)->equals('foo');
     }
 
     /**
      * @return void
      */
-    public function testItCanSetADescription(): void
+    public function testItCanSetProcessDate(): void
     {
-        expect($this->mandate->setDescription('test'))->isInstanceOf(Mandate::class);
+        $this->tester->assertObjectHasMethod('setProcessDate', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setProcessDate', $this->model);
+
+        $dateTimeMock = Mockery::mock(DateTime::class);
+        $mandate = $this->model->setProcessDate($dateTimeMock);
+        verify($mandate)->object();
+        verify($mandate)->same($this->model);
     }
 
     /**
-     * @depends testItCanSetADescription
+     * @depends testItCanSetProcessDate
      *
      * @return void
      */
-    public function testItCanGetADescription(): void
+    public function testItCanGetProcessDate(): void
     {
-        $this->mandate->setDescription('test');
+        $this->tester->assertObjectHasMethod('getProcessDate', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getProcessDate', $this->model);
 
-        verify($this->mandate->getDescription())->string();
-        verify($this->mandate->getDescription())->notEmpty();
-        verify($this->mandate->getDescription())->equals('test');
+        $dateTimeMock = Mockery::mock(DateTime::class);
+        $this->model->setProcessDate($dateTimeMock);
+        $processDate = $this->model->getProcessDate();
+        verify($processDate)->notEmpty();
+        verify($processDate)->isInstanceOf(DateTime::class);
+        verify($processDate)->same($dateTimeMock);
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanSetExchangeUrl(): void
+    {
+        $this->tester->assertObjectHasMethod('setExchangeUrl', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setExchangeUrl', $this->model);
+
+        $mandate = $this->model->setExchangeUrl('http://foo.bar');
+        verify($mandate)->object();
+        verify($mandate)->same($this->model);
+    }
+
+    /**
+     * @depends testItCanSetExchangeUrl
+     *
+     * @return void
+     */
+    public function testItCanGetExchangeUrl(): void
+    {
+        $this->tester->assertObjectHasMethod('getExchangeUrl', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getExchangeUrl', $this->model);
+
+        $exchangeUrl = $this->model->getExchangeUrl();
+        verify($exchangeUrl)->string();
+        verify($exchangeUrl)->isEmpty();
+
+        $this->model->setExchangeUrl('http://foo.bar');
+        $exchangeUrl = $this->model->getExchangeUrl();
+        verify($exchangeUrl)->string();
+        verify($exchangeUrl)->notEmpty();
+        verify($exchangeUrl)->equals('http://foo.bar');
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanSetAmount(): void
+    {
+        $this->tester->assertObjectHasMethod('setAmount', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setAmount', $this->model);
+
+        $mockAmount = $this->tester->grabMockService('modelManager')->get(Amount::class);
+        $mandate = $this->model->setAmount($mockAmount);
+        verify($mandate)->object();
+        verify($mandate)->same($this->model);
+    }
+
+    /**
+     * @depends testItCanSetAmount
+     *
+     * @return void
+     */
+    public function testItCanGetAmount(): void
+    {
+        $this->tester->assertObjectHasMethod('getAmount', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getAmount', $this->model);
+
+        $mockAmount = $this->tester->grabMockService('modelManager')->get(Amount::class);
+        $this->model->setAmount($mockAmount);
+        $amount = $this->model->getAmount();
+        verify($amount)->notEmpty();
+        verify($amount)->isInstanceOf(Amount::class);
+        verify($amount)->same($mockAmount);
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanSetDescription(): void
+    {
+        $this->tester->assertObjectHasMethod('setDescription', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setDescription', $this->model);
+
+        $mandate = $this->model->setDescription('foo');
+        verify($mandate)->object();
+        verify($mandate)->same($this->model);
+    }
+
+    /**
+     * @depends testItCanSetDescription
+     *
+     * @return void
+     */
+    public function testItCanGetDescription(): void
+    {
+        $this->tester->assertObjectHasMethod('getDescription', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getDescription', $this->model);
+
+        $description = $this->model->getDescription();
+        verify($description)->string();
+        verify($description)->isEmpty();
+
+        $this->model->setDescription('foo');
+        $description = $this->model->getDescription();
+        verify($description)->string();
+        verify($description)->notEmpty();
+        verify($description)->equals('foo');
     }
 
     /**
@@ -219,7 +280,14 @@ class MandateTest extends UnitTest
      */
     public function testItCanSetStatistics(): void
     {
-        expect($this->mandate->setStatistics(new Statistics()))->isInstanceOf(Mandate::class);
+        $this->tester->assertObjectHasMethod('setStatistics', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setStatistics', $this->model);
+
+        $mockStatistics = $this->tester->grabMockService('modelManager')->get(Statistics::class);
+        $mandate = $this->model->setStatistics($mockStatistics);
+        verify($mandate)->object();
+        verify($mandate)->same($this->model);
+        expect($this->model->setStatistics(new Statistics()))->isInstanceOf(Mandate::class);
     }
 
     /**
@@ -229,52 +297,82 @@ class MandateTest extends UnitTest
      */
     public function testItCanGetStatistics(): void
     {
-        $this->mandate->setStatistics(new Statistics());
+        $this->tester->assertObjectHasMethod('getStatistics', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getStatistics', $this->model);
 
-        verify($this->mandate->getStatistics())->notEmpty();
-        verify($this->mandate->getStatistics())->isInstanceOf(Statistics::class);
+        $mockStatistics = $this->tester->grabMockService('modelManager')->get(Statistics::class);
+        $this->model->setStatistics($mockStatistics);
+        $statistics = $this->model->getStatistics();
+        verify($statistics)->notEmpty();
+        verify($statistics)->isInstanceOf(Statistics::class);
+        verify($statistics)->same($mockStatistics);
     }
 
     /**
      * @return void
      */
-    public function testItCanSetAnInterval(): void
+    public function testItCanSetInterval(): void
     {
-        expect($this->mandate->setInterval(new Interval()))->isInstanceOf(Mandate::class);
+        $this->tester->assertObjectHasMethod('setInterval', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setInterval', $this->model);
+
+        $mockInterval = $this->tester->grabMockService('modelManager')->get(Interval::class);
+        $mandate = $this->model->setInterval($mockInterval);
+        verify($mandate)->object();
+        verify($mandate)->same($this->model);
     }
 
     /**
-     * @depends testItCanSetAnInterval
+     * @depends testItCanSetInterval
      *
      * @return void
      */
-    public function testItCanGetAnInterval(): void
+    public function testItCanGetInterval(): void
     {
-        $this->mandate->setInterval(new Interval());
+        $this->tester->assertObjectHasMethod('getInterval', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getInterval', $this->model);
 
-        verify($this->mandate->getInterval())->notEmpty();
-        verify($this->mandate->getInterval())->isInstanceOf(Interval::class);
+        $mockInterval = $this->tester->grabMockService('modelManager')->get(Interval::class);
+        $this->model->setInterval($mockInterval);
+        $interval = $this->model->getInterval();
+        verify($interval)->notEmpty();
+        verify($interval)->isInstanceOf(Interval::class);
+        verify($interval)->same($mockInterval);
     }
 
     /**
      * @return void
      */
-    public function testItCanSetACustomer(): void
+    public function testItCanSetCustomer(): void
     {
-        expect($this->mandate->setCustomer(new Customer()))->isInstanceOf(Mandate::class);
+        $this->tester->assertObjectHasMethod('setCustomer', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setCustomer', $this->model);
+
+        $mockCustomer = $this->tester->grabMockService('modelManager')->get(Customer::class);
+        $mandate = $this->model->setCustomer($mockCustomer);
+        verify($mandate)->object();
+        verify($mandate)->same($this->model);
     }
 
     /**
-     * @depends testItCanSetACustomer
+     * @depends testItCanSetCustomer
      *
      * @return void
      */
-    public function testItCanGetACustomer(): void
+    public function testItCanGetCustomer(): void
     {
-        $this->mandate->setCustomer(new Customer());
+        $this->tester->assertObjectHasMethod('getCustomer', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getCustomer', $this->model);
 
-        verify($this->mandate->getCustomer())->notEmpty();
-        verify($this->mandate->getCustomer())->isInstanceOf(Customer::class);
+        $customer = $this->model->getCustomer();
+        verify($customer)->null();
+
+        $mockCustomer = $this->tester->grabMockService('modelManager')->get(Customer::class);
+        $this->model->setCustomer($mockCustomer);
+        $customer = $this->model->getCustomer();
+        verify($customer)->notEmpty();
+        verify($customer)->isInstanceOf(Customer::class);
+        verify($customer)->same($mockCustomer);
     }
 
     /**
@@ -282,7 +380,12 @@ class MandateTest extends UnitTest
      */
     public function testItCanBeMarkedAsLastOrder(): void
     {
-        expect($this->mandate->setIsLastOrder(true))->isInstanceOf(Mandate::class);
+        $this->tester->assertObjectHasMethod('setIsLastOrder', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setIsLastOrder', $this->model);
+
+        $mandate = $this->model->setIsLastOrder(true);
+        verify($mandate)->object();
+        verify($mandate)->same($this->model);
     }
 
     /**
@@ -292,34 +395,50 @@ class MandateTest extends UnitTest
      */
     public function testItCheckIsLastOrder(): void
     {
-        $this->mandate->setIsLastOrder(true);
+        $this->tester->assertObjectHasMethod('isLastOrder', $this->model);
+        $this->tester->assertObjectMethodIsPublic('isLastOrder', $this->model);
 
-        verify($this->mandate->isLastOrder())->bool();
-        verify($this->mandate->isLastOrder())->true();
+        $isLastOrder = $this->model->isLastOrder();
+        verify($isLastOrder)->bool();
+        verify($isLastOrder)->false();
+
+        $this->model->setIsLastOrder(true);
+        $isLastOrder = $this->model->isLastOrder();
+        verify($isLastOrder)->bool();
+        verify($isLastOrder)->true();
     }
 
     /**
      * @return void
      */
-    public function testItCanSetAState(): void
+    public function testItCanSetState(): void
     {
-        verify(method_exists($this->mandate, 'setState'))->true();
-        verify($this->mandate->setState('single'))->isInstanceOf(Mandate::class);
+        $this->tester->assertObjectHasMethod('setState', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setState', $this->model);
+
+        $mandate = $this->model->setState('foo');
+        verify($mandate)->object();
+        verify($mandate)->same($this->model);
     }
 
     /**
-     * @depends testItCanSetAState
+     * @depends testItCanSetState
      *
      * @return void
      */
-    public function testItCanGetAState(): void
+    public function testItCanGetState(): void
     {
-        verify(method_exists($this->mandate, 'getState'))->true();
+        $this->tester->assertObjectHasMethod('getState', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getState', $this->model);
 
-        $this->mandate->setState('single');
+        $state = $this->model->getState();
+        verify($state)->string();
+        verify($state)->isEmpty();
 
-        verify($this->mandate->getState())->string();
-        verify($this->mandate->getState())->notEmpty();
-        verify($this->mandate->getState())->equals('single');
+        $this->model->setState('foo');
+        $state = $this->model->getState();
+        verify($state)->string();
+        verify($state)->notEmpty();
+        verify($state)->equals('foo');
     }
 }

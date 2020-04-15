@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Util;
 
-use PayNL\Sdk\Exception\RuntimeException;
+use PayNL\Sdk\Exception\InvalidArgumentException;
+use PayNL\Sdk\Exception\LogicException;
+use PHPUnit\Framework\Exception;
 
 /**
  * Class Misc
@@ -16,7 +18,9 @@ class Misc
     /**
      * @param string $file
      *
-     * @throws RuntimeException when given file can not be opened
+     * @throws InvalidArgumentException when given file can not be found or read
+     * @throws LogicException when the class name is not the same as the terminating class file name
+     *  (PSR-4 3.3 - https://www.php-fig.org/psr/psr-4/)
      *
      * @SuppressWarnings(PHPMD.NPathComplexity)
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
@@ -25,11 +29,12 @@ class Misc
      */
     public static function getClassNameByFile(string $file): string
     {
-        $handle = fopen($file, 'rb');
-        if (false === $handle) {
-            throw new RuntimeException(
+        try {
+            $handle = fopen($file, 'rb');
+        } catch(Exception $exception) {
+            throw new InvalidArgumentException(
                 sprintf(
-                    'Can not open file "%s"',
+                    'Class can not be found because file "%s" does not exist or can not be read',
                     $file
                 )
             );
@@ -37,13 +42,13 @@ class Misc
 
         $class = $namespace = $buffer = '';
         $counter = 0;
-        while (!$class) {
-            if (feof($handle)) {
+        while (true === empty($class)) {
+            if (true === feof($handle)) {
                 break;
             }
 
             $buffer .= fread($handle, 512);
-            $tokens = token_get_all($buffer);
+            $tokens = @token_get_all($buffer);
 
             if (strpos($buffer, '{') === false) {
                 continue;
@@ -72,6 +77,29 @@ class Misc
             }
         }
 
+        $filename = substr(basename($file), 0, (int)strpos(basename($file), '.'));
+        if ($filename !== $class) {
+            throw new LogicException(
+                sprintf(
+                    'Class name "%s" is not the same as the terminating class file name "%s"',
+                    $class,
+                    $filename
+                )
+            );
+        }
+
         return $namespace . '\\' . $class;
+    }
+
+    /**
+     * @param string $fqn
+     *
+     * @return string
+     */
+    public static function getClassNameByFQN(string $fqn): string
+    {
+        $namespaceSeparator = '\\';
+        $parts = explode($namespaceSeparator, $fqn);
+        return array_pop($parts) ?? '';
     }
 }

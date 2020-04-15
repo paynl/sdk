@@ -36,7 +36,7 @@ class RefundOverview implements ModelInterface
      */
     public function getDescription(): string
     {
-        return $this->description;
+        return (string)$this->description;
     }
 
     /**
@@ -91,9 +91,15 @@ class RefundOverview implements ModelInterface
         return $this;
     }
 
+    /**
+     * @param RefundTransaction $refundTransaction
+     *
+     * @return RefundOverview
+     */
     public function addRefundTransaction(RefundTransaction $refundTransaction): self
     {
         $this->refundedTransactions[] = $refundTransaction;
+        return $this;
     }
 
     /**
@@ -118,6 +124,11 @@ class RefundOverview implements ModelInterface
         return $this;
     }
 
+    /**
+     * @param RefundTransaction $refundTransaction
+     *
+     * @return RefundOverview
+     */
     public function addFailedTransaction(RefundTransaction $refundTransaction): self
     {
         $this->failedTransactions[] = $refundTransaction;

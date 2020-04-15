@@ -27,10 +27,10 @@ class Factory implements FactoryInterface
         }
 
         $config = $container->get('config');
-        $options['format'] = $config->get('request')->get('format') ?? RequestInterface::FORMAT_OBJECTS;
+        $options['format'] = $options['format'] ?? $config->get('request')->get('format') ?? RequestInterface::FORMAT_OBJECTS;
 
         if (true === array_key_exists('filters', $options)) {
-            // we've got filer, initiate them and "override" the filter in the set
+            // we've got filter, initiate them and "override" the filter in the set
             foreach ($options['filters'] as $filterName => $value) {
                 /** @var FilterInterface $filter */
                 $filter = $container->get('filterManager')->get($filterName, ['value' => $value]);

@@ -65,7 +65,7 @@ class Response implements ResponseInterface, TransformerAwareInterface, DebugAwa
      */
     public function getStatusCode(): int
     {
-        return $this->statusCode;
+        return (int)$this->statusCode;
     }
 
     /**
@@ -104,7 +104,6 @@ class Response implements ResponseInterface, TransformerAwareInterface, DebugAwa
      */
     public function setRawBody(string $rawBody): Response
     {
-
         $this->dumpDebugInfo('Raw response body: ' . $rawBody);
 
         $this->rawBody = $rawBody;

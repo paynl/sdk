@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PayNL\Sdk\Model;
 
-use Codeception\Test\Unit as UnitTest;
-use PayNL\Sdk\Model\{
-    ModelInterface,
-    BankAccount
+use Codeception\{
+    Lib\ModelTestTrait,
+    Test\Unit as UnitTest
 };
-use JsonSerializable;
+use PayNL\Sdk\Model\BankAccount;
 
 /**
  * Class BankAccountTest
@@ -18,32 +17,20 @@ use JsonSerializable;
  */
 class BankAccountTest extends UnitTest
 {
+    use ModelTestTrait;
+
     /**
      * @var BankAccount
      */
-    protected $bankAccount;
+    protected $model;
 
+    /**
+     * @return void
+     */
     public function _before(): void
     {
-        $this->bankAccount = new BankAccount();
-    }
-
-    /**
-     * @return void
-     */
-    public function testItIsAModel(): void
-    {
-        verify($this->bankAccount)->isInstanceOf(ModelInterface::class);
-    }
-
-    /**
-     * @return void
-     */
-    public function testIsItJsonSerializable(): void
-    {
-        verify($this->bankAccount)->isInstanceOf(JsonSerializable::class);
-
-        verify($this->bankAccount->jsonSerialize())->array();
+        $this->markAsJsonSerializable();
+        $this->model = new BankAccount();
     }
 
     /**
@@ -51,7 +38,10 @@ class BankAccountTest extends UnitTest
      */
     public function testItCanSetABank(): void
     {
-        expect($this->bankAccount->setBank('Rabobank'))->isInstanceOf(BankAccount::class);
+        $this->tester->assertObjectHasMethod('setBank', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setBank', $this->model);
+
+        expect($this->model->setBank('Rabobank'))->isInstanceOf(BankAccount::class);
     }
 
     /**
@@ -61,11 +51,14 @@ class BankAccountTest extends UnitTest
      */
     public function testItCanGetABank(): void
     {
-        $this->bankAccount->setBank('Rabobank');
+        $this->tester->assertObjectHasMethod('getBank', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getBank', $this->model);
 
-        verify($this->bankAccount->getBank())->string();
-        verify($this->bankAccount->getBank())->notEmpty();
-        verify($this->bankAccount->getBank())->equals('Rabobank');
+        $this->model->setBank('Rabobank');
+
+        verify($this->model->getBank())->string();
+        verify($this->model->getBank())->notEmpty();
+        verify($this->model->getBank())->equals('Rabobank');
     }
 
     /**
@@ -73,7 +66,10 @@ class BankAccountTest extends UnitTest
      */
     public function testItCanSetAnIban(): void
     {
-        expect($this->bankAccount->setIban('NL00RABO0000000000'))->isInstanceOf(BankAccount::class);
+        $this->tester->assertObjectHasMethod('setIban', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setIban', $this->model);
+
+        expect($this->model->setIban('NL00RABO0000000000'))->isInstanceOf(BankAccount::class);
     }
 
     /**
@@ -83,11 +79,14 @@ class BankAccountTest extends UnitTest
      */
     public function testItCanGetAnIban(): void
     {
-        $this->bankAccount->setIban('NL00RABO0000000000');
+        $this->tester->assertObjectHasMethod('getIban', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getIban', $this->model);
 
-        verify($this->bankAccount->getIban())->string();
-        verify($this->bankAccount->getIban())->notEmpty();
-        verify($this->bankAccount->getIban())->equals('NL00RABO0000000000');
+        $this->model->setIban('NL00RABO0000000000');
+
+        verify($this->model->getIban())->string();
+        verify($this->model->getIban())->notEmpty();
+        verify($this->model->getIban())->equals('NL00RABO0000000000');
     }
 
     /**
@@ -95,7 +94,10 @@ class BankAccountTest extends UnitTest
      */
     public function testItCanSetABic(): void
     {
-        expect($this->bankAccount->setBic('RABONL2U'))->isInstanceOf(BankAccount::class);
+        $this->tester->assertObjectHasMethod('setBic', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setBic', $this->model);
+
+        expect($this->model->setBic('RABONL2U'))->isInstanceOf(BankAccount::class);
     }
 
     /**
@@ -105,11 +107,14 @@ class BankAccountTest extends UnitTest
      */
     public function testItCanGetABic(): void
     {
-        $this->bankAccount->setBic('RABONL2U');
+        $this->tester->assertObjectHasMethod('getBic', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getBic', $this->model);
 
-        verify($this->bankAccount->getBic())->string();
-        verify($this->bankAccount->getBic())->notEmpty();
-        verify($this->bankAccount->getBic())->equals('RABONL2U');
+        $this->model->setBic('RABONL2U');
+
+        verify($this->model->getBic())->string();
+        verify($this->model->getBic())->notEmpty();
+        verify($this->model->getBic())->equals('RABONL2U');
     }
 
     /**
@@ -117,7 +122,10 @@ class BankAccountTest extends UnitTest
      */
     public function testItCanSetAnOwner(): void
     {
-        expect($this->bankAccount->setOwner('The Republic'))->isInstanceOf(BankAccount::class);
+        $this->tester->assertObjectHasMethod('setOwner', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setOwner', $this->model);
+
+        expect($this->model->setOwner('The Republic'))->isInstanceOf(BankAccount::class);
     }
 
     /**
@@ -127,11 +135,14 @@ class BankAccountTest extends UnitTest
      */
     public function testItCanGetAnOwner(): void
     {
-        $this->bankAccount->setOwner('The Republic');
+        $this->tester->assertObjectHasMethod('getOwner', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getOwner', $this->model);
 
-        verify($this->bankAccount->getOwner())->string();
-        verify($this->bankAccount->getOwner())->notEmpty();
-        verify($this->bankAccount->getOwner())->equals('The Republic');
+        $this->model->setOwner('The Republic');
+
+        verify($this->model->getOwner())->string();
+        verify($this->model->getOwner())->notEmpty();
+        verify($this->model->getOwner())->equals('The Republic');
     }
 
     /**
@@ -139,7 +150,10 @@ class BankAccountTest extends UnitTest
      */
     public function testItCanSetAReturnUrl(): void
     {
-        expect($this->bankAccount->setReturnUrl('https://www.pay.nl'))->isInstanceOf(BankAccount::class);
+        $this->tester->assertObjectHasMethod('setReturnUrl', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setReturnUrl', $this->model);
+
+        expect($this->model->setReturnUrl('https://www.pay.nl'))->isInstanceOf(BankAccount::class);
     }
 
     /**
@@ -149,10 +163,13 @@ class BankAccountTest extends UnitTest
      */
     public function testItCanGetAReturnUrl(): void
     {
-        $this->bankAccount->setReturnUrl('https://www.pay.nl');
+        $this->tester->assertObjectHasMethod('getReturnUrl', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getReturnUrl', $this->model);
 
-        verify($this->bankAccount->getReturnUrl())->string();
-        verify($this->bankAccount->getReturnUrl())->notEmpty();
-        verify($this->bankAccount->getReturnUrl())->equals('https://www.pay.nl');
+        $this->model->setReturnUrl('https://www.pay.nl');
+
+        verify($this->model->getReturnUrl())->string();
+        verify($this->model->getReturnUrl())->notEmpty();
+        verify($this->model->getReturnUrl())->equals('https://www.pay.nl');
     }
 }

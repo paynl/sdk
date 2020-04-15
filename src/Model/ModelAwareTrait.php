@@ -11,14 +11,25 @@ namespace PayNL\Sdk\Model;
  */
 trait ModelAwareTrait
 {
+    /**
+     * @var ModelInterface
+     */
     protected $model;
 
+    /**
+     * @return ModelInterface|null
+     */
     public function getModel(): ?ModelInterface
     {
         return $this->model;
     }
 
-    public function setModel(ModelInterface $model)
+    /**
+     * @param ModelInterface $model
+     *
+     * @return static
+     */
+    public function setModel(ModelInterface $model): self
     {
         $this->model = $model;
         return $this;

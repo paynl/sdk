@@ -67,7 +67,6 @@ class TransactionStatus extends Status
      * @param mixed $code
      *
      * @throws InvalidArgumentException
-     * @throws ReflectionException
      *
      * @return TransactionStatus
      */
@@ -79,7 +78,7 @@ class TransactionStatus extends Status
             throw new InvalidArgumentException(
                 sprintf(
                     'Given code must be an integer or a string containing a number, %s given',
-                    is_object($code) ? get_class($code) : gettype($code)
+                    (is_object($code) === true ? get_class($code) : gettype($code))
                 )
             );
         }

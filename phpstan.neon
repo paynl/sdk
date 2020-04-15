@@ -7,3 +7,4 @@ parameters:
     - vendor
     - bin
   ignoreErrors:
+    - '#Strict comparison using === between (true|false) and (false|true) will always evaluate to false\.#'

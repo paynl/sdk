@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PayNL\Sdk\Model;
 
-use Codeception\Test\Unit as UnitTest;
-use PayNL\Sdk\Exception\InvalidArgumentException;
-use PayNL\Sdk\Model\{
-    ModelInterface,
-    Address
+use Codeception\{
+    Lib\ModelTestTrait,
+    Test\Unit as UnitTest
 };
-use TypeError, JsonSerializable;
+use PayNL\Sdk\Model\Address;
 
 /**
  * Class AddressTest
@@ -19,32 +17,20 @@ use TypeError, JsonSerializable;
  */
 class AddressTest extends UnitTest
 {
+    use ModelTestTrait;
+
     /**
      * @var Address
      */
-    protected $address;
+    protected $model;
 
+    /**
+     * @return void
+     */
     public function _before(): void
     {
-        $this->address = new Address();
-    }
-
-    /**
-     * @return void
-     */
-    public function testItIsAModel(): void
-    {
-        verify($this->address)->isInstanceOf(ModelInterface::class);
-    }
-
-    /**
-     * @return void
-     */
-    public function testIsItJsonSerializable(): void
-    {
-        verify($this->address)->isInstanceOf(JsonSerializable::class);
-
-        verify($this->address->jsonSerialize())->array();
+        $this->shouldItBeJsonSerializable = true;
+        $this->model = new Address();
     }
 
     /**
@@ -52,7 +38,10 @@ class AddressTest extends UnitTest
      */
     public function testItCanSetAStreetName(): void
     {
-        expect($this->address->setStreetName('Jan Campertlaan'))->isInstanceOf(Address::class);
+        $this->tester->assertObjectHasMethod('setStreetName', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setStreetName', $this->model);
+
+        expect($this->model->setStreetName('Jan Campertlaan'))->isInstanceOf(Address::class);
     }
 
     /**
@@ -62,11 +51,14 @@ class AddressTest extends UnitTest
      */
     public function testItCanGetAStreetName(): void
     {
-        $this->address->setStreetName('Jan Campertlaan');
+        $this->tester->assertObjectHasMethod('getStreetName', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getStreetName', $this->model);
 
-        verify($this->address->getStreetName())->string();
-        verify($this->address->getStreetName())->notEmpty();
-        verify($this->address->getStreetName())->equals('Jan Campertlaan');
+        $this->model->setStreetName('Jan Campertlaan');
+
+        verify($this->model->getStreetName())->string();
+        verify($this->model->getStreetName())->notEmpty();
+        verify($this->model->getStreetName())->equals('Jan Campertlaan');
     }
 
     /**
@@ -74,26 +66,11 @@ class AddressTest extends UnitTest
      */
     public function testItCanSetAStreetNumber(): void
     {
-        expect($this->address->setStreetNumber('10'))->isInstanceOf(Address::class);
-        expect($this->address->setStreetNumber(10))->isInstanceOf(Address::class);
-    }
+        $this->tester->assertObjectHasMethod('setStreetNumber', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setStreetNumber', $this->model);
 
-    public function testItThrowsAnExceptionForSettingStreetNumberOnWrongInput1(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->address->setStreetNumber(1.01);
-    }
-
-    public function testItThrowsAnExceptionForSettingStreetNumberOnWrongInput2(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->address->setStreetNumber(array());
-    }
-
-    public function testItThrowsAnExceptionForSettingStreetNumberOnWrongInput3(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->address->setStreetNumber(new Address());
+        expect($this->model->setStreetNumber('10'))->isInstanceOf(Address::class);
+        expect($this->model->setStreetNumber(10))->isInstanceOf(Address::class);
     }
 
     /**
@@ -103,17 +80,20 @@ class AddressTest extends UnitTest
      */
     public function testItCanGetAStreetNumber(): void
     {
-        $this->address->setStreetNumber('10');
+        $this->tester->assertObjectHasMethod('getStreetNumber', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getStreetNumber', $this->model);
 
-        verify($this->address->getStreetNumber())->string();
-        verify($this->address->getStreetNumber())->notEmpty();
-        verify($this->address->getStreetNumber())->equals('10');
+        $this->model->setStreetNumber('10');
 
-        $this->address->setStreetNumber(10);
+        verify($this->model->getStreetNumber())->string();
+        verify($this->model->getStreetNumber())->notEmpty();
+        verify($this->model->getStreetNumber())->equals('10');
 
-        verify($this->address->getStreetNumber())->string();
-        verify($this->address->getStreetNumber())->notEmpty();
-        verify($this->address->getStreetNumber())->equals('10');
+        $this->model->setStreetNumber(10);
+
+        verify($this->model->getStreetNumber())->string();
+        verify($this->model->getStreetNumber())->notEmpty();
+        verify($this->model->getStreetNumber())->equals('10');
     }
 
     /**
@@ -121,7 +101,10 @@ class AddressTest extends UnitTest
      */
     public function testItCanSetAStreetNumberExtension(): void
     {
-        expect($this->address->setStreetNumberExtension('a'))->isInstanceOf(Address::class);
+        $this->tester->assertObjectHasMethod('setStreetNumberExtension', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setStreetNumberExtension', $this->model);
+
+        expect($this->model->setStreetNumberExtension('a'))->isInstanceOf(Address::class);
     }
 
     /**
@@ -131,13 +114,16 @@ class AddressTest extends UnitTest
      */
     public function testItCanGetAStreetNumberExtension(): void
     {
-        verify($this->address->getStreetNumberExtension())->isEmpty();
+        $this->tester->assertObjectHasMethod('getStreetNumberExtension', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getStreetNumberExtension', $this->model);
 
-        $this->address->setStreetNumberExtension('a');
+        verify($this->model->getStreetNumberExtension())->isEmpty();
 
-        verify($this->address->getStreetNumberExtension())->string();
-        verify($this->address->getStreetNumberExtension())->notEmpty();
-        verify($this->address->getStreetNumberExtension())->equals('a');
+        $this->model->setStreetNumberExtension('a');
+
+        verify($this->model->getStreetNumberExtension())->string();
+        verify($this->model->getStreetNumberExtension())->notEmpty();
+        verify($this->model->getStreetNumberExtension())->equals('a');
     }
 
     /**
@@ -145,7 +131,10 @@ class AddressTest extends UnitTest
      */
     public function testItCanSetAZipCode(): void
     {
-        expect($this->address->setZipCode('3201 AX'))->isInstanceOf(Address::class);
+        $this->tester->assertObjectHasMethod('setZipCode', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setZipCode', $this->model);
+
+        expect($this->model->setZipCode('3201 AX'))->isInstanceOf(Address::class);
     }
 
     /**
@@ -155,11 +144,14 @@ class AddressTest extends UnitTest
      */
     public function testItCanGetAZipCode(): void
     {
-        $this->address->setZipCode('3201 AX');
+        $this->tester->assertObjectHasMethod('getZipCode', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getZipCode', $this->model);
 
-        verify($this->address->getZipCode())->string();
-        verify($this->address->getZipCode())->notEmpty();
-        verify($this->address->getZipCode())->equals('3201 AX');
+        $this->model->setZipCode('3201 AX');
+
+        verify($this->model->getZipCode())->string();
+        verify($this->model->getZipCode())->notEmpty();
+        verify($this->model->getZipCode())->equals('3201 AX');
     }
 
     /**
@@ -167,7 +159,10 @@ class AddressTest extends UnitTest
      */
     public function testItCanSetACity(): void
     {
-        expect($this->address->setCity('Spijkenisse'))->isInstanceOf(Address::class);
+        $this->tester->assertObjectHasMethod('setCity', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setCity', $this->model);
+
+        expect($this->model->setCity('Spijkenisse'))->isInstanceOf(Address::class);
     }
 
     /**
@@ -177,11 +172,14 @@ class AddressTest extends UnitTest
      */
     public function testItCanGetACity(): void
     {
-        $this->address->setCity('Spijkenisse');
+        $this->tester->assertObjectHasMethod('getCity', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getCity', $this->model);
 
-        verify($this->address->getCity())->string();
-        verify($this->address->getCity())->notEmpty();
-        verify($this->address->getCity())->equals('Spijkenisse');
+        $this->model->setCity('Spijkenisse');
+
+        verify($this->model->getCity())->string();
+        verify($this->model->getCity())->notEmpty();
+        verify($this->model->getCity())->equals('Spijkenisse');
     }
 
     /**
@@ -189,7 +187,10 @@ class AddressTest extends UnitTest
      */
     public function testItCanSetARegionCode(): void
     {
-        expect($this->address->setRegionCode('ZH'))->isInstanceOf(Address::class);
+        $this->tester->assertObjectHasMethod('setRegionCode', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setRegionCode', $this->model);
+
+        expect($this->model->setRegionCode('ZH'))->isInstanceOf(Address::class);
     }
 
     /**
@@ -199,11 +200,14 @@ class AddressTest extends UnitTest
      */
     public function testItCanGetARegionCode(): void
     {
-        $this->address->setRegionCode('ZH');
+        $this->tester->assertObjectHasMethod('getRegionCode', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getRegionCode', $this->model);
 
-        verify($this->address->getRegionCode())->string();
-        verify($this->address->getRegionCode())->notEmpty();
-        verify($this->address->getRegionCode())->equals('ZH');
+        $this->model->setRegionCode('ZH');
+
+        verify($this->model->getRegionCode())->string();
+        verify($this->model->getRegionCode())->notEmpty();
+        verify($this->model->getRegionCode())->equals('ZH');
     }
 
     /**
@@ -211,7 +215,10 @@ class AddressTest extends UnitTest
      */
     public function testItCanSetACountryCode(): void
     {
-        expect($this->address->setCountryCode('NL'))->isInstanceOf(Address::class);
+        $this->tester->assertObjectHasMethod('setCountryCode', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setCountryCode', $this->model);
+
+        expect($this->model->setCountryCode('NL'))->isInstanceOf(Address::class);
     }
 
     /**
@@ -221,33 +228,42 @@ class AddressTest extends UnitTest
      */
     public function testItCanGetACountryCode(): void
     {
-        $this->address->setCountryCode('NL');
+        $this->tester->assertObjectHasMethod('getCountryCode', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getCountryCode', $this->model);
 
-        verify($this->address->getCountryCode())->string();
-        verify($this->address->getCountryCode())->notEmpty();
-        verify($this->address->getCountryCode())->equals('NL');
+        $this->model->setCountryCode('NL');
+
+        verify($this->model->getCountryCode())->string();
+        verify($this->model->getCountryCode())->notEmpty();
+        verify($this->model->getCountryCode())->equals('NL');
     }
 
     /**
      * @return void
      */
-    public function testItCanSetInitials(): void
+    public function testItCanSetName(): void
     {
-        expect($this->address->setName('O'))->isInstanceOf(Address::class);
+        $this->tester->assertObjectHasMethod('setName', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setName', $this->model);
+
+        expect($this->model->setName('O'))->isInstanceOf(Address::class);
     }
 
     /**
-     * @depends testItCanSetInitials
+     * @depends testItCanSetName
      *
      * @return void
      */
-    public function testItCanGetInitials(): void
+    public function testItCanGetName(): void
     {
-        $this->address->setName('O');
+        $this->tester->assertObjectHasMethod('getName', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getName', $this->model);
 
-        verify($this->address->getName())->string();
-        verify($this->address->getName())->notEmpty();
-        verify($this->address->getName())->equals('O');
+        $this->model->setName('O');
+
+        verify($this->model->getName())->string();
+        verify($this->model->getName())->notEmpty();
+        verify($this->model->getName())->equals('O');
     }
 
     /**
@@ -255,7 +271,10 @@ class AddressTest extends UnitTest
      */
     public function testItCanSetALastName(): void
     {
-        expect($this->address->setLastName('Kenobi'))->isInstanceOf(Address::class);
+        $this->tester->assertObjectHasMethod('setLastName', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setLastName', $this->model);
+
+        expect($this->model->setLastName('Kenobi'))->isInstanceOf(Address::class);
     }
 
     /**
@@ -265,10 +284,13 @@ class AddressTest extends UnitTest
      */
     public function testItCanGetALastName(): void
     {
-        $this->address->setLastName('Kenobi');
+        $this->tester->assertObjectHasMethod('getLastName', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getLastName', $this->model);
 
-        verify($this->address->getLastName())->string();
-        verify($this->address->getLastName())->notEmpty();
-        verify($this->address->getLastName())->equals('Kenobi');
+        $this->model->setLastName('Kenobi');
+
+        verify($this->model->getLastName())->string();
+        verify($this->model->getLastName())->notEmpty();
+        verify($this->model->getLastName())->equals('Kenobi');
     }
 }

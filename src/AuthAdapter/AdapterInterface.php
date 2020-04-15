@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\AuthAdapter;
 
+use PayNL\Sdk\Exception\InvalidArgumentException;
+
 /**
  * Interface AdapterInterface
  *
@@ -19,6 +21,8 @@ interface AdapterInterface
     /**
      * @param string $username
      *
+     * @throws InvalidArgumentException
+     *
      * @return static
      */
     public function setUsername(string $username);
@@ -30,6 +34,8 @@ interface AdapterInterface
 
     /**
      * @param string $password
+     *
+     * @throws InvalidArgumentException
      *
      * @return static
      */

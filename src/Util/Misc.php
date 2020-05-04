@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Util;
 
-use PayNL\Sdk\Exception\InvalidArgumentException;
-use PayNL\Sdk\Exception\LogicException;
+use PayNL\Sdk\{
+    Exception\InvalidArgumentException,
+    Exception\LogicException
+};
 use PHPUnit\Framework\Exception;
 
 /**
@@ -30,8 +32,9 @@ class Misc
     public static function getClassNameByFile(string $file): string
     {
         try {
+            /** @var resource $handle */
             $handle = fopen($file, 'rb');
-        } catch(Exception $exception) {
+        } catch (Exception $exception) {
             throw new InvalidArgumentException(
                 sprintf(
                     'Class can not be found because file "%s" does not exist or can not be read',

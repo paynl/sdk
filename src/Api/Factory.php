@@ -10,6 +10,7 @@ use PayNL\Sdk\{
     AuthAdapter\AdapterInterface as AuthAdapterInterface,
     Config\Config,
     Exception\ServiceNotFoundException,
+    Exception\InvalidArgumentException,
     Common\FactoryInterface,
     Service\Manager as ServiceManager
 };
@@ -25,6 +26,7 @@ class Factory implements FactoryInterface
      * @inheritDoc
      *
      * @throws ServiceNotFoundException
+     * @throws InvalidArgumentException
      */
     public function __invoke(ContainerInterface $container, string $requestedName, array $options = null)
     {
@@ -33,6 +35,22 @@ class Factory implements FactoryInterface
                 /** @var Config $options */
                 $options = $container->get('config')->merge(new Config($options ?? []));
 
+                $apiUrl = rtrim($options->get('api')->get('url', ''), '/');
+                $filteredApiUrl = filter_var(
+                    $apiUrl,
+                    FILTER_VALIDATE_URL,
+                    FILTER_FLAG_SCHEME_REQUIRED | FILTER_FLAG_HOST_REQUIRED
+                );
+
+                if (false === $filteredApiUrl || 'http' === parse_url($filteredApiUrl, PHP_URL_SCHEME)) {
+                    throw new InvalidArgumentException(
+                        sprintf(
+                            'Invalid API URL "%s" given, make sure you use the https protocol and define a correct endpoint',
+                            $apiUrl
+                        )
+                    );
+                }
+
                 /** @var AuthAdapterInterface $authAdapter */
                 $authAdapter = $container->get('authAdapterManager')->get($options->get('authentication')->get('type', 'basic'));
                 $authAdapter->setUsername($options->get('authentication')->get('username', ''))
@@ -40,7 +58,7 @@ class Factory implements FactoryInterface
                 ;
 
                 $guzzleClient = new GuzzleClient([
-                    'base_uri' => rtrim($options->get('api')->get('url', ''), '/') . "/v{$options->get('api')->get('version', 1)}/",
+                    'base_uri' => $filteredApiUrl . "/v{$options->get('api')->get('version', 1)}/",
                 ]);
 
                 return new Api($authAdapter, $guzzleClient, $options->toArray());

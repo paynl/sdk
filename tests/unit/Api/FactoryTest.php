@@ -4,15 +4,20 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PayNL\Sdk\Api;
 
-use Codeception\Test\Unit as UnitTest;
-use Codeception\Lib\FactoryTestTrait;
+use Codeception\{
+    Test\Unit as UnitTest,
+    Lib\FactoryTestTrait
+};
 use PayNL\Sdk\{
     Api\Factory,
     Api\Api,
     Api\Service as ApiService,
+    Config\Config,
     Service\Manager as ServiceManager,
-    Exception\ServiceNotFoundException
+    Exception\ServiceNotFoundException,
+    Exception\InvalidArgumentException
 };
+use Psr\Container\ContainerInterface;
 use UnitTester;
 
 /**
@@ -68,5 +73,61 @@ class FactoryTest extends UnitTest
     {
         $this->expectException(ServiceNotFoundException::class);
         ($this->factory)($this->serviceManagerMock, 'UnsupportedClassName');
+    }
+
+    /**
+     * @return void
+     */
+    public function testItThrowsAnExceptionWhenInvalidApiUrlHasNoScheme(): void
+    {
+        $container = new class implements ContainerInterface
+        {
+            public function get($id)
+            {
+                if ('config' === $id) {
+                    return new Config([
+                        'api' => [
+                            'url' => 'foo.bar.baz',
+                        ],
+                    ]);
+                }
+            }
+
+            public function has($id)
+            {
+                return 'config' === $id;
+            }
+        };
+
+        $this->expectException(InvalidArgumentException::class);
+        ($this->factory)($container, Api::class);
+    }
+
+    /**
+     * @return void
+     */
+    public function testItThrowsAnExceptionWhenInvalidApiUrlHasHttpScheme(): void
+    {
+        $container = new class implements ContainerInterface
+        {
+            public function get($id)
+            {
+                if ('config' === $id) {
+                    return new Config([
+                        'api' => [
+                            'url' => 'http://foo.bar.baz/',
+                        ],
+                    ]);
+                }
+            }
+
+            public function has($id)
+            {
+                return 'config' === $id;
+            }
+        };
+
+        $this->expectException(InvalidArgumentException::class);
+        ($this->factory)($container, Api::class);
     }
 }

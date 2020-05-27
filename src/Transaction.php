@@ -333,6 +333,32 @@ class Transaction
         return new Result\Details($result);
     }
 
+
+    /**
+     * Gets the services
+     *  
+     * @param string|null $paymentMethodId
+     *
+     * @return Result\GetService
+     * @throws Error\Api
+     * @throws Error\Error
+     * @throws Error\Required\ApiToken    
+     */
+    public static function getService(        
+        $paymentMethodId = null
+    )
+    {        
+        
+        $api = new Api\GetService();       
+      
+        if ($paymentMethodId !== null) {
+            $api->setPaymentMethodId($paymentMethodId);
+        }        
+        $result = $api->doRequest();       
+        
+        return new Result\GetService($result);
+    }
+
     /**
      * Get the transaction in an exchange script.
      * This will work for all kinds of exchange calls (GET, POST AND POST_XML)

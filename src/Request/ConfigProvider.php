@@ -174,7 +174,7 @@ class ConfigProvider implements ConfigProviderInterface
             ],
             'DeleteTrademark' => [
                 'uri' => '/merchants/%merchantId%/trademarks/%trademarkId%',
-                'method' => RequestInterface::METHOD_POST,
+                'method' => RequestInterface::METHOD_DELETE,
                 'requiredParams' => [
                     'merchantId' => 'M-\d{4}-\d{4}',
                     'trademarkId' => 'TM-\d{4}-\d{4}'

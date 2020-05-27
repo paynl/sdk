@@ -2,12 +2,15 @@
 
 declare(strict_types=1);
 
-$vendorDir = __DIR__ . '/../vendor';
-if (false === is_dir($vendorDir)) {
-    $vendorDir = __DIR__ . '/../../../../vendor';
-}
+$autoloader = require __DIR__ . '/composer_autoloader.php';
 
-require_once  $vendorDir . '/autoload.php';
+if (!$autoloader()) {
+    die(
+        'You need to set up the project dependencies using the following commands:' . PHP_EOL .
+        'curl -s http://getcomposer.org/installer | php' . PHP_EOL .
+        'php composer.phar install' . PHP_EOL
+    );
+}
 
 use PayNL\Sdk\{
     Application\Application,

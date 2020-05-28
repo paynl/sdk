@@ -8,7 +8,7 @@ $response = $app
     ->setRequest(
         'PayTransaction',
         [
-            'transactionId' => (isset($config) === true ? $config->get('transactionId') : ''),
+            'terminalTransactionId' => (isset($config) === true ? $config->get('terminalTransactionId') : ''),
         ],
         null,
         [

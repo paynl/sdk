@@ -23,6 +23,7 @@ class ManagerFactory implements FactoryInterface
     /**
      * @inheritDoc
      *
+     * @throws ServiceNotFoundException
      * @throws ServiceNotCreatedException
      *
      * @return AbstractPluginManager

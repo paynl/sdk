@@ -150,6 +150,8 @@ class Application
     public function setRequest($request, array $params = null, array $filters = null, $body = null): self
     {
         if (true === is_string($request)) {
+            $body = (false === empty($body) ? $body : null);
+
             // do we've got a body given? And if yes, is it correct?
             if (null !== $body) {
                 if (true === is_array($body)) {
@@ -173,6 +175,10 @@ class Application
             // get the request from its manager with the given options
             /** @var AbstractRequest $request */
             $request = $this->serviceManager->get('requestManager')->get($request);
+
+            foreach (($filters ?? []) as $filterName => $value) {
+                $filters[$filterName] = $this->serviceManager->get('filterManager')->get($filterName, ['value' => $value]);
+            }
 
             $request->setParams($params ?? [])
                 ->setFilters($filters ?? [])

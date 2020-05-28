@@ -43,15 +43,11 @@ class Qr implements ModelInterface, JsonSerializable
     protected $secret;
 
     /**
-     * @required
-     *
      * @var Amount
      */
     protected $amount;
 
     /**
-     * @required
-     *
      * @var string
      */
     protected $reference;

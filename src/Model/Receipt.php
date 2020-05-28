@@ -11,6 +11,8 @@ namespace PayNL\Sdk\Model;
  */
 class Receipt implements ModelInterface
 {
+    use LinksTrait;
+
     /**
      * @var string
      */

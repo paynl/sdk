@@ -150,6 +150,8 @@ class Application
     public function setRequest($request, array $params = null, array $filters = null, $body = null): self
     {
         if (true === is_string($request)) {
+            $body = (false === empty($body) ? $body : null);
+
             // do we've got a body given? And if yes, is it correct?
             if (null !== $body) {
                 if (true === is_array($body)) {

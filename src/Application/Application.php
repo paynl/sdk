@@ -179,7 +179,7 @@ class Application
             }
 
             $request->setParams($params ?? [])
-                ->setFilters($filters)
+                ->setFilters($filters ?? [])
             ;
 
             $request->setBody($body);

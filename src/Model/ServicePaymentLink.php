@@ -125,9 +125,9 @@ class ServicePaymentLink implements ModelInterface, JsonSerializable
     }
 
     /**
-     * @return Amount
+     * @return Amount|null
      */
-    public function getAmountMin(): Amount
+    public function getAmountMin(): ?Amount
     {
         return $this->amountMin;
     }
@@ -182,9 +182,9 @@ class ServicePaymentLink implements ModelInterface, JsonSerializable
     }
 
     /**
-     * @return Statistics
+     * @return Statistics|null
      */
-    public function getStatistics(): Statistics
+    public function getStatistics(): ?Statistics
     {
         return $this->statistics;
     }

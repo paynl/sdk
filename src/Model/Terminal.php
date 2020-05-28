@@ -24,6 +24,7 @@ class Terminal implements ModelInterface, JsonSerializable
     public const STATE_ACTIVE   = 'active';
     public const STATE_INACTIVE = 'inactive';
     public const STATE_RMA      = 'rma';
+    public const STATE_FINAL    = 'final';
 
     public const STATES = [
         self::STATE_ALL,
@@ -32,7 +33,8 @@ class Terminal implements ModelInterface, JsonSerializable
         self::STATE_STOCKED,
         self::STATE_ACTIVE,
         self::STATE_INACTIVE,
-        self::STATE_RMA
+        self::STATE_RMA,
+        self::STATE_FINAL,
     ];
 
     /**

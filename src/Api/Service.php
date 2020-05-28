@@ -111,7 +111,6 @@ class Service
             $headers[RequestInterface::HEADER_CONTENT_TYPE]
         );
 
-        /** @var Response $response */
         $response = $this->getResponse();
         // set the transformer for the response if needed!
         if (ResponseInterface::FORMAT_OBJECTS === $response->getFormat()) {
@@ -123,7 +122,7 @@ class Service
             $modelName = $mapperManager->get('RequestModelMapper')->getTarget($request->getOption('name'));
             $transformer->setHydrator($this->serviceManager->get('hydratorManager')->build('Entity'));
 
-            if (null !== $modelName) {
+            if ('' !== $modelName) {
                 $model = $this->serviceManager->get('modelManager')->build($modelName);
 
                 $transformer->setModel($model);

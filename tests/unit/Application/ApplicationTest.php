@@ -8,6 +8,7 @@ use Codeception\Test\Unit as UnitTest;
 use PayNL\Sdk\Application\Application;
 use PayNL\Sdk\Config\Config;
 use PayNL\Sdk\Exception\InvalidArgumentException;
+use PayNL\Sdk\Filter\FilterInterface;
 use PayNL\Sdk\Request\AbstractRequest;
 use PayNL\Sdk\Request\RequestInterface;
 use PayNL\Sdk\Response\ResponseInterface;
@@ -115,14 +116,15 @@ class ApplicationTest extends UnitTest
      */
     public function testItCanSetRequestByName(): void
     {
-        verify($this->application->setRequest('GetCurrency', ['currencyId' => 'EUR']))
+        verify($this->application->setRequest('GetTerminals', [], ['state' => 'active']))
             ->isInstanceOf(Application::class)
         ;
 
         $request = $this->application->getRequest();
         verify($request)->isInstanceOf(RequestInterface::class);
+        verify($request->getFilters())->containsOnlyInstancesOf(FilterInterface::class);
         verify($request->getBody())->isEmpty();
-        verify($request->getUri())->equals('/currencies/EUR');
+        verify($request->getUri())->equals('/pin/terminals');
     }
 
     /**

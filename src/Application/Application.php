@@ -174,8 +174,12 @@ class Application
             /** @var AbstractRequest $request */
             $request = $this->serviceManager->get('requestManager')->get($request);
 
+            foreach (($filters ?? []) as $filterName => $value) {
+                $filters[$filterName] = $this->serviceManager->get('filterManager')->get($filterName, ['value' => $value]);
+            }
+
             $request->setParams($params ?? [])
-                ->setFilters($filters ?? [])
+                ->setFilters($filters)
             ;
 
             $request->setBody($body);

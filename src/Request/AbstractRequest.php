@@ -517,11 +517,11 @@ abstract class AbstractRequest implements
             }
 
             $statusCode = $re->getCode();
-            $body = $this->getErrorsString((int)$statusCode, $errorMessages);
+            $body = $this->getErrorsString($response->getFormat(), (int)$statusCode, $errorMessages);
         } catch (GuzzleException | ExceptionInterface $e) {
             $statusCode = $e->getCode() ?? 500;
             $rawBody = 'Error: ' . $e->getMessage() . ' (' . $statusCode . ')';
-            $body = $this->getErrorsString((int)$statusCode, $rawBody);
+            $body = $this->getErrorsString($response->getFormat(), (int)$statusCode, $rawBody);
         }
 
         $response->setStatusCode($statusCode)
@@ -533,26 +533,63 @@ abstract class AbstractRequest implements
     }
 
     /**
+     * @param string $responseFormat
      * @param int $statusCode
      * @param string $rawBody
      *
      * @return string
      */
-    private function getErrorsString(int $statusCode, string $rawBody): string
+    private function getErrorsString(string $responseFormat, int $statusCode, string $rawBody): string
     {
-        // if given raw body already is Json return that
-        if (false !== strpos($rawBody, '{"errors":')) {
-            return $rawBody;
+        $encoderClass = JsonEncoder::class;
+        if (XmlEncoder::FORMAT === $responseFormat) {
+            $encoderClass = XmlEncoder::class;
         }
 
-        return (string)(new JsonEncoder())->encode([
-           'errors' => (object)[
-               'general' => (object)[
-                   'code'    => $statusCode,
-                   'message' => $rawBody,
-               ]
-           ]
-        ], JsonEncoder::FORMAT);
+        $encoder = new $encoderClass();
+        $errors = $encoder->decode($rawBody, $responseFormat);
+
+        // if given raw body already is Json return that
+        if (true === array_key_exists('errors', $errors)) {
+            // reformat the errors
+            $errors['errors'] = $this->flattenErrors($errors['errors']);
+        } else {
+            $errors = [
+                'errors' => (object)[
+                    'general' => (object)[
+                        'context' => 'unknown',
+                        'code'    => $statusCode,
+                        'message' => $rawBody,
+                    ]
+                ]
+            ];
+        }
+
+        return (string)$encoder->encode($errors, $responseFormat);
+    }
+
+    /**
+     * @param array $errors
+     * @param string $context
+     *
+     * @return array
+     */
+    protected function flattenErrors(array $errors, string $context = ''): array
+    {
+        if (true === array_key_exists('code', $errors) && true === array_key_exists('message', $errors)) {
+            $errors['context'] = $context;
+            return [$context => $errors];
+        }
+
+        $return = [];
+        foreach ($errors as $key => $value) {
+            if (true === is_array($value)) {
+                $return = $this->flattenErrors($value, ltrim($context . ".$key", '.'));
+            } else {
+                $return[$key] = $value;
+            }
+        }
+        return $return;
     }
 
     /**

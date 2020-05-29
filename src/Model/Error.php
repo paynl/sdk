@@ -12,6 +12,13 @@ namespace PayNL\Sdk\Model;
 class Error implements ModelInterface
 {
     /**
+     * A reference to the response field
+     *
+     * @var string
+     */
+    protected $context;
+
+    /**
      * @var integer
      */
     protected $code;
@@ -20,6 +27,25 @@ class Error implements ModelInterface
      * @var string
      */
     protected $message;
+
+    /**
+     * @return string
+     */
+    public function getContext(): string
+    {
+        return $this->context;
+    }
+
+    /**
+     * @param string $context
+     *
+     * @return Error
+     */
+    public function setContext(string $context): self
+    {
+        $this->context = $context;
+        return $this;
+    }
 
     /**
      * @return int

@@ -16,7 +16,7 @@ use PayNL\Sdk\{
  */
 class Service implements ModelInterface
 {
-    use LinksTrait;
+    use Member\LinksTrait;
 
     /**
      * @required

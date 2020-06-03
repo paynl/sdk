@@ -14,7 +14,7 @@ use PayNL\Sdk\Common\CollectionInterface;
  */
 class Errors extends ArrayCollection implements ModelInterface, CollectionInterface
 {
-    use LinksTrait;
+    use Member\LinksTrait;
 
     /**
      * @return array

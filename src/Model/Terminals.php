@@ -13,7 +13,7 @@ use PayNL\Sdk\Common\AbstractTotalCollection;
  */
 class Terminals extends AbstractTotalCollection implements ModelInterface
 {
-    use LinksTrait;
+    use Member\LinksTrait;
 
     /**
      * @return array

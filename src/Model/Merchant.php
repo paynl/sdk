@@ -13,7 +13,7 @@ use PayNL\Sdk\Common\DateTime;
  */
 class Merchant implements ModelInterface
 {
-    use LinksTrait;
+    use Member\LinksTrait;
 
     /**
      * @var string

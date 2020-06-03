@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\PayNL\Sdk\Model;
+namespace Tests\Unit\PayNL\Sdk\Model\Member;
 
 use Codeception\Test\Unit as UnitTest;
 use PayNL\Sdk\Model\{
-    LinksTrait,
+    Member\LinksTrait,
     Links,
     Link
 };
@@ -17,7 +17,7 @@ use UnitTester;
 /**
  * Class LinksTraitTest
  *
- * @package Tests\Unit\PayNL\Sdk\Model
+ * @package Tests\Unit\PayNL\Sdk\Model\Member
  */
 class LinksTraitTest extends UnitTest
 {

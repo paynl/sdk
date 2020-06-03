@@ -331,8 +331,8 @@ class Transaction
         $result = $api->doRequest();       
         
         return new Result\Details($result);
-    }   
-
+    }
+    
     /**
      * Get the transaction in an exchange script.
      * This will work for all kinds of exchange calls (GET, POST AND POST_XML)

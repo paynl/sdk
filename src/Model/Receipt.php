@@ -9,7 +9,7 @@ namespace PayNL\Sdk\Model;
  *
  * @package PayNL\Sdk\Model
  */
-class Receipt implements ModelInterface
+class Receipt implements ModelInterface, Member\LinksAwareInterface
 {
     use Member\LinksTrait;
 

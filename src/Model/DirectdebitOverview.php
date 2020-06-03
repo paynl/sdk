@@ -9,7 +9,7 @@ namespace PayNL\Sdk\Model;
  *
  * @package PayNL\Sdk\Model
  */
-class DirectdebitOverview implements ModelInterface
+class DirectdebitOverview implements ModelInterface, Member\LinksAwareInterface
 {
     use Member\LinksTrait;
 

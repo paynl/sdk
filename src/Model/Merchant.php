@@ -11,7 +11,7 @@ use PayNL\Sdk\Common\DateTime;
  *
  * @package PayNL\Sdk\Model
  */
-class Merchant implements ModelInterface
+class Merchant implements ModelInterface, Member\LinksAwareInterface
 {
     use Member\LinksTrait;
 

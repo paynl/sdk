@@ -11,7 +11,7 @@ use PayNL\Sdk\Common\AbstractTotalCollection;
  *
  * @package PayNL\Sdk\Model
  */
-class Currencies extends AbstractTotalCollection implements ModelInterface
+class Currencies extends AbstractTotalCollection implements ModelInterface, Member\LinksAwareInterface
 {
     use Member\LinksTrait;
 

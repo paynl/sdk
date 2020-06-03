@@ -28,6 +28,9 @@ class DirectdebitOverview implements ModelInterface
      */
     public function getMandate(): Mandate
     {
+        if (null === $this->mandate) {
+            $this->setMandate(new Mandate());
+        }
         return $this->mandate;
     }
 
@@ -47,6 +50,9 @@ class DirectdebitOverview implements ModelInterface
      */
     public function getDirectdebits(): Directdebits
     {
+        if (null === $this->directdebits) {
+            $this->setDirectdebits(new Directdebits());
+        }
         return $this->directdebits;
     }
 

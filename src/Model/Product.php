@@ -89,6 +89,9 @@ class Product implements ModelInterface, JsonSerializable
      */
     public function getPrice(): Amount
     {
+        if (null === $this->price) {
+            $this->setPrice(new Amount());
+        }
         return $this->price;
     }
 

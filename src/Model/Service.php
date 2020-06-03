@@ -148,9 +148,9 @@ class Service implements ModelInterface
     }
 
     /**
-     * @return DateTime|null
+     * @return DateTime
      */
-    public function getCreatedAt(): ?DateTime
+    public function getCreatedAt(): DateTime
     {
         return $this->createdAt;
     }

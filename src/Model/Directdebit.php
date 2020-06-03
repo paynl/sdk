@@ -42,7 +42,7 @@ class Directdebit implements ModelInterface
     protected $status;
 
     /**
-     * @var Status|null
+     * @var Status
      */
     protected $declined;
 
@@ -89,6 +89,9 @@ class Directdebit implements ModelInterface
      */
     public function getAmount(): Amount
     {
+        if (null === $this->amount) {
+            $this->setAmount(new Amount());
+        }
         return $this->amount;
     }
 
@@ -127,6 +130,9 @@ class Directdebit implements ModelInterface
      */
     public function getBankAccount(): BankAccount
     {
+        if (null === $this->bankAccount) {
+            $this->setBankAccount(new BankAccount());
+        }
         return $this->bankAccount;
     }
 
@@ -146,6 +152,9 @@ class Directdebit implements ModelInterface
      */
     public function getStatus(): Status
     {
+        if (null === $this->status) {
+            $this->setStatus(new Status());
+        }
         return $this->status;
     }
 
@@ -161,10 +170,13 @@ class Directdebit implements ModelInterface
     }
 
     /**
-     * @return Status|null
+     * @return Status
      */
-    public function getDeclined(): ?Status
+    public function getDeclined(): Status
     {
+        if (null === $this->declined) {
+            $this->setDeclined(new Status());
+        }
         return $this->declined;
     }
 

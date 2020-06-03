@@ -105,6 +105,9 @@ class Refund implements ModelInterface, JsonSerializable
      */
     public function getAmount(): Amount
     {
+        if (null === $this->amount) {
+            $this->setAmount(new Amount());
+        }
         return $this->amount;
     }
 
@@ -143,6 +146,9 @@ class Refund implements ModelInterface, JsonSerializable
      */
     public function getBankAccount(): BankAccount
     {
+        if (null === $this->bankAccount) {
+            $this->setBankAccount(new BankAccount());
+        }
         return $this->bankAccount;
     }
 
@@ -162,6 +168,9 @@ class Refund implements ModelInterface, JsonSerializable
      */
     public function getStatus(): Status
     {
+        if (null === $this->status) {
+            $this->setStatus(new Status());
+        }
         return $this->status;
     }
 
@@ -229,9 +238,9 @@ class Refund implements ModelInterface, JsonSerializable
     }
 
     /**
-     * @return DateTime
+     * @return DateTime|null
      */
-    public function getProcessDate(): DateTime
+    public function getProcessDate(): ?DateTime
     {
         return $this->processDate;
     }

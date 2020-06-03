@@ -140,10 +140,13 @@ class Qr implements ModelInterface, JsonSerializable
     }
 
     /**
-     * @return Amount|null
+     * @return Amount
      */
-    public function getAmount(): ?Amount
+    public function getAmount(): Amount
     {
+        if (null === $this->amount) {
+            $this->setAmount(new Amount());
+        }
         return $this->amount;
     }
 
@@ -227,10 +230,13 @@ class Qr implements ModelInterface, JsonSerializable
     }
 
     /**
-     * @return PaymentMethod|null
+     * @return PaymentMethod
      */
-    public function getPaymentMethod(): ?PaymentMethod
+    public function getPaymentMethod(): PaymentMethod
     {
+        if (null === $this->paymentMethod) {
+            $this->setPaymentMethod(new PaymentMethod());
+        }
         return $this->paymentMethod;
     }
 

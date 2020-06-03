@@ -36,6 +36,9 @@ class Voucher implements ModelInterface, JsonSerializable
      */
     public function getAmount(): Amount
     {
+        if (null === $this->amount) {
+            $this->setAmount(new Amount());
+        }
         return $this->amount;
     }
 

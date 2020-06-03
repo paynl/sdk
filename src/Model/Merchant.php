@@ -170,6 +170,9 @@ class Merchant implements ModelInterface
      */
     public function getBankAccount(): BankAccount
     {
+        if (null === $this->bankAccount) {
+            $this->setBankAccount(new BankAccount());
+        }
         return $this->bankAccount;
     }
 
@@ -189,6 +192,9 @@ class Merchant implements ModelInterface
      */
     public function getPostalAddress(): Address
     {
+        if (null === $this->postalAddress) {
+            $this->setPostalAddress(new Address());
+        }
         return $this->postalAddress;
     }
 
@@ -208,6 +214,9 @@ class Merchant implements ModelInterface
      */
     public function getVisitAddress(): Address
     {
+        if (null === $this->getVisitAddress()) {
+            $this->setVisitAddress(new Address());
+        }
         return $this->visitAddress;
     }
 
@@ -290,9 +299,14 @@ class Merchant implements ModelInterface
 
     /**
      * @return DateTime
+     *
+     * @SuppressWarnings(PHPMD.StaticAccess)
      */
     public function getCreatedAt(): DateTime
     {
+        if (null === $this->createdAt) {
+            $this->setCreatedAt(DateTime::now());
+        }
         return $this->createdAt;
     }
 

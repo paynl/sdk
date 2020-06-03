@@ -272,6 +272,9 @@ class Transaction implements ModelInterface, JsonSerializable
      */
     public function getAmount(): Amount
     {
+        if (null === $this->amount) {
+            $this->setAmount(new Amount());
+        }
         return $this->amount;
     }
 
@@ -287,10 +290,13 @@ class Transaction implements ModelInterface, JsonSerializable
     }
 
     /**
-     * @return Amount|null
+     * @return Amount
      */
-    public function getAmountConverted(): ?Amount
+    public function getAmountConverted(): Amount
     {
+        if (null === $this->amountConverted) {
+            $this->setAmountConverted(new Amount());
+        }
         return $this->amountConverted;
     }
 
@@ -306,10 +312,13 @@ class Transaction implements ModelInterface, JsonSerializable
     }
 
     /**
-     * @return Amount|null
+     * @return Amount
      */
-    public function getAmountPaid(): ?Amount
+    public function getAmountPaid(): Amount
     {
+        if (null === $this->amountPaid) {
+            $this->setAmountPaid(new Amount());
+        }
         return $this->amountPaid;
     }
 
@@ -325,10 +334,13 @@ class Transaction implements ModelInterface, JsonSerializable
     }
 
     /**
-     * @return Amount|null
+     * @return Amount
      */
-    public function getAmountRefunded(): ?Amount
+    public function getAmountRefunded(): Amount
     {
+        if (null === $this->amountRefunded) {
+            $this->setAmountRefunded(new Amount());
+        }
         return $this->amountRefunded;
     }
 
@@ -344,10 +356,13 @@ class Transaction implements ModelInterface, JsonSerializable
     }
 
     /**
-     * @return PaymentMethod|null
+     * @return PaymentMethod
      */
-    public function getPaymentMethod(): ?PaymentMethod
+    public function getPaymentMethod(): PaymentMethod
     {
+        if (null === $this->paymentMethod) {
+            $this->setPaymentMethod(new PaymentMethod());
+        }
         return $this->paymentMethod;
     }
 
@@ -384,7 +399,7 @@ class Transaction implements ModelInterface, JsonSerializable
     /**
      * @return string
      */
-    public function getExchangeUrl(): ?string
+    public function getExchangeUrl(): string
     {
         return (string)$this->exchangeUrl;
     }
@@ -420,10 +435,13 @@ class Transaction implements ModelInterface, JsonSerializable
     }
 
     /**
-     * @return Transfer|null
+     * @return Transfer
      */
-    public function getTransfer(): ?Transfer
+    public function getTransfer(): Transfer
     {
+        if (null === $this->transfer) {
+            $this->setTransfer(new Transfer());
+        }
         return $this->transfer;
     }
 
@@ -458,10 +476,13 @@ class Transaction implements ModelInterface, JsonSerializable
     }
 
     /**
-     * @return Integration|null
+     * @return Integration
      */
-    public function getIntegration(): ?Integration
+    public function getIntegration(): Integration
     {
+        if (null === $this->integration) {
+            $this->setIntegration(new Integration());
+        }
         return $this->integration;
     }
 
@@ -477,10 +498,13 @@ class Transaction implements ModelInterface, JsonSerializable
     }
 
     /**
-     * @return Order|null
+     * @return Order
      */
-    public function getOrder(): ?Order
+    public function getOrder(): Order
     {
+        if (null === $this->order) {
+            $this->setOrder(new Order());
+        }
         return $this->order;
     }
 
@@ -496,10 +520,13 @@ class Transaction implements ModelInterface, JsonSerializable
     }
 
     /**
-     * @return TransactionStatus|null
+     * @return TransactionStatus
      */
-    public function getStatus(): ?TransactionStatus
+    public function getStatus(): TransactionStatus
     {
+        if (null === $this->status) {
+            $this->setStatus(new TransactionStatus());
+        }
         return $this->status;
     }
 
@@ -515,10 +542,13 @@ class Transaction implements ModelInterface, JsonSerializable
     }
 
     /**
-     * @return Statistics|null
+     * @return Statistics
      */
-    public function getStatistics(): ?Statistics
+    public function getStatistics(): Statistics
     {
+        if (null === $this->statistics) {
+            $this->setStatistics(new Statistics());
+        }
         return $this->statistics;
     }
 
@@ -541,7 +571,7 @@ class Transaction implements ModelInterface, JsonSerializable
     public function getCreatedAt(): DateTime
     {
         if (null === $this->createdAt) {
-            $this->createdAt = DateTime::now();
+            $this->setCreatedAt(DateTime::now());
         }
 
         return $this->createdAt;

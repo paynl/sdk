@@ -100,6 +100,9 @@ class Receipt implements ModelInterface
      */
     public function getCard(): Card
     {
+        if (null === $this->card) {
+            $this->setCard(new Card());
+        }
         return $this->card;
     }
 
@@ -119,6 +122,9 @@ class Receipt implements ModelInterface
      */
     public function getPaymentMethod(): PaymentMethod
     {
+        if (null === $this->paymentMethod) {
+            $this->setPaymentMethod(new PaymentMethod());
+        }
         return $this->paymentMethod;
     }
 

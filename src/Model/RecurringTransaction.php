@@ -30,10 +30,12 @@ class RecurringTransaction implements ModelInterface, JsonSerializable
      * @var string
      */
     protected $extra1;
+
     /**
      * @var string
      */
     protected $extra2;
+
     /**
      * @var string
      */
@@ -44,6 +46,9 @@ class RecurringTransaction implements ModelInterface, JsonSerializable
      */
     public function getAmount(): Amount
     {
+        if (null === $this->amount) {
+            $this->setAmount(new Amount());
+        }
         return $this->amount;
     }
 

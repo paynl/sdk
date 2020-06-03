@@ -31,6 +31,9 @@ class RefundTransaction implements ModelInterface
      */
     public function getAmount(): Amount
     {
+        if (null === $this->amount) {
+            $this->setAmount(new Amount());
+        }
         return $this->amount;
     }
 
@@ -50,6 +53,9 @@ class RefundTransaction implements ModelInterface
      */
     public function getAmountRefunded(): Amount
     {
+        if (null === $this->amountRefunded) {
+            $this->setAmountRefunded(new Amount());
+        }
         return $this->amountRefunded;
     }
 
@@ -69,6 +75,9 @@ class RefundTransaction implements ModelInterface
      */
     public function getRefund(): Refund
     {
+        if (null === $this->refund) {
+            $this->setRefund(new Refund());
+        }
         return $this->refund;
     }
 

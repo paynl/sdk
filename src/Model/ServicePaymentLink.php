@@ -60,7 +60,7 @@ class ServicePaymentLink implements ModelInterface, JsonSerializable
     /**
      * @var string
      */
-    protected $url = '';
+    protected $url;
 
     /**
      * @return array
@@ -80,7 +80,7 @@ class ServicePaymentLink implements ModelInterface, JsonSerializable
      */
     public function getSecurityMode(): int
     {
-        return $this->securityMode;
+        return (int)$this->securityMode;
     }
 
     /**
@@ -110,6 +110,9 @@ class ServicePaymentLink implements ModelInterface, JsonSerializable
      */
     public function getAmount(): Amount
     {
+        if (null === $this->amount) {
+            $this->setAmount(new Amount());
+        }
         return $this->amount;
     }
 
@@ -129,6 +132,9 @@ class ServicePaymentLink implements ModelInterface, JsonSerializable
      */
     public function getAmountMin(): ?Amount
     {
+        if (null === $this->amountMin) {
+            $this->setAmountMin(new Amount());
+        }
         return $this->amountMin;
     }
 
@@ -182,10 +188,13 @@ class ServicePaymentLink implements ModelInterface, JsonSerializable
     }
 
     /**
-     * @return Statistics|null
+     * @return Statistics
      */
-    public function getStatistics(): ?Statistics
+    public function getStatistics(): Statistics
     {
+        if (null === $this->statistics) {
+            $this->setStatistics(new Statistics());
+        }
         return $this->statistics;
     }
 
@@ -205,7 +214,7 @@ class ServicePaymentLink implements ModelInterface, JsonSerializable
      */
     public function getUrl(): string
     {
-        return $this->url;
+        return (string)$this->url;
     }
 
     /**

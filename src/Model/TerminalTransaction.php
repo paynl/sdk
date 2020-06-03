@@ -199,6 +199,9 @@ class TerminalTransaction implements ModelInterface, JsonSerializable
      */
     public function getTerminal(): Terminal
     {
+        if (null === $this->terminal) {
+            $this->setTerminal(new Terminal());
+        }
         return $this->terminal;
     }
 
@@ -218,6 +221,9 @@ class TerminalTransaction implements ModelInterface, JsonSerializable
      */
     public function getProgress(): Progress
     {
+        if (null === $this->progress) {
+            $this->setProgress(new Progress());
+        }
         return $this->progress;
     }
 

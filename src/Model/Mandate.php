@@ -176,6 +176,9 @@ class Mandate implements ModelInterface, JsonSerializable
      */
     public function getAmount(): Amount
     {
+        if (null === $this->amount) {
+            $this->setAmount(new Amount());
+        }
         return $this->amount;
     }
 
@@ -214,6 +217,9 @@ class Mandate implements ModelInterface, JsonSerializable
      */
     public function getStatistics(): Statistics
     {
+        if (null === $this->statistics) {
+            $this->setStatistics(new Statistics());
+        }
         return $this->statistics;
     }
 
@@ -233,6 +239,9 @@ class Mandate implements ModelInterface, JsonSerializable
      */
     public function getInterval(): Interval
     {
+        if (null === $this->interval) {
+            $this->setInterval(new Interval());
+        }
         return $this->interval;
     }
 
@@ -248,10 +257,13 @@ class Mandate implements ModelInterface, JsonSerializable
     }
 
     /**
-     * @return Customer|null
+     * @return Customer
      */
-    public function getCustomer(): ?Customer
+    public function getCustomer(): Customer
     {
+        if (null === $this->customer) {
+            $this->setCustomer(new Customer());
+        }
         return $this->customer;
     }
 

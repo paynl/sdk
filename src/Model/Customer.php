@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Model;
 
-use DateTime;
-use JsonSerializable;
-use PayNL\Sdk\Exception\InvalidArgumentException;
-use PayNL\Sdk\Common\JsonSerializeTrait;
+use DateTime,
+    JsonSerializable;
+use PayNL\Sdk\{
+    Exception\InvalidArgumentException,
+    Common\JsonSerializeTrait
+};
 
 /**
  * Class Customer
@@ -84,6 +86,9 @@ class Customer implements ModelInterface, JsonSerializable
      */
     protected $company;
 
+    /**
+     * @return array
+     */
     protected function getTypes(): array
     {
         return [
@@ -275,6 +280,7 @@ class Customer implements ModelInterface, JsonSerializable
      */
     public function setTrustLevel(int $trustLevel): self
     {
+        // TODO: make it configurable by the config provider
         $min = -10;
         $max = 10;
         if (false === in_array($trustLevel, range($min, $max), true)) {
@@ -317,6 +323,9 @@ class Customer implements ModelInterface, JsonSerializable
      */
     public function getBankAccount(): BankAccount
     {
+        if (null === $this->bankAccount) {
+            $this->setBankAccount(new BankAccount());
+        }
         return $this->bankAccount;
     }
 
@@ -336,6 +345,9 @@ class Customer implements ModelInterface, JsonSerializable
      */
     public function getCompany(): Company
     {
+        if (null === $this->company) {
+            $this->setCompany(new Company());
+        }
         return $this->company;
     }
 

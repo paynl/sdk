@@ -2,12 +2,14 @@
 
 declare(strict_types=1);
 
-namespace PayNL\Sdk\Model;
+namespace PayNL\Sdk\Model\Member;
+
+use PayNL\Sdk\Model\Links;
 
 /**
  * Trait LinksTrait
  *
- * @package PayNL\Sdk
+ * @package PayNL\Sdk\Model\Member
  */
 trait LinksTrait
 {
@@ -19,8 +21,11 @@ trait LinksTrait
     /**
      * @return Links
      */
-    public function getLinks(): ?Links
+    public function getLinks(): Links
     {
+        if (null === $this->links) {
+            $this->setLinks(new Links());
+        }
         return $this->links;
     }
 

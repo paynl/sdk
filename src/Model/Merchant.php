@@ -15,10 +15,12 @@ use PayNL\Sdk\Common\DateTime;
 class Merchant implements
     ModelInterface,
     Member\LinksAwareInterface,
-    Member\BankAccountAwareInterface
+    Member\BankAccountAwareInterface,
+    Member\CreatedAtAwareInterface
 {
     use Member\LinksAwareTrait;
     use Member\BankAccountAwareTrait;
+    use Member\CreatedAtAwareTrait;
 
     /**
      * @var string
@@ -272,32 +274,6 @@ class Merchant implements
     public function addContactMethod(ContactMethod $contactMethod): self
     {
         $this->getContactMethods()->addContactMethod($contactMethod);
-        return $this;
-    }
-
-    /**
-     * @throws Exception
-     *
-     * @return DateTime
-     *
-     * @SuppressWarnings(PHPMD.StaticAccess)
-     */
-    public function getCreatedAt(): DateTime
-    {
-        if (null === $this->createdAt) {
-            $this->setCreatedAt(DateTime::now());
-        }
-        return $this->createdAt;
-    }
-
-    /**
-     * @param DateTime $createdAt
-     *
-     * @return Merchant
-     */
-    public function setCreatedAt(DateTime $createdAt): self
-    {
-        $this->createdAt = $createdAt;
         return $this;
     }
 }

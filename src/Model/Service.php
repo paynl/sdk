@@ -14,9 +14,13 @@ use PayNL\Sdk\{
  *
  * @package PayNL\Sdk\Model
  */
-class Service implements ModelInterface, Member\LinksAwareInterface
+class Service implements
+    ModelInterface,
+    Member\LinksAwareInterface,
+    Member\CreatedAtAwareInterface
 {
     use Member\LinksAwareTrait;
+    use Member\CreatedAtAwareTrait;
 
     /**
      * @required
@@ -144,25 +148,6 @@ class Service implements ModelInterface, Member\LinksAwareInterface
     public function setSecret(string $secret): self
     {
         $this->secret = $secret;
-        return $this;
-    }
-
-    /**
-     * @return DateTime
-     */
-    public function getCreatedAt(): DateTime
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * @param DateTime $createdAt
-     *
-     * @return Service
-     */
-    public function setCreatedAt(DateTime $createdAt): self
-    {
-        $this->createdAt = $createdAt;
         return $this;
     }
 }

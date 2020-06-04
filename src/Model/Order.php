@@ -12,7 +12,9 @@ use PayNL\Sdk\Common\JsonSerializeTrait;
  *
  * @package PayNL\Sdk\Model
  */
-class Order implements ModelInterface, JsonSerializable
+class Order implements
+    ModelInterface,
+    JsonSerializable
 {
     use JsonSerializeTrait;
 

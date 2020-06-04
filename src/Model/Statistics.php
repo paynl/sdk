@@ -12,7 +12,9 @@ use PayNL\Sdk\Common\JsonSerializeTrait;
  *
  * @package PayNL\Sdk\Model
  */
-class Statistics implements ModelInterface, JsonSerializable
+class Statistics implements
+    ModelInterface,
+    JsonSerializable
 {
     use JsonSerializeTrait;
 

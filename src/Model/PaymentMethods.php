@@ -18,7 +18,7 @@ use PayNL\Sdk\Common\{
  */
 class PaymentMethods extends AbstractTotalCollection implements ModelInterface, JsonSerializable, Member\LinksAwareInterface
 {
-    use Member\LinksTrait, JsonSerializeTrait;
+    use Member\LinksAwareTrait, JsonSerializeTrait;
 
     /**
      * @return array

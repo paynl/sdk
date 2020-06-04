@@ -16,8 +16,12 @@ use PayNL\Sdk\{
  *
  * @package PayNL\Sdk\Model
  */
-class Customer implements ModelInterface, JsonSerializable
+class Customer implements
+    ModelInterface,
+    Member\BankAccountAwareInterface,
+    JsonSerializable
 {
+    use Member\BankAccountAwareTrait;
     use JsonSerializeTrait;
 
     /*
@@ -67,7 +71,7 @@ class Customer implements ModelInterface, JsonSerializable
     protected $email;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $trustLevel = 0;
 
@@ -75,11 +79,6 @@ class Customer implements ModelInterface, JsonSerializable
      * @var string
      */
     protected $reference;
-
-    /**
-     * @var BankAccount
-     */
-    protected $bankAccount;
 
     /**
      * @var Company
@@ -315,28 +314,6 @@ class Customer implements ModelInterface, JsonSerializable
     public function setReference(string $reference): self
     {
         $this->reference = $reference;
-        return $this;
-    }
-
-    /**
-     * @return BankAccount
-     */
-    public function getBankAccount(): BankAccount
-    {
-        if (null === $this->bankAccount) {
-            $this->setBankAccount(new BankAccount());
-        }
-        return $this->bankAccount;
-    }
-
-    /**
-     * @param BankAccount $bankAccount
-     *
-     * @return Customer
-     */
-    public function setBankAccount(BankAccount $bankAccount): self
-    {
-        $this->bankAccount = $bankAccount;
         return $this;
     }
 

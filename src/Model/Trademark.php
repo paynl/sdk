@@ -12,7 +12,9 @@ use PayNL\Sdk\Common\JsonSerializeTrait;
  *
  * @package PayNL\Sdk\Model
  */
-class Trademark implements ModelInterface, JsonSerializable
+class Trademark implements
+    ModelInterface,
+    JsonSerializable
 {
     use JsonSerializeTrait;
 

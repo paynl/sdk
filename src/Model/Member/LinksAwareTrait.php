@@ -11,7 +11,7 @@ use PayNL\Sdk\Model\Links;
  *
  * @package PayNL\Sdk\Model\Member
  */
-trait LinksTrait
+trait LinksAwareTrait
 {
     /**
      * @var Links

@@ -11,7 +11,7 @@ namespace PayNL\Sdk\Model;
  */
 class Currency implements ModelInterface, Member\LinksAwareInterface
 {
-    use Member\LinksTrait;
+    use Member\LinksAwareTrait;
 
     /**
      * @var string

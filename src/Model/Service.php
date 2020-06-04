@@ -16,7 +16,7 @@ use PayNL\Sdk\{
  */
 class Service implements ModelInterface, Member\LinksAwareInterface
 {
-    use Member\LinksTrait;
+    use Member\LinksAwareTrait;
 
     /**
      * @required

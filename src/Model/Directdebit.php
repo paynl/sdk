@@ -9,8 +9,14 @@ namespace PayNL\Sdk\Model;
  *
  * @package PayNL\Sdk\Model
  */
-class Directdebit implements ModelInterface
+class Directdebit implements
+    ModelInterface,
+    Member\AmountAwareInterface,
+    Member\BankAccountAwareInterface
 {
+    use Member\AmountAwareTrait;
+    use Member\BankAccountAwareTrait;
+
     /**
      * @var string
      */
@@ -22,19 +28,9 @@ class Directdebit implements ModelInterface
     protected $paymentSessionId;
 
     /**
-     * @var Amount
-     */
-    protected $amount;
-
-    /**
      * @var string
      */
     protected $description;
-
-    /**
-     * @var BankAccount
-     */
-    protected $bankAccount;
 
     /**
      * @var Status
@@ -85,28 +81,6 @@ class Directdebit implements ModelInterface
     }
 
     /**
-     * @return Amount
-     */
-    public function getAmount(): Amount
-    {
-        if (null === $this->amount) {
-            $this->setAmount(new Amount());
-        }
-        return $this->amount;
-    }
-
-    /**
-     * @param Amount $amount
-     *
-     * @return Directdebit
-     */
-    public function setAmount(Amount $amount): self
-    {
-        $this->amount = $amount;
-        return $this;
-    }
-
-    /**
      * @return string
      */
     public function getDescription(): string
@@ -122,28 +96,6 @@ class Directdebit implements ModelInterface
     public function setDescription(string $description): self
     {
         $this->description = $description;
-        return $this;
-    }
-
-    /**
-     * @return BankAccount
-     */
-    public function getBankAccount(): BankAccount
-    {
-        if (null === $this->bankAccount) {
-            $this->setBankAccount(new BankAccount());
-        }
-        return $this->bankAccount;
-    }
-
-    /**
-     * @param BankAccount $bankAccount
-     *
-     * @return Directdebit
-     */
-    public function setBankAccount(BankAccount $bankAccount): self
-    {
-        $this->bankAccount = $bankAccount;
         return $this;
     }
 

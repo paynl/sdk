@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Model;
 
-use JsonSerializable, DateTime;
+use JsonSerializable,
+    DateTime;
 use PayNL\Sdk\Common\JsonSerializeTrait;
 
 /**
@@ -12,8 +13,12 @@ use PayNL\Sdk\Common\JsonSerializeTrait;
  *
  * @package PayNL\Sdk\Model
  */
-class Mandate implements ModelInterface, JsonSerializable
+class Mandate implements
+    ModelInterface,
+    Member\AmountAwareInterface,
+    JsonSerializable
 {
+    use Member\AmountAwareTrait;
     use JsonSerializeTrait;
 
     /**
@@ -42,11 +47,6 @@ class Mandate implements ModelInterface, JsonSerializable
     protected $exchangeUrl;
 
     /**
-     * @var Amount
-     */
-    protected $amount;
-
-    /**
      * @var string
      */
     protected $description;
@@ -67,7 +67,7 @@ class Mandate implements ModelInterface, JsonSerializable
     protected $customer;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $isLastOrder = false;
 
@@ -168,28 +168,6 @@ class Mandate implements ModelInterface, JsonSerializable
     public function setExchangeUrl(string $exchangeUrl): Mandate
     {
         $this->exchangeUrl = $exchangeUrl;
-        return $this;
-    }
-
-    /**
-     * @return Amount
-     */
-    public function getAmount(): Amount
-    {
-        if (null === $this->amount) {
-            $this->setAmount(new Amount());
-        }
-        return $this->amount;
-    }
-
-    /**
-     * @param Amount $amount
-     *
-     * @return Mandate
-     */
-    public function setAmount(Amount $amount): Mandate
-    {
-        $this->amount = $amount;
         return $this;
     }
 

@@ -19,7 +19,7 @@ class Error implements ModelInterface
     protected $context;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $code;
 

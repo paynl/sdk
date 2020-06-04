@@ -12,14 +12,15 @@ use PayNL\Sdk\Common\JsonSerializeTrait;
  *
  * @package PayNL\Sdk\Model
  */
-class Voucher implements ModelInterface, JsonSerializable
+class Voucher implements
+    ModelInterface,
+    Member\LinksAwareInterface,
+    Member\AmountAwareInterface,
+    JsonSerializable
 {
-    use JsonSerializeTrait, LinksTrait;
-
-    /**
-     * @var Amount
-     */
-    protected $amount;
+    use Member\LinksAwareTrait;
+    use Member\AmountAwareTrait;
+    use JsonSerializeTrait;
 
     /**
      * @var string
@@ -32,26 +33,9 @@ class Voucher implements ModelInterface, JsonSerializable
     protected $posId;
 
     /**
-     * @return Amount
+     * @var int
      */
-    public function getAmount(): Amount
-    {
-        if (null === $this->amount) {
-            $this->setAmount(new Amount());
-        }
-        return $this->amount;
-    }
-
-    /**
-     * @param Amount $amount
-     *
-     * @return Voucher
-     */
-    public function setAmount(Amount $amount): Voucher
-    {
-        $this->amount = $amount;
-        return $this;
-    }
+    protected $balance;
 
     /**
      * @return string
@@ -88,6 +72,25 @@ class Voucher implements ModelInterface, JsonSerializable
     public function setPosId(string $posId): Voucher
     {
         $this->posId = $posId;
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getBalance(): ?int
+    {
+        return $this->balance;
+    }
+
+    /**
+     * @param int $balance
+     *
+     * @return Voucher
+     */
+    public function setBalance(int $balance): Voucher
+    {
+        $this->balance = $balance;
         return $this;
     }
 }

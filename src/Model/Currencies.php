@@ -13,7 +13,7 @@ use PayNL\Sdk\Common\AbstractTotalCollection;
  */
 class Currencies extends AbstractTotalCollection implements ModelInterface, Member\LinksAwareInterface
 {
-    use Member\LinksTrait;
+    use Member\LinksAwareTrait;
 
     /**
      * @return array

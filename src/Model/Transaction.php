@@ -42,10 +42,12 @@ class Transaction implements
     ModelInterface,
     Member\LinksAwareInterface,
     Member\AmountAwareInterface,
+    Member\CreatedAtAwareInterface,
     JsonSerializable
 {
     use Member\LinksAwareTrait;
     use Member\AmountAwareTrait;
+    use Member\CreatedAtAwareTrait;
     use JsonSerializeTrait;
 
     /**
@@ -79,13 +81,6 @@ class Transaction implements
      * @var DateTime
      */
     protected $expiresAt;
-
-//    /**
-//     * @required
-//     *
-//     * @var Amount
-//     */
-//    protected $amount;
 
     /**
      * @var Amount
@@ -153,11 +148,6 @@ class Transaction implements
      * @var Statistics
      */
     protected $statistics;
-
-    /**
-     * @var DateTime
-     */
-    protected $createdAt;
 
     /**
      * @return string
@@ -544,31 +534,6 @@ class Transaction implements
     public function setStatistics(Statistics $statistics): self
     {
         $this->statistics = $statistics;
-        return $this;
-    }
-
-    /**
-     * @return DateTime
-     *
-     * @SuppressWarnings(PHPMD.StaticAccess)
-     */
-    public function getCreatedAt(): DateTime
-    {
-        if (null === $this->createdAt) {
-            $this->setCreatedAt(DateTime::now());
-        }
-
-        return $this->createdAt;
-    }
-
-    /**
-     * @param DateTime $createdAt
-     *
-     * @return Transaction
-     */
-    public function setCreatedAt(DateTime $createdAt): self
-    {
-        $this->createdAt = $createdAt;
         return $this;
     }
 

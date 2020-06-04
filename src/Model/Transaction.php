@@ -45,11 +45,13 @@ class Transaction implements
     ModelInterface,
     Member\LinksAwareInterface,
     Member\AmountAwareInterface,
+    Member\StatisticsAwareInterface,
     Member\CreatedAtAwareInterface,
     JsonSerializable
 {
     use Member\LinksAwareTrait;
     use Member\AmountAwareTrait;
+    use Member\StatisticsAwareTrait;
     use Member\CreatedAtAwareTrait;
     use JsonSerializeTrait;
 
@@ -146,11 +148,6 @@ class Transaction implements
      * @var TransactionStatus
      */
     protected $status;
-
-    /**
-     * @var Statistics
-     */
-    protected $statistics;
 
     /**
      * @return string
@@ -515,28 +512,6 @@ class Transaction implements
     public function setStatus(TransactionStatus $status): self
     {
         $this->status = $status;
-        return $this;
-    }
-
-    /**
-     * @return Statistics
-     */
-    public function getStatistics(): Statistics
-    {
-        if (null === $this->statistics) {
-            $this->setStatistics(new Statistics());
-        }
-        return $this->statistics;
-    }
-
-    /**
-     * @param Statistics $statistics
-     *
-     * @return Transaction
-     */
-    public function setStatistics(Statistics $statistics): self
-    {
-        $this->statistics = $statistics;
         return $this;
     }
 

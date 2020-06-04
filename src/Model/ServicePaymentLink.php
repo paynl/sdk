@@ -16,6 +16,7 @@ use PayNL\Sdk\Exception\InvalidArgumentException;
 class ServicePaymentLink implements
     ModelInterface,
     Member\AmountAwareInterface,
+    Member\StatisticsAwareInterface,
     JsonSerializable
 {
     use JsonSerializeTrait;
@@ -29,6 +30,7 @@ class ServicePaymentLink implements
     public const SECURITY_MODE_3 = 3;
 
     use Member\AmountAwareTrait;
+    use Member\StatisticsAwareTrait;
 
     /**
      * @required
@@ -51,11 +53,6 @@ class ServicePaymentLink implements
      * @var string
      */
     protected $language;
-
-    /**
-     * @var Statistics
-     */
-    protected $statistics;
 
     /**
      * @var string
@@ -162,28 +159,6 @@ class ServicePaymentLink implements
     public function setLanguage(string $language): self
     {
         $this->language = $language;
-        return $this;
-    }
-
-    /**
-     * @return Statistics
-     */
-    public function getStatistics(): Statistics
-    {
-        if (null === $this->statistics) {
-            $this->setStatistics(new Statistics());
-        }
-        return $this->statistics;
-    }
-
-    /**
-     * @param Statistics $statistics
-     *
-     * @return ServicePaymentLink
-     */
-    public function setStatistics(Statistics $statistics): self
-    {
-        $this->statistics = $statistics;
         return $this;
     }
 

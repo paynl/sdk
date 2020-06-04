@@ -45,12 +45,14 @@ class Transaction implements
     ModelInterface,
     Member\LinksAwareInterface,
     Member\AmountAwareInterface,
+    Member\PaymentMethodAwareInterface,
     Member\StatisticsAwareInterface,
     Member\CreatedAtAwareInterface,
     JsonSerializable
 {
     use Member\LinksAwareTrait;
     use Member\AmountAwareTrait;
+    use Member\PaymentMethodAwareTrait;
     use Member\StatisticsAwareTrait;
     use Member\CreatedAtAwareTrait;
     use JsonSerializeTrait;
@@ -101,11 +103,6 @@ class Transaction implements
      * @var Amount
      */
     protected $amountRefunded;
-
-    /**
-     * @var PaymentMethod
-     */
-    protected $paymentMethod;
 
     /**
      * @required
@@ -326,28 +323,6 @@ class Transaction implements
     public function setAmountRefunded(Amount $amountRefunded): self
     {
         $this->amountRefunded = $amountRefunded;
-        return $this;
-    }
-
-    /**
-     * @return PaymentMethod
-     */
-    public function getPaymentMethod(): PaymentMethod
-    {
-        if (null === $this->paymentMethod) {
-            $this->setPaymentMethod(new PaymentMethod());
-        }
-        return $this->paymentMethod;
-    }
-
-    /**
-     * @param PaymentMethod $paymentMethod
-     *
-     * @return Transaction
-     */
-    public function setPaymentMethod(PaymentMethod $paymentMethod): self
-    {
-        $this->paymentMethod = $paymentMethod;
         return $this;
     }
 

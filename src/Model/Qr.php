@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace PayNL\Sdk\Model;
 
 use JsonSerializable;
-use PayNL\Sdk\Exception\InvalidArgumentException;
-use PayNL\Sdk\Common\JsonSerializeTrait;
-use PayNL\Sdk\Model\Member\AmountAwareTrait;
+use PayNL\Sdk\{
+    Exception\InvalidArgumentException,
+    Common\JsonSerializeTrait
+};
 
 /**
  * Class Qr
@@ -17,6 +18,7 @@ use PayNL\Sdk\Model\Member\AmountAwareTrait;
 class Qr implements
     ModelInterface,
     Member\AmountAwareInterface,
+    Member\PaymentMethodAwareInterface,
     JsonSerializable
 {
     /*
@@ -25,7 +27,8 @@ class Qr implements
     public const REFERENCE_TYPE_STRING = 'string';
     public const REFERENCE_TYPE_HEX    = 'hex';
 
-    use AmountAwareTrait;
+    use Member\AmountAwareTrait;
+    use Member\PaymentMethodAwareTrait;
     use JsonSerializeTrait;
 
     /**
@@ -61,11 +64,6 @@ class Qr implements
      * @var string
      */
     protected $referenceType = self::REFERENCE_TYPE_STRING;
-
-    /**
-     * @var PaymentMethod
-     */
-    protected $paymentMethod;
 
     /**
      * @var string
@@ -204,28 +202,6 @@ class Qr implements
         }
 
         $this->referenceType = $referenceType;
-        return $this;
-    }
-
-    /**
-     * @return PaymentMethod
-     */
-    public function getPaymentMethod(): PaymentMethod
-    {
-        if (null === $this->paymentMethod) {
-            $this->setPaymentMethod(new PaymentMethod());
-        }
-        return $this->paymentMethod;
-    }
-
-    /**
-     * @param PaymentMethod $paymentMethod
-     *
-     * @return Qr
-     */
-    public function setPaymentMethod(PaymentMethod $paymentMethod): self
-    {
-        $this->paymentMethod = $paymentMethod;
         return $this;
     }
 

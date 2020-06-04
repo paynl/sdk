@@ -16,9 +16,11 @@ use PayNL\Sdk\Common\JsonSerializeTrait;
 class Mandate implements
     ModelInterface,
     Member\AmountAwareInterface,
+    Member\StatisticsAwareInterface,
     JsonSerializable
 {
     use Member\AmountAwareTrait;
+    use Member\StatisticsAwareTrait;
     use JsonSerializeTrait;
 
     /**
@@ -50,11 +52,6 @@ class Mandate implements
      * @var string
      */
     protected $description;
-
-    /**
-     * @var Statistics
-     */
-    protected $statistics;
 
     /**
      * @var Interval
@@ -187,28 +184,6 @@ class Mandate implements
     public function setDescription(string $description): Mandate
     {
         $this->description = $description;
-        return $this;
-    }
-
-    /**
-     * @return Statistics
-     */
-    public function getStatistics(): Statistics
-    {
-        if (null === $this->statistics) {
-            $this->setStatistics(new Statistics());
-        }
-        return $this->statistics;
-    }
-
-    /**
-     * @param Statistics $statistics
-     *
-     * @return Mandate
-     */
-    public function setStatistics(Statistics $statistics): Mandate
-    {
-        $this->statistics = $statistics;
         return $this;
     }
 

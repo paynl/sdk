@@ -38,9 +38,15 @@ use PayNL\Sdk\{
  * @method bool isPartiallyAccepted()
  * @method bool isPaid()
  */
-class Transaction implements ModelInterface, JsonSerializable
+class Transaction implements
+    ModelInterface,
+    Member\LinksAwareInterface,
+    Member\AmountAwareInterface,
+    JsonSerializable
 {
-    use JsonSerializeTrait, LinksTrait;
+    use Member\LinksAwareTrait;
+    use Member\AmountAwareTrait;
+    use JsonSerializeTrait;
 
     /**
      * @var string
@@ -74,12 +80,12 @@ class Transaction implements ModelInterface, JsonSerializable
      */
     protected $expiresAt;
 
-    /**
-     * @required
-     *
-     * @var Amount
-     */
-    protected $amount;
+//    /**
+//     * @required
+//     *
+//     * @var Amount
+//     */
+//    protected $amount;
 
     /**
      * @var Amount
@@ -264,28 +270,6 @@ class Transaction implements ModelInterface, JsonSerializable
     public function setExpiresAt(DateTime $expiresAt): self
     {
         $this->expiresAt = $expiresAt;
-        return $this;
-    }
-
-    /**
-     * @return Amount
-     */
-    public function getAmount(): Amount
-    {
-        if (null === $this->amount) {
-            $this->setAmount(new Amount());
-        }
-        return $this->amount;
-    }
-
-    /**
-     * @param Amount $amount
-     *
-     * @return Transaction
-     */
-    public function setAmount(Amount $amount): self
-    {
-        $this->amount = $amount;
         return $this;
     }
 

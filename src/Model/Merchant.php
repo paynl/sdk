@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Model;
 
+use Exception;
 use PayNL\Sdk\Common\DateTime;
 
 /**
@@ -11,9 +12,13 @@ use PayNL\Sdk\Common\DateTime;
  *
  * @package PayNL\Sdk\Model
  */
-class Merchant implements ModelInterface, Member\LinksAwareInterface
+class Merchant implements
+    ModelInterface,
+    Member\LinksAwareInterface,
+    Member\BankAccountAwareInterface
 {
-    use Member\LinksTrait;
+    use Member\LinksAwareTrait;
+    use Member\BankAccountAwareTrait;
 
     /**
      * @var string
@@ -39,11 +44,6 @@ class Merchant implements ModelInterface, Member\LinksAwareInterface
      * @var string
      */
     protected $website;
-
-    /**
-     * @var BankAccount
-     */
-    protected $bankAccount;
 
     /**
      * @var Address
@@ -166,28 +166,6 @@ class Merchant implements ModelInterface, Member\LinksAwareInterface
     }
 
     /**
-     * @return BankAccount
-     */
-    public function getBankAccount(): BankAccount
-    {
-        if (null === $this->bankAccount) {
-            $this->setBankAccount(new BankAccount());
-        }
-        return $this->bankAccount;
-    }
-
-    /**
-     * @param BankAccount $bankAccount
-     *
-     * @return Merchant
-     */
-    public function setBankAccount(BankAccount $bankAccount): self
-    {
-        $this->bankAccount = $bankAccount;
-        return $this;
-    }
-
-    /**
      * @return Address
      */
     public function getPostalAddress(): Address
@@ -298,6 +276,8 @@ class Merchant implements ModelInterface, Member\LinksAwareInterface
     }
 
     /**
+     * @throws Exception
+     *
      * @return DateTime
      *
      * @SuppressWarnings(PHPMD.StaticAccess)

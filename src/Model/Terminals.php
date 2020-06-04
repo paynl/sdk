@@ -11,9 +11,11 @@ use PayNL\Sdk\Common\AbstractTotalCollection;
  *
  * @package PayNL\Sdk\Model
  */
-class Terminals extends AbstractTotalCollection implements ModelInterface, Member\LinksAwareInterface
+class Terminals extends AbstractTotalCollection implements
+    ModelInterface,
+    Member\LinksAwareInterface
 {
-    use Member\LinksTrait;
+    use Member\LinksAwareTrait;
 
     /**
      * @return array

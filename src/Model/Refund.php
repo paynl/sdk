@@ -13,9 +13,17 @@ use PayNL\Sdk\Common\JsonSerializeTrait;
  *
  * @package PayNL\Sdk\Model
  */
-class Refund implements ModelInterface, JsonSerializable
+class Refund implements
+    ModelInterface,
+    Member\LinksAwareInterface,
+    Member\AmountAwareInterface,
+    Member\BankAccountAwareInterface,
+    JsonSerializable
 {
-    use JsonSerializeTrait, LinksTrait;
+    use Member\LinksAwareTrait;
+    use Member\AmountAwareTrait;
+    use Member\BankAccountAwareTrait;
+    use JsonSerializeTrait;
 
     /**
      * @var string
@@ -28,19 +36,9 @@ class Refund implements ModelInterface, JsonSerializable
     protected $paymentSessionId;
 
     /**
-     * @var Amount
-     */
-    protected $amount;
-
-    /**
      * @var string
      */
     protected $description = '';
-
-    /**
-     * @var BankAccount
-     */
-    protected $bankAccount;
 
     /**
      * @var Status
@@ -101,28 +99,6 @@ class Refund implements ModelInterface, JsonSerializable
     }
 
     /**
-     * @return Amount
-     */
-    public function getAmount(): Amount
-    {
-        if (null === $this->amount) {
-            $this->setAmount(new Amount());
-        }
-        return $this->amount;
-    }
-
-    /**
-     * @param Amount $amount
-     *
-     * @return Refund
-     */
-    public function setAmount(Amount $amount): self
-    {
-        $this->amount = $amount;
-        return $this;
-    }
-
-    /**
      * @return string
      */
     public function getDescription(): string
@@ -138,28 +114,6 @@ class Refund implements ModelInterface, JsonSerializable
     public function setDescription(string $description): self
     {
         $this->description = $description;
-        return $this;
-    }
-
-    /**
-     * @return BankAccount
-     */
-    public function getBankAccount(): BankAccount
-    {
-        if (null === $this->bankAccount) {
-            $this->setBankAccount(new BankAccount());
-        }
-        return $this->bankAccount;
-    }
-
-    /**
-     * @param BankAccount $bankAccount
-     *
-     * @return Refund
-     */
-    public function setBankAccount(BankAccount $bankAccount): self
-    {
-        $this->bankAccount = $bankAccount;
         return $this;
     }
 

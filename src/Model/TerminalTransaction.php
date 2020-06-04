@@ -12,9 +12,13 @@ use PayNL\Sdk\Common\JsonSerializeTrait;
  *
  * @package PayNL\Sdk\Model
  */
-class TerminalTransaction implements ModelInterface, JsonSerializable
+class TerminalTransaction implements
+    ModelInterface,
+    Member\LinksAwareInterface,
+    JsonSerializable
 {
-    use JsonSerializeTrait, LinksTrait;
+    use Member\LinksAwareTrait;
+    use JsonSerializeTrait;
 
     /**
      * @var string

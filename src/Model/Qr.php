@@ -7,13 +7,17 @@ namespace PayNL\Sdk\Model;
 use JsonSerializable;
 use PayNL\Sdk\Exception\InvalidArgumentException;
 use PayNL\Sdk\Common\JsonSerializeTrait;
+use PayNL\Sdk\Model\Member\AmountAwareTrait;
 
 /**
  * Class Qr
  *
  * @package PayNL\Sdk\Model
  */
-class Qr implements ModelInterface, JsonSerializable
+class Qr implements
+    ModelInterface,
+    Member\AmountAwareInterface,
+    JsonSerializable
 {
     /*
      * Reference type constant definitions
@@ -21,6 +25,7 @@ class Qr implements ModelInterface, JsonSerializable
     public const REFERENCE_TYPE_STRING = 'string';
     public const REFERENCE_TYPE_HEX    = 'hex';
 
+    use AmountAwareTrait;
     use JsonSerializeTrait;
 
     /**
@@ -41,11 +46,6 @@ class Qr implements ModelInterface, JsonSerializable
      * @var string
      */
     protected $secret;
-
-    /**
-     * @var Amount
-     */
-    protected $amount;
 
     /**
      * @var string
@@ -136,28 +136,6 @@ class Qr implements ModelInterface, JsonSerializable
     public function setSecret(string $secret): self
     {
         $this->secret = $secret;
-        return $this;
-    }
-
-    /**
-     * @return Amount
-     */
-    public function getAmount(): Amount
-    {
-        if (null === $this->amount) {
-            $this->setAmount(new Amount());
-        }
-        return $this->amount;
-    }
-
-    /**
-     * @param Amount $amount
-     *
-     * @return Qr
-     */
-    public function setAmount(Amount $amount): self
-    {
-        $this->amount = $amount;
         return $this;
     }
 

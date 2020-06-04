@@ -13,7 +13,10 @@ use PayNL\Sdk\Exception\InvalidArgumentException;
  *
  * @package PayNL\Sdk\Model
  */
-class ServicePaymentLink implements ModelInterface, JsonSerializable
+class ServicePaymentLink implements
+    ModelInterface,
+    Member\AmountAwareInterface,
+    JsonSerializable
 {
     use JsonSerializeTrait;
 
@@ -25,17 +28,14 @@ class ServicePaymentLink implements ModelInterface, JsonSerializable
     public const SECURITY_MODE_2 = 2;
     public const SECURITY_MODE_3 = 3;
 
+    use Member\AmountAwareTrait;
+
     /**
      * @required
      *
      * @var integer
      */
     protected $securityMode = 0;
-
-    /**
-     * @var Amount
-     */
-    protected $amount;
 
     /**
      * @var Amount
@@ -102,28 +102,6 @@ class ServicePaymentLink implements ModelInterface, JsonSerializable
             );
         }
         $this->securityMode = $securityMode;
-        return $this;
-    }
-
-    /**
-     * @return Amount
-     */
-    public function getAmount(): Amount
-    {
-        if (null === $this->amount) {
-            $this->setAmount(new Amount());
-        }
-        return $this->amount;
-    }
-
-    /**
-     * @param Amount $amount
-     *
-     * @return ServicePaymentLink
-     */
-    public function setAmount(Amount $amount): self
-    {
-        $this->amount = $amount;
         return $this;
     }
 

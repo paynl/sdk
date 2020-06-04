@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PayNL\Sdk\Model;
 
 use PayNL\Sdk\Exception\InvalidArgumentException;
-use ReflectionClass, ReflectionException;
+use ReflectionClass;
 
 /**
  * Class Status
@@ -51,8 +51,6 @@ class TransactionStatus extends Status
     }
 
     /**
-     * @throws ReflectionException
-     *
      * @return array
      */
     public function getAllowedStatus(): array
@@ -100,7 +98,7 @@ class TransactionStatus extends Status
     }
 
     /**
-     * @return string|integer
+     * @return string|int
      */
     public function getCode()
     {

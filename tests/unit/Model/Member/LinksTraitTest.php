@@ -6,7 +6,7 @@ namespace Tests\Unit\PayNL\Sdk\Model\Member;
 
 use Codeception\Test\Unit as UnitTest;
 use PayNL\Sdk\Model\{
-    Member\LinksTrait,
+    Member\LinksAwareTrait,
     Links,
     Link
 };
@@ -30,8 +30,8 @@ class LinksTraitTest extends UnitTest
      */
     public function testItCanSetLinks(): void
     {
-        /** @var LinksTrait $traitCls */
-        $traitCls = $this->getMockForTrait(LinksTrait::class);
+        /** @var LinksAwareTrait $traitCls */
+        $traitCls = $this->getMockForTrait(LinksAwareTrait::class);
 
         verify(method_exists($traitCls, 'setLinks'))->true();
 
@@ -47,8 +47,8 @@ class LinksTraitTest extends UnitTest
      */
     public function testItCanGetLinks(): void
     {
-        /** @var LinksTrait $traitCls */
-        $traitCls = $this->getMockForTrait(LinksTrait::class);
+        /** @var LinksAwareTrait $traitCls */
+        $traitCls = $this->getMockForTrait(LinksAwareTrait::class);
 
         verify(method_exists($traitCls, 'getLinks'))->true();
 

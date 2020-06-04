@@ -37,6 +37,9 @@ use PayNL\Sdk\{
  * @method bool isAuthorized()
  * @method bool isPartiallyAccepted()
  * @method bool isPaid()
+ *
+ * @internal Can't use the status aware trait because of the signature of the methods differ with the trait. Possible
+ *  at PHP 7.4+
  */
 class Transaction implements
     ModelInterface,

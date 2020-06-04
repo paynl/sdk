@@ -18,11 +18,13 @@ class Refund implements
     Member\LinksAwareInterface,
     Member\AmountAwareInterface,
     Member\BankAccountAwareInterface,
+    Member\StatusAwareInterface,
     JsonSerializable
 {
     use Member\LinksAwareTrait;
     use Member\AmountAwareTrait;
     use Member\BankAccountAwareTrait;
+    use Member\StatusAwareTrait;
     use JsonSerializeTrait;
 
     /**
@@ -39,11 +41,6 @@ class Refund implements
      * @var string
      */
     protected $description = '';
-
-    /**
-     * @var Status
-     */
-    protected $status;
 
     /**
      * @var Products
@@ -114,28 +111,6 @@ class Refund implements
     public function setDescription(string $description): self
     {
         $this->description = $description;
-        return $this;
-    }
-
-    /**
-     * @return Status
-     */
-    public function getStatus(): Status
-    {
-        if (null === $this->status) {
-            $this->setStatus(new Status());
-        }
-        return $this->status;
-    }
-
-    /**
-     * @param Status $status
-     *
-     * @return Refund
-     */
-    public function setStatus(Status $status): self
-    {
-        $this->status = $status;
         return $this;
     }
 

@@ -12,10 +12,12 @@ namespace PayNL\Sdk\Model;
 class Directdebit implements
     ModelInterface,
     Member\AmountAwareInterface,
-    Member\BankAccountAwareInterface
+    Member\BankAccountAwareInterface,
+    Member\StatusAwareInterface
 {
     use Member\AmountAwareTrait;
     use Member\BankAccountAwareTrait;
+    use Member\StatusAwareTrait;
 
     /**
      * @var string
@@ -31,11 +33,6 @@ class Directdebit implements
      * @var string
      */
     protected $description;
-
-    /**
-     * @var Status
-     */
-    protected $status;
 
     /**
      * @var Status
@@ -96,28 +93,6 @@ class Directdebit implements
     public function setDescription(string $description): self
     {
         $this->description = $description;
-        return $this;
-    }
-
-    /**
-     * @return Status
-     */
-    public function getStatus(): Status
-    {
-        if (null === $this->status) {
-            $this->setStatus(new Status());
-        }
-        return $this->status;
-    }
-
-    /**
-     * @param Status $status
-     *
-     * @return Directdebit
-     */
-    public function setStatus(Status $status): self
-    {
-        $this->status = $status;
         return $this;
     }
 

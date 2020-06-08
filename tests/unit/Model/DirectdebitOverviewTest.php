@@ -84,6 +84,9 @@ class DirectdebitOverviewTest extends UnitTest
         $this->tester->assertObjectHasMethod('getMandate', $this->model);
         $this->tester->assertObjectMethodIsPublic('getMandate', $this->model);
 
+        $mandate = $this->model->getMandate();
+        verify($mandate)->isInstanceOf(Mandate::class);
+
         $mockMandate = $this->getMockMandate();
         $this->model->setMandate($mockMandate);
         $mandate = $this->model->getMandate();
@@ -113,6 +116,10 @@ class DirectdebitOverviewTest extends UnitTest
     {
         $this->tester->assertObjectHasMethod('getDirectdebits', $this->model);
         $this->tester->assertObjectMethodIsPublic('getDirectdebits', $this->model);
+
+        $directdebits = $this->model->getDirectdebits();
+        verify($directdebits)->isInstanceOf(Directdebits::class);
+        verify($directdebits)->count(0);
 
         $mockDirectdebits = $this->getMockDirectdebits();
         $this->model->setDirectdebits($mockDirectdebits);

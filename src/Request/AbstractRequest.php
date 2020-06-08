@@ -518,7 +518,10 @@ abstract class AbstractRequest implements
             }
 
             $statusCode = $re->getCode();
-            $body = $this->getErrorsString($response->getFormat(), (int)$statusCode, $errorMessages);
+            $body = '';
+            if ('' !== $errorMessages) {
+                $body = $this->getErrorsString($response->getFormat(), (int)$statusCode, $errorMessages);
+            }
         } catch (GuzzleException | ExceptionInterface $e) {
             $statusCode = $e->getCode() ?? 500;
             $rawBody = 'Error: ' . $e->getMessage() . ' (' . $statusCode . ')';

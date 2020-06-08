@@ -9,7 +9,7 @@ use Codeception\{
     Test\Unit as UnitTest
 };
 use PayNL\Sdk\Model\{
-    LinksTrait,
+    Member\LinksAwareTrait,
     Currency
 };
 
@@ -37,7 +37,7 @@ class CurrencyTest extends UnitTest
 
     public function testItUsesLinksTrait(): void
     {
-        $this->tester->assertObjectUsesTrait($this->model, LinksTrait::class);
+        $this->tester->assertObjectUsesTrait($this->model, LinksAwareTrait::class);
     }
 
     /**

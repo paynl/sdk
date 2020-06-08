@@ -116,7 +116,10 @@ class TransactionStatus extends Status
     public function isStatus($constantNameOrCode): bool
     {
         if (true === is_string($constantNameOrCode)) {
-            $constantNameOrCode = constant(static::class . '::' . $constantNameOrCode);
+            $constantNameOrCode = @constant(static::class . '::' . $constantNameOrCode);
+            if (null === $constantNameOrCode) {
+                return false;
+            }
         } elseif (false === is_int($constantNameOrCode)) {
             throw new InvalidArgumentException(
                 sprintf(

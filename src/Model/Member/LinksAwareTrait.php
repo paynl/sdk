@@ -7,7 +7,7 @@ namespace PayNL\Sdk\Model\Member;
 use PayNL\Sdk\Model\Links;
 
 /**
- * Trait LinksTrait
+ * Trait LinksAwareTrait
  *
  * @package PayNL\Sdk\Model\Member
  */

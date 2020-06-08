@@ -30,10 +30,12 @@ class Customer implements
     public const TYPE_BUSINESS = 'B';
     public const TYPE_CONSUMER = 'C';
 
+    public const TYPE_DEFAULT = self::TYPE_CONSUMER;
+
     /**
      * @var string
      */
-    protected $type = self::TYPE_CONSUMER;
+    protected $type;
 
     /**
      * @var string
@@ -101,6 +103,9 @@ class Customer implements
      */
     public function getType(): string
     {
+        if (null === $this->type) {
+            $this->setType(static::TYPE_DEFAULT);
+        }
         return $this->type;
     }
 

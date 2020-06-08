@@ -201,7 +201,7 @@ class PaymentMethod implements ModelInterface, JsonSerializable
 
     public function addSubMethod(self $paymentMethod): self
     {
-        $this->subMethods->addPaymentMethod($paymentMethod);
+        $this->getSubMethods()->addPaymentMethod($paymentMethod);
         return $this;
     }
 }

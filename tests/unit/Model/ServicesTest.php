@@ -10,7 +10,7 @@ use Codeception\{
     Test\Unit as UnitTest
 };
 use PayNL\Sdk\Model\{
-    LinksTrait,
+    Member\LinksAwareTrait,
     Service,
     Services
 };
@@ -25,7 +25,8 @@ use PayNL\Sdk\Common\DateTime;
  */
 class ServicesTest extends UnitTest
 {
-    use ModelTestTrait, CollectionTestTrait {
+    use ModelTestTrait;
+    use CollectionTestTrait {
         testItCanBeAccessedLikeAnArray as traitTestItCanBeAccessedLikeAnArray;
     }
 
@@ -48,7 +49,7 @@ class ServicesTest extends UnitTest
      */
     public function testItUsesLinksTrait(): void
     {
-        $this->tester->assertObjectUsesTrait($this->model, LinksTrait::class);
+        $this->tester->assertObjectUsesTrait($this->model, LinksAwareTrait::class);
     }
 
     /**

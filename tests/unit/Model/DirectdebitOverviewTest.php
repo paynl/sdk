@@ -8,11 +8,11 @@ use Codeception\{
     Lib\ModelTestTrait,
     Test\Unit as UnitTest
 };
-use PayNL\Sdk\{
-    Model\DirectdebitOverview,
-    Model\LinksTrait,
-    Model\Mandate,
-    Model\Directdebits
+use PayNL\Sdk\Model\{
+    DirectdebitOverview,
+    Member\LinksAwareTrait,
+    Mandate,
+    Directdebits
 };
 
 /**
@@ -42,7 +42,7 @@ class DirectdebitOverviewTest extends UnitTest
      */
     public function testItIsLinkAware(): void
     {
-        $this->tester->assertObjectUsesTrait($this->model, LinksTrait::class);
+        $this->tester->assertObjectUsesTrait($this->model, LinksAwareTrait::class);
     }
 
     /**

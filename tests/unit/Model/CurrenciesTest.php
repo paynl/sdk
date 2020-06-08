@@ -10,7 +10,7 @@ use Codeception\{
     Test\Unit as UnitTest
 };
 use PayNL\Sdk\Model\{
-    LinksTrait,
+    Member\LinksAwareTrait,
     Currency,
     Currencies
 };
@@ -22,7 +22,8 @@ use PayNL\Sdk\Model\{
  */
 class CurrenciesTest extends UnitTest
 {
-    use ModelTestTrait, CollectionTestTrait {
+    use ModelTestTrait;
+    use CollectionTestTrait {
         testItCanBeAccessedLikeAnArray as traitTestItCanBeAccessedLikeAnArray;
     }
 
@@ -75,7 +76,7 @@ class CurrenciesTest extends UnitTest
      */
     public function testItUsesLinksTrait(): void
     {
-        $this->tester->assertObjectUsesTrait($this->model, LinksTrait::class);
+        $this->tester->assertObjectUsesTrait($this->model, LinksAwareTrait::class);
     }
 
     /**

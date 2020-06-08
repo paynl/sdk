@@ -10,7 +10,7 @@ use Codeception\{
 };
 use PayNL\Sdk\Model\{
     ContactMethods,
-    LinksTrait,
+    Member\LinksAwareTrait,
     Address,
     BankAccount,
     ContactMethod,
@@ -48,7 +48,7 @@ class MerchantTest extends UnitTest
      */
     public function testItHasLinksTrait(): void
     {
-        $this->tester->assertObjectUsesTrait($this->model, LinksTrait::class);
+        $this->tester->assertObjectUsesTrait($this->model, LinksAwareTrait::class);
     }
 
     /**

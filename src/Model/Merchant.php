@@ -194,7 +194,7 @@ class Merchant implements
      */
     public function getVisitAddress(): Address
     {
-        if (null === $this->getVisitAddress()) {
+        if (null === $this->visitAddress) {
             $this->setVisitAddress(new Address());
         }
         return $this->visitAddress;

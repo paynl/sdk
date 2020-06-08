@@ -565,8 +565,8 @@ abstract class AbstractRequest implements
             $errors['errors'] = $this->flattenErrors($errors['errors']);
         } else {
             $errors = [
-                'errors' => (object)[
-                    'general' => (object)[
+                'errors' => [
+                    'general' => [
                         'context' => 'unknown',
                         'code'    => $statusCode,
                         'message' => $rawBody,

@@ -365,7 +365,7 @@ class MandateTest extends UnitTest
         $this->tester->assertObjectMethodIsPublic('getCustomer', $this->model);
 
         $customer = $this->model->getCustomer();
-        verify($customer)->null();
+        verify($customer)->isInstanceOf(Customer::class);
 
         $mockCustomer = $this->tester->grabMockService('modelManager')->get(Customer::class);
         $this->model->setCustomer($mockCustomer);

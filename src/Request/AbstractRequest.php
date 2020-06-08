@@ -31,6 +31,7 @@ use Symfony\Component\Serializer\Encoder\{
     JsonEncoder,
     XmlEncoder
 };
+use Symfony\Component\Serializer\Exception\NotEncodableValueException;
 
 /**
  * Class AbstractRequest
@@ -547,7 +548,13 @@ abstract class AbstractRequest implements
         }
 
         $encoder = new $encoderClass();
-        $errors = $encoder->decode($rawBody, $responseFormat);
+        try {
+            $errors = $encoder->decode($rawBody, $responseFormat);
+        } catch (NotEncodableValueException $notEncodableValueException) {
+            $statusCode = $notEncodableValueException->getCode();
+            $rawBody = $notEncodableValueException->getMessage();
+            $errors = [];
+        }
 
         // if given raw body already is Json return that
         if (true === array_key_exists('errors', $errors)) {

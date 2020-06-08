@@ -24,7 +24,7 @@ trait PaymentMethodAwareTrait
     public function getPaymentMethod(): PaymentMethod
     {
         if (null === $this->paymentMethod) {
-
+            $this->setPaymentMethod(new PaymentMethod());
         }
         return $this->paymentMethod;
     }

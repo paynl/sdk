@@ -68,6 +68,25 @@ class Product implements ModelInterface, JsonSerializable
     /**
      * @return string
      */
+    public function getType(): string
+    {
+        return (string)$this->type;
+    }
+
+    /**
+     * @param string $type
+     *
+     * @return Product
+     */
+    public function setType(string $type): Product
+    {
+        $this->type = $type;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
     public function getDescription(): string
     {
         return (string)$this->description;
@@ -89,6 +108,9 @@ class Product implements ModelInterface, JsonSerializable
      */
     public function getPrice(): Amount
     {
+        if (null === $this->price) {
+            $this->setPrice(new Amount());
+        }
         return $this->price;
     }
 

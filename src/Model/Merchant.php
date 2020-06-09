@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Model;
 
+use Exception;
 use PayNL\Sdk\Common\DateTime;
 
 /**
@@ -11,9 +12,15 @@ use PayNL\Sdk\Common\DateTime;
  *
  * @package PayNL\Sdk\Model
  */
-class Merchant implements ModelInterface
+class Merchant implements
+    ModelInterface,
+    Member\LinksAwareInterface,
+    Member\BankAccountAwareInterface,
+    Member\CreatedAtAwareInterface
 {
-    use LinksTrait;
+    use Member\LinksAwareTrait;
+    use Member\BankAccountAwareTrait;
+    use Member\CreatedAtAwareTrait;
 
     /**
      * @var string
@@ -39,11 +46,6 @@ class Merchant implements ModelInterface
      * @var string
      */
     protected $website;
-
-    /**
-     * @var BankAccount
-     */
-    protected $bankAccount;
 
     /**
      * @var Address
@@ -166,29 +168,13 @@ class Merchant implements ModelInterface
     }
 
     /**
-     * @return BankAccount
-     */
-    public function getBankAccount(): BankAccount
-    {
-        return $this->bankAccount;
-    }
-
-    /**
-     * @param BankAccount $bankAccount
-     *
-     * @return Merchant
-     */
-    public function setBankAccount(BankAccount $bankAccount): self
-    {
-        $this->bankAccount = $bankAccount;
-        return $this;
-    }
-
-    /**
      * @return Address
      */
     public function getPostalAddress(): Address
     {
+        if (null === $this->postalAddress) {
+            $this->setPostalAddress(new Address());
+        }
         return $this->postalAddress;
     }
 
@@ -208,6 +194,9 @@ class Merchant implements ModelInterface
      */
     public function getVisitAddress(): Address
     {
+        if (null === $this->visitAddress) {
+            $this->setVisitAddress(new Address());
+        }
         return $this->visitAddress;
     }
 
@@ -285,25 +274,6 @@ class Merchant implements ModelInterface
     public function addContactMethod(ContactMethod $contactMethod): self
     {
         $this->getContactMethods()->addContactMethod($contactMethod);
-        return $this;
-    }
-
-    /**
-     * @return DateTime
-     */
-    public function getCreatedAt(): DateTime
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * @param DateTime $createdAt
-     *
-     * @return Merchant
-     */
-    public function setCreatedAt(DateTime $createdAt): self
-    {
-        $this->createdAt = $createdAt;
         return $this;
     }
 }

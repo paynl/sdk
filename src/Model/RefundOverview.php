@@ -55,6 +55,9 @@ class RefundOverview implements ModelInterface
      */
     public function getAmountRefunded(): Amount
     {
+        if (null === $this->amountRefunded) {
+            $this->setAmountRefunded(new Amount());
+        }
         return $this->amountRefunded;
     }
 
@@ -84,6 +87,7 @@ class RefundOverview implements ModelInterface
      */
     public function setRefundedTransactions(array $refundedTransactions): self
     {
+        // TODO: transaction collection?
         $this->refundedTransactions = [];
         foreach ($refundedTransactions as $refundedTransaction) {
             $this->addRefundTransaction($refundedTransaction);
@@ -117,6 +121,7 @@ class RefundOverview implements ModelInterface
      */
     public function setFailedTransactions(array $failedTransactions): self
     {
+        // TODO: transaction collection?
         $this->failedTransactions = [];
         foreach ($failedTransactions as $failedTransaction) {
             $this->addFailedTransaction($failedTransaction);

@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Unit\PayNL\Sdk\Request;
 
-use Codeception\Test\Unit as UnitTest;
+use Codeception\{
+    Test\Unit as UnitTest,
+    TestAsset\Dummy,
+    TestAsset\DummyFilter
+};
 use PayNL\GuzzleHttp\{
     Client,
     Exception\ClientException,
@@ -12,16 +16,16 @@ use PayNL\GuzzleHttp\{
     Psr7\Response as Psr7Response,
     Handler\MockHandler
 };
-use Codeception\TestAsset\Dummy;
-use Codeception\TestAsset\DummyFilter;
-use PayNL\Sdk\{Exception\InvalidArgumentException,
+use PayNL\Sdk\{
+    Exception\InvalidArgumentException,
     Exception\MissingParamException,
     Exception\RuntimeException,
     Filter\FilterInterface,
     Response\Response,
     Request\RequestInterface,
     Request\AbstractRequest,
-    Response\ResponseInterface};
+    Response\ResponseInterface
+};
 use TypeError,
     UnitTester,
     Exception
@@ -834,7 +838,7 @@ class AbstractRequestTest extends UnitTest
      *
      * @return void
      */
-    public function testItCanProcessErrors(): void
+    public function testItCanProcessJsonErrors(): void
     {
         /** @var Response $response */
         $response = $this->tester->grabService('Response');
@@ -852,8 +856,9 @@ class AbstractRequestTest extends UnitTest
         ]);
 
         $this->anonymousClassFromAbstract->setFilters([
-            new DummyFilter(),
-        ])->applyClient($guzzleClient)
+                new DummyFilter(),
+            ])
+            ->applyClient($guzzleClient)
             ->execute($response)
         ;
 
@@ -861,5 +866,44 @@ class AbstractRequestTest extends UnitTest
         $json = json_decode($body, true);
         verify($json)->array();
         verify($json)->hasKey('errors');
+    }
+
+    /**
+     * @depends testItCanExecute
+     *
+     * @return void
+     */
+    public function testItCanProcessXmlErrors(): void
+    {
+        /** @var Response $response */
+        $response = $this->tester->grabService('Response');
+        $response->setFormat(ResponseInterface::FORMAT_XML);
+
+        $guzzleMockHandler = new MockHandler();
+        $guzzleMockHandler->append(new ClientException(
+            "Client error: Something went wrong response:\n<errors><field><code>100</code><message>exception_message</message></field></errors>\n",
+            new Request('GET', 'test'),
+            new Psr7Response(
+                400,
+                [],
+                '<errors><field><code>100</code><message>exception_message</message></field></errors>'
+            )
+        ));
+
+        $guzzleClient = new Client([
+            'handler' => $guzzleMockHandler,
+        ]);
+
+        $this->anonymousClassFromAbstract->setFilters([
+                new DummyFilter(),
+            ])
+            ->applyClient($guzzleClient)
+            ->execute($response)
+        ;
+
+        $body = $response->getBody();
+        verify($body)->string();
+        verify(@simplexml_load_string($body))->notEquals(false);
+        verify(@simplexml_load_string($body)->getName())->equals('response');
     }
 }

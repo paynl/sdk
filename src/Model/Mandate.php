@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Model;
 
-use JsonSerializable, DateTime;
+use JsonSerializable,
+    DateTime;
 use PayNL\Sdk\Common\JsonSerializeTrait;
 
 /**
@@ -12,8 +13,14 @@ use PayNL\Sdk\Common\JsonSerializeTrait;
  *
  * @package PayNL\Sdk\Model
  */
-class Mandate implements ModelInterface, JsonSerializable
+class Mandate implements
+    ModelInterface,
+    Member\AmountAwareInterface,
+    Member\StatisticsAwareInterface,
+    JsonSerializable
 {
+    use Member\AmountAwareTrait;
+    use Member\StatisticsAwareTrait;
     use JsonSerializeTrait;
 
     /**
@@ -42,19 +49,9 @@ class Mandate implements ModelInterface, JsonSerializable
     protected $exchangeUrl;
 
     /**
-     * @var Amount
-     */
-    protected $amount;
-
-    /**
      * @var string
      */
     protected $description;
-
-    /**
-     * @var Statistics
-     */
-    protected $statistics;
 
     /**
      * @var Interval
@@ -67,7 +64,7 @@ class Mandate implements ModelInterface, JsonSerializable
     protected $customer;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $isLastOrder = false;
 
@@ -172,25 +169,6 @@ class Mandate implements ModelInterface, JsonSerializable
     }
 
     /**
-     * @return Amount
-     */
-    public function getAmount(): Amount
-    {
-        return $this->amount;
-    }
-
-    /**
-     * @param Amount $amount
-     *
-     * @return Mandate
-     */
-    public function setAmount(Amount $amount): Mandate
-    {
-        $this->amount = $amount;
-        return $this;
-    }
-
-    /**
      * @return string
      */
     public function getDescription(): string
@@ -210,29 +188,13 @@ class Mandate implements ModelInterface, JsonSerializable
     }
 
     /**
-     * @return Statistics
-     */
-    public function getStatistics(): Statistics
-    {
-        return $this->statistics;
-    }
-
-    /**
-     * @param Statistics $statistics
-     *
-     * @return Mandate
-     */
-    public function setStatistics(Statistics $statistics): Mandate
-    {
-        $this->statistics = $statistics;
-        return $this;
-    }
-
-    /**
      * @return Interval
      */
     public function getInterval(): Interval
     {
+        if (null === $this->interval) {
+            $this->setInterval(new Interval());
+        }
         return $this->interval;
     }
 
@@ -248,10 +210,13 @@ class Mandate implements ModelInterface, JsonSerializable
     }
 
     /**
-     * @return Customer|null
+     * @return Customer
      */
-    public function getCustomer(): ?Customer
+    public function getCustomer(): Customer
     {
+        if (null === $this->customer) {
+            $this->setCustomer(new Customer());
+        }
         return $this->customer;
     }
 

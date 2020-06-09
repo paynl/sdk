@@ -90,6 +90,9 @@ class Status implements ModelInterface
      */
     public function getDate(): DateTime
     {
+        if (null === $this->date) {
+            $this->setDate(new DateTime());
+        }
         return $this->date;
     }
 

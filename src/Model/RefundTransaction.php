@@ -9,12 +9,11 @@ namespace PayNL\Sdk\Model;
  *
  * @package PayNL\Sdk\Model
  */
-class RefundTransaction implements ModelInterface
+class RefundTransaction implements
+    ModelInterface,
+    Member\AmountAwareInterface
 {
-    /**
-     * @var Amount
-     */
-    protected $amount;
+    use Member\AmountAwareTrait;
 
     /**
      * @var Amount
@@ -29,27 +28,11 @@ class RefundTransaction implements ModelInterface
     /**
      * @return Amount
      */
-    public function getAmount(): Amount
-    {
-        return $this->amount;
-    }
-
-    /**
-     * @param Amount $amount
-     *
-     * @return RefundTransaction
-     */
-    public function setAmount(Amount $amount): self
-    {
-        $this->amount = $amount;
-        return $this;
-    }
-
-    /**
-     * @return Amount
-     */
     public function getAmountRefunded(): Amount
     {
+        if (null === $this->amountRefunded) {
+            $this->setAmountRefunded(new Amount());
+        }
         return $this->amountRefunded;
     }
 
@@ -69,6 +52,9 @@ class RefundTransaction implements ModelInterface
      */
     public function getRefund(): Refund
     {
+        if (null === $this->refund) {
+            $this->setRefund(new Refund());
+        }
         return $this->refund;
     }
 

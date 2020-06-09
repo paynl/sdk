@@ -9,9 +9,13 @@ namespace PayNL\Sdk\Model;
  *
  * @package PayNL\Sdk\Model
  */
-class Receipt implements ModelInterface
+class Receipt implements
+    ModelInterface,
+    Member\LinksAwareInterface,
+    Member\PaymentMethodAwareInterface
 {
-    use LinksTrait;
+    use Member\LinksAwareTrait;
+    use Member\PaymentMethodAwareTrait;
 
     /**
      * @var string
@@ -32,11 +36,6 @@ class Receipt implements ModelInterface
      * @var Card
      */
     protected $card;
-
-    /**
-     * @var PaymentMethod
-     */
-    protected $paymentMethod;
 
     /**
      * @return string
@@ -100,6 +99,9 @@ class Receipt implements ModelInterface
      */
     public function getCard(): Card
     {
+        if (null === $this->card) {
+            $this->setCard(new Card());
+        }
         return $this->card;
     }
 
@@ -111,25 +113,6 @@ class Receipt implements ModelInterface
     public function setCard(Card $card): self
     {
         $this->card = $card;
-        return $this;
-    }
-
-    /**
-     * @return PaymentMethod
-     */
-    public function getPaymentMethod(): PaymentMethod
-    {
-        return $this->paymentMethod;
-    }
-
-    /**
-     * @param PaymentMethod $paymentMethod
-     *
-     * @return Receipt
-     */
-    public function setPaymentMethod(PaymentMethod $paymentMethod): self
-    {
-        $this->paymentMethod = $paymentMethod;
         return $this;
     }
 }

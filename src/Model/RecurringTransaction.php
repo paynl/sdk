@@ -12,14 +12,13 @@ use PayNL\Sdk\Common\JsonSerializeTrait;
  *
  * @package PayNL\Sdk\Model
  */
-class RecurringTransaction implements ModelInterface, JsonSerializable
+class RecurringTransaction implements
+    ModelInterface,
+    Member\AmountAwareInterface,
+    JsonSerializable
 {
+    use Member\AmountAwareTrait;
     use JsonSerializeTrait;
-
-    /**
-     * @var Amount
-     */
-    protected $amount;
 
     /**
      * @var string
@@ -30,33 +29,16 @@ class RecurringTransaction implements ModelInterface, JsonSerializable
      * @var string
      */
     protected $extra1;
+
     /**
      * @var string
      */
     protected $extra2;
+
     /**
      * @var string
      */
     protected $extra3;
-
-    /**
-     * @return Amount
-     */
-    public function getAmount(): Amount
-    {
-        return $this->amount;
-    }
-
-    /**
-     * @param Amount $amount
-     *
-     * @return RecurringTransaction
-     */
-    public function setAmount(Amount $amount): self
-    {
-        $this->amount = $amount;
-        return $this;
-    }
 
     /**
      * @return string

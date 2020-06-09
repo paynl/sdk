@@ -5,8 +5,15 @@ declare(strict_types=1);
 namespace Tests\Unit\PayNL\Sdk\Model;
 
 use Codeception\Test\Unit as UnitTest;
-use PayNL\Sdk\Model\{LinksTrait, ModelInterface, Errors};
-use JsonSerializable, Countable, ArrayAccess, IteratorAggregate;
+use PayNL\Sdk\Model\{
+    Member\LinksAwareTrait,
+    ModelInterface,
+    Errors
+};
+use JsonSerializable,
+    Countable,
+    ArrayAccess,
+    IteratorAggregate;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
@@ -52,7 +59,7 @@ class ErrorsTest extends UnitTest
 
     public function testItUsesLinksTrait(): void
     {
-        verify(in_array(LinksTrait::class, class_uses($this->errors), true))->true();
+        verify(in_array(LinksAwareTrait::class, class_uses($this->errors), true))->true();
     }
 
     /**

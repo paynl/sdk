@@ -110,12 +110,16 @@ class RefundOverviewTest extends UnitTest
         $this->tester->assertObjectHasMethod('getAmountRefunded', $this->model);
         $this->tester->assertObjectMethodIsPublic('getAmountRefunded', $this->model);
 
+        $amountRefunded = $this->model->getAmountRefunded();
+        verify($amountRefunded)->isInstanceOf(Amount::class);
+
         $mockAmount = $this->getMockAmount();
         $this->model->setAmountRefunded($mockAmount);
         $amount = $this->model->getAmountRefunded();
         verify($amount)->object();
         verify($amount)->isInstanceOf(Amount::class);
         verify($amount)->same($mockAmount);
+        verify($amount)->notSame($amountRefunded);
     }
 
     /**

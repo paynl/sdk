@@ -37,10 +37,25 @@ use PayNL\Sdk\{
  * @method bool isAuthorized()
  * @method bool isPartiallyAccepted()
  * @method bool isPaid()
+ *
+ * @internal Can't use the status aware trait because of the signature of the methods differ with the trait. Possible
+ *  at PHP 7.4+
  */
-class Transaction implements ModelInterface, JsonSerializable
+class Transaction implements
+    ModelInterface,
+    Member\LinksAwareInterface,
+    Member\AmountAwareInterface,
+    Member\PaymentMethodAwareInterface,
+    Member\StatisticsAwareInterface,
+    Member\CreatedAtAwareInterface,
+    JsonSerializable
 {
-    use JsonSerializeTrait, LinksTrait;
+    use Member\LinksAwareTrait;
+    use Member\AmountAwareTrait;
+    use Member\PaymentMethodAwareTrait;
+    use Member\StatisticsAwareTrait;
+    use Member\CreatedAtAwareTrait;
+    use JsonSerializeTrait;
 
     /**
      * @var string
@@ -75,13 +90,6 @@ class Transaction implements ModelInterface, JsonSerializable
     protected $expiresAt;
 
     /**
-     * @required
-     *
-     * @var Amount
-     */
-    protected $amount;
-
-    /**
      * @var Amount
      */
     protected $amountConverted;
@@ -95,11 +103,6 @@ class Transaction implements ModelInterface, JsonSerializable
      * @var Amount
      */
     protected $amountRefunded;
-
-    /**
-     * @var PaymentMethod
-     */
-    protected $paymentMethod;
 
     /**
      * @required
@@ -134,6 +137,11 @@ class Transaction implements ModelInterface, JsonSerializable
     protected $integration;
 
     /**
+     * @var string
+     */
+    protected $orderId;
+
+    /**
      * @var Order
      */
     protected $order;
@@ -142,16 +150,6 @@ class Transaction implements ModelInterface, JsonSerializable
      * @var TransactionStatus
      */
     protected $status;
-
-    /**
-     * @var Statistics
-     */
-    protected $statistics;
-
-    /**
-     * @var DateTime
-     */
-    protected $createdAt;
 
     /**
      * @return string
@@ -270,27 +268,11 @@ class Transaction implements ModelInterface, JsonSerializable
     /**
      * @return Amount
      */
-    public function getAmount(): Amount
+    public function getAmountConverted(): Amount
     {
-        return $this->amount;
-    }
-
-    /**
-     * @param Amount $amount
-     *
-     * @return Transaction
-     */
-    public function setAmount(Amount $amount): self
-    {
-        $this->amount = $amount;
-        return $this;
-    }
-
-    /**
-     * @return Amount|null
-     */
-    public function getAmountConverted(): ?Amount
-    {
+        if (null === $this->amountConverted) {
+            $this->setAmountConverted(new Amount());
+        }
         return $this->amountConverted;
     }
 
@@ -306,10 +288,13 @@ class Transaction implements ModelInterface, JsonSerializable
     }
 
     /**
-     * @return Amount|null
+     * @return Amount
      */
-    public function getAmountPaid(): ?Amount
+    public function getAmountPaid(): Amount
     {
+        if (null === $this->amountPaid) {
+            $this->setAmountPaid(new Amount());
+        }
         return $this->amountPaid;
     }
 
@@ -325,10 +310,13 @@ class Transaction implements ModelInterface, JsonSerializable
     }
 
     /**
-     * @return Amount|null
+     * @return Amount
      */
-    public function getAmountRefunded(): ?Amount
+    public function getAmountRefunded(): Amount
     {
+        if (null === $this->amountRefunded) {
+            $this->setAmountRefunded(new Amount());
+        }
         return $this->amountRefunded;
     }
 
@@ -340,25 +328,6 @@ class Transaction implements ModelInterface, JsonSerializable
     public function setAmountRefunded(Amount $amountRefunded): self
     {
         $this->amountRefunded = $amountRefunded;
-        return $this;
-    }
-
-    /**
-     * @return PaymentMethod|null
-     */
-    public function getPaymentMethod(): ?PaymentMethod
-    {
-        return $this->paymentMethod;
-    }
-
-    /**
-     * @param PaymentMethod $paymentMethod
-     *
-     * @return Transaction
-     */
-    public function setPaymentMethod(PaymentMethod $paymentMethod): self
-    {
-        $this->paymentMethod = $paymentMethod;
         return $this;
     }
 
@@ -384,7 +353,7 @@ class Transaction implements ModelInterface, JsonSerializable
     /**
      * @return string
      */
-    public function getExchangeUrl(): ?string
+    public function getExchangeUrl(): string
     {
         return (string)$this->exchangeUrl;
     }
@@ -420,10 +389,13 @@ class Transaction implements ModelInterface, JsonSerializable
     }
 
     /**
-     * @return Transfer|null
+     * @return Transfer
      */
-    public function getTransfer(): ?Transfer
+    public function getTransfer(): Transfer
     {
+        if (null === $this->transfer) {
+            $this->setTransfer(new Transfer());
+        }
         return $this->transfer;
     }
 
@@ -458,10 +430,13 @@ class Transaction implements ModelInterface, JsonSerializable
     }
 
     /**
-     * @return Integration|null
+     * @return Integration
      */
-    public function getIntegration(): ?Integration
+    public function getIntegration(): Integration
     {
+        if (null === $this->integration) {
+            $this->setIntegration(new Integration());
+        }
         return $this->integration;
     }
 
@@ -477,10 +452,32 @@ class Transaction implements ModelInterface, JsonSerializable
     }
 
     /**
-     * @return Order|null
+     * @return string
      */
-    public function getOrder(): ?Order
+    public function getOrderId(): string
     {
+        return (string)$this->orderId;
+    }
+
+    /**
+     * @param string $orderId
+     *
+     * @return Transaction
+     */
+    public function setOrderId(string $orderId): self
+    {
+        $this->orderId = $orderId;
+        return $this;
+    }
+
+    /**
+     * @return Order
+     */
+    public function getOrder(): Order
+    {
+        if (null === $this->order) {
+            $this->setOrder(new Order());
+        }
         return $this->order;
     }
 
@@ -496,10 +493,13 @@ class Transaction implements ModelInterface, JsonSerializable
     }
 
     /**
-     * @return TransactionStatus|null
+     * @return TransactionStatus
      */
-    public function getStatus(): ?TransactionStatus
+    public function getStatus(): TransactionStatus
     {
+        if (null === $this->status) {
+            $this->setStatus(new TransactionStatus());
+        }
         return $this->status;
     }
 
@@ -511,50 +511,6 @@ class Transaction implements ModelInterface, JsonSerializable
     public function setStatus(TransactionStatus $status): self
     {
         $this->status = $status;
-        return $this;
-    }
-
-    /**
-     * @return Statistics|null
-     */
-    public function getStatistics(): ?Statistics
-    {
-        return $this->statistics;
-    }
-
-    /**
-     * @param Statistics $statistics
-     *
-     * @return Transaction
-     */
-    public function setStatistics(Statistics $statistics): self
-    {
-        $this->statistics = $statistics;
-        return $this;
-    }
-
-    /**
-     * @return DateTime
-     *
-     * @SuppressWarnings(PHPMD.StaticAccess)
-     */
-    public function getCreatedAt(): DateTime
-    {
-        if (null === $this->createdAt) {
-            $this->createdAt = DateTime::now();
-        }
-
-        return $this->createdAt;
-    }
-
-    /**
-     * @param DateTime $createdAt
-     *
-     * @return Transaction
-     */
-    public function setCreatedAt(DateTime $createdAt): self
-    {
-        $this->createdAt = $createdAt;
         return $this;
     }
 
@@ -574,9 +530,6 @@ class Transaction implements ModelInterface, JsonSerializable
     {
         if ('isPending' === $name) {
             $status = $this->getStatus();
-            if (null === $status) {
-                return false;
-            }
 
             return in_array($status->getCode(), [
                 TransactionStatus::STATUS_PENDING1,
@@ -587,9 +540,6 @@ class Transaction implements ModelInterface, JsonSerializable
 
         if (1 === preg_match('/^is(?P<status>[A-z]+)/', $name, $match)) {
             $status = $this->getStatus();
-            if (null === $status) {
-                return false;
-            }
 
             /** @var string $statusName */
             $statusName = (new CamelCaseToUnderscore())->filter($match['status']);

@@ -4,18 +4,24 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Model;
 
-use DateTime;
-use JsonSerializable;
-use PayNL\Sdk\Exception\InvalidArgumentException;
-use PayNL\Sdk\Common\JsonSerializeTrait;
+use DateTime,
+    JsonSerializable;
+use PayNL\Sdk\{
+    Exception\InvalidArgumentException,
+    Common\JsonSerializeTrait
+};
 
 /**
  * Class Customer
  *
  * @package PayNL\Sdk\Model
  */
-class Customer implements ModelInterface, JsonSerializable
+class Customer implements
+    ModelInterface,
+    Member\BankAccountAwareInterface,
+    JsonSerializable
 {
+    use Member\BankAccountAwareTrait;
     use JsonSerializeTrait;
 
     /*
@@ -24,10 +30,12 @@ class Customer implements ModelInterface, JsonSerializable
     public const TYPE_BUSINESS = 'B';
     public const TYPE_CONSUMER = 'C';
 
+    public const TYPE_DEFAULT = self::TYPE_CONSUMER;
+
     /**
      * @var string
      */
-    protected $type = self::TYPE_CONSUMER;
+    protected $type;
 
     /**
      * @var string
@@ -65,7 +73,7 @@ class Customer implements ModelInterface, JsonSerializable
     protected $email;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $trustLevel = 0;
 
@@ -75,15 +83,13 @@ class Customer implements ModelInterface, JsonSerializable
     protected $reference;
 
     /**
-     * @var BankAccount
-     */
-    protected $bankAccount;
-
-    /**
      * @var Company
      */
     protected $company;
 
+    /**
+     * @return array
+     */
     protected function getTypes(): array
     {
         return [
@@ -97,6 +103,9 @@ class Customer implements ModelInterface, JsonSerializable
      */
     public function getType(): string
     {
+        if (null === $this->type) {
+            $this->setType(static::TYPE_DEFAULT);
+        }
         return $this->type;
     }
 
@@ -275,6 +284,7 @@ class Customer implements ModelInterface, JsonSerializable
      */
     public function setTrustLevel(int $trustLevel): self
     {
+        // TODO: make it configurable by the config provider
         $min = -10;
         $max = 10;
         if (false === in_array($trustLevel, range($min, $max), true)) {
@@ -313,29 +323,13 @@ class Customer implements ModelInterface, JsonSerializable
     }
 
     /**
-     * @return BankAccount
-     */
-    public function getBankAccount(): BankAccount
-    {
-        return $this->bankAccount;
-    }
-
-    /**
-     * @param BankAccount $bankAccount
-     *
-     * @return Customer
-     */
-    public function setBankAccount(BankAccount $bankAccount): self
-    {
-        $this->bankAccount = $bankAccount;
-        return $this;
-    }
-
-    /**
      * @return Company
      */
     public function getCompany(): Company
     {
+        if (null === $this->company) {
+            $this->setCompany(new Company());
+        }
         return $this->company;
     }
 

@@ -13,7 +13,8 @@ use PayNL\Sdk\{
     Model\Status,
     Exception\InvalidArgumentException
 };
-use Mockery;
+use Mockery,
+    DateTime as stdDateTime;
 
 /**
  * Class StatusTest
@@ -151,12 +152,16 @@ class StatusTest extends UnitTest
         $this->tester->assertObjectHasMethod('getDate', $this->model);
         $this->tester->assertObjectMethodIsPublic('getDate', $this->model);
 
+        $now = $this->model->getDate();
+        verify($now)->isInstanceOf(stdDateTime::class);
+
         $dateTimeMock = Mockery::mock(DateTime::class);
         $this->model->setDate($dateTimeMock);
         $date = $this->model->getDate();
         verify($date)->notEmpty();
-        verify($date)->isInstanceOf(DateTime::class);
+        verify($date)->isInstanceOf(stdDateTime::class);
         verify($date)->same($dateTimeMock);
+        verify($date)->notSame($now);
     }
 
     /**

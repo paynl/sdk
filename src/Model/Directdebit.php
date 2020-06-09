@@ -9,8 +9,16 @@ namespace PayNL\Sdk\Model;
  *
  * @package PayNL\Sdk\Model
  */
-class Directdebit implements ModelInterface
+class Directdebit implements
+    ModelInterface,
+    Member\AmountAwareInterface,
+    Member\BankAccountAwareInterface,
+    Member\StatusAwareInterface
 {
+    use Member\AmountAwareTrait;
+    use Member\BankAccountAwareTrait;
+    use Member\StatusAwareTrait;
+
     /**
      * @var string
      */
@@ -22,27 +30,12 @@ class Directdebit implements ModelInterface
     protected $paymentSessionId;
 
     /**
-     * @var Amount
-     */
-    protected $amount;
-
-    /**
      * @var string
      */
     protected $description;
 
     /**
-     * @var BankAccount
-     */
-    protected $bankAccount;
-
-    /**
      * @var Status
-     */
-    protected $status;
-
-    /**
-     * @var Status|null
      */
     protected $declined;
 
@@ -85,25 +78,6 @@ class Directdebit implements ModelInterface
     }
 
     /**
-     * @return Amount
-     */
-    public function getAmount(): Amount
-    {
-        return $this->amount;
-    }
-
-    /**
-     * @param Amount $amount
-     *
-     * @return Directdebit
-     */
-    public function setAmount(Amount $amount): self
-    {
-        $this->amount = $amount;
-        return $this;
-    }
-
-    /**
      * @return string
      */
     public function getDescription(): string
@@ -123,48 +97,13 @@ class Directdebit implements ModelInterface
     }
 
     /**
-     * @return BankAccount
-     */
-    public function getBankAccount(): BankAccount
-    {
-        return $this->bankAccount;
-    }
-
-    /**
-     * @param BankAccount $bankAccount
-     *
-     * @return Directdebit
-     */
-    public function setBankAccount(BankAccount $bankAccount): self
-    {
-        $this->bankAccount = $bankAccount;
-        return $this;
-    }
-
-    /**
      * @return Status
      */
-    public function getStatus(): Status
+    public function getDeclined(): Status
     {
-        return $this->status;
-    }
-
-    /**
-     * @param Status $status
-     *
-     * @return Directdebit
-     */
-    public function setStatus(Status $status): self
-    {
-        $this->status = $status;
-        return $this;
-    }
-
-    /**
-     * @return Status|null
-     */
-    public function getDeclined(): ?Status
-    {
+        if (null === $this->declined) {
+            $this->setDeclined(new Status());
+        }
         return $this->declined;
     }
 

@@ -131,6 +131,10 @@ class ServicePaymentLinkTest extends UnitTest
      */
     public function testItCanGetAnAmountMin(): void
     {
+        $amountMin = $this->model->getAmountMin();
+        verify($amountMin)->isInstanceOf(Amount::class);
+
+
         /** @var Amount $amountMock */
         $amountMock = $this->tester->grabService('modelManager')->get('Amount');
         $amountMock->setAmount(12345);
@@ -139,6 +143,7 @@ class ServicePaymentLinkTest extends UnitTest
         verify($this->model->getAmountMin())->notEmpty();
         verify($this->model->getAmountMin())->isInstanceOf(Amount::class);
         verify($this->model->getAmountMin())->equals($amountMock);
+        verify($this->model->getAmountMin())->notSame($amountMin);
     }
 
     /**

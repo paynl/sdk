@@ -332,6 +332,8 @@ class MandateTest extends UnitTest
         $this->tester->assertObjectHasMethod('getInterval', $this->model);
         $this->tester->assertObjectMethodIsPublic('getInterval', $this->model);
 
+        verify($this->model->getInterval())->isInstanceOf(Interval::class);
+
         $mockInterval = $this->tester->grabMockService('modelManager')->get(Interval::class);
         $this->model->setInterval($mockInterval);
         $interval = $this->model->getInterval();

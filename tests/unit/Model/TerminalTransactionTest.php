@@ -262,10 +262,14 @@ class TerminalTransactionTest extends UnitTest
         $this->tester->assertObjectHasMethod('getTerminal', $this->model);
         $this->tester->assertObjectMethodIsPublic('getTerminal', $this->model);
 
+        $terminal = $this->model->getTerminal();
+        verify($terminal)->isInstanceOf(Terminal::class);
+
         $this->model->setTerminal(new Terminal());
 
         verify($this->model->getTerminal())->notEmpty();
         verify($this->model->getTerminal())->isInstanceOf(Terminal::class);
+        verify($this->model->getTerminal())->notSame($terminal);
     }
 
     /**
@@ -289,9 +293,13 @@ class TerminalTransactionTest extends UnitTest
         $this->tester->assertObjectHasMethod('getProgress', $this->model);
         $this->tester->assertObjectMethodIsPublic('getProgress', $this->model);
 
+        $progress = $this->model->getProgress();
+        verify($progress)->isInstanceOf(Progress::class);
+
         $this->model->setProgress(new Progress());
 
         verify($this->model->getProgress())->notEmpty();
         verify($this->model->getProgress())->isInstanceOf(Progress::class);
+        verify($this->model->getProgress())->notSame($progress);
     }
 }

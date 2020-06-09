@@ -67,6 +67,38 @@ class ProductTest extends UnitTest
     /**
      * @return void
      */
+    public function testItCanSetAType(): void
+    {
+        $this->tester->assertObjectHasMethod('setType', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setType', $this->model);
+
+        verify($this->model->setType('foo'))->isInstanceOf(Product::class);
+    }
+
+    /**
+     * @depends testItCanSetAType
+     *
+     * @return void
+     */
+    public function testItCanGetAType(): void
+    {
+        $this->tester->assertObjectHasMethod('getType', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getType', $this->model);
+
+        $type = $this->model->getType();
+        verify($type)->string();
+        verify($type)->isEmpty();
+
+        $this->model->setType('foo');
+        $type = $this->model->getType();
+        verify($type)->string();
+        verify($type)->notEmpty();
+        verify($type)->equals('foo');
+    }
+
+    /**
+     * @return void
+     */
     public function testItCanSetADescription(): void
     {
         $this->tester->assertObjectHasMethod('setDescription', $this->model);
@@ -113,10 +145,14 @@ class ProductTest extends UnitTest
         $this->tester->assertObjectHasMethod('getPrice', $this->model);
         $this->tester->assertObjectMethodIsPublic('getPrice', $this->model);
 
+        $amount = $this->model->getPrice();
+        verify($amount)->isInstanceOf(Amount::class);
+
         $this->model->setPrice(new Amount());
 
         verify($this->model->getPrice())->notEmpty();
         verify($this->model->getPrice())->isInstanceOf(Amount::class);
+        verify($this->model->getPrice())->notSame($amount);
     }
 
     /**

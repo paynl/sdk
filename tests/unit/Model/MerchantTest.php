@@ -239,6 +239,8 @@ class MerchantTest extends UnitTest
         $this->tester->assertObjectHasMethod('getPostalAddress', $this->model);
         $this->tester->assertObjectMethodIsPublic('getPostalAddress', $this->model);
 
+        verify($this->model->getPostalAddress())->isInstanceOf(Address::class);
+
         $this->model->setPostalAddress(new Address());
 
         verify($this->model->getPostalAddress())->notEmpty();
@@ -266,6 +268,8 @@ class MerchantTest extends UnitTest
     {
         $this->tester->assertObjectHasMethod('getVisitAddress', $this->model);
         $this->tester->assertObjectMethodIsPublic('getVisitAddress', $this->model);
+
+        verify($this->model->getVisitAddress())->isInstanceOf(Address::class);
 
         $address = $this->tester->grabService('modelManager')->get('Address');
         $this->model->setVisitAddress($address);

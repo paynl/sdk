@@ -114,6 +114,8 @@ class DirectdebitTest extends UnitTest
         $this->tester->assertObjectHasMethod('getAmount', $this->model);
         $this->tester->assertObjectMethodIsPublic('getAmount', $this->model);
 
+        verify($this->model->getAmount())->isInstanceOf(Amount::class);
+
         $this->model->setAmount(new Amount());
 
         verify($this->model->getAmount())->notEmpty();
@@ -169,6 +171,8 @@ class DirectdebitTest extends UnitTest
         $this->tester->assertObjectHasMethod('getBankAccount', $this->model);
         $this->tester->assertObjectMethodIsPublic('getBankAccount', $this->model);
 
+        verify($this->model->getBankAccount())->isInstanceOf(BankAccount::class);
+
         $this->model->setBankAccount(new BankAccount());
 
         verify($this->model->getBankAccount())->notEmpty();
@@ -196,6 +200,8 @@ class DirectdebitTest extends UnitTest
         $this->tester->assertObjectHasMethod('getStatus', $this->model);
         $this->tester->assertObjectMethodIsPublic('getStatus', $this->model);
 
+        verify($this->model->getStatus())->isInstanceOf(Status::class);
+
         $this->model->setStatus(new Status());
 
         verify($this->model->getStatus())->notEmpty();
@@ -222,6 +228,8 @@ class DirectdebitTest extends UnitTest
     {
         $this->tester->assertObjectHasMethod('getDeclined', $this->model);
         $this->tester->assertObjectMethodIsPublic('getDeclined', $this->model);
+
+        verify($this->model->getDeclined())->isInstanceOf(Status::class);
 
         $this->model->setDeclined(new Status());
 

@@ -637,6 +637,42 @@ class TransactionTest extends UnitTest
     /**
      * @return void
      */
+    public function testItCanSetOrderId(): void
+    {
+        $this->tester->assertObjectHasMethod('setOrderId', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setOrderId', $this->model);
+
+        $transaction = $this->model->setOrderId('foo123');
+        verify($transaction)->object();
+        verify($transaction)->isInstanceOf(Transaction::class);
+        verify($transaction)->same($this->model);
+    }
+
+    /**
+     * @depends testItCanSetOrderId
+     *
+     * @return void
+     */
+    public function testItCanGetOrderId(): void
+    {
+        $this->tester->assertObjectHasMethod('getOrderId', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getOrderId', $this->model);
+
+        $orderId = $this->model->getOrderId();
+        verify($orderId)->string();
+        verify($orderId)->isEmpty();
+
+        $this->model->setOrderId('foo123');
+
+        $orderId = $this->model->getOrderId();
+        verify($orderId)->string();
+        verify($orderId)->notEmpty();
+        verify($orderId)->equals('foo123');
+    }
+
+    /**
+     * @return void
+     */
     public function testItCanSetOrder(): void
     {
         $this->tester->assertObjectHasMethod('setOrder', $this->model);

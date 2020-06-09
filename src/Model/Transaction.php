@@ -137,6 +137,11 @@ class Transaction implements
     protected $integration;
 
     /**
+     * @var string
+     */
+    protected $orderId;
+
+    /**
      * @var Order
      */
     protected $order;
@@ -443,6 +448,25 @@ class Transaction implements
     public function setIntegration(Integration $integration): self
     {
         $this->integration = $integration;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOrderId(): string
+    {
+        return (string)$this->orderId;
+    }
+
+    /**
+     * @param string $orderId
+     *
+     * @return Transaction
+     */
+    public function setOrderId(string $orderId): self
+    {
+        $this->orderId = $orderId;
         return $this;
     }
 

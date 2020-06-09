@@ -53,7 +53,7 @@ class Statistics implements
      */
     public function getObject(): string
     {
-        return $this->object;
+        return (string)$this->object;
     }
 
     /**
@@ -72,7 +72,7 @@ class Statistics implements
      */
     public function getInfo(): string
     {
-        return $this->info;
+        return (string)$this->info;
     }
 
     /**
@@ -91,7 +91,7 @@ class Statistics implements
      */
     public function getTool(): string
     {
-        return $this->tool;
+        return (string)$this->tool;
     }
 
     /**
@@ -110,7 +110,7 @@ class Statistics implements
      */
     public function getExtra1(): string
     {
-        return $this->extra1;
+        return (string)$this->extra1;
     }
 
     /**
@@ -129,7 +129,7 @@ class Statistics implements
      */
     public function getExtra2(): string
     {
-        return $this->extra2;
+        return (string)$this->extra2;
     }
 
     /**
@@ -148,7 +148,7 @@ class Statistics implements
      */
     public function getExtra3(): string
     {
-        return $this->extra3;
+        return (string)$this->extra3;
     }
 
     /**

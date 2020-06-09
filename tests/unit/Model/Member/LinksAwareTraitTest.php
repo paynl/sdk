@@ -10,19 +10,20 @@ use PayNL\Sdk\Model\{
     Links,
     Link
 };
-use ReflectionException;
-use UnitTester;
+use ReflectionException,
+    UnitTester;
 
 
 /**
- * Class LinksTraitTest
+ * Class LinksAwareTraitTest
  *
  * @package Tests\Unit\PayNL\Sdk\Model\Member
  */
-class LinksTraitTest extends UnitTest
+class LinksAwareTraitTest extends UnitTest
 {
     /** @var UnitTester */
     protected $tester;
+
     /**
      * @throws ReflectionException
      *

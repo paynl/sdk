@@ -33,7 +33,7 @@ class Error implements ModelInterface
      */
     public function getContext(): string
     {
-        return $this->context;
+        return (string)$this->context;
     }
 
     /**

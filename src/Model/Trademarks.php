@@ -12,7 +12,9 @@ use PayNL\Sdk\Common\CollectionInterface;
  *
  * @package PayNL\Sdk\Model
  */
-class Trademarks extends ArrayCollection implements ModelInterface, CollectionInterface
+class Trademarks extends ArrayCollection implements
+    ModelInterface,
+    CollectionInterface
 {
     /**
      * @return array

@@ -12,7 +12,9 @@ use PayNL\Sdk\Common\JsonSerializeTrait;
  *
  * @package PayNL\Sdk\Model
  */
-class Order implements ModelInterface, JsonSerializable
+class Order implements
+    ModelInterface,
+    JsonSerializable
 {
     use JsonSerializeTrait;
 
@@ -161,6 +163,9 @@ class Order implements ModelInterface, JsonSerializable
      */
     public function getCustomer(): Customer
     {
+        if (null === $this->customer) {
+            $this->setCustomer(new Customer());
+        }
         return $this->customer;
     }
 
@@ -180,6 +185,9 @@ class Order implements ModelInterface, JsonSerializable
      */
     public function getDeliveryAddress(): Address
     {
+        if (null === $this->deliveryAddress) {
+            $this->setDeliveryAddress(new Address());
+        }
         return $this->deliveryAddress;
     }
 
@@ -199,6 +207,9 @@ class Order implements ModelInterface, JsonSerializable
      */
     public function getInvoiceAddress(): Address
     {
+        if (null === $this->invoiceAddress) {
+            $this->setInvoiceAddress(new Address());
+        }
         return $this->invoiceAddress;
     }
 

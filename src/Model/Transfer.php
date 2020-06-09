@@ -12,7 +12,9 @@ use PayNL\Sdk\Common\JsonSerializeTrait;
  *
  * @package PayNL\Sdk\Model
  */
-class Transfer implements ModelInterface, JsonSerializable
+class Transfer implements
+    ModelInterface,
+    JsonSerializable
 {
     use JsonSerializeTrait;
 

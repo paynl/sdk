@@ -32,6 +32,37 @@ class ErrorTest extends UnitTest
         $this->model = new Error();
     }
 
+    public function testItCanSetContext(): void
+    {
+        $this->tester->assertObjectHasMethod('setContext', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setContext', $this->model);
+
+        $error = $this->model->setContext('foo');
+        verify($error)->object();
+        verify($error)->same($this->model);
+    }
+
+    /**
+     * @depends testItCanSetContext
+     *
+     * @return void
+     */
+    public function testItCanGetContext(): void
+    {
+        $this->tester->assertObjectHasMethod('getContext', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getContext', $this->model);
+
+        $context = $this->model->getContext();
+        verify($context)->string();
+        verify($context)->isEmpty();
+
+        $this->model->setContext('foo');
+        $context = $this->model->getContext();
+        verify($context)->string();
+        verify($context)->notEmpty();
+        verify($context)->equals('foo');
+    }
+
     /**
      * @return void
      */

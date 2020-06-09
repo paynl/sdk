@@ -77,7 +77,9 @@ class CustomerTest extends UnitTest
         $this->tester->assertObjectHasMethod('getType', $this->model);
         $this->tester->assertObjectMethodIsPublic('getType', $this->model);
 
-        $types = $this->tester->invokeMethod($this->model, 'getTypes');
+        $type = $this->model->getType();
+        verify($type)->equals(Customer::TYPE_DEFAULT);
+
         $this->model->setType(Customer::TYPE_BUSINESS);
         $type = $this->model->getType();
         verify($type)->string();
@@ -416,6 +418,8 @@ class CustomerTest extends UnitTest
     {
         $this->tester->assertObjectHasMethod('getCompany', $this->model);
         $this->tester->assertObjectMethodIsPublic('getCompany', $this->model);
+
+        verify($this->model->getCompany())->isInstanceOf(Company::class);
 
         /** @var Company $company */
         $company = $this->tester->getServiceManager()->get('modelManager')->build('Company');

@@ -5,15 +5,21 @@ declare(strict_types=1);
 namespace PayNL\Sdk\Model;
 
 use JsonSerializable;
-use PayNL\Sdk\Exception\InvalidArgumentException;
-use PayNL\Sdk\Common\JsonSerializeTrait;
+use PayNL\Sdk\{
+    Exception\InvalidArgumentException,
+    Common\JsonSerializeTrait
+};
 
 /**
  * Class Qr
  *
  * @package PayNL\Sdk\Model
  */
-class Qr implements ModelInterface, JsonSerializable
+class Qr implements
+    ModelInterface,
+    Member\AmountAwareInterface,
+    Member\PaymentMethodAwareInterface,
+    JsonSerializable
 {
     /*
      * Reference type constant definitions
@@ -21,6 +27,8 @@ class Qr implements ModelInterface, JsonSerializable
     public const REFERENCE_TYPE_STRING = 'string';
     public const REFERENCE_TYPE_HEX    = 'hex';
 
+    use Member\AmountAwareTrait;
+    use Member\PaymentMethodAwareTrait;
     use JsonSerializeTrait;
 
     /**
@@ -43,11 +51,6 @@ class Qr implements ModelInterface, JsonSerializable
     protected $secret;
 
     /**
-     * @var Amount
-     */
-    protected $amount;
-
-    /**
      * @var string
      */
     protected $reference;
@@ -61,11 +64,6 @@ class Qr implements ModelInterface, JsonSerializable
      * @var string
      */
     protected $referenceType = self::REFERENCE_TYPE_STRING;
-
-    /**
-     * @var PaymentMethod
-     */
-    protected $paymentMethod;
 
     /**
      * @var string
@@ -140,25 +138,6 @@ class Qr implements ModelInterface, JsonSerializable
     }
 
     /**
-     * @return Amount|null
-     */
-    public function getAmount(): ?Amount
-    {
-        return $this->amount;
-    }
-
-    /**
-     * @param Amount $amount
-     *
-     * @return Qr
-     */
-    public function setAmount(Amount $amount): self
-    {
-        $this->amount = $amount;
-        return $this;
-    }
-
-    /**
      * @return string
      */
     public function getReference(): string
@@ -223,25 +202,6 @@ class Qr implements ModelInterface, JsonSerializable
         }
 
         $this->referenceType = $referenceType;
-        return $this;
-    }
-
-    /**
-     * @return PaymentMethod|null
-     */
-    public function getPaymentMethod(): ?PaymentMethod
-    {
-        return $this->paymentMethod;
-    }
-
-    /**
-     * @param PaymentMethod $paymentMethod
-     *
-     * @return Qr
-     */
-    public function setPaymentMethod(PaymentMethod $paymentMethod): self
-    {
-        $this->paymentMethod = $paymentMethod;
         return $this;
     }
 

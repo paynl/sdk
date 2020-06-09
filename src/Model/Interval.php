@@ -17,12 +17,12 @@ class Interval implements ModelInterface
     protected $period;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $quantity = 0;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $value = 0;
 

@@ -12,9 +12,9 @@ use PayNL\Sdk\Common\CollectionInterface;
  *
  * @package PayNL\Sdk\Model
  */
-class Errors extends ArrayCollection implements ModelInterface, CollectionInterface
+class Errors extends ArrayCollection implements ModelInterface, CollectionInterface, Member\LinksAwareInterface
 {
-    use LinksTrait;
+    use Member\LinksAwareTrait;
 
     /**
      * @return array

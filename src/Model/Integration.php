@@ -12,7 +12,9 @@ use PayNL\Sdk\Common\JsonSerializeTrait;
  *
  * @package PayNL\Sdk\Model
  */
-class Integration implements ModelInterface, JsonSerializable
+class Integration implements
+    ModelInterface,
+    JsonSerializable
 {
     use JsonSerializeTrait;
 
@@ -25,12 +27,12 @@ class Integration implements ModelInterface, JsonSerializable
     /**
      * @required
      *
-     * @var boolean
+     * @var bool
      */
     protected $testMode = self::TEST_MODE_OFF;
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isTestMode(): bool
     {
@@ -38,7 +40,7 @@ class Integration implements ModelInterface, JsonSerializable
     }
 
     /**
-     * @param boolean $testMode
+     * @param bool $testMode
      *
      * @return Integration
      */

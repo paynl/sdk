@@ -50,14 +50,6 @@ class PaymentMethod implements ModelInterface, JsonSerializable
     protected $subMethods;
 
     /**
-     * PaymentMethod constructor.
-     */
-    public function __construct()
-    {
-        $this->subMethods = new PaymentMethods();
-    }
-
-    /**
      * @return integer
      */
     public function getId(): int
@@ -189,6 +181,9 @@ class PaymentMethod implements ModelInterface, JsonSerializable
      */
     public function getSubMethods(): PaymentMethods
     {
+        if (null === $this->subMethods) {
+            $this->setSubMethods(new PaymentMethods());
+        }
         return $this->subMethods;
     }
 
@@ -206,7 +201,7 @@ class PaymentMethod implements ModelInterface, JsonSerializable
 
     public function addSubMethod(self $paymentMethod): self
     {
-        $this->subMethods->addPaymentMethod($paymentMethod);
+        $this->getSubMethods()->addPaymentMethod($paymentMethod);
         return $this;
     }
 }

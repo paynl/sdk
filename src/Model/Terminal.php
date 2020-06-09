@@ -13,7 +13,9 @@ use PayNL\Sdk\Exception\InvalidServiceException;
  *
  * @package PayNL\Sdk\Model
  */
-class Terminal implements ModelInterface, JsonSerializable
+class Terminal implements
+    ModelInterface,
+    JsonSerializable
 {
     use JsonSerializeTrait;
 

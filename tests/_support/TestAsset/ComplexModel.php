@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Codeception\TestAsset;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use PayNL\Sdk\Model\LinksTrait;
-use PayNL\Sdk\Model\ModelInterface;
+use PayNL\Sdk\Model\{
+    Member\LinksAwareTrait,
+    ModelInterface
+};
 use DateTime;
 
 /**
@@ -16,7 +18,7 @@ use DateTime;
  */
 class ComplexModel implements ModelInterface
 {
-    use LinksTrait;
+    use LinksAwareTrait;
 
     /**
      * @var string

@@ -2,27 +2,28 @@
 
 declare(strict_types=1);
 
-namespace Tests\Unit\PayNL\Sdk\Model;
+namespace Tests\Unit\PayNL\Sdk\Model\Member;
 
 use Codeception\Test\Unit as UnitTest;
 use PayNL\Sdk\Model\{
-    LinksTrait,
+    Member\LinksAwareTrait,
     Links,
     Link
 };
-use ReflectionException;
-use UnitTester;
+use ReflectionException,
+    UnitTester;
 
 
 /**
- * Class LinksTraitTest
+ * Class LinksAwareTraitTest
  *
- * @package Tests\Unit\PayNL\Sdk\Model
+ * @package Tests\Unit\PayNL\Sdk\Model\Member
  */
-class LinksTraitTest extends UnitTest
+class LinksAwareTraitTest extends UnitTest
 {
     /** @var UnitTester */
     protected $tester;
+
     /**
      * @throws ReflectionException
      *
@@ -30,8 +31,8 @@ class LinksTraitTest extends UnitTest
      */
     public function testItCanSetLinks(): void
     {
-        /** @var LinksTrait $traitCls */
-        $traitCls = $this->getMockForTrait(LinksTrait::class);
+        /** @var LinksAwareTrait $traitCls */
+        $traitCls = $this->getMockForTrait(LinksAwareTrait::class);
 
         verify(method_exists($traitCls, 'setLinks'))->true();
 
@@ -47,8 +48,8 @@ class LinksTraitTest extends UnitTest
      */
     public function testItCanGetLinks(): void
     {
-        /** @var LinksTrait $traitCls */
-        $traitCls = $this->getMockForTrait(LinksTrait::class);
+        /** @var LinksAwareTrait $traitCls */
+        $traitCls = $this->getMockForTrait(LinksAwareTrait::class);
 
         verify(method_exists($traitCls, 'getLinks'))->true();
 

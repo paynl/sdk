@@ -310,7 +310,7 @@ class TransactionTest extends UnitTest
         $this->tester->assertObjectMethodIsPublic('getAmountConverted', $this->model);
 
         $amount = $this->model->getAmountConverted();
-        verify($amount)->null();
+        verify($amount)->isInstanceOf(Amount::class);
 
         $amountMock = $this->tester->grabMockService('modelManager')->get(Amount::class);
         $this->model->setAmountConverted($amountMock);
@@ -346,7 +346,7 @@ class TransactionTest extends UnitTest
         $this->tester->assertObjectMethodIsPublic('getAmountPaid', $this->model);
 
         $amount = $this->model->getAmountPaid();
-        verify($amount)->null();
+        verify($amount)->isInstanceOf(Amount::class);
 
         $amountMock = $this->tester->grabMockService('modelManager')->get(Amount::class);
         $this->model->setAmountPaid($amountMock);
@@ -382,7 +382,7 @@ class TransactionTest extends UnitTest
         $this->tester->assertObjectMethodIsPublic('getAmountRefunded', $this->model);
 
         $amount = $this->model->getAmountRefunded();
-        verify($amount)->null();
+        verify($amount)->isInstanceOf(Amount::class);
 
         $amountMock = $this->tester->grabMockService('modelManager')->get(Amount::class);
         $this->model->setAmountRefunded($amountMock);
@@ -418,7 +418,7 @@ class TransactionTest extends UnitTest
         $this->tester->assertObjectMethodIsPublic('getPaymentMethod', $this->model);
 
         $paymentMethod = $this->model->getPaymentMethod();
-        verify($paymentMethod)->null();
+        verify($paymentMethod)->isInstanceOf(PaymentMethod::class);
 
         $paymentMethodMock = $this->tester->grabMockService('modelManager')->get(PaymentMethod::class);
         $this->model->setPaymentMethod($paymentMethodMock);
@@ -555,7 +555,7 @@ class TransactionTest extends UnitTest
         $this->tester->assertObjectMethodIsPublic('getTransfer', $this->model);
 
         $transfer = $this->model->getTransfer();
-        verify($transfer)->null();
+        verify($transfer)->isInstanceOf(Transfer::class);
 
         $transferMock = $this->tester->grabMockService('modelManager')->get(Transfer::class);
         $this->model->setTransfer($transferMock);
@@ -624,7 +624,7 @@ class TransactionTest extends UnitTest
         $this->tester->assertObjectMethodIsPublic('getIntegration', $this->model);
 
         $integration = $this->model->getIntegration();
-        verify($integration)->null();
+        verify($integration)->isInstanceOf(Integration::class);
 
         $integrationMock = $this->tester->grabMockService('modelManager')->get(Integration::class);
         $this->model->setIntegration($integrationMock);
@@ -632,6 +632,42 @@ class TransactionTest extends UnitTest
         verify($integration)->object();
         verify($integration)->isInstanceOf(Integration::class);
         verify($integration)->same($integrationMock);
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanSetOrderId(): void
+    {
+        $this->tester->assertObjectHasMethod('setOrderId', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setOrderId', $this->model);
+
+        $transaction = $this->model->setOrderId('foo123');
+        verify($transaction)->object();
+        verify($transaction)->isInstanceOf(Transaction::class);
+        verify($transaction)->same($this->model);
+    }
+
+    /**
+     * @depends testItCanSetOrderId
+     *
+     * @return void
+     */
+    public function testItCanGetOrderId(): void
+    {
+        $this->tester->assertObjectHasMethod('getOrderId', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getOrderId', $this->model);
+
+        $orderId = $this->model->getOrderId();
+        verify($orderId)->string();
+        verify($orderId)->isEmpty();
+
+        $this->model->setOrderId('foo123');
+
+        $orderId = $this->model->getOrderId();
+        verify($orderId)->string();
+        verify($orderId)->notEmpty();
+        verify($orderId)->equals('foo123');
     }
 
     /**
@@ -659,7 +695,7 @@ class TransactionTest extends UnitTest
         $this->tester->assertObjectMethodIsPublic('getOrder', $this->model);
 
         $order = $this->model->getOrder();
-        verify($order)->null();
+        verify($order)->isInstanceOf(Order::class);
 
         $orderMock = $this->tester->grabMockService('modelManager')->get(Order::class);
         $this->model->setOrder($orderMock);
@@ -694,7 +730,7 @@ class TransactionTest extends UnitTest
         $this->tester->assertObjectMethodIsPublic('getStatus', $this->model);
 
         $status = $this->model->getStatus();
-        verify($status)->null();
+        verify($status)->isInstanceOf(TransactionStatus::class);
 
         $statusMock = $this->tester->grabMockService('modelManager')->get(TransactionStatus::class);
         $this->model->setStatus($statusMock);
@@ -729,7 +765,7 @@ class TransactionTest extends UnitTest
         $this->tester->assertObjectMethodIsPublic('getStatistics', $this->model);
 
         $statistics = $this->model->getStatistics();
-        verify($statistics)->null();
+        verify($statistics)->isInstanceOf(Statistics::class);
 
         $statisticsMock = $this->tester->grabMockService('modelManager')->get(Statistics::class);
         $this->model->setStatistics($statisticsMock);

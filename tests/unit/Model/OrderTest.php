@@ -25,6 +25,11 @@ class OrderTest extends UnitTest
     use ModelTestTrait;
 
     /**
+     * @var Order
+     */
+    protected $model;
+
+    /**
      * @return void
      */
     public function _before(): void
@@ -220,6 +225,8 @@ class OrderTest extends UnitTest
         $this->tester->assertObjectHasMethod('getCustomer', $this->model);
         $this->tester->assertObjectMethodIsPublic('getCustomer', $this->model);
 
+        verify($this->model->getCustomer())->isInstanceOf(Customer::class);
+
         $customerModel = $this->tester->grabMockService('modelManager')->get(Customer::class);
         $this->model->setCustomer($customerModel);
 
@@ -252,6 +259,8 @@ class OrderTest extends UnitTest
         $this->tester->assertObjectHasMethod('getDeliveryAddress', $this->model);
         $this->tester->assertObjectMethodIsPublic('getDeliveryAddress', $this->model);
 
+        verify($this->model->getDeliveryAddress())->isInstanceOf(Address::class);
+
         $addressModel = $this->tester->grabMockService('modelManager')->get(Address::class);
         $this->model->setDeliveryAddress($addressModel);
 
@@ -283,6 +292,8 @@ class OrderTest extends UnitTest
     {
         $this->tester->assertObjectHasMethod('getInvoiceAddress', $this->model);
         $this->tester->assertObjectMethodIsPublic('getInvoiceAddress', $this->model);
+
+        verify($this->model->getInvoiceAddress())->isInstanceOf(Address::class);
 
         $addressModel = $this->tester->grabMockService('modelManager')->get(Address::class);
         $this->model->setInvoiceAddress($addressModel);

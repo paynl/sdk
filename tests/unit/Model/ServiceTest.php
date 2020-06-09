@@ -8,12 +8,13 @@ use Codeception\{
     Lib\ModelTestTrait,
     Test\Unit as UnitTest
 };
-use PayNL\Sdk\{
-    Common\DateTime,
-    Model\LinksTrait,
-    Model\Service
+use PayNL\Sdk\Common\DateTime;
+use PayNL\Sdk\Model\{
+    Member\LinksAwareTrait,
+    Service
 };
-use Mockery;
+use Mockery,
+    Exception;
 
 /**
  * Class ServiceTest
@@ -42,7 +43,7 @@ class ServiceTest extends UnitTest
      */
     public function testItIsLinksAware(): void
     {
-        $this->tester->assertObjectUsesTrait($this->model, LinksTrait::class);
+        $this->tester->assertObjectUsesTrait($this->model, LinksAwareTrait::class);
     }
 
     /**
@@ -231,6 +232,8 @@ class ServiceTest extends UnitTest
     /**
      * @depends testItCanSetCreatedAt
      *
+     * @throws Exception
+     *
      * @return void
      */
     public function testItCanGetCreatedAt(): void
@@ -239,7 +242,7 @@ class ServiceTest extends UnitTest
         $this->tester->assertObjectMethodIsPublic('getCreatedAt', $this->model);
 
         $createdAt = $this->model->getCreatedAt();
-        verify($createdAt)->null();
+        verify($createdAt)->isInstanceOf(DateTime::class);
 
         $dateTimeMock = Mockery::mock(DateTime::class);
         $this->model->setCreatedAt($dateTimeMock);

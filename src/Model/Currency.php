@@ -9,9 +9,9 @@ namespace PayNL\Sdk\Model;
  *
  * @package PayNL\Sdk\Model
  */
-class Currency implements ModelInterface
+class Currency implements ModelInterface, Member\LinksAwareInterface
 {
-    use LinksTrait;
+    use Member\LinksAwareTrait;
 
     /**
      * @var string

@@ -10,7 +10,7 @@ use Codeception\{
     Test\Unit as UnitTest
 };
 use PayNL\Sdk\Model\{
-    LinksTrait,
+    Member\LinksAwareTrait,
     Terminal,
     Terminals
 };
@@ -23,7 +23,8 @@ use TypeError;
  */
 class TerminalsTest extends UnitTest
 {
-    use ModelTestTrait, CollectionTestTrait {
+    use ModelTestTrait;
+    use CollectionTestTrait {
         testItCanBeAccessedLikeAnArray as traitTestItCanBeAccessedLikeAnArray;
         testItCanGetCollectionName as traitTestItCanGetCollectionName;
     }
@@ -47,7 +48,7 @@ class TerminalsTest extends UnitTest
      */
     public function testItIsLinksAware(): void
     {
-        $this->tester->assertObjectUsesTrait($this->model, LinksTrait::class);
+        $this->tester->assertObjectUsesTrait($this->model, LinksAwareTrait::class);
     }
 
     /**

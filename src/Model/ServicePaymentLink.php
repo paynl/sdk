@@ -13,7 +13,11 @@ use PayNL\Sdk\Exception\InvalidArgumentException;
  *
  * @package PayNL\Sdk\Model
  */
-class ServicePaymentLink implements ModelInterface, JsonSerializable
+class ServicePaymentLink implements
+    ModelInterface,
+    Member\AmountAwareInterface,
+    Member\StatisticsAwareInterface,
+    JsonSerializable
 {
     use JsonSerializeTrait;
 
@@ -25,17 +29,15 @@ class ServicePaymentLink implements ModelInterface, JsonSerializable
     public const SECURITY_MODE_2 = 2;
     public const SECURITY_MODE_3 = 3;
 
+    use Member\AmountAwareTrait;
+    use Member\StatisticsAwareTrait;
+
     /**
      * @required
      *
      * @var integer
      */
     protected $securityMode = 0;
-
-    /**
-     * @var Amount
-     */
-    protected $amount;
 
     /**
      * @var Amount
@@ -53,14 +55,9 @@ class ServicePaymentLink implements ModelInterface, JsonSerializable
     protected $language;
 
     /**
-     * @var Statistics
-     */
-    protected $statistics;
-
-    /**
      * @var string
      */
-    protected $url = '';
+    protected $url;
 
     /**
      * @return array
@@ -80,7 +77,7 @@ class ServicePaymentLink implements ModelInterface, JsonSerializable
      */
     public function getSecurityMode(): int
     {
-        return $this->securityMode;
+        return (int)$this->securityMode;
     }
 
     /**
@@ -106,29 +103,13 @@ class ServicePaymentLink implements ModelInterface, JsonSerializable
     }
 
     /**
-     * @return Amount
-     */
-    public function getAmount(): Amount
-    {
-        return $this->amount;
-    }
-
-    /**
-     * @param Amount $amount
-     *
-     * @return ServicePaymentLink
-     */
-    public function setAmount(Amount $amount): self
-    {
-        $this->amount = $amount;
-        return $this;
-    }
-
-    /**
      * @return Amount|null
      */
     public function getAmountMin(): ?Amount
     {
+        if (null === $this->amountMin) {
+            $this->setAmountMin(new Amount());
+        }
         return $this->amountMin;
     }
 
@@ -182,30 +163,11 @@ class ServicePaymentLink implements ModelInterface, JsonSerializable
     }
 
     /**
-     * @return Statistics|null
-     */
-    public function getStatistics(): ?Statistics
-    {
-        return $this->statistics;
-    }
-
-    /**
-     * @param Statistics $statistics
-     *
-     * @return ServicePaymentLink
-     */
-    public function setStatistics(Statistics $statistics): self
-    {
-        $this->statistics = $statistics;
-        return $this;
-    }
-
-    /**
      * @return string
      */
     public function getUrl(): string
     {
-        return $this->url;
+        return (string)$this->url;
     }
 
     /**

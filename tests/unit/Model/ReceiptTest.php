@@ -147,6 +147,9 @@ class ReceiptTest extends UnitTest
         $this->tester->assertObjectHasMethod('getCard', $this->model);
         $this->tester->assertObjectMethodIsPublic('getCard', $this->model);
 
+        $card = $this->model->getCard();
+        verify($card)->isInstanceOf(Card::class);
+
         /** @var Card $cardMock */
         $cardMock = $this->tester->grabService('modelManager')->get('Card');
         $cardMock->setName('Visa');
@@ -155,6 +158,7 @@ class ReceiptTest extends UnitTest
         verify($this->model->getCard())->notEmpty();
         verify($this->model->getCard())->isInstanceOf(Card::class);
         verify($this->model->getCard())->equals($cardMock);
+        verify($this->model->getCard())->notSame($card);
     }
 
     /**

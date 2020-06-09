@@ -506,9 +506,6 @@ class Transaction implements
     {
         if ('isPending' === $name) {
             $status = $this->getStatus();
-            if (null === $status) {
-                return false;
-            }
 
             return in_array($status->getCode(), [
                 TransactionStatus::STATUS_PENDING1,
@@ -519,9 +516,6 @@ class Transaction implements
 
         if (1 === preg_match('/^is(?P<status>[A-z]+)/', $name, $match)) {
             $status = $this->getStatus();
-            if (null === $status) {
-                return false;
-            }
 
             /** @var string $statusName */
             $statusName = (new CamelCaseToUnderscore())->filter($match['status']);

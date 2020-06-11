@@ -38,6 +38,11 @@ class Voucher implements
     protected $balance;
 
     /**
+     * @var string
+     */
+    protected $number;
+
+    /**
      * @return string
      */
     public function getPinCode(): string
@@ -91,6 +96,22 @@ class Voucher implements
     public function setBalance(int $balance): Voucher
     {
         $this->balance = $balance;
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getNumber(): ?string {
+        return $this->number;
+    }
+
+    /**
+     * @param string $number
+     * @return Voucher
+     */
+    public function setNumber(string $number): Voucher {
+        $this->number = $number;
         return $this;
     }
 }

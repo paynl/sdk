@@ -26,6 +26,11 @@ class RefundTransaction implements
     protected $refund;
 
     /**
+     * @var Voucher
+     */
+    protected $voucher;
+
+    /**
      * @return Amount
      */
     public function getAmountRefunded(): Amount
@@ -66,6 +71,22 @@ class RefundTransaction implements
     public function setRefund(Refund $refund): self
     {
         $this->refund = $refund;
+        return $this;
+    }
+
+    /**
+     * @return Voucher|null
+     */
+    public function getVoucher(): ?Voucher {
+        return $this->voucher;
+    }
+
+    /**
+     * @param Voucher $voucher
+     * @return RefundTransaction
+     */
+    public function setVoucher(Voucher $voucher): RefundTransaction {
+        $this->voucher = $voucher;
         return $this;
     }
 }

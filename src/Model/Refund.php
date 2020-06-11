@@ -60,7 +60,7 @@ class Refund implements
     /**
      * @return string
      */
-    public function getId(): string
+    public function getId(): ?string
     {
         return $this->id;
     }
@@ -79,7 +79,7 @@ class Refund implements
     /**
      * @return string
      */
-    public function getPaymentSessionId(): string
+    public function getPaymentSessionId(): ?string
     {
         return (string)$this->paymentSessionId;
     }
@@ -98,7 +98,7 @@ class Refund implements
     /**
      * @return string
      */
-    public function getDescription(): string
+    public function getDescription(): ?string
     {
         return (string)$this->description;
     }
@@ -117,7 +117,7 @@ class Refund implements
     /**
      * @return Products
      */
-    public function getProducts(): Products
+    public function getProducts(): ?Products
     {
         if (null === $this->products) {
             $this->setProducts(new Products());
@@ -150,7 +150,7 @@ class Refund implements
     /**
      * @return string
      */
-    public function getReason(): string
+    public function getReason(): ?string
     {
         return (string)$this->reason;
     }

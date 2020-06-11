@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 namespace PayNL\Sdk\Model;
+use Doctrine\Common\Collections\ArrayCollection;
+use PayNL\Sdk\Common\CollectionInterface;
 
 /**
  * Class RefundOverview
@@ -22,14 +24,14 @@ class RefundOverview implements ModelInterface
     protected $amountRefunded;
 
     /**
-     * @var array
+     * @var RefundedTransactions
      */
-    protected $refundedTransactions = [];
+    protected $refundedTransactions;
 
     /**
-     * @var array
+     * @var RefundedTransactions
      */
-    protected $failedTransactions = [];
+    protected $failedTransactions;
 
     /**
      * @return string
@@ -73,25 +75,21 @@ class RefundOverview implements ModelInterface
     }
 
     /**
-     * @return array
+     * @return RefundedTransactions
      */
-    public function getRefundedTransactions(): array
+    public function getRefundedTransactions(): RefundedTransactions
     {
-        return $this->refundedTransactions;
+        return $this->refundedTransactions ?? new RefundedTransactions();
     }
 
     /**
-     * @param array $refundedTransactions
+     * @param RefundedTransactions $refundedTransactions
      *
      * @return RefundOverview
      */
-    public function setRefundedTransactions(array $refundedTransactions): self
+    public function setRefundedTransactions(RefundedTransactions $refundedTransactions): self
     {
-        // TODO: transaction collection?
-        $this->refundedTransactions = [];
-        foreach ($refundedTransactions as $refundedTransaction) {
-            $this->addRefundTransaction($refundedTransaction);
-        }
+        $this->refundedTransactions = $refundedTransactions;
         return $this;
     }
 
@@ -102,30 +100,26 @@ class RefundOverview implements ModelInterface
      */
     public function addRefundTransaction(RefundTransaction $refundTransaction): self
     {
-        $this->refundedTransactions[] = $refundTransaction;
+        $this->getRefundedTransactions()->addRefundTransaction($refundTransaction);
         return $this;
     }
 
     /**
-     * @return array
+     * @return RefundedTransactions
      */
-    public function getFailedTransactions(): array
+    public function getFailedTransactions(): RefundedTransactions
     {
-        return $this->failedTransactions;
+        return $this->failedTransactions ?? new RefundedTransactions();
     }
 
     /**
-     * @param array $failedTransactions
+     * @param FailedTransactions $failedTransactions
      *
      * @return RefundOverview
      */
-    public function setFailedTransactions(array $failedTransactions): self
+    public function setFailedTransactions(RefundedTransactions $failedTransactions): self
     {
-        // TODO: transaction collection?
-        $this->failedTransactions = [];
-        foreach ($failedTransactions as $failedTransaction) {
-            $this->addFailedTransaction($failedTransaction);
-        }
+        $this->failedTransactions = $failedTransactions;
         return $this;
     }
 
@@ -136,7 +130,7 @@ class RefundOverview implements ModelInterface
      */
     public function addFailedTransaction(RefundTransaction $refundTransaction): self
     {
-        $this->failedTransactions[] = $refundTransaction;
+        $this->getFailedTransactions()->addRefundTransaction($refundTransaction);
         return $this;
     }
 }

@@ -8,11 +8,7 @@ use Codeception\{
     Lib\ModelTestTrait,
     Test\Unit as UnitTest
 };
-use PayNL\Sdk\Model\{
-    RefundOverview,
-    Amount,
-    RefundTransaction
-};
+use PayNL\Sdk\Model\{RefundedTransactions, RefundOverview, Amount, RefundTransaction};
 use TypeError;
 
 /**
@@ -131,7 +127,7 @@ class RefundOverviewTest extends UnitTest
         $this->tester->assertObjectMethodIsPublic('getRefundedTransactions', $this->model);
 
         $refundedTransactions = $this->model->getRefundedTransactions();
-        verify($refundedTransactions)->array();
+        verify($refundedTransactions)->isInstanceOf(RefundedTransactions::class);
         verify($refundedTransactions)->count(0);
     }
 
@@ -149,7 +145,7 @@ class RefundOverviewTest extends UnitTest
         $refundOverview = $this->model->addRefundTransaction($mockRefundTransaction);
         verify($refundOverview)->object();
         verify($refundOverview)->same($this->model);
-        verify($refundOverview->getRefundedTransactions())->contains($mockRefundTransaction);
+        verify($refundOverview->getRefundedTransactions())->containsOnlyInstancesOf(RefundTransaction::class);
     }
 
     /**
@@ -165,7 +161,7 @@ class RefundOverviewTest extends UnitTest
 
         $mockRefundTransaction = $this->getMockRefundTransaction();
 
-        $refundOverview = $this->model->setRefundedTransactions([ $mockRefundTransaction ]);
+        $refundOverview = $this->model->setRefundedTransactions(new RefundedTransactions([$mockRefundTransaction]));
         verify($refundOverview)->object();
         verify($refundOverview)->same($this->model);
         $refundedTransactions = $this->model->getRefundedTransactions();
@@ -173,10 +169,10 @@ class RefundOverviewTest extends UnitTest
         verify($refundedTransactions)->notEmpty();
         verify($refundedTransactions)->count(1);
 
-        $refundOverview = $this->model->setRefundedTransactions([
+        $refundOverview = $this->model->setRefundedTransactions(new RefundedTransactions([
             $this->getMockRefundTransaction(),
             $this->getMockRefundTransaction()
-        ]);
+        ]));
         verify($refundOverview)->object();
         verify($refundOverview)->same($this->model);
         $refundedTransactions = $this->model->getRefundedTransactions();
@@ -188,25 +184,13 @@ class RefundOverviewTest extends UnitTest
     /**
      * @depends testItCanAddRefundTransaction
      * @depends testItCanSetRefundedTransactions
-     *
-     * @return void
-     */
-    public function testSetRefundedTransactionsThrowsTypeError(): void
-    {
-        $this->expectException(TypeError::class);
-        $this->model->setRefundedTransactions([$this->getMockRefundTransaction(), []]);
-    }
-
-    /**
-     * @depends testItCanAddRefundTransaction
-     * @depends testItCanSetRefundedTransactions
      * @depends testItCanGetRefundedTransactions
      *
      * @return void
      */
     public function testItCanSetEmptyRefundedTransactions(): void
     {
-        $refundOverview = $this->model->setRefundedTransactions([]);
+        $refundOverview = $this->model->setRefundedTransactions(new RefundedTransactions());
         verify($refundOverview)->object();
         verify($refundOverview)->same($this->model);
         verify($refundOverview->getRefundedTransactions())->count(0);
@@ -221,7 +205,7 @@ class RefundOverviewTest extends UnitTest
         $this->tester->assertObjectMethodIsPublic('getFailedTransactions', $this->model);
 
         $failedTransactions = $this->model->getFailedTransactions();
-        verify($failedTransactions)->array();
+        verify($failedTransactions)->isInstanceOf(RefundedTransactions::class);
         verify($failedTransactions)->count(0);
     }
 
@@ -239,7 +223,7 @@ class RefundOverviewTest extends UnitTest
         $refundOverview = $this->model->addFailedTransaction($mockRefundTransaction);
         verify($refundOverview)->object();
         verify($refundOverview)->same($this->model);
-        verify($refundOverview->getFailedTransactions())->contains($mockRefundTransaction);
+        verify($refundOverview->getFailedTransactions())->containsOnlyInstancesOf(RefundTransaction::class);
     }
 
     /**
@@ -255,7 +239,9 @@ class RefundOverviewTest extends UnitTest
 
         $mockRefundTransaction = $this->getMockRefundTransaction();
 
-        $refundOverview = $this->model->setFailedTransactions([ $mockRefundTransaction ]);
+        $refundedTransactions = new RefundedTransactions([$mockRefundTransaction]);
+
+        $refundOverview = $this->model->setFailedTransactions($refundedTransactions);
         verify($refundOverview)->object();
         verify($refundOverview)->same($this->model);
         $failedTransactions = $this->model->getFailedTransactions();
@@ -263,28 +249,20 @@ class RefundOverviewTest extends UnitTest
         verify($failedTransactions)->notEmpty();
         verify($failedTransactions)->count(1);
 
-        $refundOverview = $this->model->setFailedTransactions([
-            $this->getMockRefundTransaction(),
-            $this->getMockRefundTransaction()
-        ]);
+        $refundOverview = $this->model->setFailedTransactions(
+            new RefundedTransactions(
+                [
+                    $this->getMockRefundTransaction(),
+                    $this->getMockRefundTransaction()
+                ]
+            )
+        );
         verify($refundOverview)->object();
         verify($refundOverview)->same($this->model);
         $failedTransactions = $this->model->getFailedTransactions();
         verify($failedTransactions)->containsOnlyInstancesOf(RefundTransaction::class);
         verify($failedTransactions)->count(2);
         verify($failedTransactions)->notContains($mockRefundTransaction);
-    }
-
-    /**
-     * @depends testItCanAddRefundTransaction
-     * @depends testItCanSetFailedTransactions
-     *
-     * @return void
-     */
-    public function testSetFailedTransactionsThrowsTypeError(): void
-    {
-        $this->expectException(TypeError::class);
-        $this->model->setFailedTransactions([$this->getMockRefundTransaction(), []]);
     }
 
     /**
@@ -296,7 +274,7 @@ class RefundOverviewTest extends UnitTest
      */
     public function testItCanSetEmptyFailedTransactions(): void
     {
-        $refundOverview = $this->model->setFailedTransactions([]);
+        $refundOverview = $this->model->setFailedTransactions(new RefundedTransactions());
         verify($refundOverview)->object();
         verify($refundOverview)->same($this->model);
         verify($refundOverview->getFailedTransactions())->count(0);

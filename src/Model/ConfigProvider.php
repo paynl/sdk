@@ -34,16 +34,17 @@ class ConfigProvider implements ConfigProviderInterface
             ],
             'hydrator_collection_map' => [
                 // CollectionEntity(Alias) => EntryEntity(Alias)
-                'contactMethods' => 'contactMethod',
-                'currencies'     => 'currency',
-                'directdebits'   => 'directdebit',
-                'errors'         => 'error',
-                'links'          => 'link',
-                'paymentMethods' => 'paymentMethod',
-                'products'       => 'product',
-                'services'       => 'service',
-                'terminals'      => 'terminal',
-                'trademarks'     => 'trademark'
+                'contactMethods'        => 'contactMethod',
+                'currencies'            => 'currency',
+                'directdebits'          => 'directdebit',
+                'errors'                => 'error',
+                'links'                 => 'link',
+                'paymentMethods'        => 'paymentMethod',
+                'products'              => 'product',
+                'services'              => 'service',
+                'terminals'             => 'terminal',
+                'trademarks'            => 'trademark',
+                'refundedTransactions'  => 'refundTransaction'
             ],
         ];
     }
@@ -106,6 +107,12 @@ class ConfigProvider implements ConfigProviderInterface
                 'refund'                => 'Refund',
                 'refundOverview'        => 'RefundOverview',
                 'refundTransaction'     => 'RefundTransaction',
+                'refundedtransactions'  => 'RefundedTransactions',
+                'refunded_transactions' => 'RefundedTransactions',
+                'refundedTransactions'  => 'RefundedTransactions',
+                'failedTransactions'    => 'RefundedTransactions',
+                'failedtransactions'    => 'RefundedTransactions',
+                'failed_transactions'   => 'RefundedTransactions',
                 'service'               => 'Service',
                 'services'              => 'Services',
                 'servicePaymentLink'    => 'ServicePaymentLink',
@@ -156,6 +163,7 @@ class ConfigProvider implements ConfigProviderInterface
                 'Refund'                => Refund::class,
                 'RefundOverview'        => RefundOverview::class,
                 'RefundTransaction'     => RefundTransaction::class,
+                'RefundedTransactions'  => RefundedTransactions::class,
                 'Service'               => Service::class,
                 'Services'              => Services::class,
                 'ServicePaymentLink'    => ServicePaymentLink::class,

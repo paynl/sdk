@@ -502,6 +502,8 @@ class Transaction
     /**
      * Capture a transaction
      *
+     *
+     * @param array $options
      * @param $transactionId
      * @return bool
      * @throws Error\Api
@@ -509,9 +511,18 @@ class Transaction
      * @throws Error\Required\ApiToken
      * @throws Error\Required\ServiceId
      */
-    public static function capture($transactionId)
+    public static function capture($transactionId, $options = array())
     {
         $api = new Api\Capture();
+
+        if (isset($options['amount'])) {
+            $api->setAmount(round($options['amount'] * 100));
+        }
+
+        if (isset($options['tracktrace'])) {
+            $api->setTracktrace($options['tracktrace']);
+        }
+
         $api->setTransactionId($transactionId);
         $result = $api->doRequest();
 

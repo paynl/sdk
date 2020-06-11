@@ -19,6 +19,16 @@ class Capture extends Transaction
     private $transactionId;
 
     /**
+     * @var int amount in cents
+     */
+    private $amount;
+
+    /**
+     * @var string
+     */
+    private $tracktrace;
+
+    /**
      * Set the transactionId
      *
      * @param string $transactionId
@@ -26,6 +36,26 @@ class Capture extends Transaction
     public function setTransactionId($transactionId)
     {
         $this->transactionId = $transactionId;
+    }
+
+    /**
+     * Set the amount(in cents) of the transaction
+     *
+     * @param int $amount
+     */
+    public function setAmount($amount)
+    {
+        $this->amount = $amount;
+    }
+
+    /**
+     * Set the track and trace code
+     *
+     * @param int $tracktrace
+     */
+    public function setTracktrace($tracktrace)
+    {
+        $this->tracktrace = $tracktrace;
     }
 
     /**
@@ -39,6 +69,14 @@ class Capture extends Transaction
         }
 
         $this->data['transactionId'] = $this->transactionId;
+
+        if(!empty($this->amount)){
+            $this->data['amount'] = $this->amount;
+        }
+
+        if(!empty($this->tracktrace)){
+            $this->data['tracktrace'] = $this->tracktrace;
+        }
 
         return parent::getData();
     }

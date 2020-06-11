@@ -150,4 +150,36 @@ class VoucherTest extends UnitTest
         verify($balance)->notEmpty();
         verify($balance)->equals(400);
     }
+
+    /**
+     * @return void
+     */
+    public function testItCanSetNumber(): void
+    {
+        $this->tester->assertObjectHasMethod('setNumber', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setNumber', $this->model);
+
+        $voucher = $this->model->setNumber('foo');
+        verify($voucher)->isInstanceOf(Voucher::class);
+        verify($voucher)->same($this->model);
+    }
+
+    /**
+     * @depends testItCanSetNumber
+     *
+     * @return void
+     */
+    public function testItCanGetNumber(): void
+    {
+        $this->tester->assertObjectHasMethod('getNumber', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getNumber', $this->model);
+
+        verify($this->model->getNumber())->null();
+
+        $this->model->setNumber('foo');
+        $balance = $this->model->getNumber();
+        verify($balance)->string();
+        verify($balance)->notEmpty();
+        verify($balance)->equals('foo');
+    }
 }

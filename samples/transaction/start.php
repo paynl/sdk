@@ -37,6 +37,10 @@ try {
         'extra1' => 'ext1',
         'extra2' => 'ext2',
         'extra3' => 'ext3',
+        'transferData' => array(
+            'transferData1' => 'transferData1',
+            'transferData2' => 'transferData2'
+        ),
         'ipaddress' => '10.0.0.1',
         'invoiceDate' => new \DateTime('now'),
         'deliveryDate' => new \DateTime('2016-06-06'), // in case of tickets for an event, use the event date here

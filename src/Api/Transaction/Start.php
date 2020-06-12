@@ -90,7 +90,7 @@ class Start extends Transaction
      */
     private $_domainId;
     /**
-     * @var string additional data transferData
+     * @var array additional data transferData
      */
     private $_transferData;
     /**

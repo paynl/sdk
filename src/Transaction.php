@@ -108,6 +108,11 @@ class Transaction
         if (isset($options['extra3'])) {
             $api->setExtra3($options['extra3']);
         }
+
+        if (isset($options['transferData'])){
+            $api->setTransferData($options['transferData']);
+        }
+
         if (isset($options['ipaddress'])) {
             $api->setIpAddress($options['ipaddress']);
         }

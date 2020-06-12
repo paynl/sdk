@@ -511,16 +511,16 @@ class Transaction
      * @throws Error\Required\ApiToken
      * @throws Error\Required\ServiceId
      */
-    public static function capture($transactionId, $options = array())
+    public static function capture($transactionId, $amount, $tracktrace)
     {
         $api = new Api\Capture();
 
-        if (isset($options['amount'])) {
-            $api->setAmount(round($options['amount'] * 100));
+        if (isset($amount)) {
+            $api->setAmount(round($amount * 100));
         }
 
-        if (isset($options['tracktrace'])) {
-            $api->setTracktrace($options['tracktrace']);
+        if (isset($tracktrace)) {
+            $api->setTracktrace($tracktrace);
         }
 
         $api->setTransactionId($transactionId);

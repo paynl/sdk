@@ -20,12 +20,11 @@ require_once '../../vendor/autoload.php';
 require_once '../config.php';
 
 $transactionId = $_GET['transactionId'];
+$amount = $_GET['amount'];
+$tracktrace = $_GET['tracktrace'];
 
 try {
-    $result = \Paynl\Transaction::capture($transactionId, array(
-        'amount' => 12.5,
-        'tracktrace' => 'DHL0123456789'
-    ));
+    $result = \Paynl\Transaction::capture($transactionId, $amount, $tracktrace);
 } catch (\Paynl\Error\Error $e) {
     echo $e->getMessage();
 }

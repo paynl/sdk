@@ -511,7 +511,7 @@ class Transaction
      * @throws Error\Required\ApiToken
      * @throws Error\Required\ServiceId
      */
-    public static function capture($transactionId, $amount, $tracktrace)
+    public static function capture($transactionId, $amount = null , $tracktrace = null )
     {
         $api = new Api\Capture();
 

@@ -502,9 +502,9 @@ class Transaction
     /**
      * Capture a transaction
      *
-     *
-     * @param array $options
-     * @param $transactionId
+     * @param string $transactionId
+     * @param string|null $amount
+     * @param string|null $tracktrace
      * @return bool
      * @throws Error\Api
      * @throws Error\Error

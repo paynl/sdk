@@ -51,7 +51,7 @@ class Capture extends Transaction
     /**
      * Set the track and trace code
      *
-     * @param int $tracktrace
+     * @param string $tracktrace
      */
     public function setTracktrace($tracktrace)
     {

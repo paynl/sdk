@@ -507,16 +507,27 @@ class Transaction
     /**
      * Capture a transaction
      *
-     * @param $transactionId
+     * @param string $transactionId
+     * @param string|null $amount
+     * @param string|null $tracktrace
      * @return bool
      * @throws Error\Api
      * @throws Error\Error
      * @throws Error\Required\ApiToken
      * @throws Error\Required\ServiceId
      */
-    public static function capture($transactionId)
+    public static function capture($transactionId, $amount = null , $tracktrace = null )
     {
         $api = new Api\Capture();
+
+        if (isset($amount)) {
+            $api->setAmount(round($amount * 100));
+        }
+
+        if (isset($tracktrace)) {
+            $api->setTracktrace($tracktrace);
+        }
+
         $api->setTransactionId($transactionId);
         $result = $api->doRequest();
 

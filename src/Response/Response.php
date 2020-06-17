@@ -115,9 +115,6 @@ class Response implements ResponseInterface, TransformerAwareInterface, DebugAwa
      */
     public function getBody()
     {
-        if (true === empty($this->body) && true === array_key_exists($this->getStatusCode(), self::HTTP_STATUS_CODES)) {
-            $this->body = self::HTTP_STATUS_CODES[$this->getStatusCode()];
-        }
         return $this->body;
     }
 
@@ -128,6 +125,10 @@ class Response implements ResponseInterface, TransformerAwareInterface, DebugAwa
      */
     public function setBody($body): Response
     {
+        if (true === empty($body) && true === array_key_exists($this->getStatusCode(), self::HTTP_STATUS_CODES)) {
+            return $this->setBody(self::HTTP_STATUS_CODES[$this->getStatusCode()]);
+        }
+
         // initiate transformer (... more than meets the eye ;-) )
         if (static::FORMAT_OBJECTS === $this->getFormat() && null !== $this->getTransformer()) {
             $body = $this->getTransformer()->transform($body);

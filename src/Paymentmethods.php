@@ -20,11 +20,10 @@ class Paymentmethods
      */
     private static function reorderOutput($input)
     {
-        $paymentMethods = array();
+        $paymentMethods = array();     
 
-        $basePath = $input['service']['basePath'];
-
-        foreach ((array)$input['countryOptionList'] as $country) {
+        foreach ((array)$input['countryOptionList'] as $country) {       
+            
             foreach ((array)$country['paymentOptionList'] as $paymentOption) {
                 if (isset($paymentMethods[$paymentOption['id']])) {
                     $paymentMethods[$paymentOption['id']]['countries'][] = $country['id'];
@@ -34,24 +33,30 @@ class Paymentmethods
                 $banks = array();
                 if (!empty($paymentOption['paymentOptionSubList'])) {
                     foreach ((array)$paymentOption['paymentOptionSubList'] as $optionSub) {
+                    
                         $image = '';
-                        if ($paymentOption['id'] == 10) {// only add images for ideal, because the rest will not have images
-                            $image = $basePath.$optionSub['path'].$optionSub['img'];
+                        if (isset($optionSub['image'])) {
+                            $image = $optionSub['image'];
                         }
                         $banks[] = array(
                           'id' => $optionSub['id'],
                           'name' => $optionSub['name'],
                           'visibleName' => $optionSub['visibleName'],
-                          'image' => $image,
+                          'image' =>  $optionSub['image'],
                         );
                     }
-                }
+                }         
+
                 $paymentMethods[$paymentOption['id']] = array(
                   'id' => $paymentOption['id'],
                   'name' => $paymentOption['name'],
                   'visibleName' => $paymentOption['visibleName'],
+                  'min_amount' => $paymentOption['min_amount'],
+                  'max_amount' => $paymentOption['max_amount'],
                   'countries' => array($country['id']),
                   'banks' => $banks,
+                  'brand' => $paymentOption['brand'],
+                  
                 );
             }
         }
@@ -88,8 +93,10 @@ class Paymentmethods
     public static function getList(array $options = array())
     {
         $api = new Api\GetService();
-        $result = $api->doRequest();
+        $result = $api->doRequest();       
+       
         $paymentMethods = self::reorderOutput($result);
+ 
 
         if (isset($options['country'])) {
             $paymentMethods = self::filterCountry($paymentMethods, $options['country']);

@@ -20,7 +20,8 @@ use PayNL\Sdk\Service\Manager as ServiceManager;
  */
 abstract class AbstractTransformer implements TransformerInterface, ModelAwareInterface, HydratorAwareInterface
 {
-    use ModelAwareTrait, HydratorAwareTrait;
+    use ModelAwareTrait;
+    use HydratorAwareTrait;
 
     /**
      * @var ServiceManager

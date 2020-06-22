@@ -3,8 +3,6 @@
 declare(strict_types=1);
 
 namespace PayNL\Sdk\Model;
-use Doctrine\Common\Collections\ArrayCollection;
-use PayNL\Sdk\Common\CollectionInterface;
 
 /**
  * Class RefundOverview
@@ -113,7 +111,7 @@ class RefundOverview implements ModelInterface
     }
 
     /**
-     * @param FailedTransactions $failedTransactions
+     * @param RefundedTransactions $failedTransactions
      *
      * @return RefundOverview
      */

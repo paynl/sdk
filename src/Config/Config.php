@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Config;
 
-use Countable, Iterator, ArrayAccess;
+use Countable,
+    Iterator,
+    ArrayAccess;
 
 /**
  * Class Config
@@ -192,7 +194,7 @@ class Config implements Countable, Iterator, ArrayAccess
     /**
      * @inheritDoc
      *
-     * @return boolean
+     * @return bool
      */
     public function valid(): bool
     {
@@ -212,7 +214,7 @@ class Config implements Countable, Iterator, ArrayAccess
     /**
      * @inheritDoc
      *
-     * @return boolean
+     * @return bool
      */
     public function offsetExists($offset): bool
     {

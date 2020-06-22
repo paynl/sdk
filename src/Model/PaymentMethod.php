@@ -20,7 +20,7 @@ class PaymentMethod implements ModelInterface, JsonSerializable
     /**
      * @required
      *
-     * @var integer
+     * @var int
      */
     protected $id;
 
@@ -50,7 +50,7 @@ class PaymentMethod implements ModelInterface, JsonSerializable
     protected $subMethods;
 
     /**
-     * @return integer
+     * @return int
      */
     public function getId(): int
     {
@@ -58,7 +58,7 @@ class PaymentMethod implements ModelInterface, JsonSerializable
     }
 
     /**
-     * @param integer $id
+     * @param int $id
      *
      * @return PaymentMethod
      */

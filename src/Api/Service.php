@@ -113,7 +113,7 @@ class Service
 
         $response = $this->getResponse();
         // set the transformer for the response if needed!
-        if (ResponseInterface::FORMAT_OBJECTS === $response->getFormat()) {
+        if (true === $response->isFormat(ResponseInterface::FORMAT_OBJECTS)) {
             $mapperManager = $this->serviceManager->get('mapperManager');
 
             /** @var ResponseTransformer $transformer */

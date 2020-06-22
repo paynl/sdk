@@ -14,12 +14,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 abstract class AbstractTotalCollection extends ArrayCollection implements CollectionInterface
 {
     /**
-     * @var integer
+     * @var int
      */
     protected $total = 0;
 
     /**
-     * @return integer
+     * @return int
      */
     public function getTotal(): int
     {
@@ -72,6 +72,7 @@ abstract class AbstractTotalCollection extends ArrayCollection implements Collec
 
     /**
      * @inheritDoc
+     * @noinspection ReturnTypeCanBeDeclaredInspection
      */
     public function removeElement($element)
     {

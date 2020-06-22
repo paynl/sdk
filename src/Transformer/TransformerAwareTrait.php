@@ -27,7 +27,7 @@ trait TransformerAwareTrait
     /**
      * @inheritDoc
      */
-    public function setTransformer(TransformerInterface $transformer)
+    public function setTransformer(TransformerInterface $transformer): self
     {
         $this->transformer = $transformer;
         return $this;

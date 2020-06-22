@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Model;
 
-use Exception;
-use PayNL\Sdk\Common\DateTime;
-
 /**
  * Class Merchant
  *
@@ -66,11 +63,6 @@ class Merchant implements
      * @var ContactMethods
      */
     protected $contactMethods;
-
-    /**
-     * @var DateTime
-     */
-    protected $createdAt;
 
     /**
      * @return string

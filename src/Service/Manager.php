@@ -38,7 +38,7 @@ class Manager implements ContainerInterface
     /**
      * Whether or not changes may be made to this instance.
      *
-     * @var boolean
+     * @var bool
      */
     protected $allowOverride = false;
 
@@ -63,7 +63,7 @@ class Manager implements ContainerInterface
     protected $services = [];
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $configured = false;
 

@@ -4,13 +4,16 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Response;
 
-use PayNL\Sdk\{Common\DebugAwareInterface,
+use PayNL\Sdk\{
+    Common\DebugAwareInterface,
     Common\DebugAwareTrait,
+    Common\FormatAwareTrait,
     Exception\InvalidArgumentException,
     Model\Error,
     Model\Errors,
     Transformer\TransformerAwareInterface,
-    Transformer\TransformerAwareTrait};
+    Transformer\TransformerAwareTrait
+};
 
 /**
  * Class Response
@@ -19,15 +22,12 @@ use PayNL\Sdk\{Common\DebugAwareInterface,
  */
 class Response implements ResponseInterface, TransformerAwareInterface, DebugAwareInterface
 {
-    use TransformerAwareTrait, DebugAwareTrait;
+    use TransformerAwareTrait;
+    use DebugAwareTrait;
+    use FormatAwareTrait;
 
     /**
-     * @var string
-     */
-    protected $format = self::FORMAT_OBJECTS;
-
-    /**
-     * @var integer
+     * @var int
      */
     protected $statusCode;
 
@@ -42,26 +42,7 @@ class Response implements ResponseInterface, TransformerAwareInterface, DebugAwa
     protected $body;
 
     /**
-     * @return string
-     */
-    public function getFormat(): string
-    {
-        return $this->format;
-    }
-
-    /**
-     * @param string $format
-     *
-     * @return Response
-     */
-    public function setFormat(string $format): self
-    {
-        $this->format = $format;
-        return $this;
-    }
-
-    /**
-     * @return integer
+     * @return int
      */
     public function getStatusCode(): int
     {
@@ -69,7 +50,7 @@ class Response implements ResponseInterface, TransformerAwareInterface, DebugAwa
     }
 
     /**
-     * @param integer $statusCode
+     * @param int $statusCode
      *
      * @throws InvalidArgumentException when status code is not recognized
      *
@@ -116,7 +97,7 @@ class Response implements ResponseInterface, TransformerAwareInterface, DebugAwa
     public function getBody()
     {
         if (true === empty($this->body) && true === array_key_exists($this->getStatusCode(), self::HTTP_STATUS_CODES)) {
-            $this->body = self::HTTP_STATUS_CODES[$this->getStatusCode()];
+            $this->setBody(self::HTTP_STATUS_CODES[$this->getStatusCode()]);
         }
         return $this->body;
     }
@@ -128,8 +109,12 @@ class Response implements ResponseInterface, TransformerAwareInterface, DebugAwa
      */
     public function setBody($body): Response
     {
+        if (true === empty($body) && true === array_key_exists($this->getStatusCode(), self::HTTP_STATUS_CODES)) {
+            return $this->setBody(self::HTTP_STATUS_CODES[$this->getStatusCode()]);
+        }
+
         // initiate transformer (... more than meets the eye ;-) )
-        if (static::FORMAT_OBJECTS === $this->getFormat() && null !== $this->getTransformer()) {
+        if (true === $this->isFormat(static::FORMAT_OBJECTS) && null !== $this->getTransformer()) {
             $body = $this->getTransformer()->transform($body);
         }
 
@@ -166,7 +151,7 @@ class Response implements ResponseInterface, TransformerAwareInterface, DebugAwa
                     );
                 })->toArray());
             }
-            return $body;
+            return (string)$body;
         }
         return '';
     }

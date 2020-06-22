@@ -421,7 +421,7 @@ abstract class AbstractRequest implements
             'json_encode_options' => JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | ($this->isDebug() === true ? JSON_PRETTY_PRINT : 0),
         ];
 
-        if (static::FORMAT_XML === $this->getFormat()) {
+        if (true === $this->isFormat(static::FORMAT_XML)) {
             $encoder = new XmlEncoder([
                 XmlEncoder::ROOT_NODE_NAME => static::XML_ROOT_NODE_NAME,
             ]);
@@ -516,7 +516,7 @@ abstract class AbstractRequest implements
     private function getErrorsString(string $responseFormat, int $statusCode, string $rawBody): string
     {
         $encoderClass = JsonEncoder::class;
-        if (XmlEncoder::FORMAT === $responseFormat) {
+        if (static::FORMAT_XML === $responseFormat) {
             $encoderClass = XmlEncoder::class;
         }
 

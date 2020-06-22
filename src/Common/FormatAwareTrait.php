@@ -22,6 +22,8 @@ trait FormatAwareTrait
     protected $format = FormatAwareInterface::FORMAT_OBJECTS;
 
     /**
+     * @throws LogicException
+     *
      * @return void
      */
     protected function checkInterfaceImplementation(): void
@@ -49,6 +51,8 @@ trait FormatAwareTrait
 
     /**
      * @param string $format
+     *
+     * @throws InvalidArgumentException
      *
      * @return static
      */

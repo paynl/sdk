@@ -529,20 +529,19 @@ abstract class AbstractRequest implements
             $errors = [];
         }
 
+        $errors = [
+            'errors' => [
+                'general' => [
+                    'context' => 'unknown',
+                    'code'    => $statusCode,
+                    'message' => $rawBody,
+                ]
+            ]
+        ];
         // if given raw body already is Json return that
         if (true === array_key_exists('errors', $errors)) {
             // reformat the errors
             $errors['errors'] = $this->flattenErrors($errors['errors']);
-        } else {
-            $errors = [
-                'errors' => [
-                    'general' => [
-                        'context' => 'unknown',
-                        'code'    => $statusCode,
-                        'message' => $rawBody,
-                    ]
-                ]
-            ];
         }
 
         return (string)$encoder->encode($errors, $responseFormat);
@@ -563,10 +562,9 @@ abstract class AbstractRequest implements
 
         $return = [];
         foreach ($errors as $key => $value) {
+            $return[$key] = $value;
             if (true === is_array($value)) {
                 $return = $this->flattenErrors($value, ltrim($context . ".$key", '.'));
-            } else {
-                $return[$key] = $value;
             }
         }
         return $return;

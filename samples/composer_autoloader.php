@@ -7,12 +7,13 @@
  * @return boolean
  */
 return static function () {
-    $files = array(
-        __DIR__ . '/../../../autoload.php',  // composer dependency
-        __DIR__ . '/../vendor/autoload.php', // stand-alone package
-    );
+    // "get" the autoloader file(s), composer dependency and then check for stand-alone
+    $files = [
+        __DIR__ . '/../../../autoload.php',
+        __DIR__ . '/../vendor/autoload.php',
+    ];
     foreach ($files as $file) {
-        if (is_file($file)) {
+        if (true === is_file($file)) {
             require_once $file;
             return true;
         }

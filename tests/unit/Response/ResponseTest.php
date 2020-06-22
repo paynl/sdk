@@ -45,7 +45,7 @@ class ResponseTest extends UnitTest
         $this->tester->assertObjectHasMethod('setFormat', $this->response);
         $this->tester->assertObjectMethodIsPublic('setFormat', $this->response);
 
-        $response = $this->response->setFormat('foo');
+        $response = $this->response->setFormat('json');
         verify($response)->object();
         verify($response)->same($this->response);
     }
@@ -64,10 +64,10 @@ class ResponseTest extends UnitTest
         verify($format)->string();
         verify($format)->equals(ResponseInterface::FORMAT_OBJECTS);
 
-        $this->response->setFormat('foo');
+        $this->response->setFormat(ResponseInterface::FORMAT_XML);
         $format = $this->response->getFormat();
         verify($format)->string();
-        verify($format)->equals('foo');
+        verify($format)->equals(ResponseInterface::FORMAT_XML);
     }
 
     /**

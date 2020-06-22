@@ -27,13 +27,17 @@ class ManagerFactory implements FactoryInterface
      * @throws ServiceNotCreatedException
      *
      * @return AbstractPluginManager
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function __invoke(ContainerInterface $container, string $requestedName, array $options = null): AbstractPluginManager
     {
+        $options = $options ?? [];
         if (true === $container->has('config') &&
             true === $container->get('config')->get('service_loader_options')->has($requestedName)
         ) {
-            $options = array_merge($options ?? [], ['loader_options' => $container->get('config')->get('service_loader_options')->get($requestedName)]);
+            $options = array_merge($options, ['loader_options' => $container->get('config')->get('service_loader_options')->get($requestedName)]);
         }
 
         if (false === class_exists($requestedName)) {
@@ -46,7 +50,7 @@ class ManagerFactory implements FactoryInterface
         }
 
         /** @var AbstractPluginManager $manager */
-        $manager = new $requestedName($container, $options ?? []);
+        $manager = new $requestedName($container, $options);
 
         if (false === ($manager instanceof AbstractPluginManager)) {
             throw new ServiceNotCreatedException(

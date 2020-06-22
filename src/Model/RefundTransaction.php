@@ -77,7 +77,8 @@ class RefundTransaction implements
     /**
      * @return Voucher|null
      */
-    public function getVoucher(): ?Voucher {
+    public function getVoucher(): ?Voucher
+    {
         return $this->voucher;
     }
 
@@ -85,7 +86,8 @@ class RefundTransaction implements
      * @param Voucher $voucher
      * @return RefundTransaction
      */
-    public function setVoucher(Voucher $voucher): RefundTransaction {
+    public function setVoucher(Voucher $voucher): RefundTransaction
+    {
         $this->voucher = $voucher;
         return $this;
     }

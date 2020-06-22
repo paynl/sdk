@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Model;
 
-use PayNL\Sdk\{
-    Common\DateTime,
-    Exception\InvalidArgumentException
-};
+use PayNL\Sdk\Exception\InvalidArgumentException;
 
 /**
  * Class Service
@@ -40,7 +37,7 @@ class Service implements
     protected $description = '';
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $testMode = Integration::TEST_MODE_OFF;
 
@@ -48,11 +45,6 @@ class Service implements
      * @var string
      */
     protected $secret = '';
-
-    /**
-     * @var DateTime
-     */
-    protected $createdAt;
 
     /**
      * @return string
@@ -112,7 +104,7 @@ class Service implements
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isTestMode(): bool
     {
@@ -120,7 +112,7 @@ class Service implements
     }
 
     /**
-     * @param boolean $testMode
+     * @param bool $testMode
      *
      * @throws InvalidArgumentException when given test mode is invalid
      *

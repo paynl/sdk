@@ -81,6 +81,14 @@ class ManagerTest extends UnitTest
                 return RequestInterface::FORMAT_JSON;
             }
 
+            public function setFormat(string $format)
+            {
+            }
+
+            public function isFormat(string $format): bool
+            {
+            }
+
             public function applyClient(Client $client)
             {
             }

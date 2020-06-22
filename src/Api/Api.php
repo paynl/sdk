@@ -24,7 +24,8 @@ use PayNL\Sdk\{
  */
 class Api implements OptionsAwareInterface, DebugAwareInterface
 {
-    use DebugAwareTrait, OptionsAwareTrait;
+    use DebugAwareTrait;
+    use OptionsAwareTrait;
 
     /**
      * @var GuzzleClient

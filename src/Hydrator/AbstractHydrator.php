@@ -15,6 +15,7 @@ use PayNL\Sdk\{
     Validator\ValidatorManagerAwareTrait
 };
 use Zend\Hydrator\ClassMethods;
+use Exception;
 
 /**
  * Class AbstractHydrator
@@ -23,7 +24,8 @@ use Zend\Hydrator\ClassMethods;
  */
 abstract class AbstractHydrator extends ClassMethods implements DebugAwareInterface, ValidatorManagerAwareInterface
 {
-    use DebugAwareTrait, ValidatorManagerAwareTrait;
+    use DebugAwareTrait;
+    use ValidatorManagerAwareTrait;
 
     /**
      * @var HydratorManager
@@ -67,6 +69,7 @@ abstract class AbstractHydrator extends ClassMethods implements DebugAwareInterf
     /**
      * @param string|stdDateTime $dateTime
      *
+     * @throws Exception
      * @return DateTime|false
      *
      * @SuppressWarnings(PHPMD.StaticAccess)

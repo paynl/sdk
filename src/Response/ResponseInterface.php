@@ -4,17 +4,15 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Response;
 
+use PayNL\Sdk\Common\FormatAwareInterface;
+
 /**
  * Interface ResponseInterface
  *
  * @package PayNL\Sdk\Response
  */
-interface ResponseInterface
+interface ResponseInterface extends FormatAwareInterface
 {
-    public const FORMAT_JSON    = 'json';
-    public const FORMAT_XML     = 'xml';
-    public const FORMAT_OBJECTS = 'objects';
-
     public const HTTP_STATUS_CODES = [
         100 => 'Continue',
         101 => 'Switching protocol',

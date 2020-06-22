@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection ALL */
 
 declare(strict_types=1);
 
@@ -13,6 +13,7 @@ use PayNL\GuzzleHttp\{
 use PayNL\Sdk\{
     Common\DebugAwareInterface,
     Common\DebugAwareTrait,
+    Common\FormatAwareTrait,
     Common\OptionsAwareInterface,
     Common\OptionsAwareTrait,
     Exception\EmptyRequiredMemberException,
@@ -47,17 +48,15 @@ abstract class AbstractRequest implements
     OptionsAwareInterface,
     ValidatorManagerAwareInterface
 {
-    use DebugAwareTrait, OptionsAwareTrait, ValidatorManagerAwareTrait;
+    use DebugAwareTrait;
+    use OptionsAwareTrait;
+    use ValidatorManagerAwareTrait;
+    use FormatAwareTrait;
 
     /*
      * Tag name declaration for XML request string
      */
     public const XML_ROOT_NODE_NAME = 'request';
-
-    /**
-     * @var string
-     */
-    protected $format = self::FORMAT_OBJECTS;
 
     /**
      * @var string
@@ -200,35 +199,6 @@ abstract class AbstractRequest implements
             // set it in the array
             $this->setUri(str_replace("%{$paramName}%", $this->getParam($paramName), $this->getUri()));
         }
-        return $this;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getFormat(): string
-    {
-        return $this->format;
-    }
-
-    /**
-     * @param string $format
-     *
-     * @throws InvalidArgumentException when the given format is not valid
-     *
-     * @return AbstractRequest
-     */
-    public function setFormat(string $format): self
-    {
-        if (false === in_array($format, [self::FORMAT_OBJECTS, self::FORMAT_JSON, self::FORMAT_XML], true)) {
-            throw new InvalidArgumentException(
-                sprintf(
-                    '"%s" is not a valid format',
-                    $format
-                )
-            );
-        }
-        $this->format = $format;
         return $this;
     }
 
@@ -451,7 +421,7 @@ abstract class AbstractRequest implements
             'json_encode_options' => JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | ($this->isDebug() === true ? JSON_PRETTY_PRINT : 0),
         ];
 
-        if (static::FORMAT_XML === $this->getFormat()) {
+        if (true === $this->isFormat(static::FORMAT_XML)) {
             $encoder = new XmlEncoder([
                 XmlEncoder::ROOT_NODE_NAME => static::XML_ROOT_NODE_NAME,
             ]);
@@ -546,7 +516,7 @@ abstract class AbstractRequest implements
     private function getErrorsString(string $responseFormat, int $statusCode, string $rawBody): string
     {
         $encoderClass = JsonEncoder::class;
-        if (XmlEncoder::FORMAT === $responseFormat) {
+        if (static::FORMAT_XML === $responseFormat) {
             $encoderClass = XmlEncoder::class;
         }
 
@@ -559,20 +529,19 @@ abstract class AbstractRequest implements
             $errors = [];
         }
 
+        $errors = [
+            'errors' => [
+                'general' => [
+                    'context' => 'unknown',
+                    'code'    => $statusCode,
+                    'message' => $rawBody,
+                ]
+            ]
+        ];
         // if given raw body already is Json return that
         if (true === array_key_exists('errors', $errors)) {
             // reformat the errors
             $errors['errors'] = $this->flattenErrors($errors['errors']);
-        } else {
-            $errors = [
-                'errors' => [
-                    'general' => [
-                        'context' => 'unknown',
-                        'code'    => $statusCode,
-                        'message' => $rawBody,
-                    ]
-                ]
-            ];
         }
 
         return (string)$encoder->encode($errors, $responseFormat);
@@ -593,10 +562,9 @@ abstract class AbstractRequest implements
 
         $return = [];
         foreach ($errors as $key => $value) {
+            $return[$key] = $value;
             if (true === is_array($value)) {
                 $return = $this->flattenErrors($value, ltrim($context . ".$key", '.'));
-            } else {
-                $return[$key] = $value;
             }
         }
         return $return;

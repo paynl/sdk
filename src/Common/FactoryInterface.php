@@ -5,10 +5,6 @@ declare(strict_types=1);
 namespace PayNL\Sdk\Common;
 
 use Psr\Container\ContainerInterface;
-use PayNL\Sdk\Exception\{
-    ServiceNotFoundException,
-    ServiceNotCreatedException
-};
 
 /**
  * Interface FactoryInterface
@@ -22,8 +18,8 @@ interface FactoryInterface
      * @param string $requestedName
      * @param array|null $options
      *
-     * @throws ServiceNotFoundException when unable to resolve the service
-     * @throws ServiceNotCreatedException when an exception occurs during the service creation
+     * @throws \PayNL\Sdk\Exception\ServiceNotFoundException when unable to resolve the service
+     * @throws \PayNL\Sdk\Exception\ServiceNotCreatedException when an exception occurs during the service creation
      *
      * @return object
      */

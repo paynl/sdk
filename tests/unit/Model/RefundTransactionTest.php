@@ -11,7 +11,8 @@ use Codeception\{
 use PayNL\Sdk\{
     Model\Amount,
     Model\Refund,
-    Model\RefundTransaction
+    Model\RefundTransaction,
+    Model\Voucher
 };
 
 /**
@@ -50,6 +51,14 @@ class RefundTransactionTest extends UnitTest
     private function getMockRefund(): Refund
     {
         return $this->tester->grabMockService('modelManager')->get(Refund::class);
+    }
+
+    /**
+     * @return Voucher
+     */
+    private function getMockVoucher(): Voucher
+    {
+        return $this->tester->grabMockService('modelManager')->get(Voucher::class);
     }
 
     /**
@@ -151,5 +160,34 @@ class RefundTransactionTest extends UnitTest
         verify($amount)->isInstanceOf(Refund::class);
         verify($amount)->same($mockRefund);
         verify($amount)->notSame($refund);
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanSetVoucher(): void
+    {
+        $this->tester->assertObjectHasMethod('setVoucher', $this->model);
+        $this->tester->assertObjectMethodIsPublic('setVoucher', $this->model);
+
+        $refundTransaction = $this->model->setVoucher($this->getMockVoucher());
+        verify($refundTransaction)->object();
+        verify($refundTransaction)->same($this->model);
+    }
+
+    /**
+     * @depends testItCanSetVoucher
+     *
+     * @return void
+     */
+    public function testItCanGetVoucher(): void
+    {
+        $this->tester->assertObjectHasMethod('getVoucher', $this->model);
+        $this->tester->assertObjectMethodIsPublic('getVoucher', $this->model);
+
+        verify($this->model->getVoucher())->null();
+
+        $this->model->setVoucher($this->getMockVoucher());
+        verify($this->model->getVoucher())->isInstanceOf(Voucher::class);
     }
 }

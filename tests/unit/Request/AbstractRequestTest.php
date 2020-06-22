@@ -767,9 +767,10 @@ class AbstractRequestTest extends UnitTest
     {
         /** @var Response $response */
         $response = $this->tester->grabService('Response');
+        $response->setFormat('json');
 
         $guzzleMockHandler = new MockHandler();
-        $guzzleMockHandler->append(new Psr7Response(200, [], '{"result": "ok"}'));
+        $guzzleMockHandler->append(new Psr7Response(200, [], ''));
 
         $guzzleClient = new Client([
             'handler' => $guzzleMockHandler,

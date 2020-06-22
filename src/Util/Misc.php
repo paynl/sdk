@@ -64,7 +64,7 @@ class Misc
                     for ($nextCounter = $counter+1; $nextCounter < $tokenCount; $nextCounter++) {
                         if ($tokens[$nextCounter][0] === T_STRING) {
                             $namespace .= '\\'.$tokens[$nextCounter][1];
-                        } else if ($tokens[$nextCounter] === '{' || $tokens[$nextCounter] === ';') {
+                        } elseif ($tokens[$nextCounter] === '{' || $tokens[$nextCounter] === ';') {
                             break;
                         }
                     }

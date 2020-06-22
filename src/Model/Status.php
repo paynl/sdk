@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection ReturnTypeCanBeDeclaredInspection */
 
 declare(strict_types=1);
 
@@ -35,7 +35,7 @@ class Status implements ModelInterface
     protected $reason = '';
 
     /**
-     * @return string|integer
+     * @return string|int
      */
     public function getCode()
     {

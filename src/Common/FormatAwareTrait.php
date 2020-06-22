@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Common;
 
-use PayNL\Sdk\Exception\InvalidArgumentException;
-use PayNL\Sdk\Exception\LogicException;
+use PayNL\Sdk\Exception\{
+    InvalidArgumentException,
+    LogicException
+};
 
 /**
  * Trait FormatAwareTrait

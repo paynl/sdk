@@ -35,7 +35,7 @@ class ServicePaymentLink implements
     /**
      * @required
      *
-     * @var integer
+     * @var int
      */
     protected $securityMode = 0;
 

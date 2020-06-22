@@ -15,14 +15,14 @@ namespace PayNL\Sdk\Common;
 trait DebugAwareTrait
 {
     /**
-     * @var boolean
+     * @var bool
      */
     protected $debug = false;
 
     /**
      * @inheritDoc
      */
-    public function setDebug(bool $debug)
+    public function setDebug(bool $debug): self
     {
         $this->debug = $debug;
         return $this;
@@ -42,6 +42,7 @@ trait DebugAwareTrait
      * @param mixed ...$arguments
      *
      * @return void
+     * @noinspection ForgottenDebugOutputInspection
      */
     public function dumpDebugInfo(...$arguments): void
     {
@@ -51,6 +52,7 @@ trait DebugAwareTrait
 
         ini_set('xdebug.overload_var_dump', 'off');
         if (true === function_exists('dump') && 0 !== strpos(get_class($this), 'Mock_')) {
+            /** @noinspection ForgottenDebugOutputInspection */
             dump(...$arguments);
             return;
         }

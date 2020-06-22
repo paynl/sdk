@@ -21,7 +21,7 @@ class Amount implements ModelInterface, JsonSerializable
      *
      * @required
      *
-     * @var integer
+     * @var int
      */
     protected $amount = 0;
 
@@ -33,7 +33,7 @@ class Amount implements ModelInterface, JsonSerializable
     protected $currency = 'EUR';
 
     /**
-     * @return integer
+     * @return int
      */
     public function getAmount(): int
     {
@@ -41,7 +41,7 @@ class Amount implements ModelInterface, JsonSerializable
     }
 
     /**
-     * @param integer $amount
+     * @param int $amount
      *
      * @return Amount
      */

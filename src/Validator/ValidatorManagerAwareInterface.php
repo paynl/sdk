@@ -19,7 +19,7 @@ interface ValidatorManagerAwareInterface
     /**
      * @param Manager $validatorManager
      *
-     * @return ValidatorManagerAwareInterface
+     * @return static
      */
-    public function setValidatorManager(Manager $validatorManager);
+    public function setValidatorManager(Manager $validatorManager): self;
 }

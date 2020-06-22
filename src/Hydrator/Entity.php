@@ -13,9 +13,8 @@ use PayNL\Sdk\{Common\CollectionInterface,
     Exception\RuntimeException,
     Model\ModelInterface};
 use ReflectionClass,
-    ReflectionProperty,
-    ReflectionException
-;
+    ReflectionException,
+    Exception;
 
 /**
  * Class Entity
@@ -50,6 +49,7 @@ class Entity extends AbstractHydrator implements OptionsAwareInterface
      *
      * @param ModelInterface $model
      *
+     * @throws ReflectionException
      * @throws LogicException when a property within the object does not have a DocBlock
      *
      * @return array
@@ -61,7 +61,6 @@ class Entity extends AbstractHydrator implements OptionsAwareInterface
         $properties = $ref->getProperties();
 
         $propertyInfo = [];
-        /** @var ReflectionProperty $property */
         foreach ($properties as $property) {
             $docComment = $property->getDocComment();
             if (false === $docComment) {
@@ -92,6 +91,7 @@ class Entity extends AbstractHydrator implements OptionsAwareInterface
      * @param object $object
      *
      * @throws RuntimeException when given object isn't an instance of ModelInterface
+     * @throws Exception
      *
      * @return object
      */

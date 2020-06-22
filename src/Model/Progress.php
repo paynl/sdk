@@ -17,12 +17,12 @@ class Progress implements ModelInterface, JsonSerializable
     use JsonSerializeTrait;
     
     /**
-     * @var integer
+     * @var int
      */
     protected $percentage;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $secondsPassed;
 

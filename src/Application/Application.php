@@ -146,6 +146,8 @@ class Application
      *  or it's thrown when the given body is neither an array nor an instance of ModelInterface
      *
      * @return Application
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function setRequest($request, array $params = null, array $filters = null, $body = null): self
     {

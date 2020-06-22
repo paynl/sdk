@@ -13,6 +13,7 @@ use PayNL\GuzzleHttp\{
 use PayNL\Sdk\{
     Common\DebugAwareInterface,
     Common\DebugAwareTrait,
+    Common\FormatAwareTrait,
     Common\OptionsAwareInterface,
     Common\OptionsAwareTrait,
     Exception\EmptyRequiredMemberException,
@@ -47,17 +48,15 @@ abstract class AbstractRequest implements
     OptionsAwareInterface,
     ValidatorManagerAwareInterface
 {
-    use DebugAwareTrait, OptionsAwareTrait, ValidatorManagerAwareTrait;
+    use DebugAwareTrait;
+    use OptionsAwareTrait;
+    use ValidatorManagerAwareTrait;
+    use FormatAwareTrait;
 
     /*
      * Tag name declaration for XML request string
      */
     public const XML_ROOT_NODE_NAME = 'request';
-
-    /**
-     * @var string
-     */
-    protected $format = self::FORMAT_OBJECTS;
 
     /**
      * @var string
@@ -200,35 +199,6 @@ abstract class AbstractRequest implements
             // set it in the array
             $this->setUri(str_replace("%{$paramName}%", $this->getParam($paramName), $this->getUri()));
         }
-        return $this;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getFormat(): string
-    {
-        return $this->format;
-    }
-
-    /**
-     * @param string $format
-     *
-     * @throws InvalidArgumentException when the given format is not valid
-     *
-     * @return AbstractRequest
-     */
-    public function setFormat(string $format): self
-    {
-        if (false === in_array($format, [self::FORMAT_OBJECTS, self::FORMAT_JSON, self::FORMAT_XML], true)) {
-            throw new InvalidArgumentException(
-                sprintf(
-                    '"%s" is not a valid format',
-                    $format
-                )
-            );
-        }
-        $this->format = $format;
         return $this;
     }
 

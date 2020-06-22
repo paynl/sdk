@@ -4,13 +4,16 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Response;
 
-use PayNL\Sdk\{Common\DebugAwareInterface,
+use PayNL\Sdk\{
+    Common\DebugAwareInterface,
     Common\DebugAwareTrait,
+    Common\FormatAwareTrait,
     Exception\InvalidArgumentException,
     Model\Error,
     Model\Errors,
     Transformer\TransformerAwareInterface,
-    Transformer\TransformerAwareTrait};
+    Transformer\TransformerAwareTrait
+};
 
 /**
  * Class Response
@@ -19,15 +22,12 @@ use PayNL\Sdk\{Common\DebugAwareInterface,
  */
 class Response implements ResponseInterface, TransformerAwareInterface, DebugAwareInterface
 {
-    use TransformerAwareTrait, DebugAwareTrait;
+    use TransformerAwareTrait;
+    use DebugAwareTrait;
+    use FormatAwareTrait;
 
     /**
-     * @var string
-     */
-    protected $format = self::FORMAT_OBJECTS;
-
-    /**
-     * @var integer
+     * @var int
      */
     protected $statusCode;
 
@@ -42,26 +42,7 @@ class Response implements ResponseInterface, TransformerAwareInterface, DebugAwa
     protected $body;
 
     /**
-     * @return string
-     */
-    public function getFormat(): string
-    {
-        return $this->format;
-    }
-
-    /**
-     * @param string $format
-     *
-     * @return Response
-     */
-    public function setFormat(string $format): self
-    {
-        $this->format = $format;
-        return $this;
-    }
-
-    /**
-     * @return integer
+     * @return int
      */
     public function getStatusCode(): int
     {
@@ -69,7 +50,7 @@ class Response implements ResponseInterface, TransformerAwareInterface, DebugAwa
     }
 
     /**
-     * @param integer $statusCode
+     * @param int $statusCode
      *
      * @throws InvalidArgumentException when status code is not recognized
      *

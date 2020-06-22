@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Request;
 
+use PayNL\Sdk\Common\FormatAwareInterface;
 use PayNL\Sdk\Response\Response;
 use PayNL\GuzzleHttp\Client;
 
@@ -12,15 +13,8 @@ use PayNL\GuzzleHttp\Client;
  *
  * @package PayNL\Sdk\Request
  */
-interface RequestInterface
+interface RequestInterface extends FormatAwareInterface
 {
-    /*
-     * Format constants declaration
-     */
-    public const FORMAT_JSON    = 'json';
-    public const FORMAT_XML     = 'xml';
-    public const FORMAT_OBJECTS = 'objects';
-
     /*
      * Request method constants declaration
      */
@@ -51,11 +45,6 @@ interface RequestInterface
      * @return string
      */
     public function getMethod(): string;
-
-    /**
-     * @return string
-     */
-    public function getFormat(): string;
 
     /**
      * @param Client $client

@@ -68,15 +68,16 @@ class GetService extends Transaction
         }
         try {
             $result = parent::doRequest('transaction/getService');
+
+            if(isset($result['service']) && empty($result['service']['basePath'])) {
+              $result['service']['basePath'] = 'https://admin.pay.nl/images';
+            }
+
             self::$cache[$cacheKey] = $result;
         } catch (\Exception $e) {
             self::$cache[$cacheKey] = $e;
             throw $e;
         }
-
-      if(isset($result['service']) && empty($result['service']['basePath'])) {
-        $result['service']['basePath'] = 'https://admin.pay.nl/images';
-      }
 
       return $result;
     }

@@ -73,7 +73,11 @@ class GetService extends Transaction
             self::$cache[$cacheKey] = $e;
             throw $e;
         }
-        
-        return $result;
+
+      if(isset($result['service']) && empty($result['service']['basePath'])) {
+        $result['service']['basePath'] = 'https://admin.pay.nl/images';
+      }
+
+      return $result;
     }
 }

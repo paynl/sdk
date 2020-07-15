@@ -14,6 +14,8 @@ use PayNL\Sdk\Common\FormatAwareInterface;
 interface ResponseInterface extends FormatAwareInterface
 {
     public const HTTP_STATUS_CODES = [
+        0   => 'Unknown error',
+
         100 => 'Continue',
         101 => 'Switching protocol',
         102 => 'Processing',

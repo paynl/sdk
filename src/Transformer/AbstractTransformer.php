@@ -46,7 +46,7 @@ abstract class AbstractTransformer implements TransformerInterface, ModelAwareIn
         try {
             $transformedInput = (new JsonEncoder())->decode($jsonEncodedString, 'json');
         } catch (NotEncodableValueException $notEncodableValueException) {
-            throw new UnexpectedValueException('Unable to decode the response', 500, $notEncodableValueException);
+            throw new UnexpectedValueException('Unable to decode the response', 500);
         }
 
         return $this->filterNotNull($transformedInput);

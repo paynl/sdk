@@ -564,7 +564,7 @@ abstract class AbstractRequest implements
         foreach ($errors as $key => $value) {
             $return[$key] = $value;
             if (true === is_array($value)) {
-                $return = $this->flattenErrors($value, ltrim($context . ".$key", '.'));
+                $return = $this->flattenErrors($value, ltrim($context . ".{$key}", '.'));
             }
         }
         return $return;

@@ -32,8 +32,6 @@ class Qr implements
     use JsonSerializeTrait;
 
     /**
-     * @required
-     *
      * @var string
      */
     protected $uuid;
@@ -44,8 +42,6 @@ class Qr implements
     protected $serviceId;
 
     /**
-     * @required
-     *
      * @var string
      */
     protected $secret;

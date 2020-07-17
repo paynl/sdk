@@ -586,7 +586,7 @@ abstract class AbstractRequest implements
             return;
         }
 
-        $validator = $this->getValidatorManager()->get('RequiredMembers');
+        $validator = $this->getValidatorManager()->getValidatorByRequest($this);
 
         if (true === $validator->isValid($body)) {
             return;

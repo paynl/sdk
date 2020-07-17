@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Validator;
 
-use PayNL\Sdk\{
-    Common\ManagerFactory,
-    Config\ProviderInterface as ConfigProviderInterface
-};
+use PayNL\Sdk\{Common\ManagerFactory,
+    Config\ProviderInterface as ConfigProviderInterface,
+    Validator\Qr\Decode,
+    Validator\Qr\Encode};
 
 /**
  * Class ConfigProvider
@@ -55,11 +55,15 @@ class ConfigProvider implements ConfigProviderInterface
                 'InputType' => InputType::class,
                 'ObjectInstance' => ObjectInstance::class,
                 'RequiredMembers' => RequiredMembers::class,
+                'Encode'        => Encode::class,
+                'Decode'        => Decode::class
             ],
             'factories' => [
                 InputType::class       => Factory::class,
                 ObjectInstance::class  => Factory::class,
                 RequiredMembers::class => Factory::class,
+                Encode::class          => Factory::class,
+                Decode::class          => Factory::class,
             ],
         ];
     }

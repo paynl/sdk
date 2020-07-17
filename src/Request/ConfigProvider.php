@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Request;
 
-use PayNL\Sdk\{
-    Config\ProviderInterface as ConfigProviderInterface,
+use PayNL\Sdk\{Config\ProviderInterface as ConfigProviderInterface,
     Common\ManagerFactory,
-    Common\DebugAwareInitializer
-};
+    Common\DebugAwareInitializer,
+    Validator\Qr\Decode,
+    Validator\Qr\Encode};
 
 /**
  * Class Manager
@@ -240,14 +240,17 @@ class ConfigProvider implements ConfigProviderInterface
             'DecodeQr' => [
                 'uri' => '/qr/decode',
                 'method' => RequestInterface::METHOD_POST,
+                'validator' => Decode::class,
             ],
             'EncodeQr' => [
                 'uri' => '/qr/encode',
                 'method' => RequestInterface::METHOD_POST,
+                'validator' => Encode::class,
             ],
             'ValidateQr' => [
                 'uri' => '/qr/validate',
                 'method' => RequestInterface::METHOD_POST,
+                'validator' => Decode::class,
             ],
         ];
     }

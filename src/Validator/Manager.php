@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Validator;
 
-use PayNL\Sdk\Request\ConfigProvider;
 use PayNL\Sdk\Service\AbstractPluginManager;
 
 /**
@@ -28,10 +27,9 @@ class Manager extends AbstractPluginManager
      * @return ValidatorInterface
      */
     public function getValidatorByRequest($request) : ValidatorInterface {
-        $configProvider = new ConfigProvider();
-        $config = $configProvider->getRequestConfig()['services'][$request->getOption('name')];
-        if(isset($config['validator'])) {
-            return $this->get($config['validator']);
+        $options = $request->getOptions();
+        if(isset($options['validator'])) {
+            return $this->get($options['validator']);
         }
 
         return $this->get('RequiredMembers');

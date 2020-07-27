@@ -8,7 +8,8 @@ use PayNL\Sdk\{Config\ProviderInterface as ConfigProviderInterface,
     Common\ManagerFactory,
     Common\DebugAwareInitializer,
     Validator\Qr\Decode,
-    Validator\Qr\Encode};
+    Validator\Qr\Encode
+};
 
 /**
  * Class Manager

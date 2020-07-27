@@ -7,7 +7,8 @@ namespace PayNL\Sdk\Validator;
 use PayNL\Sdk\{Common\ManagerFactory,
     Config\ProviderInterface as ConfigProviderInterface,
     Validator\Qr\Decode,
-    Validator\Qr\Encode};
+    Validator\Qr\Encode
+};
 
 /**
  * Class ConfigProvider

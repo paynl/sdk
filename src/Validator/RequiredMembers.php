@@ -37,29 +37,28 @@ class RequiredMembers extends AbstractValidator implements HydratorAwareInterfac
         self::MSG_EMPTY_MEMBERS   => 'Members "%s" within %s are required and therefore cannot be empty',
     ];
 
-    protected $className;
-
     /**
      * @inheritDoc
      */
     public function isValid($filledObjectToCheck): bool
     {
-        $this->className = get_class($filledObjectToCheck);
-        $required = $this->getRequiredMembers($this->className);
+        $className = get_class($filledObjectToCheck);
+        $required = $this->getRequiredMembers($className);
         if (0 === count($required)) {
             // no required members found, object is valid
             return true;
         }
 
-        return $this->validate($required, $this->getDataFromObject($filledObjectToCheck));
+        return $this->validate($required, $this->getDataFromObject($filledObjectToCheck), $className);
     }
 
     /**
      * @param array $required
      * @param array $data
+     * @param string $className
      * @return bool
      */
-    protected function validate(array $required, array $data): bool {
+    protected function validate(array $required, array $data, string $className): bool {
         $missingMembers = $emptyMembers = [];
 
         foreach (array_keys($required) as $memberName) {
@@ -75,7 +74,7 @@ class RequiredMembers extends AbstractValidator implements HydratorAwareInterfac
             $this->error(
                 1 === $nrOfMissingMembers ? static::MSG_MISSING_MEMBER : static::MSG_MISSING_MEMBERS,
                 implode('", "', $missingMembers),
-                $this->className
+                $className
             );
         }
 
@@ -84,7 +83,7 @@ class RequiredMembers extends AbstractValidator implements HydratorAwareInterfac
             $this->error(
                 1 === $nrOfEmptyMembers ? static::MSG_EMPTY_MEMBER : static::MSG_EMPTY_MEMBERS,
                 implode('", "', $emptyMembers),
-                $this->className
+                $className
             );
         }
 

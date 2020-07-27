@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\PayNL\Sdk\Validator\Qr;
 
 use CodeCeption\Test\Unit as UnitTest;
+use Codeception\TestAsset\Dummy;
 use Codeception\TestAsset\DummyQr;
 use PayNL\Sdk\Validator\AbstractValidator;
 use PayNL\Sdk\Validator\Qr\Decode;
@@ -101,7 +102,7 @@ class DecodeTest extends UnitTest
     {
         $this->setHydrator();
 
-        $data = $this->validator->isValid($this->dummy);
+        $data = $this->validator->isValid(new Dummy());
         $this->assertIsBool($data);
         $this->assertFalse($data);
         $this->assertNotEmpty($this->validator->getMessages());

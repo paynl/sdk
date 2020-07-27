@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Validator;
 
+use PayNL\Sdk\Request\AbstractRequest;
 use PayNL\Sdk\Service\AbstractPluginManager;
 
 /**
@@ -26,7 +27,7 @@ class Manager extends AbstractPluginManager
      * @param $request
      * @return ValidatorInterface
      */
-    public function getValidatorByRequest($request) : ValidatorInterface {
+    public function getValidatorByRequest(AbstractRequest $request) : ValidatorInterface {
         $options = $request->getOptions();
         if(isset($options['validator'])) {
             return $this->get($options['validator']);

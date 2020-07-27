@@ -15,10 +15,10 @@ class Encode extends RequiredMembers
 {
     public function isValid($filledObjectToCheck): bool
     {
-        $requiredMembers = array('secret');
-        $this->className = get_class($filledObjectToCheck);
+        $requiredMembers = array('secret' => true);
+        $className = get_class($filledObjectToCheck);
         $data = $this->getDataFromObject($filledObjectToCheck);
 
-        return $this->validate(array_flip($requiredMembers), $data);
+        return $this->validate($requiredMembers, $data, $className);
     }
 }

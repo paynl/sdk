@@ -13,12 +13,14 @@ use PayNL\Sdk\Validator\RequiredMembers;
  */
 class Decode extends RequiredMembers
 {
-    public function isValid($filledObjectToCheck): bool
+    /**
+     * @inheritDoc
+     */
+    protected function getRequiredMembers(string $className): array
     {
-        $requiredMembers = array('secret' => true, 'uuid' => true);
-        $className = get_class($filledObjectToCheck);
-        $data = $this->getDataFromObject($filledObjectToCheck);
-
-        return $this->validate($requiredMembers, $data, $className);
+        return [
+            'secret' => true,
+            'uuid' => true,
+        ];
     }
 }

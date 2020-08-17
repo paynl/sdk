@@ -31,6 +31,7 @@ class ConfigProvider implements ConfigProviderInterface
                     'class_method'    => 'getValidatorConfig',
                 ],
             ],
+            'default_validator' => 'RequiredMembers'
         ];
     }
 

@@ -204,4 +204,15 @@ class RequiredMembersTest extends UnitTest
         verify($result)->bool();
         verify($result)->true();
     }
+
+    /**
+     * @return void
+     */
+    public function testItCanHaveAMissingHydrator(): void
+    {
+        $validator = new RequiredMembers();
+
+        $this->expectException(RuntimeException::class);
+        $this->tester->invokeMethod($validator, 'getDataFromObject', [$this->dummy]);
+    }
 }

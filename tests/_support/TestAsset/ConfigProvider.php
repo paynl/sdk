@@ -201,9 +201,15 @@ class ConfigProvider implements ProviderInterface
         return [
             'aliases' => [
                 'dummy' => 'Dummy',
+                'dummyMissingPropery' => 'DummyMissingProperty',
+                'dummyWithoutRequiredMembers' => 'DummyWithoutRequiredMembers',
+                'dummyHydratorAware' => 'DummyHydratorAware',
             ],
             'invokables' => [
                 'Dummy' => Dummy::class,
+                'DummyMissingProperty' => DummyMissingProperty::class,
+                'DummyWithoutRequiredMembers' => DummyWithoutRequiredMembers::class,
+                'DummyHydratorAware' => DummyHydratorAware::class
             ],
         ];
     }

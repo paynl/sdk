@@ -9,7 +9,7 @@ namespace Codeception\TestAsset;
  *
  * @package Codeception\TestAsset
  */
-class DummyWithoutRequiredMembers
+class DummyWithoutRequiredMembers implements DummyInterface
 {
 
 }

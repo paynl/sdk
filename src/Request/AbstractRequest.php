@@ -564,7 +564,7 @@ abstract class AbstractRequest implements
         foreach ($errors as $key => $value) {
             $return[$key] = $value;
             if (true === is_array($value)) {
-                $return = $this->flattenErrors($value, ltrim($context . ".$key", '.'));
+                $return = $this->flattenErrors($value, ltrim($context . ".{$key}", '.'));
             }
         }
         return $return;
@@ -586,7 +586,7 @@ abstract class AbstractRequest implements
             return;
         }
 
-        $validator = $this->getValidatorManager()->get('RequiredMembers');
+        $validator = $this->getValidatorManager()->getValidatorByRequest($this);
 
         if (true === $validator->isValid($body)) {
             return;

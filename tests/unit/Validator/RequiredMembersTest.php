@@ -44,19 +44,17 @@ class RequiredMembersTest extends UnitTest
     /**
      * @return void
      */
-    private function setHydrator(): void
-    {
-        $this->validator->setHydrator(new ClassMethods(false, true));
-    }
-
-    protected function _before()
+    protected function _before(): void
     {
         $this->validator = new RequiredMembers();
+        $this->validator->setHydrator($this->tester->grabService('hydratorManager')->get('Entity'));
 
-        $this->dummy = new Dummy();
-        $this->dummyMissingProperty = new DummyMissingProperty();
-        $this->dummyWithoutRequiredMembers = new DummyWithoutRequiredMembers();
-        $this->dummyHydratorAware = new DummyHydratorAware();
+        $dummyManager = $this->tester->getServiceManager()->get('dummyManager');
+
+        $this->dummy = $dummyManager->build('dummy');
+        $this->dummyMissingProperty = $dummyManager->build('dummyMissingPropery');
+        $this->dummyWithoutRequiredMembers = $dummyManager->build('dummyWithoutRequiredMembers');
+        $this->dummyHydratorAware = $dummyManager->build('dummyHydratorAware');
     }
 
     /**
@@ -78,18 +76,8 @@ class RequiredMembersTest extends UnitTest
     /**
      * @return void
      */
-    public function testGetDataFromObjectWithNullHydratorThrowsException(): void
-    {
-        $this->expectException(RuntimeException::class);
-        $this->tester->invokeMethod($this->validator, 'getDataFromObject', [$this->dummyHydratorAware]);
-    }
-
-    /**
-     * @return void
-     */
     public function testGetDataFromObjectWithNonObjectThrowsException(): void
     {
-        $this->setHydrator();
         $this->expectException(InvalidArgumentException::class);
         $this->tester->invokeMethod($this->validator, 'getDataFromObject', [1]);
     }
@@ -99,7 +87,6 @@ class RequiredMembersTest extends UnitTest
      */
     public function testItCanGetDataFromAGivenObject(): void
     {
-        $this->setHydrator();
         $this->dummy->setRequiredMember('some-string');
 
         $data = $this->tester->invokeMethod($this->validator, 'getDataFromObject', [$this->dummy]);
@@ -129,7 +116,7 @@ class RequiredMembersTest extends UnitTest
      * @depends testItCanCheckForRequiredMembers
      * @return void
      */
-    public function testItCanValidateWithoutRequiredMembers(): void
+    public function testItIsValidWithoutRequiredMembers(): void
     {
         $result = $this->validator->isValid($this->dummyWithoutRequiredMembers);
         verify($result)->bool();
@@ -150,9 +137,8 @@ class RequiredMembersTest extends UnitTest
     /**
      * @return void
      */
-    public function testValidateWithEmptyMembers(): void
+    public function testItIsValidWithEmptyMembers(): void
     {
-        $this->setHydrator();
         $this->dummy->setRequiredMember('');
         $result = $this->validator->isValid($this->dummy);
         verify($result)->bool();
@@ -162,9 +148,8 @@ class RequiredMembersTest extends UnitTest
     /**
      * @return void
      */
-    public function testValidateWithMissingMembers(): void
+    public function testItIsValidWithMissingMembers(): void
     {
-        $this->setHydrator();
         $result = $this->validator->isValid($this->dummyMissingProperty);
         verify($result)->bool();
         verify($result)->false();
@@ -212,12 +197,22 @@ class RequiredMembersTest extends UnitTest
      * @depends testItCanTestOnNotEmpty
      * @return void
      */
-    public function testValidateCorrectly(): void
+    public function testIsValid(): void
     {
-        $this->setHydrator();
         $this->dummy->setRequiredMember('12345');
         $result = $this->validator->isValid($this->dummy);
         verify($result)->bool();
         verify($result)->true();
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanHaveAMissingHydrator(): void
+    {
+        $validator = new RequiredMembers();
+
+        $this->expectException(RuntimeException::class);
+        $this->tester->invokeMethod($validator, 'getDataFromObject', [$this->dummy]);
     }
 }

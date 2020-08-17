@@ -6,11 +6,11 @@ namespace Tests\Unit\PayNL\Sdk\Validator;
 
 use Codeception\Lib\ManagerTestTrait;
 use CodeCeption\Test\Unit as UnitTest;
-use PayNL\Sdk\Application\Application;
+use Codeception\TestAsset\DummyValidation;
+use Codeception\TestAsset\DummyValidationDefault;
+use PayNL\Sdk\Exception\RuntimeException;
 use PayNL\Sdk\Validator\Manager;
 use PayNL\Sdk\Service\AbstractPluginManager;
-use PayNL\Sdk\Validator\Qr\Decode;
-use PayNL\Sdk\Validator\RequiredMembers;
 use PayNL\Sdk\Validator\ValidatorInterface;
 
 /**
@@ -24,18 +24,12 @@ class ManagerTest extends UnitTest
         testItIsAManager as traitTestItIsAManager;
     }
 
-    private $application;
-
     /**
      * @return void
      */
     public function _before(): void
     {
-        /** @var Manager $manager */
         $this->manager = new Manager();
-
-        /** @var Application $application */
-        $this->application = Application::init($this->tester->getConfig());
     }
 
     /**
@@ -45,7 +39,7 @@ class ManagerTest extends UnitTest
     {
         $this->traitTestItIsAManager();
         verify($this->manager)->isInstanceOf(AbstractPluginManager::class);
-        $this->assertObjectHasAttribute('instanceOf', $this->manager);
+        self::assertObjectHasAttribute('instanceOf', $this->manager);
     }
 
     /**
@@ -65,14 +59,26 @@ class ManagerTest extends UnitTest
      */
     public function testItCanGetCustomValidatorByRequest(): void
     {
-        $this->application->setRequest('DecodeQr');
-        $options =  $this->application->getRequest()->getOptions();
-        $options['validator'] = Decode::class;
-        $this->application->getRequest()->setOptions($options);
+        $this->manager->configure(
+            [
+                'invokables' => [
+                    'DecodeQr' => DummyValidation::class
+                ],
+            ]
+        );
 
-        $validator = $this->manager->getValidatorByRequest($this->application->getRequest());
+        $requestMock = $this->tester->grabService('requestManager')
+            ->get(
+                'Request',
+                [
+                    'uri' => 'foo/bar',
+                    'validator' => DummyValidation::class
+                ]
+            );
 
-        $this->assertInstanceOf(Decode::class, $validator);
+        $validator = $this->manager->getValidatorByRequest($requestMock);
+
+        self::assertInstanceOf(DummyValidation::class, $validator);
     }
 
     /**
@@ -80,12 +86,63 @@ class ManagerTest extends UnitTest
      */
     public function testItCanGetDefaultValidatorByRequest(): void
     {
-        $this->application->setRequest('GetCurrency', ['currencyId' => 'EUR'], [], ['Currency' => []]);
+        $this->manager->configure(
+            [
+                'invokables' => [
+                    'RequiredMembers' => DummyValidationDefault::class
+                ],
+            ]
+        );
 
-        $request = $this->application->getRequest();
+        $requestMock = $this->tester->grabService('requestManager')
+            ->get(
+                'Request',
+                [
+                    'uri' => 'foo/bar',
+                ]
+            );
 
-        $validator = $request->getValidatorManager()->getValidatorByRequest($request);
+        $validator = $this->manager->getValidatorByRequest($requestMock);
 
-        $this->assertInstanceOf(RequiredMembers::class, $validator);
+        self::assertInstanceOf(DummyValidationDefault::class, $validator);
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanThrowRuntimeException(): void
+    {
+        $requestMock = $this->tester->grabService('requestManager')
+            ->get(
+                'Request',
+                [
+                    'uri' => 'foo/bar',
+                    'validator' => DummyValidation::class
+                ]
+            );
+
+        $this->expectException(RuntimeException::class);
+        $this->manager->getValidatorByRequest($requestMock);
+    }
+
+    /**
+     * @return void
+     */
+    public function testItCanGetByCallable(): void
+    {
+        $requestMock = $this->tester->grabService('requestManager')
+            ->get(
+                'Request',
+                [
+                    'uri' => 'foo/bar',
+                    'validator' => static function () {
+                        return new DummyValidation();
+                    }
+                ]
+            );
+
+        $validator = $this->manager->getValidatorByRequest($requestMock);
+
+        self::assertInstanceOf(DummyValidation::class, $validator);
     }
 }

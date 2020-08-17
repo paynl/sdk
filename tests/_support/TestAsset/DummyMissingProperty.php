@@ -9,8 +9,9 @@ namespace Codeception\TestAsset;
  *
  * @package Codeception\TestAsset
  */
-class DummyMissingProperty
+class DummyMissingProperty implements DummyInterface
 {
+
     /**
      * @required
      * @var int

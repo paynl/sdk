@@ -5,13 +5,10 @@ declare(strict_types=1);
 namespace Tests\Unit\PayNL\Sdk\Validator\Qr;
 
 use CodeCeption\Test\Unit as UnitTest;
-use Codeception\TestAsset\Dummy;
-use Codeception\TestAsset\DummyQr;
-use PayNL\Sdk\Validator\AbstractValidator;
+use Mockery\MockInterface;
 use PayNL\Sdk\Validator\Qr\Encode;
-use PayNL\Sdk\Validator\ValidatorInterface;
+use PayNL\Sdk\Validator\RequiredMembers;
 use UnitTester;
-use Zend\Hydrator\ClassMethods;
 
 /**
  * Class EncodeTest
@@ -23,8 +20,6 @@ class EncodeTest extends UnitTest
     /** @var Encode */
     protected $validator;
 
-    /** @var DummyQr */
-    private $dummy;
 
     /**
      * @var UnitTester
@@ -37,87 +32,26 @@ class EncodeTest extends UnitTest
     protected function _before(): void
     {
         $this->validator = new Encode();
-
-        $this->dummy = new DummyQr();
     }
 
-    /**
-     * @returns void
-     */
-    private function setHydrator(): void
-    {
-        $this->validator->setHydrator(new ClassMethods(false, true));
-    }
 
     /**
      * @return void
      */
-    public function testItIsAValidator(): void
+    public function testItExtendsRequiredMembers(): void
     {
-        verify($this->validator)->isInstanceOf(ValidatorInterface::class);
+        verify($this->validator)->isInstanceOf(RequiredMembers::class);
     }
+
 
     /**
      * @return void
      */
-    public function testItExtendsAbstract(): void
+    public function testItCanGetRequiredMembers(): void
     {
-        verify($this->validator)->isInstanceOf(AbstractValidator::class);
-    }
-
-    /**
-     * @return void
-     */
-    public function testItCanValidate(): void
-    {
-        $this->setHydrator();
-
-        $this->tester->assertObjectHasMethod('isValid', $this->validator);
-        $this->tester->assertObjectMethodIsPublic('isValid', $this->validator);
-        $data = $this->tester->invokeMethod($this->validator, 'isValid', [$this->dummy]);
-        $this->assertIsBool($data);
-        $this->assertFalse($data);
-        $this->assertNotEmpty($this->validator->getMessages());
-    }
-
-    /**
-     * @return void
-     */
-    public function testItCanValidateWithEmptyMembers(): void
-    {
-        $this->setHydrator();
-
-        $this->dummy->setSecret('');
-        $data = $this->validator->isValid($this->dummy);
-        $this->assertIsBool($data);
-        $this->assertFalse($data);
-        $this->assertNotEmpty($this->validator->getMessages());
-    }
-
-    /**
-     * @return void
-     */
-    public function testItCanValidateWithMissingMembers(): void
-    {
-        $this->setHydrator();
-
-        $data = $this->validator->isValid(new Dummy());
-        $this->assertIsBool($data);
-        $this->assertFalse($data);
-        $this->assertNotEmpty($this->validator->getMessages());
-    }
-
-    /**
-     * @returns void
-     */
-    public function testItCanValidateCorrectly(): void
-    {
-        $this->setHydrator();
-
-        $this->dummy->setSecret('secret');
-        $data = $this->validator->isValid($this->dummy);
-        $this->assertIsBool($data);
-        $this->assertTrue($data);
-        $this->assertEmpty($this->validator->getMessages());
+        $requiredMembers = $this->tester->invokeMethod($this->validator, 'getRequiredMembers', ['']);
+        verify($requiredMembers)->array();
+        verify($requiredMembers)->count(1);
+        verify($requiredMembers)->hasKey('secret');
     }
 }

@@ -12,7 +12,7 @@ use Zend\Hydrator\HydratorAwareTrait;
  * @package Codeception\TestAsset
  */
 
-class DummyHydratorAware implements HydratorAwareInterface
+class DummyHydratorAware implements HydratorAwareInterface, DummyInterface
 {
     use HydratorAwareTrait;
 }

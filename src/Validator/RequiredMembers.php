@@ -49,16 +49,7 @@ class RequiredMembers extends AbstractValidator implements HydratorAwareInterfac
             return true;
         }
 
-        return $this->validate($required, $this->getDataFromObject($filledObjectToCheck), $className);
-    }
-
-    /**
-     * @param array $required
-     * @param array $data
-     * @param string $className
-     * @return bool
-     */
-    protected function validate(array $required, array $data, string $className): bool {
+        $data = $this->getDataFromObject($filledObjectToCheck);
         $missingMembers = $emptyMembers = [];
 
         foreach (array_keys($required) as $memberName) {
@@ -129,7 +120,7 @@ class RequiredMembers extends AbstractValidator implements HydratorAwareInterfac
      *
      * @return array
      */
-    protected function getDataFromObject($objectToExtract): array
+    private function getDataFromObject($objectToExtract): array
     {
         $hydrator = $this->getHydrator();
         if (null === $hydrator) {

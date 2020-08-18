@@ -9,7 +9,7 @@ use Paynl\Result\Result;
  *
  * @author PAY. <support@pay.nl>
  */
-class transactionDetails extends Result
+class TransactionDetails extends Result
 {      
 
 

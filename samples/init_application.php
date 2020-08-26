@@ -17,6 +17,8 @@ use PayNL\Sdk\{
     Config\Config
 };
 
-$config = new Config(require 'config.php');
+$config = (new Config(require __DIR__ . '/../config/config.global.php'))
+    ->merge(new Config(require __DIR__ . '/../config/config.local.php'))
+;
 
 return Application::init($config);

@@ -17,14 +17,10 @@ use Codeception\Lib\Connector\Sdk as SdkConnector;
  * Class Sdk
  *
  * @package Codeception\Module
- *
- *
- * config: relative path to config file (default: `tests/config.php`)
  */
 class Sdk extends CodeceptionModule implements PartedModule
 {
     protected $config = [
-        'config' => 'tests/config.php',
         'recreateApplicationBetweenTests' => true,
     ];
 
@@ -52,22 +48,21 @@ class Sdk extends CodeceptionModule implements PartedModule
 
     /**
      * @inheritDoc
-     *
-     * @throws ConfigurationException
      */
     public function _initialize(): void
     {
-        $configFile = Configuration::projectDir() . $this->config['config'];
-        if (false === file_exists($configFile)) {
-            throw new ConfigurationException(
-                sprintf(
-                    'Can not find the tests configuration file in "%s"',
-                    $configFile
-                )
-            );
-        }
-
-        $this->configuration = new Config(require $configFile);
+        $this->configuration = new Config([
+            'config_paths' => [
+                'testAssets' => Configuration::supportDir() . 'TestAsset' . DIRECTORY_SEPARATOR . 'ConfigProvider.php',
+            ],
+            'api' => [
+                'url'  => 'https://sandbox.bogus-url.dev/',
+            ],
+            'authentication' => [
+                'username' => 'a-username',
+                'password' => 'some-token',
+            ]
+        ]);
 
         $this->client = new SdkConnector();
         $this->client->setApplicationConfig($this->configuration);
@@ -128,7 +123,7 @@ class Sdk extends CodeceptionModule implements PartedModule
     }
 
     /**
-     * @inheritDoc
+     * @return string[]
      */
     public function _parts(): array
     {

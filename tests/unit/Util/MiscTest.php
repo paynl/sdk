@@ -158,4 +158,16 @@ class MiscTest extends UnitTest
         verify($className)->string();
         verify($className)->equals('Foo');
     }
+
+    /**
+     * @return void
+     */
+    public function _after(): void
+    {
+        $file = $this->getExistingUnreadableFilename();
+        if (true === file_exists($file)) {
+            chmod($file, 0644);
+        }
+        parent::_after();
+    }
 }

@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="PHP_CodeSniffer" xsi:noNamespaceSchemaLocation="vendor/squizlabs/php_codesniffer/phpcs.xsd">
+    <description>The coding standard for SipRouter.</description>
+
+    <file>src</file>
+    <file>samples</file>
+<!--    <file>tests/acceptance</file>-->
+<!--    <file>tests/functional</file>-->
+<!--    <file>tests/unit</file>-->
+
+<!--    <exclude-pattern>app/Console/Commands/Test*</exclude-pattern>-->
+
+    <arg name="basepath" value="." />
+    <arg name="colors" />
+    <arg name="parallel" value="75" />
+    <arg value="np" />
+
+    <!-- Don't hide tokenizer exceptions -->
+    <rule ref="Internal.Tokenizer.Exception">
+        <type>error</type>
+    </rule>
+
+    <!-- Include the whole PEAR standard -->
+    <rule ref="PSR2">
+        <exclude name="PSR2.Namespaces.UseDeclaration" />
+    </rule>
+
+    <!-- Include some sniffs from other standards that don't conflict with PEAR -->
+    <rule ref="Squiz.Commenting.EmptyCatchComment" />
+    <!--    <rule ref="Squiz.Commenting.FunctionComment" />-->
+    <rule ref="Squiz.Commenting.FunctionCommentThrowTag" />
+    <rule ref="Squiz.Commenting.PostStatementComment" />
+    <rule ref="Squiz.Commenting.VariableComment" />
+    <rule ref="Squiz.Operators.ComparisonOperatorUsage" />
+    <rule ref="Generic.Arrays.DisallowLongArraySyntax" />
+    <rule ref="Generic.Commenting.Todo" />
+    <rule ref="Generic.Commenting.Fixme" />
+<!--    <rule ref="Generic.Formatting.SpaceAfterCast">-->
+<!--        <properties>-->
+<!--            <property name="spacing" value="0" />-->
+<!--        </properties>-->
+<!--    </rule>-->
+    <rule ref="Generic.Formatting.SpaceAfterNot">
+        <properties>
+            <property name="spacing" value="0" />
+        </properties>
+    </rule>
+    <rule ref="Generic.NamingConventions.ConstructorName" />
+    <rule ref="Generic.PHP.DeprecatedFunctions" />
+    <rule ref="Generic.Strings.UnnecessaryStringConcat">
+        <properties>
+            <property name="allowMultiline" value="true" />
+        </properties>
+    </rule>
+    <rule ref="Generic.CodeAnalysis.AssignmentInCondition" />
+    <rule ref="Generic.CodeAnalysis.EmptyPHPStatement" />
+    <rule ref="Generic.CodeAnalysis.EmptyStatement" />
+    <rule ref="Generic.CodeAnalysis.UnconditionalIfStatement" />
+    <rule ref="Generic.CodeAnalysis.UnnecessaryFinalModifier" />
+    <rule ref="Generic.CodeAnalysis.UselessOverridingMethod" />
+    <rule ref="Generic.PHP.BacktickOperator" />
+    <rule ref="Generic.PHP.DisallowAlternativePHPTags" />
+    <rule ref="Generic.PHP.NoSilencedErrors" />
+    <rule ref="Squiz.Classes.DuplicateProperty" />
+    <rule ref="Squiz.PHP.Eval" />
+    <rule ref="Squiz.PHP.NonExecutableCode" />
+    <rule ref="Squiz.Scope.MemberVarScope" />
+    <rule ref="Squiz.Scope.MethodScope" />
+    <rule ref="Squiz.Scope.StaticThisUsage" />
+
+    <!-- Ban some functions -->
+    <rule ref="Generic.PHP.ForbiddenFunctions">
+        <properties>
+            <property name="forbiddenFunctions" type="array">
+                <element key="sizeof" value="count" />
+                <element key="delete" value="unset" />
+                <element key="print" value="echo" />
+                <element key="is_null" value="null" />
+                <element key="create_function" value="null" />
+            </property>
+        </properties>
+    </rule>
+
+    <!-- Private properties MUST not be prefixed with an underscore -->
+    <rule ref="PSR2.Classes.PropertyDeclaration.Underscore">
+        <type>error</type>
+    </rule>
+</ruleset>

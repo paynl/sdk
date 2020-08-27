@@ -1,0 +1,10 @@
+parameters:
+  level: 7
+  paths:
+    - src
+    - samples
+  excludes_analyse:
+    - vendor
+    - bin
+  ignoreErrors:
+    - '#Strict comparison using === between (true|false) and (false|true) will always evaluate to false\.#'

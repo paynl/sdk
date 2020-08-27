@@ -1,4 +1,9 @@
-samples/config.php
-.idea/*
-vendor/
-composer.lock
+.idea
+
+samples/test.php
+
+config/config.local.php
+
+bin
+composer.phar
+vendor

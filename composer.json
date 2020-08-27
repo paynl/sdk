@@ -1,0 +1,110 @@
+{
+  "name": "paynl/sdk",
+  "description": "Software Development Kit for implementing PayNL's REST API",
+  "type": "library",
+  "keywords": [],
+  "homepage": "https://github.com/paynl/sdk",
+  "license": "proprietary",
+  "authors": [{
+    "name": "Ian Sneep",
+    "email": "ian@pay.nl"
+  }],
+  "support": {
+    "email": "support@pay.nl"
+  },
+  "require": {
+    "php": "^7.1",
+    "ext-curl": "*",
+    "ext-json": "*",
+    "doctrine/collections": "^1.6",
+    "psr/container": "^1.0",
+    "psr/http-message": "~1.0",
+    "ralouphie/getallheaders": "^2.0.5 || ^3.0.0",
+    "symfony/serializer": "^4.4",
+    "zendframework/zend-filter": "^2.9",
+    "zendframework/zend-hydrator": "^2.4"
+  },
+  "require-dev": {
+    "ext-simplexml": "*",
+    "codeception/codeception": "^3.0",
+    "codeception/mockery-module": "^0.4.0",
+    "codeception/verify": "^1.1",
+    "guzzlehttp/guzzle": "^6.3",
+    "humbug/php-scoper": "^0.11.4",
+    "phpmd/phpmd": "^2.7",
+    "phpstan/phpstan": "^0.11.12",
+    "roave/security-advisories": "dev-master",
+    "squizlabs/php_codesniffer": "^3.4",
+    "symfony/var-dumper": "^4.3"
+  },
+  "suggest": {
+    "symfony/var-dumper": "Allows another level of debugging within the application",
+    "filp/whoops": "For enhanced exception handling",
+    "codeception/codeception": "For executing the package tests"
+  },
+  "autoload":{
+    "psr-4": {
+      "PayNL\\Sdk\\": "src/",
+      "PayNL\\GuzzleHttp\\": "build/guzzle/src",
+      "PayNL\\GuzzleHttp\\Promise\\": "build/promises/src",
+      "PayNL\\GuzzleHttp\\Psr7\\": "build/psr7/src"
+    },
+    "files": [
+      "./src/Resources/functions/text.php",
+      "./src/Resources/functions/vat.php",
+      "./build/guzzle/src/functions_include.php",
+      "./build/promises/src/functions_include.php",
+      "./build/psr7/src/functions_include.php"
+    ]
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\PayNL\\Sdk\\": "tests",
+      "Tests\\Acceptance\\PayNL\\Sdk\\": "tests/acceptance",
+      "Tests\\Functional\\PayNL\\Sdk\\": "tests/functional",
+      "Tests\\Unit\\PayNL\\Sdk\\": "tests/unit",
+      "Codeception\\Lib\\": "tests/_support/Lib",
+      "Codeception\\Module\\": "tests/_support/Module",
+      "Codeception\\TestAsset\\": "tests/_support/TestAsset"
+    },
+    "files": [
+      "./samples/print_response.function.php"
+    ]
+  },
+  "minimum-stability": "stable",
+  "prefer-stable": true,
+  "repositories": [
+  ],
+  "config": {
+    "bin-dir": "bin",
+    "secure-http": false,
+    "optimize-autoloader": true,
+    "sort-packages": true,
+    "discard-changes": true
+  },
+  "scripts": {
+    "test": [
+      "@codecept-unit",
+      "@style-check"
+    ],
+    "style-check": [
+      "@phpstan",
+      "@phpmd",
+      "@phpcs"
+    ],
+    "phpstan": "bin/phpstan analyse",
+    "phpmd": "bin/phpmd src,samples text phpmd.xml",
+    "phpcs": "bin/phpcs",
+    "codecept-unit": "bin/codecept run unit"
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "2.x-dev"
+    }
+  },
+  "archive": {
+    "exclude": [
+      "!vendor", "composer.phar"
+    ]
+  }
+}

@@ -99,7 +99,7 @@
   },
   "extra": {
     "branch-alias": {
-      "dev-feature/2.x-dev": "2.0"
+      "dev-feature/2.x-dev": "2.0.x-dev"
     }
   },
   "archive": {

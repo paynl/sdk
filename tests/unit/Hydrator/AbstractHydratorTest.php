@@ -175,6 +175,10 @@ class AbstractHydratorTest extends UnitTest
         $output = $this->tester->invokeMethod($this->anonymousClassFromAbstract, 'getSdkDateTime', [$dateTime]);
         verify($output)->isInstanceOf(DateTime::class);
         verify($output->format($format))->equals($dtString);
+
+        $dateTime = '';
+        $output = $this->tester->invokeMethod($this->anonymousClassFromAbstract, 'getSdkDateTime', [$dateTime]);
+        verify($output)->null();
     }
 
     /**
@@ -195,6 +199,6 @@ class AbstractHydratorTest extends UnitTest
             $this->anonymousClassFromAbstract,
             'getSdkDateTime',
             ['2020-03-11T13:39:40']
-        ))->false();
+        ))->null();
     }
 }

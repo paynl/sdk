@@ -6,6 +6,8 @@ namespace PayNL\Sdk\Common;
 
 /**
  * Interface FormatAwareInterface
+ *
+ * @package PayNL\Sdk\Common
  */
 interface FormatAwareInterface
 {

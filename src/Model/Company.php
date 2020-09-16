@@ -9,6 +9,8 @@ use PayNL\Sdk\Common\JsonSerializeTrait;
 
 /**
  * Class Company
+ *
+ * @package PayNL\Sdk\Model
  */
 class Company implements ModelInterface, JsonSerializable
 {

@@ -7,7 +7,11 @@ namespace PayNL\Sdk\Model;
 use Doctrine\Common\Collections\ArrayCollection;
 use PayNL\Sdk\Common\CollectionInterface;
 
-
+/**
+ * Class RefundedTransactions
+ *
+ * @package PayNL\Sdk\Model
+ */
 class RefundedTransactions extends ArrayCollection implements
     ModelInterface,
     CollectionInterface

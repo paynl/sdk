@@ -20,7 +20,7 @@ use PayNL\Sdk\{
 /**
  * Class Api
  *
- * @package PayNL\Sdk
+ * @package PayNL\Sdk\Api
  */
 class Api implements OptionsAwareInterface, DebugAwareInterface
 {

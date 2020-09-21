@@ -2,7 +2,9 @@
   "name": "paynl/sdk",
   "description": "Software Development Kit for implementing PayNL's REST API",
   "type": "library",
-  "keywords": [],
+  "keywords": [
+    "sdk", "api", "rest", "plugins"
+  ],
   "homepage": "https://github.com/paynl/sdk",
   "license": "proprietary",
   "authors": [{

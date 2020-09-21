@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace PayNL\Sdk\Validator;
 
-use PayNL\Sdk\{Common\ManagerFactory,
-    Config\ProviderInterface as ConfigProviderInterface,
-    Validator\Qr\Decode,
-    Validator\Qr\Encode
+use PayNL\Sdk\{
+    Common\ManagerFactory,
+    Config\ProviderInterface as ConfigProviderInterface
+};
+use PayNL\Sdk\Validator\Qr\{
+    Decode,
+    Encode
 };
 
 /**

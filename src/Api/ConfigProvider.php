@@ -22,7 +22,7 @@ class ConfigProvider implements ConfigProviderInterface
             'service_manager' => $this->getDependencyConfig(),
             'api' => [
                 // defaults:
-                'url'     => '',
+                'url'     => 'https://rest.pay.nl/',
                 'version' => 1,
             ],
         ];

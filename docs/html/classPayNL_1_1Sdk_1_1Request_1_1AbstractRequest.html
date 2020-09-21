@@ -73,6 +73,7 @@ $(function() {
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="classPayNL_1_1Sdk_1_1Request_1_1AbstractRequest-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">AbstractRequest Class Reference</div>  </div>
@@ -239,6 +240,13 @@ Protected Attributes</h2></td></tr>
 <tr class="memitem:afe68e6fbe7acfbffc0af0c84a1996466"><td class="memItemLeft" align="right" valign="top"><a id="afe68e6fbe7acfbffc0af0c84a1996466"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>$params</b> = []</td></tr>
 <tr class="separator:afe68e6fbe7acfbffc0af0c84a1996466"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:a6270402c16cf17146dd5f3f05434b9c8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPayNL_1_1Sdk_1_1Request_1_1AbstractRequest.html#a6270402c16cf17146dd5f3f05434b9c8">encodeBody</a> ($body)</td></tr>
+<tr class="separator:a6270402c16cf17146dd5f3f05434b9c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af0543977aa5966fedb7b9868b5e3ebe6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPayNL_1_1Sdk_1_1Request_1_1AbstractRequest.html#af0543977aa5966fedb7b9868b5e3ebe6">getErrorsString</a> (string $responseFormat, int $statusCode, string $rawBody)</td></tr>
+<tr class="separator:af0543977aa5966fedb7b9868b5e3ebe6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a3f8a60e8e1644d4f26da4ca9330794dd"></a>
@@ -307,10 +315,51 @@ Protected Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>@inheritDoc</p>
+<p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramtype">Client</td><td class="paramname">$client</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>static</dd></dl>
+</p>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="classPayNL_1_1Sdk_1_1Request_1_1AbstractRequest.html">AbstractRequest</a> </dd></dl>
 
 <p>Implements <a class="el" href="interfacePayNL_1_1Sdk_1_1Request_1_1RequestInterface.html#a627d67b7aeceab43fb1ebb372ed174a6">RequestInterface</a>.</p>
+
+</div>
+</div>
+<a id="a6270402c16cf17146dd5f3f05434b9c8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6270402c16cf17146dd5f3f05434b9c8">&#9670;&nbsp;</a></span>encodeBody()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">encodeBody </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>$body</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Automatically adds a Content-Type header</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramtype">mixed</td><td class="paramname">$body</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>string </dd></dl>
 
 </div>
 </div>
@@ -406,6 +455,57 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>Client </dd></dl>
+
+</div>
+</div>
+<a id="af0543977aa5966fedb7b9868b5e3ebe6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af0543977aa5966fedb7b9868b5e3ebe6">&#9670;&nbsp;</a></span>getErrorsString()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">getErrorsString </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>$responseFormat</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>$statusCode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>$rawBody</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramtype">string</td><td class="paramname">$responseFormat</td><td></td></tr>
+    <tr><td class="paramtype">int</td><td class="paramname">$statusCode</td><td></td></tr>
+    <tr><td class="paramtype">string</td><td class="paramname">$rawBody</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>string </dd></dl>
 
 </div>
 </div>
@@ -509,7 +609,8 @@ Protected Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>@inheritDoc </p>
+<p><dl class="section return"><dt>Returns</dt><dd>string</dd></dl>
+ </p>
 
 <p>Implements <a class="el" href="interfacePayNL_1_1Sdk_1_1Request_1_1RequestInterface.html#af3e37e1a6ed9b8c87f86f659873a83b7">RequestInterface</a>.</p>
 
@@ -590,7 +691,8 @@ Protected Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>@inheritDoc </p>
+<p><dl class="section return"><dt>Returns</dt><dd>string</dd></dl>
+ </p>
 
 <p>Implements <a class="el" href="interfacePayNL_1_1Sdk_1_1Request_1_1RequestInterface.html#a2ac86cae38fbe15a019d075d485ab702">RequestInterface</a>.</p>
 
@@ -911,7 +1013,7 @@ Protected Attributes</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Sep 17 2020 12:02:07 for PAY. SDK by&#160;<a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.0
+Generated on Fri Sep 18 2020 16:28:39 for PAY. SDK by&#160;<a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.0
 </small></address>
 </body>
 </html>

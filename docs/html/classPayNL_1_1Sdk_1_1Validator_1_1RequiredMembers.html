@@ -73,6 +73,7 @@ $(function() {
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="classPayNL_1_1Sdk_1_1Validator_1_1RequiredMembers-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">RequiredMembers Class Reference</div>  </div>
@@ -136,8 +137,55 @@ Protected Attributes</h2></td></tr>
 <tr class="memitem:a21a183f927a6d243fe6b4ba3a6c4d4c8 inherit pro_attribs_classPayNL_1_1Sdk_1_1Validator_1_1AbstractValidator"><td class="memItemLeft" align="right" valign="top"><a id="a21a183f927a6d243fe6b4ba3a6c4d4c8"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>$messages</b> = []</td></tr>
 <tr class="separator:a21a183f927a6d243fe6b4ba3a6c4d4c8 inherit pro_attribs_classPayNL_1_1Sdk_1_1Validator_1_1AbstractValidator"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:ae22b056454fbcb3f0b085e463d0bcbab"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPayNL_1_1Sdk_1_1Validator_1_1RequiredMembers.html#ae22b056454fbcb3f0b085e463d0bcbab">getDataFromObject</a> ($objectToExtract)</td></tr>
+<tr class="separator:ae22b056454fbcb3f0b085e463d0bcbab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40d5ad38441f2ad685c88aa08549796b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPayNL_1_1Sdk_1_1Validator_1_1RequiredMembers.html#a40d5ad38441f2ad685c88aa08549796b">isEmpty</a> ($key, $value)</td></tr>
+<tr class="separator:a40d5ad38441f2ad685c88aa08549796b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="ae22b056454fbcb3f0b085e463d0bcbab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae22b056454fbcb3f0b085e463d0bcbab">&#9670;&nbsp;</a></span>getDataFromObject()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">getDataFromObject </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>$objectToExtract</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramtype">mixed</td><td class="paramname">$objectToExtract</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">RuntimeException</td><td>when the hydrator can not be found </td></tr>
+    <tr><td class="paramname">InvalidArgumentException</td><td>when given object isn't an object</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>array </dd></dl>
+
+</div>
+</div>
 <a id="a2833e37e3d5680bb29e3173aaadbd94b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2833e37e3d5680bb29e3173aaadbd94b">&#9670;&nbsp;</a></span>getRequiredMembers()</h2>
 
@@ -173,6 +221,51 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="a40d5ad38441f2ad685c88aa08549796b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a40d5ad38441f2ad685c88aa08549796b">&#9670;&nbsp;</a></span>isEmpty()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">isEmpty </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>$key</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>$value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Checks if the given $value is empty. In other words, its an empty string, null or (if the key is an id field) equal to zero (0).</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramtype">string&#160;|&#160;int</td><td class="paramname">$key</td><td></td></tr>
+    <tr><td class="paramtype">mixed</td><td class="paramname">$value</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>bool </dd></dl>
+
+</div>
+</div>
 <a id="a46371cc0e1aedbd32ce7fd242fd54709"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a46371cc0e1aedbd32ce7fd242fd54709">&#9670;&nbsp;</a></span>isValid()</h2>
 
@@ -188,7 +281,14 @@ Protected Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>@inheritDoc </p>
+<p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramtype">mixed</td><td class="paramname">$value</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>bool</dd></dl>
+ </p>
 
 <p>Implements <a class="el" href="interfacePayNL_1_1Sdk_1_1Validator_1_1ValidatorInterface.html#a72063d2e922edda5321b1970297eb0c3">ValidatorInterface</a>.</p>
 
@@ -229,7 +329,7 @@ Protected Attributes</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Sep 17 2020 12:02:07 for PAY. SDK by&#160;<a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.0
+Generated on Fri Sep 18 2020 16:28:40 for PAY. SDK by&#160;<a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.0
 </small></address>
 </body>
 </html>

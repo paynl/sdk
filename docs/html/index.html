@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.0"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>PAY. SDK: Main Page</title>
+<title>PAY. SDK: PAY. PHP SDK</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -63,15 +63,103 @@ $(function() {
 </iframe>
 </div>
 
-<div class="header">
+<div class="PageDoc"><div class="header">
   <div class="headertitle">
-<div class="title">PAY. SDK Documentation</div>  </div>
+<div class="title">PAY. PHP SDK </div>  </div>
 </div><!--header-->
 <div class="contents">
+<div class="textblock"><p><a class="anchor" id="md_README"></a>PAY.'s PHP software development kit for communicating with the PAY. REST API.</p>
+<hr  />
+<h1><a class="anchor" id="autotoc_md2"></a>
+Installation</h1>
+<h2><a class="anchor" id="autotoc_md3"></a>
+Composer</h2>
+<p>Require it from composer. Just run <code>composer require paynl/sdk:^2.0</code> in order to get the latest stable.</p>
+<p>For more information how to install/use composer, please visit: <a href="https://github.com/composer/composer">https://github.com/composer/composer</a>.</p>
+<h2><a class="anchor" id="autotoc_md4"></a>
+Without composer</h2>
+<p>If you don't have experience with composer, it is possible to use the SDK without using composer.</p>
+<p>You can download the zip on the projects <a href="https://github.com/paynl/sdk/releases">releases</a> page.</p>
+<ol type="1">
+<li>Download the package zip (SDKvx.x.x.zip).</li>
+<li>Unzip the contents of the zip, and upload the vendor directory to your server.</li>
+<li>In your project, require the file vendor/autoload.php</li>
+<li>You can now use the SDK in your project</li>
+</ol>
+<h1><a class="anchor" id="autotoc_md5"></a>
+Requirements</h1>
+<p>The PAY. PHP SDK works with PHP version 7.1 and up and uses the JSON-extension.</p>
+<h1><a class="anchor" id="autotoc_md6"></a>
+Configuration</h1>
+<p>First of all, require the global configuration (or copy it to your own codebase's configuration). After that copy the config.local.dist.php (or its contents) and add it to your codebase. Short explaination: </p><div class="fragment"><div class="line">&#39;config_paths&#39; =&gt; [</div>
+<div class="line"> </div>
+<div class="line">],</div>
+<div class="line">&#39;api&#39; =&gt; [</div>
+<div class="line">    &#39;url&#39;  =&gt; &#39;https://rest.pay.nl/&#39;,</div>
+<div class="line">],</div>
+<div class="line">&#39;authentication&#39; =&gt; [</div>
+<div class="line">    &#39;username&#39; =&gt; &#39;&#39;,</div>
+<div class="line">    &#39;password&#39; =&gt; &#39;&#39;,</div>
+<div class="line">],</div>
+<div class="line">&#39;request&#39; =&gt; [</div>
+<div class="line">    &#39;format&#39; =&gt; &#39;objects&#39;,</div>
+<div class="line">],</div>
+<div class="line">&#39;response&#39; =&gt; [</div>
+<div class="line">    &#39;format&#39; =&gt; &#39;objects&#39;,</div>
+<div class="line">],</div>
+<div class="line"> </div>
+<div class="line">&#39;debug&#39;         =&gt; false,</div>
+</div><!-- fragment --><ul>
+<li>config_paths: An array which can contain your own custom "modules". Add the paths to the configprovider class of the module(s). Make sure your ConfigProvider.php implements the <code><a class="el" href="namespacePayNL.html">PayNL</a>\Sdk\Config\ProviderInterface</code>.</li>
+<li>api:<ul>
+<li>url: The URL of the REST API; defaults to <a href="https://rest.pay.nl">https://rest.pay.nl</a></li>
+<li>version: Version of the REST API to use; defaults to 1</li>
+</ul>
+</li>
+<li>authentication:<ul>
+<li>type: The type of authentication; defaults to 'Basic' which is currently the only method to use. <br  />
+ <em>Note: other authentication methods will be added in the future</em></li>
+<li>username: Your authentication username</li>
+<li>password: Password corresponding with the given username</li>
+</ul>
+</li>
+<li>request:<ul>
+<li>format: The desired method of sending the requests; defaults to 'objects'. You've got the choose between <code>objects</code>, <code>json</code> or <code>xml</code></li>
+</ul>
+</li>
+<li>response:<ul>
+<li>format: The desired method of receiving the responses; defaults to 'objects'. You've got the choose between <code>objects</code>, <code>json</code> or <code>xml</code></li>
+</ul>
+</li>
+<li>debug: Boolean to set whether you'd like to see debug information when executing the request. When symfony's var-dumper is present it uses dump, otherwise var_dump; defaults to <code>false</code>.</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md7"></a>
+Quickstart and examples</h1>
+<p>To use the SDK recommended to use the Application within the package. Initialize it through the following: </p><div class="fragment"><div class="line">$config = <span class="keyword">new</span> PayNL\Sdk\Config(&lt;YOUR CONFIG ARRAY HERE&gt;);</div>
+<div class="line"> </div>
+<div class="line">$app = <a class="code" href="classPayNL_1_1Sdk_1_1Application_1_1Application.html#a0d4bbdf80bc0e90983c578eb200ef2f4">PayNL\Sdk\Application\Application::init</a>($config);</div>
+</div><!-- fragment --><p>Now you have got the <code>$app</code> available it's very easy to make the request to the PAY. REST API.</p>
+<div class="fragment"><div class="line">$response = $app-&gt;setRequest(<span class="stringliteral">&#39;&lt;REQUEST CLASS NAME OR ALIAS&gt;&#39;</span>, [</div>
+<div class="line">        $args</div>
+<div class="line">    ])</div>
+<div class="line">    -&gt;run()</div>
+<div class="line">;</div>
+</div><!-- fragment --><p>The request names and/or aliases can be found in the Request's ConfigProvider (<code><a class="el" href="namespacePayNL.html">PayNL</a>\Sdk\Request\ConfigProvider::getRequestConfig()</code>).</p>
+<p><b>Examples</b>: For more information see the <code>samples</code> folder.</p>
+<h1><a class="anchor" id="autotoc_md8"></a>
+Functions</h1>
+<p>Besides classes the SDK also provide some functions which can be used for implementation easiness:</p><ul>
+<li>paynl_split_address;</li>
+<li>paynl_calc_vat_percentage;</li>
+<li>paynl_determine_vat_class</li>
+</ul>
+<p>_Note: for more information see the files in the Resources\functions folder of the SDK._ </p>
+</div></div><!-- PageDoc -->
 </div><!-- contents -->
+<div class="ttc" id="aclassPayNL_1_1Sdk_1_1Application_1_1Application_html_a0d4bbdf80bc0e90983c578eb200ef2f4"><div class="ttname"><a href="classPayNL_1_1Sdk_1_1Application_1_1Application.html#a0d4bbdf80bc0e90983c578eb200ef2f4">PayNL\Sdk\Application\Application\init</a></div><div class="ttdeci">static init($configuration=[])</div><div class="ttdef"><b>Definition:</b> Application.php:79</div></div>
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Sep 17 2020 12:02:07 for PAY. SDK by&#160;<a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.0
+Generated on Fri Sep 18 2020 16:28:40 for PAY. SDK by&#160;<a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.0
 </small></address>
 </body>
 </html>

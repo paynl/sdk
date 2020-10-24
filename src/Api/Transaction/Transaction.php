@@ -14,5 +14,5 @@ class Transaction extends Api
     /**
      * @var int the version of the api
      */
-    protected $version = 12;
+    protected $version = 14;
 }

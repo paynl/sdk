@@ -68,7 +68,7 @@ class Api
         $curl->setOpt(CURLOPT_SSL_VERIFYPEER, Config::getVerifyPeer());
 
         $result = $curl->post($uri, $data);
-        
+
         if (isset($result->status) && $result->status === 'FALSE') {
             throw new Error\Api($result->error);
         }      

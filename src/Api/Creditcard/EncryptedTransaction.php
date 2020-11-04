@@ -1,6 +1,6 @@
 <?php
 
-namespace Paynl\Api\Transaction;
+namespace Paynl\Api\Creditcard;
 
 use Paynl\Api\Api;
 

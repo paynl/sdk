@@ -1,5 +1,5 @@
 <?php
-namespace Paynl\Api\Encryption;
+namespace Paynl\Api\Creditcard;
 
 use Paynl\Api\Api;
 
@@ -17,6 +17,6 @@ class PublicKeys extends Api
      */
     public function doRequest($endpoint = null, $version = null)
     {
-        return parent::doRequest('encryption/publicKeys');
+        return parent::doRequest('creditcard/publicKeys');
     }
 }

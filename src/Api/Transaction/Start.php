@@ -253,7 +253,7 @@ class Start extends Transaction
      *  language
      *  accessCode
      *  gender (M or F)
-     *  dob (DD-MM-YYYY)
+     *  birthDate (DD-MM-YYYY)
      *  phoneNumber
      *  emailAddress
      *  bankAccount
@@ -264,18 +264,21 @@ class Start extends Transaction
      *  address => [
      *      streetName
      *      streetNumber
+     *      streetNumberExtension
      *      zipCode
      *      city
      *      countryCode
      *  ]
      *  invoiceAddress => [
      *      initials
-     *      lastname
+     *      lastName
      *      streetName
      *      streetNumber
+     *      streetNumberExtension
      *      zipCode
      *      city
      *      countryCode
+     *      gender
      *  ]
      * ]
      *

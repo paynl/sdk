@@ -663,37 +663,4 @@ class Transaction
 
         return new Result\QRPayment($result);
     }
-
-    /**
-     * Attempt to capture an encrypted transaction.
-     *
-     * @param string $transactionId
-     * @param string $payload
-     *
-     * @return Result\Details
-     * @throws Error\Api
-     * @throws Error\Error
-     * @throws Error\Required\ApiToken
-     */
-    public static function captureWithEncryptedData(
-        $transactionId,
-        $payload
-    )
-    {
-        $api = new Api\EncryptedTransaction();
-        $api->setTransactionId($transactionId);
-        $api->setPayload($payload);
-
-        try {
-            return $api->doRequest();
-        } catch (\Exception $e) {
-            return array(
-                'type' => 'error',
-                'message' => $e->getMessage(),
-                'file' => $e->getFile(),
-                'line' => $e->getLine(),
-                'trace' => $e->getTraceAsString()
-            );
-        }
-    }
 }

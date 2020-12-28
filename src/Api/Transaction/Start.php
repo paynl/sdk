@@ -253,7 +253,7 @@ class Start extends Transaction
      *  language
      *  accessCode
      *  gender (M or F)
-     *  birthDate (DD-MM-YYYY)
+     *  dob (DD-MM-YYYY)
      *  phoneNumber
      *  emailAddress
      *  bankAccount

@@ -264,18 +264,21 @@ class Start extends Transaction
      *  address => [
      *      streetName
      *      streetNumber
+     *      streetNumberExtension
      *      zipCode
      *      city
      *      countryCode
      *  ]
      *  invoiceAddress => [
      *      initials
-     *      lastname
+     *      lastName
      *      streetName
      *      streetNumber
+     *      streetNumberExtension
      *      zipCode
      *      city
      *      countryCode
+     *      gender
      *  ]
      * ]
      *

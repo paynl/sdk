@@ -17,6 +17,6 @@ class PublicKeys extends Api
      */
     public function doRequest($endpoint = null, $version = null)
     {
-        return parent::doRequest('creditcard/publicKeys');
+        return parent::doRequest('creditcard/cseGetPublicKeys');
     }
 }

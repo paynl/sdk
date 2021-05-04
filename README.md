@@ -48,18 +48,18 @@ Set the configuration
 require __DIR__ . '/vendor/autoload.php';
 
 // Replace tokenCode apitoken and serviceId with your own.
-\Paynl\Config::setTokenCode('AT-1234-5678');
-\Paynl\Config::setApiToken('e41f83b246b706291ea9ad798ccfd9f0fee5e0ab');
-\Paynl\Config::setServiceId('SL-3490-4320');
+\Paynl\Config::setTokenCode('AT-####-####');
+\Paynl\Config::setApiToken('****************************************');
+\Paynl\Config::setServiceId('SL-####-####');
 ```
 
 Get available payment methods
 ```php
 require __DIR__ . '/vendor/autoload.php';
 
-\Paynl\Config::setTokenCode('AT-1234-5678');
-\Paynl\Config::setApiToken('e41f83b246b706291ea9ad798ccfd9f0fee5e0ab');
-\Paynl\Config::setServiceId('SL-3490-4320');
+\Paynl\Config::setTokenCode('AT-####-####');
+\Paynl\Config::setApiToken('****************************************');
+\Paynl\Config::setServiceId('SL-####-####');
 
 $paymentMethods = \Paynl\Paymentmethods::getList();
 var_dump($paymentMethods);
@@ -69,9 +69,9 @@ Start a transaction
 ```php
 require __DIR__ . '/vendor/autoload.php';
 
-\Paynl\Config::setTokenCode('AT-1234-5678');
-\Paynl\Config::setApiToken('e41f83b246b706291ea9ad798ccfd9f0fee5e0ab');
-\Paynl\Config::setServiceId('SL-3490-4320');
+\Paynl\Config::setTokenCode('AT-####-####');
+\Paynl\Config::setApiToken('****************************************');
+\Paynl\Config::setServiceId('SL-####-####');
 
 $result = \Paynl\Transaction::start(array(
     // required
@@ -145,8 +145,8 @@ On the return page, redirect the user to the thank you page or back to checkout
 ```php
 require __DIR__ . '/vendor/autoload.php';
 
-\Paynl\Config::setTokenCode('AT-1234-5678');
-\Paynl\Config::setApiToken('e41f83b246b706291ea9ad798ccfd9f0fee5e0ab');
+\Paynl\Config::setTokenCode('AT-####-####');
+\Paynl\Config::setApiToken('****************************************');
 
 $transaction = \Paynl\Transaction::getForReturn();
 
@@ -164,8 +164,8 @@ On the exchange script, process the order
 ```php
 require __DIR__ . '/vendor/autoload.php';
 
-\Paynl\Config::setTokenCode('AT-1234-5678');
-\Paynl\Config::setApiToken('e41f83b246b706291ea9ad798ccfd9f0fee5e0ab');
+\Paynl\Config::setTokenCode('AT-####-####');
+\Paynl\Config::setApiToken('****************************************');
 
 $transaction = \Paynl\Transaction::getForExchange();
 

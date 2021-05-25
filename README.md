@@ -47,7 +47,7 @@ Set the configuration
 ```php
 require __DIR__ . '/vendor/autoload.php';
 
-// Replace tokenCode apitoken and serviceId with your own.
+# Replace tokenCode apitoken and serviceId with your own.
 \Paynl\Config::setTokenCode('AT-####-####');
 \Paynl\Config::setApiToken('****************************************');
 \Paynl\Config::setServiceId('SL-####-####');
@@ -74,11 +74,11 @@ require __DIR__ . '/vendor/autoload.php';
 \Paynl\Config::setServiceId('SL-####-####');
 
 $result = \Paynl\Transaction::start(array(
-    // required
+    # Required
         'amount' => 10.00,
         'returnUrl' => Paynl\Helper::getBaseUrl().'/return.php',
 
-    // optional
+    # Optional
     	'currency' => 'EUR',
         'exchangeUrl' => Paynl\Helper::getBaseUrl().'/exchange.php',
         'paymentMethod' => 10,
@@ -134,10 +134,10 @@ $result = \Paynl\Transaction::start(array(
         ),
     ));
 
-// Save this transactionid and link it to your order
+# Save this transactionid and link it to your order
 $transactionId = $result->getTransactionId();
 
-// Redirect the customer to this url to complete the payment
+# Redirect the customer to this url to complete the payment
 $redirect = $result->getRedirectUrl();
 ```
 
@@ -150,13 +150,11 @@ require __DIR__ . '/vendor/autoload.php';
 
 $transaction = \Paynl\Transaction::getForReturn();
 
-//manual transfer transactions are always pending when the user is returned
-if( $transaction->isPaid() || $transaction->isPending()){
-    // redirect to thank you page
-    
+# Manual transfer transactions are always pending when the user is returned
+if( $transaction->isPaid() || $transaction->isPending()) {
+   # Redirect to thank you page
 } elseif($transaction->isCanceled()) {
-    // redirect back to checkout
-   
+   # Redirect back to checkout
 }
 ```
 
@@ -167,19 +165,19 @@ require __DIR__ . '/vendor/autoload.php';
 \Paynl\Config::setTokenCode('AT-####-####');
 \Paynl\Config::setApiToken('****************************************');
 
-$transaction = \Paynl\Transaction::getForExchange();
+$transaction = \Paynl\Transaction::status();
 
-if($transaction->isPaid() || $transaction->isAuthorized()){
-    // process the payment
-} elseif($transaction->isCanceled()){
-    // payment canceled, restock items
+if($transaction->isPaid() || $transaction->isAuthorized()) {
+    # Process the payment
+} elseif($transaction->isCanceled()) {
+    # Payment canceled, restock items
 }
 
-// always start your response with TRUE|
+# Always respond with TRUE|
 echo "TRUE| ";
 
-// Optionally you can send a message after TRUE|, you can view these messages in the logs.
-// https://admin.pay.nl/logs/payment_state
+# Optionally you can send a message after TRUE|, you can view these messages in the logs.
+# https://admin.pay.nl/logs/payment_state
 echo ($transaction->isPaid() || $transaction->isAuthorized())?'Paid':'Not paid';
 
 

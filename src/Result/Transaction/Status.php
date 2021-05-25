@@ -111,6 +111,8 @@ class Status extends Result
     }
 
     /**
+     * Checks whether the payment is being verified
+     *
      * @return bool
      */
     public function isBeingVerified()
@@ -134,6 +136,11 @@ class Status extends Result
         return $this->data['paymentDetails']['identifierPublic'];
     }
 
+    /**
+     * Checks whether the payment is authorized
+     *
+     * @return bool
+     */
     public function isAuthorized()
     {
         return $this->data['paymentDetails']['state'] == 95;
@@ -164,6 +171,8 @@ class Status extends Result
     }
 
     /**
+     * Checks whether the payment is pending
+     *
      * @return bool
      */
     public function isPending()

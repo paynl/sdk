@@ -165,7 +165,7 @@ require __DIR__ . '/vendor/autoload.php';
 \Paynl\Config::setTokenCode('AT-####-####');
 \Paynl\Config::setApiToken('****************************************');
 
-$transaction = \Paynl\Transaction::status();
+$transaction = \Paynl\Transaction::status($transactionId);
 
 if($transaction->isPaid() || $transaction->isAuthorized()) {
     # Process the payment

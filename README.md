@@ -148,7 +148,7 @@ require __DIR__ . '/vendor/autoload.php';
 \Paynl\Config::setTokenCode('AT-####-####');
 \Paynl\Config::setApiToken('****************************************');
 
-$transaction = \Paynl\Transaction::getForReturn();
+$transaction = \Paynl\Transaction::status($transactionId);
 
 # Manual transfer transactions are always pending when the user is returned
 if( $transaction->isPaid() || $transaction->isPending()) {

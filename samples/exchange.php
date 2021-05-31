@@ -23,7 +23,7 @@ try {
     $transactionId = $_REQUEST['order_id'];
     $action = $_REQUEST['action'];
 
-    if($action == 'pending') {
+    if (\Paynl\Config::getIgnoreOnPending() && $action == 'pending') {
         die("TRUE| Ignoring pending");
     }
 

@@ -20,7 +20,14 @@ require_once '../vendor/autoload.php';
 require_once 'config.php';
 
 try {
-    $transaction = \Paynl\Transaction::getForExchange();
+    $transactionId = $_REQUEST['order_id'];
+    $action = $_REQUEST['action'];
+
+    if (\Paynl\Config::getIgnoreOnPending() && $action == 'pending') {
+        die("TRUE| Ignoring pending");
+    }
+
+    $transaction = \Paynl\Transaction::status($transactionId);
     if ($transaction->isBeingVerified()) {
         // here you can do your own checks and approve or decline the order yourself
         // the script is stopped after approving or declining, after which a new exchange call will follow.

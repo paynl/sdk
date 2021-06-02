@@ -28,6 +28,11 @@ class Config
     private static $serviceId;
 
     /**
+     * @var
+     */
+    private static $ignoreOnPending = true;
+
+    /**
      * @var string The base URL for the Pay.nl API.
      */
     private static $apiBase = 'https://rest-api.pay.nl';
@@ -82,6 +87,21 @@ class Config
         self::$verifyPeer = (boolean)$verifyPeer;
     }
 
+    /**
+     * @param bool $pending
+     */
+    public static function setIgnoreOnPending($pending)
+    {
+        self::$ignoreOnPending = (boolean)$pending;
+    }
+
+    /**
+     * @return bool
+     */
+    public static function getIgnoreOnPending()
+    {
+        return self::$ignoreOnPending;
+    }
 
     /**
      * @param string $apiBase

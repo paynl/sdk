@@ -20,12 +20,11 @@ require_once '../vendor/autoload.php';
 require_once 'config.php';
 
 try {
-    $transaction = \Paynl\Transaction::getForReturn();
+    $transactionId = $_REQUEST['orderId'];
+    $transaction = \Paynl\Transaction::status($transactionId);
 
-
-    if ($transaction->isPaid() ||
-        $transaction->isPending() //manual transfer transactions are always pending when the user is returned
-    ) {
+    # Manual transfer transactions are always pending when the user is returned
+    if ($transaction->isPaid() || $transaction->isPending()) {
         // redirect to thank you page
         echo "Thank you<br /><a href='transaction/start.php'>New payment</a>";
         if ($transaction->isPaid()) {

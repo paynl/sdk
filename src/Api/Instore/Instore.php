@@ -14,5 +14,5 @@ class Instore extends Api
     /**
      * @inheritdoc
      */
-    protected $version = 2;
+    protected $version = 3;
 }

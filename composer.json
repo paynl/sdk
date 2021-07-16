@@ -1,7 +1,7 @@
 {
   "name": "paynl/sdk",
   "require": {
-    "php-curl-class/php-curl-class": "^8.3",
+    "php-curl-class/php-curl-class": "^8.3||^9.0",
     "ext-json": "*",
     "ext-curl": "*"
   },

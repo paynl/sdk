@@ -13,6 +13,7 @@ class Info extends Transaction
 {
     protected $apiTokenRequired = true;
 
+    protected $version = 12;
     /**
      * @var string
      */

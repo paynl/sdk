@@ -11,6 +11,7 @@ use Paynl\Error;
  */
 class Capture extends Transaction
 {
+    protected $version = 12;
     protected $apiTokenRequired = true;
 
     /**

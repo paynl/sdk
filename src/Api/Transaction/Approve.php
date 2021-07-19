@@ -17,6 +17,7 @@ class Approve extends Transaction
      * @var string
      */
     private $transactionId;
+    protected $version = 12;
 
     /**
      * Set the transactionId

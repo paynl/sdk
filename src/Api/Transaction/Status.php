@@ -6,6 +6,7 @@ use Paynl\Error;
 
 class Status extends Transaction
 {
+    protected $version = 12;
     protected $apiTokenRequired = true;
 
     /**

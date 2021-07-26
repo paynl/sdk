@@ -12,7 +12,7 @@ use Paynl\Error;
 class AddRecurring extends Transaction
 {
     protected $apiTokenRequired = true;
-
+    protected $version = 12;
     /**
      * @var string
      */

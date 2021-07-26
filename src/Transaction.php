@@ -363,7 +363,7 @@ class Transaction
         $input = file_get_contents('php://input');
         $xml = simplexml_load_string($input);
 
-        return self::get($xml->order_id);
+        return self::get((string) $xml->order_id);
     }
 
     /**

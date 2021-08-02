@@ -222,6 +222,9 @@ class Transaction
             if (isset($options['invoiceAddress']['gender'])) {
                 $invoiceAddress['gender'] = $options['invoiceAddress']['gender'];
             }
+            if (isset($options['invoiceAddress']['regionCode'])) {
+                $invoiceAddress['regionCode'] = $options['invoiceAddress']['regionCode'];
+            }
 
             $enduser['invoiceAddress'] = $invoiceAddress;
         }

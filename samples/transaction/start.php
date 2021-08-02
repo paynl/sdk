@@ -103,7 +103,8 @@ try {
             'houseNumberExtension' => 'A',
             'zipCode' => '5678CD',
             'city' => 'ITest',
-            'country' => 'NL',
+            'country' => 'CA',
+            'regionCode' => 'CA-NL',
         ),
         'object' => 'Object', // 64 characters max
 

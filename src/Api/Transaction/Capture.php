@@ -30,6 +30,11 @@ class Capture extends Transaction
     private $tracktrace;
 
     /**
+     * @var array
+     */
+    private $products;
+
+    /**
      * Set the transactionId
      *
      * @param string $transactionId
@@ -60,6 +65,16 @@ class Capture extends Transaction
     }
 
     /**
+     * Set the products
+     *
+     * @param array $products
+     */
+    public function setProducts($products)
+    {
+        $this->products = $products;
+    }
+
+    /**
      * @inheritdoc
      * @throws Error\Required TransactionId is required
      */
@@ -77,6 +92,10 @@ class Capture extends Transaction
 
         if(!empty($this->tracktrace)){
             $this->data['tracktrace'] = $this->tracktrace;
+        }
+
+        if (!empty($this->products)) {
+            $this->data['products'] = $this->products;
         }
 
         return parent::getData();

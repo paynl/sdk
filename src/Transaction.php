@@ -512,13 +512,14 @@ class Transaction
      * @param string $transactionId
      * @param string|null $amount
      * @param string|null $tracktrace
+     * @param array|null $products
      * @return bool
      * @throws Error\Api
      * @throws Error\Error
      * @throws Error\Required\ApiToken
      * @throws Error\Required\ServiceId
      */
-    public static function capture($transactionId, $amount = null , $tracktrace = null )
+    public static function capture($transactionId, $amount = null , $tracktrace = null, $products = null)
     {
         $api = new Api\Capture();
 
@@ -528,6 +529,10 @@ class Transaction
 
         if (isset($tracktrace)) {
             $api->setTracktrace($tracktrace);
+        }
+
+        if (!empty($products)) {
+            $api->setProducts($products);
         }
 
         $api->setTransactionId($transactionId);

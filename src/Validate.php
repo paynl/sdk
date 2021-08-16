@@ -7,7 +7,7 @@ use \Paynl\Api\Validate\IsPayServerIp as Api;
 /**
  * Description of Paymentmethods
  *
- * @author Andy Pieters <andy@andypieters.nl>
+ * @author Andy Pieters <andy@pay.nl>
  */
 class Validate
 {

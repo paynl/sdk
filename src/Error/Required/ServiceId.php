@@ -7,7 +7,7 @@ use \Paynl\Error\Required;
 /**
  * Thrown when serviceId is missing
  *
- * @author Andy Pieters <andy@andypieters.nl>
+ * @author Andy Pieters <andy@pay.nl>
  */
 class ServiceId extends Required
 {

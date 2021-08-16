@@ -10,7 +10,7 @@ use Paynl\Helper;
 /**
  * Description of Api
  *
- * @author Andy Pieters <andy@andypieters.nl>
+ * @author Andy Pieters <andy@pay.nl>
  */
 class Api
 {

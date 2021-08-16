@@ -8,7 +8,7 @@ use Paynl\Config;
 /**
  * Description of GetService
  *
- * @author Andy Pieters <andy@andypieters.nl>
+ * @author Andy Pieters <andy@pay.nl>
  */
 class GetService extends Transaction
 {

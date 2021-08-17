@@ -7,7 +7,7 @@ use Curl\Curl;
 /**
  * Description of Pay
  *
- * @author Andy Pieters <andy@andypieters.nl>
+ * @author Andy Pieters <andy@pay.nl>
  */
 class Config
 {

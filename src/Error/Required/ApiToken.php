@@ -7,7 +7,7 @@ use \Paynl\Error\Required;
 /**
  * thrown when Apitoken is missing
  *
- * @author Andy Pieters <andy@andypieters.nl>
+ * @author Andy Pieters <andy@pay.nl>
  */
 class ApiToken extends Required
 {

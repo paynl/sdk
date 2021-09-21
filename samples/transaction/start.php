@@ -23,7 +23,8 @@ try {
         'extra3' => 'ext3',
         'transferData' => array(
             'transferData1' => 'transferData1',
-            'transferData2' => 'transferData2'
+            'transferData2' => 'transferData2',         
+            'gaClientId' => '123456789.1234567890'
         ),
         'ipaddress' => '10.0.0.1',
         'invoiceDate' => new \DateTime('now'),

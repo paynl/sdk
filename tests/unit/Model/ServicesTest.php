@@ -157,6 +157,6 @@ class ServicesTest extends UnitTest
         // offsetUnset
         unset($this->model[$firstService->getId()]);
         verify($this->model)->count(1);
-        verify($this->model)->hasntKey($firstService->getId());
+        verify($this->model)->hasNotKey($firstService->getId());
     }
 }

@@ -172,7 +172,7 @@ class RefundedTransactionsTest extends UnitTest
         // offsetUnset
         unset($this->model[0]);
         verify($this->model)->count(1);
-        verify($this->model)->hasntKey(0);
+        verify($this->model)->hasNotKey(0);
     }
 
     /**

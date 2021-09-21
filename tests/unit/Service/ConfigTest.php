@@ -48,7 +48,7 @@ class ConfigTest extends UnitTest
         verify($config)->hasKey('invokables');
         verify($config)->hasKey('mapping');
         verify($config)->hasKey('services');
-        verify($config)->hasntKey('foo');
+        verify($config)->hasNotKey('foo');
     }
 
     /**

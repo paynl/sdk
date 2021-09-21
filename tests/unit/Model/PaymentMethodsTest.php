@@ -170,7 +170,7 @@ class PaymentMethodsTest extends UnitTest
         verify(isset($this->model[$paymentProfileIDeal->getId()]))->true();
         $nonExistingKey = 'non_existing_key';
         verify($paymentProfileIDeal->getId())->notEquals($nonExistingKey);
-        verify($this->model)->hasntKey($nonExistingKey);
+        verify($this->model)->hasNotKey($nonExistingKey);
 
         // offsetGet
         verify($this->model[$paymentProfileIDeal->getId()])->isInstanceOf(PaymentMethod::class);
@@ -178,7 +178,7 @@ class PaymentMethodsTest extends UnitTest
 
         // offsetSet
         $paymentProfilePayPal = $this->getPayPal();
-        verify($this->model)->hasntKey($paymentProfilePayPal->getId());
+        verify($this->model)->hasNotKey($paymentProfilePayPal->getId());
         $this->model[$paymentProfilePayPal->getId()] = $this->getPayPal();
         verify($this->model)->hasKey($paymentProfilePayPal->getId());
         verify($this->model)->count(2);
@@ -186,6 +186,6 @@ class PaymentMethodsTest extends UnitTest
         // offsetUnset
         unset($this->model[$paymentProfileIDeal->getId()]);
         verify($this->model)->count(1);
-        verify($this->model)->hasntKey($paymentProfileIDeal->getId());
+        verify($this->model)->hasNotKey($paymentProfileIDeal->getId());
     }
 }

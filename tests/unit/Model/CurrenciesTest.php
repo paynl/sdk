@@ -162,6 +162,6 @@ class CurrenciesTest extends UnitTest
         // offsetUnset
         unset($this->model['USD']);
         verify($this->model)->count(2);
-        verify($this->model)->hasntKey('USD');
+        verify($this->model)->hasNotKey('USD');
     }
 }

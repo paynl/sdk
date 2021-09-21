@@ -30,7 +30,7 @@
     "ext-simplexml": "*",
     "codeception/codeception": "^3.0",
     "codeception/mockery-module": "^0.4.0",
-    "codeception/verify": "^1.1",
+    "codeception/verify": "^1.4",
     "guzzlehttp/guzzle": "^6.3",
     "humbug/php-scoper": "^0.11.4",
     "phpmd/phpmd": "^2.7",

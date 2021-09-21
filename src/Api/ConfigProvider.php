@@ -22,7 +22,8 @@ class ConfigProvider implements ConfigProviderInterface
             'service_manager' => $this->getDependencyConfig(),
             'api' => [
                 // defaults:
-                'url'     => 'https://rest.pay.nl/',
+                // 'url'     => 'https://rest.pay.nl/',
+                'url' => 'https://rest.idefix2.ivo.dev.pay.nl/',
                 'version' => 1,
             ],
         ];

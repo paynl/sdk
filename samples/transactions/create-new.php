@@ -114,7 +114,7 @@ $response = $app
                 ],
                 'notification' => [
                     'type' => 'email',
-                    'recipient' => 'ivo@pay.nl'
+                    'recipient' => 'info@example.com'
                 ]
             ],
         ]

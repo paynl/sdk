@@ -131,8 +131,8 @@ class OptionsAwareTraitTest extends UnitTest
         $options = $this->mockedTrait->getOptions();
         verify($options)->array();
         verify($options)->count(2);
-        verify($options)->hasntKey('foo');
-        verify($options)->hasntKey('baz');
+        verify($options)->hasNotKey('foo');
+        verify($options)->hasNotKey('baz');
         verify($options)->hasKey('grault');
         verify($options['grault'])->string();
         verify($options['grault'])->equals('garply');

@@ -67,13 +67,13 @@ class AbstractTransformerTest extends UnitTest
         verify($output)->hasKey('key');
         verify($output['key'])->string();
         verify($output['key'])->equals('value');
-        verify($output)->hasntKey('key_with_empty_value');
+        verify($output)->hasNotKey('key_with_empty_value');
         verify($output)->hasKey('recursive_key');
         verify($output['recursive_key'])->array();
         verify($output['recursive_key'])->hasKey('i_key');
         verify($output['recursive_key']['i_key'])->string();
         verify($output['recursive_key']['i_key'])->equals('value');
-        verify($output['recursive_key'])->hasntKey('i_key_empty');
+        verify($output['recursive_key'])->hasNotKey('i_key_empty');
     }
 
     /**
@@ -96,13 +96,13 @@ class AbstractTransformerTest extends UnitTest
         verify($output)->hasKey('key');
         verify($output['key'])->string();
         verify($output['key'])->equals('value');
-        verify($output)->hasntKey('key_with_empty_value');
+        verify($output)->hasNotKey('key_with_empty_value');
         verify($output)->hasKey('recursive_key');
         verify($output['recursive_key'])->array();
         verify($output['recursive_key'])->hasKey('i_key');
         verify($output['recursive_key']['i_key'])->string();
         verify($output['recursive_key']['i_key'])->equals('value');
-        verify($output['recursive_key'])->hasntKey('i_key_empty');
+        verify($output['recursive_key'])->hasNotKey('i_key_empty');
     }
 
     /**

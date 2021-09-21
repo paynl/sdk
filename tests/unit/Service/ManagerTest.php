@@ -199,7 +199,7 @@ class ManagerTest extends UnitTest
         verify($aliases)->count(1);
         verify($aliases)->hasKey('dummy');
         verify($aliases['dummy'])->equals(Dummy::class);
-        verify($aliases)->hasntKey(Dummy::class);
+        verify($aliases)->hasNotKey(Dummy::class);
     }
 
     /**
@@ -219,7 +219,7 @@ class ManagerTest extends UnitTest
         verify($factories)->count(1);
         verify($factories)->hasKey(Dummy::class);
         verify($factories)->contains(InvokableFactory::class);
-        verify($factories)->hasntKey('dummy');
+        verify($factories)->hasNotKey('dummy');
     }
 
     /**

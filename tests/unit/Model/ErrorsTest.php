@@ -139,7 +139,7 @@ class ErrorsTest extends UnitTest
         // offsetUnset
         unset($this->errors['error_1']);
         verify($this->errors)->count(3);
-        verify($this->errors)->hasntKey('error_1');
+        verify($this->errors)->hasNotKey('error_1');
     }
 
     /**

@@ -172,7 +172,7 @@ class ProductsTest extends UnitTest
         // offsetUnset
         unset($this->model['foo']);
         verify($this->model)->count(1);
-        verify($this->model)->hasntKey('foo');
+        verify($this->model)->hasNotKey('foo');
     }
 
     /**

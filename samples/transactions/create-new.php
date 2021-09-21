@@ -16,7 +16,7 @@ $response = $app
         null,
         [
             'Transaction' => [
-                'serviceId' => 'SL-5796-8370',
+                'serviceId' => 'SL-3490-4320',
                 'description' => 'Test description',
                 'merchantReference' => 'Some reference',
                 'language' => 'EN',
@@ -39,7 +39,7 @@ $response = $app
                         'dataaaaa'
                     ],
                 ],
-                // 'domainId' => 'WU-5227-3313',
+                'domainId' => 'WU-5227-3313',
                 'integration' => [
                     'testMode' => IntegrationModel::TEST_MODE_ON,
                 ],

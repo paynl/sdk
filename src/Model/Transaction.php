@@ -47,6 +47,7 @@ class Transaction implements
     Member\AmountAwareInterface,
     Member\PaymentMethodAwareInterface,
     Member\StatisticsAwareInterface,
+    Member\NotificationAwareInterface,
     Member\CreatedAtAwareInterface,
     JsonSerializable
 {
@@ -54,6 +55,7 @@ class Transaction implements
     use Member\AmountAwareTrait;
     use Member\PaymentMethodAwareTrait;
     use Member\StatisticsAwareTrait;
+    use Member\NotificationAwareTrait;
     use Member\CreatedAtAwareTrait;
     use JsonSerializeTrait;
 

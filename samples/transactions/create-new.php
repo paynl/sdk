@@ -112,6 +112,10 @@ $response = $app
                     'extra2' => 'Something extra',
                     'extra3' => '',
                 ],
+                'notification' => [
+                    'type' => 'email',
+                    'recipient' => 'info@example.com'
+                ]
             ],
         ]
     )->run();

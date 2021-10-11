@@ -43,9 +43,9 @@ class Config
     private static $apiVersion = 5;
 
     /**
-     * @var bool Force api version if it is set trough the setApiVersion function.
+     * @var bool Force API version if it is set through the setApiVersion function.
      */
-    private static $hasSetApiVersion = false;
+    private static $forceApiVersion = false;
 
     private static $curl;
 
@@ -177,20 +177,20 @@ class Config
     }
 
     /**
-     * @return bool Check if API version has been set.
+     * @return bool Force the use of the set API version.
      */
-    public static function getHasSetApiVersion()
+    public static function forceApiVersion()
     {
-        return self::$hasSetApiVersion;
+        return self::$forceApiVersion;
     }
 
     /**
      * @param string $apiVersion The API version to use for requests.
      */
-    public static function setApiVersion($apiVersion)
+    public static function setApiVersion($apiVersion, $forceUse = false)
     {
         self::$apiVersion = (int) $apiVersion;
-        self::$hasSetApiVersion = true;
+        self::$forceApiVersion = $forceUse;
     }
 
     /**

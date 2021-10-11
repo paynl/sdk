@@ -49,7 +49,7 @@ class Api
             $version = $this->version;
         }
 
-        if(Config::getHasSetApiVersion()){
+        if(Config::forceApiVersion()){
             $version = Config::getApiVersion();
         }
 

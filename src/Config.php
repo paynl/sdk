@@ -43,7 +43,7 @@ class Config
     private static $apiVersion = 5;
 
     /**
-     * @var int Force api version if it is set trough the setApiVersion function.
+     * @var bool Force api version if it is set trough the setApiVersion function.
      */
     private static $hasSetApiVersion = false;
 

@@ -177,7 +177,7 @@ class Config
     }
 
     /**
-     * @return string Check if API version has been set.
+     * @return bool Check if API version has been set.
      */
     public static function getHasSetApiVersion()
     {

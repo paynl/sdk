@@ -48,7 +48,7 @@ class Api
         if ($version === null) {
             $version = $this->version;
         }
-
+      
         $auth = $this->getAuth();
         $data = $this->getData();
         $uri = Config::getApiUrl($endpoint, (int) $version);

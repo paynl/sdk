@@ -42,6 +42,11 @@ class Config
      */
     private static $apiVersion = 5;
 
+    /**
+     * @var bool Boolean to force using the API version set by this config.
+     */
+    private static $forceApiVersion = false;
+
     private static $curl;
 
     /**
@@ -169,14 +174,16 @@ class Config
     public static function getApiVersion()
     {
         return self::$apiVersion;
-    }
+    }   
 
     /**
      * @param string $apiVersion The API version to use for requests.
+     * @param bool $forceUse Set to true if you want to force using this version.
      */
-    public static function setApiVersion($apiVersion)
+    public static function setApiVersion($apiVersion, $forceUse = false)
     {
         self::$apiVersion = (int) $apiVersion;
+        self::$forceApiVersion = $forceUse;
     }
 
     /**
@@ -187,9 +194,9 @@ class Config
      */
     public static function getApiUrl($endpoint, $version = null)
     {
-        if ($version === null) {
+        if ($version === null || self::$forceApiVersion) {
             $version = self::$apiVersion;
-        }
+        }        
         return self::$apiBase . '/v' . $version . '/' . $endpoint . '/json';
     }
 

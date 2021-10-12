@@ -201,9 +201,9 @@ class Config
      */
     public static function getApiUrl($endpoint, $version = null)
     {
-        if ($version === null) {
+        if ($version === null || self::$forceApiVersion) {
             $version = self::$apiVersion;
-        }
+        }        
         return self::$apiBase . '/v' . $version . '/' . $endpoint . '/json';
     }
 

@@ -174,15 +174,7 @@ class Config
     public static function getApiVersion()
     {
         return self::$apiVersion;
-    }
-
-    /**
-     * @return bool Force the use of the set API version.
-     */
-    public static function forceApiVersion()
-    {
-        return self::$forceApiVersion;
-    }
+    }   
 
     /**
      * @param string $apiVersion The API version to use for requests.

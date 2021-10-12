@@ -43,7 +43,7 @@ class Config
     private static $apiVersion = 5;
 
     /**
-     * @var bool Force API version if it is set through the setApiVersion function.
+     * @var bool Boolean to force using the API version set by this config.
      */
     private static $forceApiVersion = false;
 
@@ -178,6 +178,7 @@ class Config
 
     /**
      * @param string $apiVersion The API version to use for requests.
+     * @param false $forceUse Set to true if you want to force using this version.
      */
     public static function setApiVersion($apiVersion, $forceUse = false)
     {

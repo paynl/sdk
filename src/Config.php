@@ -178,7 +178,7 @@ class Config
 
     /**
      * @param string $apiVersion The API version to use for requests.
-     * @param false $forceUse Set to true if you want to force using this version.
+     * @param bool $forceUse Set to true if you want to force using this version.
      */
     public static function setApiVersion($apiVersion, $forceUse = false)
     {

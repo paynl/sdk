@@ -38,6 +38,11 @@ class Config
     private static $apiBase = 'https://rest-api.pay.nl';
 
     /**
+     * @var string The base URL for the Pay.nl API.
+     */
+    private static $paymentApiBase = 'https://payment.pay.nl';
+
+    /**
      * @var int The version of the Pay.nl API to use for requests.
      */
     private static $apiVersion = 5;
@@ -114,6 +119,14 @@ class Config
     public static function setApiBase($apiBase)
     {
         self::$apiBase = $apiBase;
+    }
+
+    /**
+     * @param string $paymentApiBase
+     */
+    public static function setPaymentApiBase($paymentApiBase)
+    {
+        self::$paymentApiBase = $paymentApiBase;
     }
 
     /**
@@ -198,6 +211,21 @@ class Config
             $version = self::$apiVersion;
         }        
         return self::$apiBase . '/v' . $version . '/' . $endpoint . '/json';
+    }
+
+    /**
+     * @param string $endpoint The endpoint of the payment API, for example Transaction/Start
+     * @param int|null $version
+     *
+     * @return string The url to the api
+     */
+    public static function getPaymentApiUrl($endpoint, $version = null)
+    {
+        if ($version === null || self::$forceApiVersion) {
+            $version = self::$apiVersion;
+        }
+
+        return self::$paymentApiBase . '/v' . $version . '/' . $endpoint . '/json';
     }
 
     /**

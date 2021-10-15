@@ -2,14 +2,12 @@
 
 namespace Paynl\Api\Creditcard;
 
-use Paynl\Api\Api;
+use Paynl\Api\PaymentApi;
 
 /**
- * Encrypted transaction
- *
  * @author Michael Roterman <michael@pay.nl>
  */
-class CseTdsStatus extends Api
+class PaymentAuthenticationStatus extends PaymentApi
 {
     /**
      * @var int the version of the api
@@ -26,7 +24,7 @@ class CseTdsStatus extends Api
      */
     public function doRequest($endpoint = null, $version = null)
     {
-        return parent::doRequest('creditcard/cseTdsStatus');
+        return parent::doRequest('Payment/getAuthenticationStatus');
     }
 
     /**

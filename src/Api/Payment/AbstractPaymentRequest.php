@@ -1,15 +1,14 @@
 <?php
 
-namespace Paynl\Api\Creditcard;
+namespace Paynl\Api\Payment;
 
 use Paynl\Api\Api;
+use Paynl\Api\PaymentApi;
 
 /**
- * Encrypted transaction
- *
  * @author Michael Roterman <michael@pay.nl>
  */
-abstract class AbstractCseRequest extends Api
+abstract class AbstractPaymentRequest extends PaymentApi
 {
     private $orderId;
     private $payload;

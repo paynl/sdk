@@ -5,7 +5,6 @@ namespace Paynl\Api;
 use Curl\Curl;
 use Paynl\Config;
 use Paynl\Error;
-use Paynl\Helper;
 
 /**
  * @author Michael Roterman <michael@pay.nl>
@@ -26,6 +25,7 @@ class PaymentApi extends Api
      * @var bool Is the ApiToken required for this API
      */
     protected $apiTokenRequired = false;
+
     /**
      * @var bool Is the serviceId required for this API
      */
@@ -53,6 +53,7 @@ class PaymentApi extends Api
 
         /** @var Curl $curl */
         $curl = Config::getCurl();
+        $curl->setHeader('Content-Type', 'application/json');
 
         if (Config::getCAInfoLocation()) {
             // set a custom CAInfo file
@@ -64,7 +65,6 @@ class PaymentApi extends Api
         }      
         
         $curl->setOpt(CURLOPT_SSL_VERIFYPEER, Config::getVerifyPeer());
-
         $result = $curl->post($uri, $data);
 
         if (isset($result->status) && $result->status === 'FALSE') {

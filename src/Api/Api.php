@@ -90,7 +90,7 @@ class Api
             Helper::requireServiceId();
 
             $this->data['serviceId'] = Config::getServiceId();
-        }       
+        }
         return $this->data;
     }
 

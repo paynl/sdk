@@ -2,153 +2,120 @@
 
 namespace Paynl;
 
-use Paynl\Api\Payment as Api;
-use Paynl\Result\Transaction as Result;
+use Paynl\Api;
+use Paynl\Api\Payment\Model;
+use Paynl\Result;
 
-/**
- * @author Michael Roterman <michael@pay.nl>
- */
 class Payment
 {
     /**
-     * Attempt to authorize a encrypted transaction.
-     *
-     * @param string $orderId
-     * @param string $entranceCode
-     * @param string $threeDSTransactionId
-     * @param string $acquirerId
-     * @param string $payload
-     *
-     * @return array|Result\Details
+     * @param Model\Authorize\Transaction $transaction
+     * @param Model\Payment $payment
+     * @return Result\Payment\Authorize
      * @throws Error\Api
      * @throws Error\Error
      * @throws Error\Required\ApiToken
      */
-    public static function paymentAuthorize(
-        $orderId,
-        $entranceCode,
-        $threeDSTransactionId,
-        $acquirerId,
-        $payload
+    public static function authorize(
+        Model\Authorize\Transaction $transaction,
+        Model\Payment $payment
     ) {
-        $api = new Api\PaymentAuthorize();
+        $authorize = new Model\Authorize();
+        $authorize
+            ->setTransaction($transaction)
+            ->setPayment($payment);
 
-        $api->setOrderId($orderId);
-        $api->setEntranceCode($entranceCode);
-        $api->setThreeDSTransactionId($threeDSTransactionId);
-        $api->setAcquirerId($acquirerId);
-        $api->setPayload($payload);
-
-        try {
-            return $api->doRequest();
-        } catch (\Exception $e) {
-            return array(
-                'type' => 'error',
-                'message' => $e->getMessage(),
-                'file' => $e->getFile(),
-                'line' => $e->getLine(),
-                'trace' => $e->getTraceAsString()
-            );
-        }
+        $api = new Api\Payment\Authorize($authorize);
+        return new Result\Payment\Authorize($api->doRequest());
     }
 
     /**
-     * Attempt to authenticate a encrypted transaction.
+     * Attempt to authenticate an encrypted transaction.
      *
-     * @param array $options
-     *
-     * @return array|Result\Details
+     * @param Model\Authenticate\Transaction $transaction
+     * @param Model\Customer $customer
+     * @param Model\CSE $cse
+     * @param Model\Browser $browser
+     * @return Result\Payment\Authenticate
      * @throws Error\Api
      * @throws Error\Error
      * @throws Error\Required\ApiToken
      */
-    public static function paymentAuthenticate(
-        array $options = array()
+    public static function authenticate(
+        Model\Authenticate\Transaction $transaction,
+        Model\Customer $customer,
+        Model\CSE $cse,
+        Model\Browser $browser
     ) {
-        $api = new Api\PaymentAuthenticate();
+        $authenticate = new Model\Authenticate();
 
-        if (!empty($options['transactionId'])) {
-            $api->setOrderId($options['transactionId']);
-            $api->setEntranceCode($options['entranceCode']);
-        } else {
-            $api->setAmount(round($options['amount'] * 100));
-            $api->setCurrency($options['currency']);
-            $api->setFinishUrl($options['returnUrl']);
-            $api->setDescription($options['description']);
-        }
+        $payment = new Model\Payment();
+        $payment
+            ->setMethod(Model\Payment::METHOD_CSE)
+            ->setCse($cse)
+            ->setBrowser($browser);
 
-        if (!empty($options['identifier'])) {
-            $api->setKeyIdentifier($options['identifier']);
-        }
+        $authenticate
+            ->setTransaction($transaction)
+            ->setOptions(array())
+            ->setCustomer($customer)
+            ->setOrder(array())
+            ->setStats(array())
+            ->setPayment($payment);
 
-        if (!empty($options['data'])) {
-            $api->setCardData($options['data']);
-        }
-
-        if (!empty($options['threeDSTransactionId'])) {
-            $api->setThreeDSTransactionId($options['threeDSTransactionId']);
-        }
-
-        if (!empty($options['acquirer_id'])) {
-            $api->setAcquirerId($options['acquirer_id']);
-        }
-
-        try {
-            return $api->doRequest();
-        } catch (\Exception $e) {
-            return array(
-                'type' => 'error',
-                'message' => $e->getMessage(),
-                'file' => $e->getFile(),
-                'line' => $e->getLine(),
-                'trace' => $e->getTraceAsString()
-            );
-        }
+        $api = new Api\Payment\Authenticate($authenticate);
+        return new Result\Payment\Authenticate($api->doRequest());
     }
 
+    /**
+     * @param Model\AbstractTransaction $transaction
+     * @param Model\Payment $payment
+     * @return Result\Payment\AuthenticateMethod
+     * @throws Error\Api
+     * @throws Error\Error
+     * @throws Error\Required\ApiToken
+     */
+    public static function authenticateMethod(
+        Model\AbstractTransaction $transaction,
+        Model\Payment $payment
+    ) {
+        $authenticateMethod = new Model\AuthenticateMethod();
+        $authenticateMethod
+            ->setTransaction($transaction)
+            ->setPayment($payment);
+
+        $api = new Api\Payment\AuthenticateMethod($authenticateMethod);
+        return new Result\Payment\AuthenticateMethod($api->doRequest());
+    }
 
     /**
      * Get the authentication status of a payment.
      *
      * @param string $transactionId
      *
-     * @return array|Result\Details
+     * @return Result\Payment\AuthenticationStatus
      * @throws Error\Api
      * @throws Error\Error
      * @throws Error\Required\ApiToken
      */
-    public static function paymentAuthenticationStatus(
+    public static function authenticationStatus(
         $transactionId
     ) {
-        $api = new Api\PaymentAuthenticationStatus();
-        $api->setTransactionId($transactionId);
-
-        try {
-            return $api->doRequest();
-        } catch (\Exception $e) {
-            return array(
-                'type' => 'error',
-                'message' => $e->getMessage(),
-                'file' => $e->getFile(),
-                'line' => $e->getLine(),
-                'trace' => $e->getTraceAsString()
-            );
-        }
+        $api = new Api\Payment\AuthenticationStatus($transactionId);
+        return new Result\Payment\AuthenticationStatus($api->doRequest());
     }
-
 
     /**
      * Obtain cryptographic keys to use.
      *
-     * @return array
+     * @return Result\Payment\EncryptionKeys
      * @throws Error\Api
      * @throws Error\Error
      * @throws Error\Required\ApiToken
      */
     public static function paymentEncryptionKeys()
     {
-        $api = new Api\PaymentEncryptionKeys();
-
-        return $api->doRequest();
+        $api = new Api\Payment\EncryptionKeys();
+        return new Result\Payment\EncryptionKeys($api->doRequest());
     }
 }

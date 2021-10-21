@@ -5,6 +5,7 @@ namespace Paynl\Api;
 use Curl\Curl;
 use Paynl\Config;
 use Paynl\Error;
+use Paynl\Helper;
 
 /**
  * @author Michael Roterman <michael@pay.nl>
@@ -76,5 +77,31 @@ class PaymentApi extends Api
         }
         
         return $this->processResult($result);
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    protected function processResult($result)
+    {
+        $output = Helper::objectToArray($result);
+
+        if (! is_array($output)) {
+            throw new Error\Api($output);
+        }
+
+        if (isset($output['result'])) {
+            return $output;
+        }
+
+        if (
+            isset($output['request']) &&
+            $output['request']['result'] != 1 &&
+            $output['request']['result'] !== 'TRUE') {
+            throw new Error\Api($output['request']['errorMessage']);
+        }
+
+        return $output;
     }
 }

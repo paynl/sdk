@@ -1,15 +1,21 @@
 <?php
-namespace Paynl\Api\Creditcard;
+namespace Paynl\Api\Payment;
 
-use Paynl\Api\Api;
+use Paynl\Api\PaymentApi;
 
 /**
  * Api class to obtain public keys for encryption.
  */
-class PublicKeys extends Api
+class EncryptionKeys extends PaymentApi
 {
+    /**
+     * @inheritdoc
+     */
     protected $apiTokenRequired = false;
 
+    /**
+     * @inheritdoc
+     */
     protected $version = 2;
 
     /**
@@ -17,6 +23,6 @@ class PublicKeys extends Api
      */
     public function doRequest($endpoint = null, $version = null)
     {
-        return parent::doRequest('creditcard/cseGetPublicKeys');
+        return parent::doRequest('Payment/getEncryptionKeys');
     }
 }

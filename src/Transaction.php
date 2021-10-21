@@ -327,17 +327,14 @@ class Transaction
         $entranceCode = null
     )
     {
-
         $api = new Api\Details();
-
         $api->setTransactionId($transactionId);
 
         if ($entranceCode !== null) {
             $api->setEntranceCode($entranceCode);
         }
-        $result = $api->doRequest();
 
-        return new Result\Details($result);
+        return new Result\Details($api->doRequest());
     }
 
     /**

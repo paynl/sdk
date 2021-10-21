@@ -90,7 +90,7 @@ class Api
             Helper::requireServiceId();
 
             $this->data['serviceId'] = Config::getServiceId();
-        }       
+        }
         return $this->data;
     }
 
@@ -98,7 +98,7 @@ class Api
      * @return array|null
      * @throws Error\Required\ApiToken
      */
-    private function getAuth()
+    protected function getAuth()
     {
         if (!$this->isApiTokenRequired()) {
             return null;

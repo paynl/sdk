@@ -16,7 +16,7 @@ class EncryptionKeys extends PaymentApi
     /**
      * @inheritdoc
      */
-    protected $version = 2;
+    protected $version = 1;
 
     /**
      * @inheritdoc

@@ -19,6 +19,9 @@ class AuthenticateMethod extends Authorize
                         array(85, 95, 100)
                     )) {
                     $result['result'] = 1;
+                    $result['nextAction'] = !empty($arrResult['transaction']['stateName']) ? strtolower($arrResult['transaction']['stateName']) : '';
+                    $result['orderId'] = !empty($arrResult['transaction']['orderId']) ? $arrResult['transaction']['orderId'] : "";
+                    $result['entranceCode'] = !empty($arrResult['transaction']['entranceCode']) ? $arrResult['transaction']['entranceCode'] : "";
                 }
             }
         }

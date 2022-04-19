@@ -33,6 +33,10 @@ class Refund extends Transaction
      */
     private $processDate;
     /**
+     * @var array|null Array of products which should be refunded
+     */
+    private ?array $products = null;
+    /**
      * @var int (optional) The vat percentage this refund applies to (AfterPay/Focum only)
      */
     private $vatPercentage;
@@ -89,6 +93,11 @@ class Refund extends Transaction
         $this->processDate = $processDate;
     }
 
+    public function setProducts(?array $products)
+    {
+        $this->products = $products;
+    }
+
     /**
      * @inheritdoc
      * @throws Error\Required TransactionId is required
@@ -115,6 +124,9 @@ class Refund extends Transaction
         }
         if (!empty($this->currency)) {
             $this->data['currency'] = $this->currency;
+        }
+        if (!is_null($this->products)) {
+            $this->data['products'] = $this->products;
         }
 
         return parent::getData();

@@ -389,7 +389,8 @@ class Transaction
         $description = null,
         \DateTime $processDate = null,
         $vatPercentage = null,
-        $currency = null
+        $currency = null,
+        ?array $products = null
     )
     {
         $api = new Api\Refund();
@@ -410,6 +411,10 @@ class Transaction
         if ($currency !== null) {
             $api->setCurrency($currency);
         }
+        if ($products !== null) {
+            $api->setProducts($products);
+        }
+
         $result = $api->doRequest();
 
         return new Result\Refund($result);

@@ -75,6 +75,10 @@ class Refund
             $api->setProcessDate($options['processDate']);
         }
 
+        if (isset($options['products'])) {
+            $api->setProducts($options['processDate']);
+        }
+
         $result = $api->doRequest();
 
         return new Result\Add($result);

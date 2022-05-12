@@ -2,7 +2,7 @@
 require_once '../../vendor/autoload.php';
 require_once '../config.php';
 
-$transactionId = '926417524Xe71be3';
+$transactionId = '1234567890X12345';
 
 /** @var \Paynl\Result\Transaction\Transaction $transaction */
 

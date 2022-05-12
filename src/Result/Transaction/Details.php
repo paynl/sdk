@@ -121,7 +121,7 @@ class Details extends Result
      */
     public function getAmount()
     {            
-        return (isset($this->data['paymentDetails']['amount'])) ? $this->data['paymentDetails']['amount'] : '';       
+        return (isset($this->data['paymentDetails']['amount'])) ? $this->data['paymentDetails']['amount'] : array();
     }   
 
      /**
@@ -218,7 +218,7 @@ class Details extends Result
      */
     public function getAmountRefundOriginal()
     {            
-        return (isset($this->data['paymentDetails']['amountRefundOriginal'])) ? $this->data['paymentDetails']['amountRefundOriginal'] : '';       
+        return (isset($this->data['paymentDetails']['amountRefundOriginal'])) ? $this->data['paymentDetails']['amountRefundOriginal'] : array();       
     }  
 
      /**
@@ -242,7 +242,7 @@ class Details extends Result
      */
     public function getAmountRefund()
     {            
-        return (isset($this->data['paymentDetails']['amountRefund'])) ? $this->data['paymentDetails']['amountRefund'] : '';       
+        return (isset($this->data['paymentDetails']['amountRefund'])) ? $this->data['paymentDetails']['amountRefund'] : array();
     }  
 
      /**

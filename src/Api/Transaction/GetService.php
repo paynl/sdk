@@ -14,8 +14,7 @@ class GetService extends Transaction
 {
     protected $apiTokenRequired = true;
     protected $serviceIdRequired = true;
-    protected $version = 16;
-
+    
     /**
      * @var int The ID of the payment method. Only the payment options linked to the provided payment method ID will be returned if an ID is provided. If omitted, all available payment options are returned. Use the following IDs to filter the options:.
      */

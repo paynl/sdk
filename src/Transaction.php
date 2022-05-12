@@ -269,7 +269,7 @@ class Transaction
      */
     public static function getForReturn()
     {
-        return self::get($_GET['orderId']);
+        return self::get(isset($_GET['orderId']) ? $_GET['orderId'] : null);
     }
 
     /**
@@ -322,10 +322,7 @@ class Transaction
      * @throws Error\Error
      * @throws Error\Required\ApiToken
      */
-    public static function details(
-        $transactionId,
-        $entranceCode = null
-    )
+    public static function details($transactionId, $entranceCode = null)
     {
         $api = new Api\Details();
         $api->setTransactionId($transactionId);
@@ -341,9 +338,11 @@ class Transaction
      * Get the transaction in an exchange script.
      * This will work for all kinds of exchange calls (GET, POST AND POST_XML)
      *
-     * @return Result\Transaction
+     * @return false|Result\Transaction
      * @throws Error\Api
      * @throws Error\Error
+     * @throws Error\Required\ApiToken
+     * @throws Error\Required\ServiceId
      */
     public static function getForExchange()
     {
@@ -359,11 +358,22 @@ class Transaction
             return self::get(json_decode(file_get_contents('php://input'), true)['order_id']);
         }
 
-        // maybe its xml
+        # Maybe its xml
         $input = file_get_contents('php://input');
-        $xml = simplexml_load_string($input);
+        if (!empty($input)) {
+            $xmlResult = false;
+            try {
+                $xml = simplexml_load_string($input, 'SimpleXMLElement', LIBXML_NOWARNING | LIBXML_NOERROR);
+                $foundOrderId = trim(empty($xml->order_id) ? '' : $xml->order_id);
+                if (!empty($foundOrderId)) {
+                    $xmlResult = self::get($foundOrderId);
+                }
+            } catch (\Exception $e) {
+            }
+            return $xmlResult;
+        }
 
-        return self::get($xml->order_id);
+        return false;
     }
 
     /**
@@ -426,10 +436,7 @@ class Transaction
      * @throws Error\Error
      * @throws Error\Required\ApiToken
      */
-    public static function cancel(
-        $transactionId,
-        $entranceCode = null
-    )
+    public static function cancel($transactionId, $entranceCode = null)
     {
         $api = new Api\Cancel();
         $api->setTransactionId($transactionId);

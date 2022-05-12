@@ -11,5 +11,20 @@ use Paynl\Result\Result;
  */
 class Cancel extends Result
 {
-    
+
+    /**
+     * @return mixed|string
+     */
+    public function getStatusAction()
+    {
+        return (isset($this->data['transaction']['statusAction'])) ? $this->data['transaction']['statusAction'] : '';
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSucceeded()
+    {
+        return $this->getStatusAction() === 'CANCEL';
+    }
 }

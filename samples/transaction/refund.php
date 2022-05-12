@@ -21,26 +21,8 @@ require_once '../config.php';
 
 $transactionId = $_GET['transactionId'];
 try {
-    /*$example = \Paynl\Transaction::refund(
-        TRANSACTION ID(string) - Required, 
-        AMOUNT(float) - Empty = full refund, 
-        DESCRIPTION(string), 
-        DATE REFUND WILL BE PROCESSED(DateTime), 
-        VAT PERCENTAGE(float), 
-        CURRENCY(string) - Default EURO
-    );*/
-    
-    $result = \Paynl\Transaction::refund($transactionId, 0.01, 'description', new DateTime(18-03-2020), 0, 'USD');
-    
-    /*
-    * Getters
-    * description = $result->getDescription();
-    * orderId = $result->getOrderId();
-    * amount = $result->getAmount();
-    * refundAmount = $result->getRefundAmount();
-    * bankaccountNumber = $result->getBankaccountNumber();
-    * refundId = $result->getRefundId();
-    */
+
+    $result = \Paynl\Transaction::refund($transactionId);
 
 } catch (\Paynl\Error\Error $e) {
     echo $e->getMessage();

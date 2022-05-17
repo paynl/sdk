@@ -4,6 +4,7 @@ namespace Paynl\Api\DirectDebit;
 
 use Paynl\Error\Required;
 use Paynl\Config;
+
 class Delete extends DirectDebit
 {
 
@@ -32,11 +33,10 @@ class Delete extends DirectDebit
             throw new Required('mandateId');
         }
 
-        $this->data['token'] = Config::getTokenCode();  
-        $this->data['serviceId'] = Config::getServiceId();        
-
+        $this->data['token'] = Config::getTokenCode();
+        $this->data['serviceId'] = Config::getServiceId();
         $this->data['mandateId'] = $this->_mandateId;
-        
+
         return parent::getData();
     }
 
@@ -44,7 +44,7 @@ class Delete extends DirectDebit
      * @inheritdoc
      */
     public function doRequest($endpoint = null, $version = null)
-    {        
+    {
         return parent::doRequest('DirectDebit/delete');
     }
 }

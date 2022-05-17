@@ -61,7 +61,7 @@ class Product extends Model
     }
 
     /**
-     * @param $invoiceDate
+     * @param $description
      * @return $this
      */
     public function setDescription($description)
@@ -79,7 +79,7 @@ class Product extends Model
     }
 
     /**
-     * @param $products
+     * @param $type
      * @return $this
      */
     public function setType($type)
@@ -97,7 +97,7 @@ class Product extends Model
     }
 
     /**
-     * @param $products
+     * @param $amount
      * @return $this
      */
     public function setAmount($amount)
@@ -141,6 +141,5 @@ class Product extends Model
         $this->quantity = $quantity;
         return $this;
     }
-
 
 }

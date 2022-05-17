@@ -12,6 +12,11 @@ class Statistics extends Model
     /**
      * @var string
      */
+    private $extra1;
+
+    /**
+     * @var string
+     */
     private $extra2;
     
     /**
@@ -34,6 +39,24 @@ class Statistics extends Model
     public function setObject($object)
     {
         $this->object = $object;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getExtra1()
+    {
+        return $this->extra1;
+    }
+
+    /**
+     * @param $extra1
+     * @return $this
+     */
+    public function setExtra1($extra1)
+    {
+        $this->extra1 = $extra1;
         return $this;
     }
 

@@ -14,12 +14,16 @@ class GetService extends Transaction
 {
     protected $apiTokenRequired = true;
     protected $serviceIdRequired = true;
-    protected $version = 16;
 
     /**
      * @var int The ID of the payment method. Only the payment options linked to the provided payment method ID will be returned if an ID is provided. If omitted, all available payment options are returned. Use the following IDs to filter the options:.
      */
     private $paymentMethodId;
+
+    /**
+     * @var string languageCode
+     */
+    private $languageCode;
 
     /**
      * @var array cached result
@@ -35,17 +39,29 @@ class GetService extends Transaction
     }
 
     /**
+     * @param string $languageCode
+     */
+    public function setLanguageCode($languageCode)
+    {
+        $this->languageCode = $languageCode;
+    }
+
+    /**
      * @inheritdoc
      * @throws \Paynl\Error\Required\ServiceId serviceId is required
      */
     protected function getData()
     {
-        Helper::requireServiceId();  
+        Helper::requireServiceId();
 
         $this->data['serviceId'] = Config::getServiceId();
 
         if (!empty($this->paymentMethodId)) {
             $this->data['paymentMethodId'] = $this->paymentMethodId;
+        }
+
+        if (!empty($this->languageCode)) {
+            $this->data['language'] = $this->languageCode;
         }
 
         return parent::getData();
@@ -58,8 +74,8 @@ class GetService extends Transaction
     {
         Helper::requireApiToken();
         Helper::requireServiceId();
-        
-        $cacheKey = Config::getTokenCode().'|'.Config::getApiToken() . '|' . Config::getServiceId();
+
+        $cacheKey = Config::getTokenCode() . '|' . Config::getApiToken() . '|' . Config::getServiceId();
         if (isset(self::$cache[$cacheKey])) {
             if (self::$cache[$cacheKey] instanceof \Exception) {
                 throw self::$cache[$cacheKey];
@@ -69,8 +85,8 @@ class GetService extends Transaction
         try {
             $result = parent::doRequest('transaction/getService');
 
-            if(isset($result['service']) && empty($result['service']['basePath'])) {
-              $result['service']['basePath'] = 'https://admin.pay.nl/images';
+            if (isset($result['service']) && empty($result['service']['basePath'])) {
+                $result['service']['basePath'] = 'https://admin.pay.nl/images';
             }
 
             self::$cache[$cacheKey] = $result;
@@ -79,6 +95,6 @@ class GetService extends Transaction
             throw $e;
         }
 
-      return $result;
+        return $result;
     }
 }

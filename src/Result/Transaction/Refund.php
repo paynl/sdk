@@ -18,18 +18,18 @@ class Refund extends Result
     public function getDescription()
     {            
         return (isset($this->data['description'])) ? $this->data['description'] : '';       
-    }   
+    }
 
     /**
-     * @return string The Refund
+     * @return array The refund array, fields: orderId, amount and refundAmount
      */
     public function getRefundedTransaction()
-    {        
-        $refundedTransaction = array();          
-        if(isset($this->data['refundedTransactions'])){
+    {
+        $refundedTransaction = array();
+        if (isset($this->data['refundedTransactions'])) {
             $refundedTransaction = reset($this->data['refundedTransactions']);
-        }    
-        return $refundedTransaction;       
+        }
+        return $refundedTransaction;
     }   
     
     /**
@@ -76,4 +76,13 @@ class Refund extends Result
         $refundedTransaction = $this->getRefundedTransaction();
         return (isset($refundedTransaction['refundId'])) ? $refundedTransaction['refundId'] : '';       
     }
+
+    /**
+     * @return array Returns the failed refund transactions
+     */
+    public function getFailedTransactions()
+    {
+        return isset($this->data['failedTransactions']) ? $this->data['failedTransactions'] : array();
+    }
+
 }

@@ -19,77 +19,68 @@
 require_once '../../vendor/autoload.php';
 require_once '../config.php';
 
-$transactionId = 'EX-1234-5678-9012';
+$transactionId = '1234567890X1234a';
 
 try {
-    /*$example = \Paynl\Transaction::details(
-        TransactionId(string) - Required,
-        entranceCode(string) - Optional
-    );*/
-    
-    $result = \Paynl\Transaction::details($transactionId);  
-  
-    /**
-    * GETTERS
-    *
-    * paymentDetails = getPaymentDetails() @var array
-    * TransactionId = getTransactionId() @var string
-    * OrderId = getOrderId() @var string
-    * OrderNumber = getOrderNumber() @var string
-    * PaymentProfileId = getPaymentProfileId() @var string
-    * PaymentProfileName = getPaymentProfileName() @var string
-    * State = getState() @var string
-    * StateName = getStateName() @var string
-    * Language = getLanguage() @var string
-    * StartDate = getStartDate() @var string
-    * CompleteDate = getCompleteDate() @var string
-    * StartIpAddress = getStartIpAddress() @var string
-    * CompletedIpAddress = getCompletedIpAddress() @var string
-    * Amount = getAmount() @var array
-    * AmountValue = getAmountValue() @var string
-    * AmountCurrency = getAmountCurrency() @var string
-    * AmountOriginal = getAmountOriginal() @var array
-    * AmountOriginalValue = getAmountOriginalValue() @var string
-    * AmountOriginalCurrency = getAmountOriginalCurrency() @var string
-    * AmountPaidOriginal = getAmountPaidOriginal() @var array
-    * AmountPaidOriginalValue = getAmountPaidOriginalValue() @var string
-    * AmountPaidOriginalCurrency = getAmountPaidOriginalCurrency() @var string
-    * AmountPaid = getAmountPaid() @var array
-    * AmountPaidValue = getAmountPaidValue() @var string
-    * AmountPaidCurrency = getAmountPaidCurrency() @var string
-    * AmountRefundOriginal = getAmountRefundOriginal() @var array
-    * AmountRefundOriginalValue = getAmountRefundOriginalValue() @var string
-    * AmountRefundOriginalCurrency = getAmountRefundOriginalCurrency() @var string
-    * AmountRefund = getAmountRefund() @var array
-    * AmountRefundValue = getAmountRefundValue() @var string
-    * AmountRefundCurrency = getAmountRefundCurrency()     @var string
-    * Request = getRequest() @var array
-    * Data = getData() @var array
+    $result = \Paynl\Transaction::details($transactionId);
 
-    * TransactionDetails = getTransactionDetails() @var array
+    echo $paymentDetails = print_r($result->getPaymentDetails()) . PHP_EOL;
+    echo '$TransactionId = ' . $result->getTransactionId() . PHP_EOL;
+    echo '$OrderId = ' . $result->getOrderId() . PHP_EOL;
+    echo '$OrderNumber = ' . $result->getOrderNumber() . PHP_EOL;
+    echo '$PaymentProfileId = ' . $result->getPaymentProfileId() . PHP_EOL;
+    echo '$PaymentProfileName = ' . $result->getPaymentProfileName() . PHP_EOL;
+    echo '$State = ' . $result->getState() . PHP_EOL;
+    echo '$StateName = ' . $result->getStateName() . PHP_EOL;
+    echo '$Language = ' . $result->getLanguage() . PHP_EOL;
+    echo '$StartDate = ' . $result->getStartDate() . PHP_EOL;
+    echo '$CompleteDate = ' . $result->getCompleteDate() . PHP_EOL;
+    echo '$StartIpAddress = ' . $result->getStartIpAddress() . PHP_EOL;
+    echo '$CompletedIpAddress = ' . $result->getCompletedIpAddress() . PHP_EOL;
+    echo '$Amount = ' . print_r($result->getAmount()) . PHP_EOL;
+    echo '$AmountValue = ' . $result->getAmountValue() . PHP_EOL;
+    echo '$AmountCurrency = ' . $result->getAmountCurrency() . PHP_EOL;
+    echo '$AmountOriginal = ' . print_r($result->getAmountOriginal()) . PHP_EOL;
+    echo '$AmountOriginalValue = ' . $result->getAmountOriginalValue() . PHP_EOL;
+    echo '$AmountOriginalCurrency = ' . $result->getAmountOriginalCurrency() . PHP_EOL;
+    echo '$AmountPaidOriginal = ' . print_r($result->getAmountPaidOriginal()) . PHP_EOL;
+    echo '$AmountPaidOriginalValue = ' . $result->getAmountPaidOriginalValue() . PHP_EOL;
+    echo '$AmountPaidOriginalCurrency = ' . $result->getAmountPaidOriginalCurrency() . PHP_EOL;
+    echo '$AmountPaid = ' . print_r($result->getAmountPaid()) . PHP_EOL;
+    echo '$AmountPaidValue = ' . $result->getAmountPaidValue() . PHP_EOL;
+    echo '$AmountPaidCurrency = ' . $result->getAmountPaidCurrency() . PHP_EOL;
+    echo '$AmountRefundOriginal = ' . print_r($result->getAmountRefundOriginal()) . PHP_EOL;
+    echo '$AmountRefundOriginalValue = ' . $result->getAmountRefundOriginalValue() . PHP_EOL;
+    echo '$AmountRefundOriginalCurrency = ' . $result->getAmountRefundOriginalCurrency() . PHP_EOL;
+    echo '$AmountRefund = ' . print_r($result->getAmountRefund()) . PHP_EOL;
+    echo '$AmountRefundValue = ' . $result->getAmountRefundValue() . PHP_EOL;
+    echo '$AmountRefundCurrency = ' . $result->getAmountRefundCurrency() . PHP_EOL;
+    echo '$Request = ' . print_r($result->getRequest()) . PHP_EOL;
+    echo '$Data = ' . print_r($result->getData()) . PHP_EOL;
 
-    * TransactionId = getTransactionDetails()[0]->getTransactionId() @var string
-    * OrderId = getTransactionDetails()[0]->getOrderId() @var string
-    * ReportingId = getTransactionDetails()[0]->getReportingId() @var string
-    * State = getTransactionDetails()[0]->getState() @var string
-    * StateName = getTransactionDetails()[0]->getStateName() @var string
-    * StartDate = getTransactionDetails()[0]->getStartDate() @var string
-    * CompleteDate = getTransactionDetails()[0]->getCompleteDate() @var string
-    * PaymentProfileId = getTransactionDetails()[0]->getPaymentProfileId() @var string
-    * PaymentProfileName = getTransactionDetails()[0]->getPaymentProfileName() @var string
-    * IdentifierName = getTransactionDetails()[0]->getIdentifierName() @var string
-    * IdentifierType = getTransactionDetails()[0]->getIdentifierType() @var string
-    * IdentifierPublic = getTransactionDetails()[0]->getIdentifierPublic() @var string
-    * IdentifierHash = getTransactionDetails()[0]->getIdentifierHash() @var string
-    * Amount = getTransactionDetails()[0]->getAmount() @var array
-    * AmountValue = getTransactionDetails()[0]->getAmountValue() @var string
-    * AmountCurrency = getTransactionDetails()[0]->getAmountCurrency() @var string
-    * Request = getTransactionDetails()[0]->getRequest() @var array
-    * Data = getTransactionDetails()[0]->getData() @var array
-    
-    */
+    $arrTransactionDetails = $result->getTransactionDetails();
+    $transactionDetails = isset($arrTransactionDetails[0]) ? $arrTransactionDetails[0] : false;
+
+    if ($transactionDetails !== false) {
+        echo '$TransactionDetails = ' . print_r($result->getTransactionDetails()) . PHP_EOL;
+        echo '$TransactionId = ' . $transactionDetails->getTransactionId() . PHP_EOL;
+        echo '$OrderId = ' . $transactionDetails->getOrderId() . PHP_EOL;
+        echo '$ReportingId = ' . $transactionDetails->getReportingId() . PHP_EOL;
+        echo '$State = ' . $transactionDetails->getState() . PHP_EOL;
+        echo '$StateName = ' . $transactionDetails->getStateName() . PHP_EOL;
+        echo '$StartDate = ' . $transactionDetails->getStartDate() . PHP_EOL;
+        echo '$CompleteDate = ' . $transactionDetails->getCompleteDate() . PHP_EOL;
+        echo '$PaymentProfileId = ' . $transactionDetails->getPaymentProfileId() . PHP_EOL;
+        echo '$PaymentProfileName = ' . $transactionDetails->getPaymentProfileName() . PHP_EOL;
+        echo '$IdentifierName = ' . $transactionDetails->getIdentifierName() . PHP_EOL;
+        echo '$IdentifierType = ' . $transactionDetails->getIdentifierType() . PHP_EOL;
+        echo '$IdentifierPublic = ' . $transactionDetails->getIdentifierPublic() . PHP_EOL;
+        echo '$IdentifierHash = ' . $transactionDetails->getIdentifierHash() . PHP_EOL;
+        echo '$Amount = ' . print_r($transactionDetails->getAmount()) . PHP_EOL;
+        echo '$AmountValue = ' . $transactionDetails->getAmountValue() . PHP_EOL;
+        echo '$AmountCurrency = ' . $transactionDetails->getAmountCurrency() . PHP_EOL;
+    }
 
 } catch (\Paynl\Error\Error $e) {
     echo $e->getMessage();
 }
-

@@ -23,7 +23,7 @@ $transactionId = $_GET['transactionId'];
 $amount = $_GET['amount'];
 $tracktrace = $_GET['tracktrace'];
 
-$articleId = '1019';
+$articleId = '1';
 $quantityToBeCaptured = '1';
 $products[$articleId] = $quantityToBeCaptured;
 

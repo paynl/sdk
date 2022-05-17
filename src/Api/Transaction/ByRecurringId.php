@@ -8,8 +8,6 @@ use Paynl\Error\Required;
 
 class ByRecurringId extends Transaction
 {
-    protected $version = 13;
-
     protected $serviceIdRequired = true;
     protected $apiTokenRequired = true;
 

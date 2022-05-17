@@ -36,6 +36,8 @@ class Payment
      * @param Model\Customer $customer
      * @param Model\CSE $cse
      * @param Model\Browser $browser
+     * @param Model\Statistics|null $statistics
+     * @param Model\Order|null $order
      * @return Result\Payment\Authenticate
      * @throws Error\Api
      * @throws Error\Error
@@ -45,7 +47,9 @@ class Payment
         Model\Authenticate\Transaction $transaction,
         Model\Customer $customer,
         Model\CSE $cse,
-        Model\Browser $browser
+        Model\Browser $browser,
+        Model\Statistics $statistics = null,
+        Model\Order $order = null
     ) {
         $authenticate = new Model\Authenticate();
 
@@ -59,8 +63,8 @@ class Payment
             ->setTransaction($transaction)
             ->setOptions(array())
             ->setCustomer($customer)
-            ->setOrder(array())
-            ->setStats(array())
+            ->setOrder(empty($order) ? array() : $order)
+            ->setStats(empty($statistics) ? array() : $statistics)
             ->setPayment($payment);
 
         $api = new Api\Payment\Authenticate($authenticate);
@@ -98,9 +102,8 @@ class Payment
      * @throws Error\Error
      * @throws Error\Required\ApiToken
      */
-    public static function authenticationStatus(
-        $transactionId
-    ) {
+    public static function authenticationStatus($transactionId)
+    {
         $api = new Api\Payment\AuthenticationStatus($transactionId);
         return new Result\Payment\AuthenticationStatus($api->doRequest());
     }

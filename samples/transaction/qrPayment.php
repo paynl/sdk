@@ -9,10 +9,10 @@ try {
         'amount' => 0.01,
         'description' => 'QR payment test',
 
-        //optional
+        # Optional
         'currency' => 'EUR',
         'statsData' => array(
-            'promotorId' => '1234ab',
+            'promotorId' => '1234',
             'tool' => 'tool',
             'info' => 'info',
             'extra1' => 'extra1',

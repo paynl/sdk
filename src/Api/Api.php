@@ -144,14 +144,20 @@ class Api
             throw new Error\Api($output);
         }
 
+        $outputResultEmpty = isset($output['result']) && empty($output['result']);
+        $errorIdNotEmpty = !empty($output['errorId']);
+
+        if ($outputResultEmpty && $errorIdNotEmpty) {
+            $message = !empty($output['errorMessage']) ? $output['errorMessage'] : 'Error';
+            $code = !empty($output['errorId']) ? $output['errorId'] : '0';
+            throw new Error\Api($message . ' - ' . $code);
+        }
+
         if (isset($output['result'])) {
             return $output;
         }
 
-        if (
-            isset($output['request']) &&
-            $output['request']['result'] != 1 &&
-            $output['request']['result'] !== 'TRUE') {
+        if (isset($output['request']) && $output['request']['result'] != 1 && $output['request']['result'] !== 'TRUE') {
             throw new Error\Api($output['request']['errorId'] . ' - ' . $output['request']['errorMessage']);
         }
 

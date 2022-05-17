@@ -47,67 +47,104 @@ class Status extends Result
     }
 
     /**
-     * @return string
-     */
-    public function getCurrency()
-    {
-        return $this->data['paymentDetails']['currency'];
-    }
-
-    /**
      * @return float|int The amount in euro
      */
     public function getAmount()
     {
-        return $this->data['paymentDetails']['amount'] / 100;
+        return $this->data['paymentDetails']['amount']['value'] / 100;
     }
 
     /**
-     * @return float|int The amount in the used currency
+     * @return string
      */
-    public function getCurrencyAmount()
+    public function getCurrency()
     {
-        return $this->data['paymentDetails']['currenyAmount'] / 100;
+        return $this->data['paymentDetails']['amount']['currency'];
     }
 
     /**
      * @return float|int The paid amount
      */
-    public function getPaidAmount()
+    public function getAmountOriginal()
     {
-        return $this->data['paymentDetails']['paidAmount'] / 100;
+        return $this->data['paymentDetails']['amountOriginal']['value'] / 100;
     }
 
     /**
-     * @return float|int The paid amount in the used currency
+     * @return float|int The paid amount
      */
-    public function getPaidCurrencyAmount()
+    public function getAmountOriginalCurrency()
     {
-        return $this->data['paymentDetails']['paidCurrenyAmount'] / 100;
+        return $this->data['paymentDetails']['amountOriginal']['currency'];
     }
 
     /**
-     * @return float|int The amount that has been refunded
+     * @return float|int The paid amount
      */
-    public function getRefundedAmount()
+    public function getAmountPaidOriginal()
     {
-        return $this->data['paymentDetails']['refundAmount'] / 100;
+        return $this->data['paymentDetails']['amountPaidOriginal']['value'] / 100;
     }
 
     /**
-     * @return string Currency in which the transaction is actually paid
+     * @return float|int The paid amount
      */
-    public function getPaidCurrency()
+    public function getAmountPaidOriginalCurrency()
     {
-        return $this->data['paymentDetails']['currency'];
+        return $this->data['paymentDetails']['amountPaidOriginal']['currency'];
+    }
+    
+    /**
+     * @return float|int The paid amount
+     */
+    public function getAmountPaid()
+    {
+        return $this->data['paymentDetails']['amountPaid']['value'] / 100;
+    }
+
+    /**
+     * @return float|int The paid amount
+     */
+    public function getAmountPaidCurrency()
+    {
+        return $this->data['paymentDetails']['amountPaid']['currency'];
+    }
+
+
+
+
+    /**
+     * @return float|int The amount that has been refunded in the used currency
+     */
+    public function getAmountRefundOriginal()
+    {
+        return $this->data['paymentDetails']['amountRefundOriginal']['value'] / 100;
     }
 
     /**
      * @return float|int The amount that has been refunded in the used currency
      */
-    public function getRefundedCurrencyAmount()
+    public function getAmountRefundOriginalCurrency()
     {
-        return $this->data['paymentDetails']['refundCurrenyAmount'] / 100;
+        return $this->data['paymentDetails']['amountRefundOriginal']['currency'];
+    }
+
+
+
+    /**
+     * @return float|int The amount that has been refunded in the used currency
+     */
+    public function getAmountRefund()
+    {
+        return $this->data['paymentDetails']['amountRefund']['value'] / 100;
+    }
+
+    /**
+     * @return float|int The amount that has been refunded in the used currency
+     */
+    public function getAmountRefundCurrency()
+    {
+        return $this->data['paymentDetails']['amountRefund']['currency'];
     }
 
     /**

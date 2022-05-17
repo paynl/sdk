@@ -11,7 +11,6 @@ use Paynl\Error;
  */
 class ConfirmExternalPayment extends Transaction
 {
-    protected $version = 12;
     protected $apiTokenRequired = true;
 
     /**

@@ -4,25 +4,27 @@
 require_once '../../vendor/autoload.php';
 require_once '../config.php';
 
+const METHOD_IDEAL = 10;
+
 try {
-    $result = \Paynl\Transaction::start(array(
-        // Required
-        'amount' => 12.5,
-        'returnUrl' => dirname(\Paynl\Helper::getBaseUrl()) . '/return.php',
-        'ipaddress' => \Paynl\Helper::getIp(),
+    # Reuired
+    $startData['amount'] = 12.5;
+    $startData['returnUrl'] = dirname(\Paynl\Helper::getBaseUrl()) . '/finish.php';
+    $startData['ipaddress'] = \Paynl\Helper::getIp();
 
-        // Optional
-        'exchangeUrl' => dirname(\Paynl\Helper::getBaseUrl()) . '/exchange.php',
-        'paymentMethod' => 10,// iDEAL use \Paynl\PaymentMethods::getList() to get all available paymentmethods
-        'description' => '123456', // the transaction description, usually the orderId
-    ));
+    # Optional
+    $startData['exchangeUrl'] = dirname(\Paynl\Helper::getBaseUrl()) . '/exchange.php';
+    $startData['paymentMethod'] = METHOD_IDEAL;
+    $startData['description'] = 'Order ' . 123456;
 
-    // Save this transactionId and link it to your order
-    $transactionId = $result->getTransactionId();
+    $payResult = \Paynl\Transaction::start($startData);
 
-    // redirect user to payment page
-    header('location: '.$result->getRedirectUrl());
+    # Save this transactionId and link it to your order
+    $transactionId = $payResult->getTransactionId();
+
+    # Redirect user to payment page
+    header('location: ' . $payResult->getRedirectUrl());
 } catch (\Paynl\Error\Error $e) {
-    // An error has occurred
-    echo "Fout: " . $e->getMessage();
+    # An error occurred
+    echo "Exception: " . $e->getMessage();
 }

@@ -105,7 +105,6 @@ class Start extends Transaction
      * @var string the ipaddress of the enduser, used for fraud detecion
      */
     private $_ipaddress;
-
     /**
      * @var \DateTime
      */
@@ -114,12 +113,10 @@ class Start extends Transaction
      * @var \DateTime
      */
     private $_deliveryDate;
-
     /**
      * @var array the products for the order
      */
     private $_products = array();
-
     /**
      * @var \DateTime
      */

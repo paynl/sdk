@@ -20,27 +20,11 @@ require_once '../../vendor/autoload.php';
 require_once '../config.php';
 
 try {
-    /*$example = \Paynl\Transaction::status(
-        TRANSACTION ID(string) - Required
-    );*/
-    
+    $transactionId = '1234567890X1234';
+
     $result = \Paynl\Transaction::status($transactionId);
-    
-    /*
-    * Getters
-    * transactionId = $result->getTransactionId();
-    * orderId = $result->getOrderId();
-    * paymentProfileId = $result->getPaymentProfileId();
-    * state = $result->getState();
-    * stateName = $result->getStateName();
-    * currency = $result->getCurrency();
-    * amount = $result->getAmount();
-    * currencyAmount = $result->getCurrencyAmount();
-    * paidAmount = $result->getPaidAmount();
-    * paidCurrencyAmount = $result->getPaidCurrencyAmount();
-    * refundedAmount = $result->getRefundedAmount();
-    * refundedCurrencyAmount = $result->getRefundedCurrencyAmount();
-    */
+
+    echo $result->getState();
 
 } catch (\Paynl\Error\Error $e) {
     echo $e->getMessage();

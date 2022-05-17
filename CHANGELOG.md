@@ -1,4 +1,4 @@
-[PAY.](https://www.pay.nl/uploads/1/brands/main_logo.png)
+![PAY.](https://www.pay.nl/uploads/1/brands/main_logo.png)
 
 # Changelog #
 ## Changes in release 2.0.0 ##

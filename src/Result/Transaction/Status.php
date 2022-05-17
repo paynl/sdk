@@ -110,9 +110,6 @@ class Status extends Result
         return $this->data['paymentDetails']['amountPaid']['currency'];
     }
 
-
-
-
     /**
      * @return float|int The amount that has been refunded in the used currency
      */
@@ -128,8 +125,6 @@ class Status extends Result
     {
         return $this->data['paymentDetails']['amountRefundOriginal']['currency'];
     }
-
-
 
     /**
      * @return float|int The amount that has been refunded in the used currency

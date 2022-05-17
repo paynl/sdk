@@ -3,4 +3,7 @@
 # Changelog #
 ## Changes in release 2.0.0 ##
 + Updated Transaction class to use API version 18
++ Updated Transaction result class for using version 18  
 + Updated Instore class to use API version 4 
++ Updated samples
++ Added payment model classes

@@ -10,15 +10,15 @@
     - getPaidCurrency()
 
 * Added methods in Result\Transaction:
-    - getAmountOriginal() (previously getCurrencyAmount())
-    - getAmountOriginalCurrency
-    - getAmountPaidOriginal ( previously getPaidCurrencyAmount() )
-    - getAmountPaidOriginalCurrency
-    - getAmountPaid (previously getPaidAmount())
-    - getAmountPaidCurrency (previously getPaidCurrency())
+    - getAmountOriginal() (Previously getCurrencyAmount())
+    - getAmountOriginalCurrency()
+    - getAmountPaidOriginal() (Previously getPaidCurrencyAmount() )
+    - getAmountPaidOriginalCurrency()
+    - getAmountPaid() (Previously getPaidAmount())
+    - getAmountPaidCurrency() (Previously getPaidCurrency())
 
 ### Additional changes
-* Now returning field refund in the result of Instore::getAllTerminals() 
+* Now returning field `refund` in the result of Instore::getAllTerminals() 
 * Updated Transaction class to use API version 18
 * Updated Transaction result class for using version 18
 * Updated Instore class to use API version 4

@@ -27,7 +27,7 @@ class Refund extends Result
     {
         $refundedTransaction = array();
         if (isset($this->data['refundedTransactions'])) {
-            $refundedTransaction = reset($this->data['refundedTransactions']);
+            $refundedTransaction = $this->data['refundedTransactions'];
         }
         return $refundedTransaction;
     }   

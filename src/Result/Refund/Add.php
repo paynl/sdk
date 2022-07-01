@@ -16,6 +16,6 @@ class Add extends Result
      */
     public function getRefundId()
     {
-        return $this->data['refundId'];
+        return (isset($this->data['refundedTransactions']) && isset($this->data['refundedTransactions']['refundId'])) ? $this->data['refundedTransactions']['refundId'] : '';
     }
 }

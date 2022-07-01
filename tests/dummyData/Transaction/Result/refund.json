@@ -1,6 +1,25 @@
 {
   "request": {
-    "result": "1"
+    "result": "1",
+    "errorId": "",
+    "errorMessage": ""
   },
-  "refundId": "RF-1234-1234"
+  "refundedTransactions": {
+    "orderId": "1098491152XcXXXXX",
+    "amount": "100",
+    "amountRefunded": "100",
+    "voucherNumber": "",
+    "bankaccountNumber": "",
+    "refundId": "RF-1234-5678-9100"
+  },
+  "failedTransactions": {
+    "orderId": "",
+    "amount": "",
+    "refundAmount": "",
+    "voucherNumber": "",
+    "bankaccountNumber": "",
+    "reason": ""
+  },
+  "amountRefunded": "100",
+  "description": "refunded €1,00 succesfully"
 }

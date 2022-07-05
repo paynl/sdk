@@ -42,7 +42,7 @@ class Paymentmethods
                           'id' => $optionSub['id'],
                           'name' => $optionSub['name'],
                           'visibleName' => $optionSub['visibleName'],
-                          'image' =>  $image,
+                          'image' => $image,
                         );
                     }
                 }

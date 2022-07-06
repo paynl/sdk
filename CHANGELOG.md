@@ -1,6 +1,9 @@
 ![PAY.](https://www.pay.nl/uploads/1/brands/main_logo.png)
 
 # PHP SDK  Changelog #
+## Release 2.0.1
+* Updated samples
+
 ## Release 2.0.0
 ### Breaking changes
 * Removed methods in Result\Transaction:

@@ -2,7 +2,7 @@
 
 # PHP SDK  Changelog #
 ## Release 2.0.1
-* Updated samples
+* Updated test data
 
 ## Release 2.0.0
 ### Breaking changes

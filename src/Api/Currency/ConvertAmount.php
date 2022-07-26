@@ -10,16 +10,25 @@ class ConvertAmount extends Currency
     private $_targetCurrencyId = null;
     private $_amount = null;
 
+    /**
+     * @param $amount
+     */
     public function setAmount($amount)
     {
         $this->_amount = $amount;
     }
 
+    /**
+     * @param $targetCurrencyId
+     */
     public function setTargetCurrencyId($targetCurrencyId)
     {
         $this->_targetCurrencyId = $targetCurrencyId;
     }
 
+    /**
+     * @param $sourceCurrencyId
+     */
     public function setSourceCurrencyId($sourceCurrencyId)
     {
         $this->_sourceCurrencyId = $sourceCurrencyId;
@@ -27,10 +36,6 @@ class ConvertAmount extends Currency
 
     public function getData()
     {
-        //if (empty($this->_mandateId)) {
-//            throw new Required('mandateId');
-//        }
-
         $this->data['sourceCurrencyId'] = $this->_sourceCurrencyId;
         $this->data['targetCurrencyId'] = $this->_targetCurrencyId;
         $this->data['amount'] = $this->_amount;

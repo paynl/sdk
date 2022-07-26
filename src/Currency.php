@@ -45,7 +45,7 @@ class Currency
     /**
      * @param $amount Amount to convert
      * @param $targetCurrencyId Currency to convert to
-     * @param int $sourceCurrencyId Currency to convert from
+     * @param int $sourceCurrencyId Currency to convert from (default is EUR (1))
      * @return false|mixed Returns amount in cents of target currency or false on failure.
      */
     public static function convertAmount($amount, $targetCurrencyId, $sourceCurrencyId = 1)

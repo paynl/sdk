@@ -4,7 +4,7 @@ namespace Paynl\Api\DirectDebit;
 
 use Paynl\Error\Required;
 
-class DebitGet extends DirectDebit
+class Info extends DirectDebit
 {
     protected $apiTokenRequired = true;
 
@@ -41,6 +41,6 @@ class DebitGet extends DirectDebit
      */
     public function doRequest($endpoint = null, $version = null)
     {
-        return parent::doRequest('DirectDebit/debitGet');
+        return parent::doRequest('DirectDebit/info');
     }
 }

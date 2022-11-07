@@ -85,7 +85,7 @@ class DirectDebit
 
     public static function get($mandateId)
     {
-        $api = new Api\DebitGet();
+        $api = new Api\Info();
         $api->setMandateId($mandateId);
 
         $result = $api->doRequest();

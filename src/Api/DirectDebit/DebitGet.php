@@ -4,7 +4,7 @@ namespace Paynl\Api\DirectDebit;
 
 use Paynl\Error\Required;
 
-class Info extends DirectDebit
+class DebitGet extends DirectDebit
 {
     protected $apiTokenRequired = true;
 
@@ -14,24 +14,11 @@ class Info extends DirectDebit
     private $_mandateId;
 
     /**
-     * @var string The reference id (IL-xxxx-xxxx-xxxx)
-     */
-    private $_referenceId;
-
-    /**
      * @param string $mandateId The mandate id (IO-xxxx-xxxx-xxxx)
      */
     public function setMandateId($mandateId)
     {
         $this->_mandateId = $mandateId;
-    }
-
-    /**
-     * @param string $referenceId The reference id (IL-xxxx-xxxx-xxxx)
-     */
-    public function setReferenceId($referenceId)
-    {
-        $this->_referenceId = $referenceId;
     }
 
     /**
@@ -45,9 +32,6 @@ class Info extends DirectDebit
         }
 
         $this->data['mandateId'] = $this->_mandateId;
-        if (!empty($this->_referenceId)) {
-            $this->data['referenceId'] = $this->_referenceId;
-        }
 
         return parent::getData();
     }
@@ -57,6 +41,6 @@ class Info extends DirectDebit
      */
     public function doRequest($endpoint = null, $version = null)
     {
-        return parent::doRequest('DirectDebit/info');
+        return parent::doRequest('DirectDebit/debitGet');
     }
 }

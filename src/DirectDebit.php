@@ -92,6 +92,16 @@ class DirectDebit
         return new Result\Get($result);
     }
 
+    public static function info($mandateId, $referenceId = null)
+    {
+        $api = new Api\Info();
+        $api->setMandateId($mandateId);
+        $api->setReferenceId($referenceId);
+
+        $result = $api->doRequest();
+        return new Result\Get($result);
+    }
+
     public function delete($mandateId)
     {
         $api = new Api\Delete();

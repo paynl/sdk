@@ -1,6 +1,8 @@
 ![PAY.](https://www.pay.nl/uploads/1/brands/main_logo.png)
 
 # PHP SDK  Changelog #
+## Release 2.1.0
+* Added function DirectDebit::info()
 ## Release 2.0.1
 * Updated test data
 

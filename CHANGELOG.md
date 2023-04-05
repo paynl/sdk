@@ -2,7 +2,7 @@
 
 # PHP SDK  Changelog #
 ## Release 2.1.1
-* Updated for PHP 8.2 compatibility
+* Updated for PHP 8 compatibility
 
 ## Release 2.1.0
 * Added function DirectDebit::info()

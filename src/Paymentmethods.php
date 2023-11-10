@@ -100,6 +100,10 @@ class Paymentmethods
         if (!empty($languageCode)) {
             $api->setLanguageCode($languageCode);
         }
+        $prefix = (string)substr($transactionId, 0, 2);
+
+        # Always use default gateway for getService
+        \Paynl\Config::setApiBase('https://rest-api.nl');
 
         $result = $api->doRequest();
 

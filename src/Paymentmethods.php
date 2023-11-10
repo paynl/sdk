@@ -103,7 +103,7 @@ class Paymentmethods
         }
 
         # Always use default gateway for getService
-        \Paynl\Config::setApiBase('https://rest-api.nl');
+        \Paynl\Config::setApiBase('https://rest-api.pay.nl');
 
         $result = $api->doRequest();
 

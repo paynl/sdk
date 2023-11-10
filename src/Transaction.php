@@ -4,6 +4,7 @@ namespace Paynl;
 
 use Paynl\Api\Transaction as Api;
 use Paynl\Result\Transaction as Result;
+use Paynl\Config;
 
 /**
  * Description of Transaction
@@ -287,8 +288,16 @@ class Transaction
     {
         $api = new Api\Info();
         $api->setTransactionId($transactionId);
-        $result = $api->doRequest();
 
+        $prefix = (string)substr($transactionId, 0, 2);
+
+        if ($prefix == '51') {
+            \Paynl\Config::setApiBase('https://rest.achterelkebetaling.nl');
+        } elseif ($prefix == '52') {
+            \Paynl\Config::setApiBase('https://rest.payments.nl');
+        }
+
+        $result = $api->doRequest();
         $result['transactionId'] = $transactionId;
 
         return new Result\Transaction($result);

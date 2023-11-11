@@ -4,7 +4,6 @@ namespace Paynl;
 
 use Paynl\Api\Transaction as Api;
 use Paynl\Result\Transaction as Result;
-use Paynl\Config;
 
 /**
  * Description of Transaction

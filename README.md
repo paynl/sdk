@@ -187,5 +187,29 @@ echo ($transaction->isPaid() || $transaction->isAuthorized())?'Paid':'Not paid';
 
 ```
 
+### Failover gateway
+In the event of an outage, set the failover gateway like this:
+
+```
+use Paynl\Config;
+use Paynl\Transaction;
+
+require __DIR__ . '/vendor/autoload.php';
+
+Config::setTokenCode('AT-####-####');
+Config::setApiToken('****************************************');
+Config::setServiceId('SL-####-####');
+
+# Setting Failover gateway (for available cores, call Config::getCores())
+Config::setCore( Config::CORE2 );
+
+# Or for SDK versions lower then 1.6.7, use:
+Config::setApiBase('https://rest.achterelkebetaling.nl');
+
+$requiredArguments = []; // See: Start a transaction example
+$result = Transaction::start($requiredArguments);
+```
+
+
 ### Testing
 Please run ```vendor/bin/phpunit --bootstrap vendor/autoload.php  tests/``` to test the application

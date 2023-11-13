@@ -3,6 +3,7 @@
 namespace Paynl;
 
 use Paynl\Api\Transaction as Api;
+use Paynl\Config;
 
 /**
  * Description of Paymentmethods
@@ -100,6 +101,9 @@ class Paymentmethods
         if (!empty($languageCode)) {
             $api->setLanguageCode($languageCode);
         }
+
+        # Always use default gateway for getService
+        \Paynl\Config::setApiBase('https://rest-api.pay.nl');
 
         $result = $api->doRequest();
 

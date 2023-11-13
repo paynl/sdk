@@ -191,19 +191,19 @@ echo ($transaction->isPaid() || $transaction->isAuthorized())?'Paid':'Not paid';
 In the event of an outage, set the failover gateway like this: 
 
 ```
+use Paynl\Config;
+use Paynl\Transaction;
+
 require __DIR__ . '/vendor/autoload.php';
 
-\Paynl\Config::setTokenCode('AT-####-####');
-\Paynl\Config::setApiToken('****************************************');
-\Paynl\Config::setServiceId('SL-####-####');
+Config::setTokenCode('AT-####-####');
+Config::setApiToken('****************************************');
+Config::setServiceId('SL-####-####');
 
-\Paynl\Config::setCore(\Paynl\Config::CORE2);
+# Setting Failover gateway (for available cores, call Config::getCores())
+Config::setCore( Config::CORE2 );
 
-# Setting Failover gateway (for available cores, call \Paynl\Config::getCores() )
-\Paynl\Config::setApiBase( \Paynl\Config::CORE2 );
-
-
-$result = \Paynl\Transaction::start($requiredArguments);
+$result = Transaction::start($requiredArguments);
 ```
 
 

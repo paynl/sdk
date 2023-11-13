@@ -203,6 +203,10 @@ Config::setServiceId('SL-####-####');
 # Setting Failover gateway (for available cores, call Config::getCores())
 Config::setCore( Config::CORE2 );
 
+# Or for lower versions of then 1.6.7, use:
+Config::setApiBase('https://rest.achterelkebetaling.nl');
+
+$requiredArguments = []; // See: Start a transaction example
 $result = Transaction::start($requiredArguments);
 ```
 

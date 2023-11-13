@@ -64,6 +64,17 @@ class Config
      */
     private static $verifyPeer = true;
 
+    /**
+     * @return string[]
+     */
+    public static function getCores()
+    {
+        return [
+          'https://rest-api.pay.nl' => 'Pay.nl (Default)',
+          'https://rest.achterelkebetaling.nl' => 'Achterelkebetaling.nl',
+          'https://rest.payments.nl' => 'Payments.nl',
+        ];
+    }
 
     /**
      * @return string

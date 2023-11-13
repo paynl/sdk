@@ -287,6 +287,15 @@ class Transaction
     {
         $api = new Api\Info();
         $api->setTransactionId($transactionId);
+
+        $prefix = (string)substr($transactionId, 0, 2);
+
+        if ($prefix == '51') {
+            \Paynl\Config::setApiBase('https://rest.achterelkebetaling.nl');
+        } elseif ($prefix == '52') {
+            \Paynl\Config::setApiBase('https://rest.payments.nl');
+        }
+
         $result = $api->doRequest();
 
         $result['transactionId'] = $transactionId;

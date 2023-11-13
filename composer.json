@@ -1,5 +1,6 @@
 {
   "name": "paynl/sdk",
+  "version": "1.6.6",
   "require": {
     "php-curl-class/php-curl-class": "^8.3||^9.0",
     "ext-json": "*",

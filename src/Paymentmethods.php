@@ -93,10 +93,13 @@ class Paymentmethods
     public static function getList(array $options = array())
     {
         $api = new Api\GetService();
+
+        # Always use default gateway for getService
+        \Paynl\Config::setApiBase('https://rest-api.pay.nl');
+
         $result = $api->doRequest();       
        
         $paymentMethods = self::reorderOutput($result);
- 
 
         if (isset($options['country'])) {
             $paymentMethods = self::filterCountry($paymentMethods, $options['country']);

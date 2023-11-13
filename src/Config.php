@@ -14,7 +14,7 @@ class Config
     const CORE1 = 'https://rest-api.pay.nl';
     const CORE1_TEXT = 'Pay.nl (Default)';
     const CORE2 = 'https://rest.achterelkebetaling.nl';
-    const CORE2_TEXT = 'Achterelkebetaling.';
+    const CORE2_TEXT = 'Achterelkebetaling.nl';
     const CORE3 = 'https://rest.payments.nl';
     const CORE3_TEXT = 'Payments.nl';
 

@@ -70,9 +70,9 @@ class Config
     public static function getCores()
     {
         return [
-          'https://rest-api.pay.nl' => __('Pay.nl (Default)'),
-          'https://rest.achterelkebetaling.nl' => __('rest.achterelkebetaling.nl'),
-          'https://rest.payments.nl' => __('rest.payments.nl'),
+          'https://rest-api.pay.nl' => 'Pay.nl (Default)',
+          'https://rest.achterelkebetaling.nl' => 'Achterelkebetaling.nl',
+          'https://rest.payments.nl' => 'Payments.nl',
         ];
     }
 

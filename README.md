@@ -190,7 +190,7 @@ echo ($transaction->isPaid() || $transaction->isAuthorized())?'Paid':'Not paid';
 ### Failover gateway
 In the event of an outage, set the failover gateway like this: 
 
-```
+```php
 use Paynl\Config;
 use Paynl\Transaction;
 

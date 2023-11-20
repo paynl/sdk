@@ -44,7 +44,7 @@ interface CurlInterface
      * Set Opt
      *
      * @access public
-     * @param string $option
+     * @param int $option
      * @param mixed $value
      *
      * @return boolean

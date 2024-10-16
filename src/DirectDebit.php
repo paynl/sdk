@@ -102,7 +102,7 @@ class DirectDebit
         return new Result\Get($result);
     }
 
-    public function delete($mandateId)
+    public static function delete($mandateId)
     {
         $api = new Api\Delete();
         $api->setMandateId($mandateId);
@@ -110,20 +110,14 @@ class DirectDebit
         return $api->doRequest();
     }
 
-    public function update($mandateId, $options)
+    public static function update($mandateId, $options)
     {
-        
-
         if (empty($mandateId)) {
             throw new Required('mandateId');
         }
 
-        
-
         $api = new Api\Update();
         $api->setMandateId($mandateId);
-
-       
 
         if (!empty($options['amount'])) {
             $api->setAmount(round($options['amount'] * 100));
@@ -183,7 +177,7 @@ class DirectDebit
         if (!empty($options['extra3'])) {
             $api->setExtra3($options['extra3']);
         }
-        
+
         return $api->doRequest();
     }
 }

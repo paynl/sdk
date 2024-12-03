@@ -166,7 +166,7 @@ class Helper
 
         $a = preg_split(
             '/(\\s+)(\d+)/',
-            $strAddress,
+            !empty($strAddress) ? $strAddress : '',
             2,
             PREG_SPLIT_DELIM_CAPTURE
         );
@@ -176,7 +176,7 @@ class Helper
         if (empty($strStreetName) || empty($strStreetNumber)) { // American address notation
             $a = preg_split(
                 '/([a-zA-Z]{2,})/',
-                $strAddress,
+                !empty($strAddress) ? $strAddress : '',
                 2,
                 PREG_SPLIT_DELIM_CAPTURE
             );

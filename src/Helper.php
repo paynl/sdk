@@ -60,7 +60,7 @@ class Helper
         }
         $arrIp = explode(',', $the_ip);
 
-        return filter_var(trim(trim($arrIp[0] ?? ''), '[]'), FILTER_VALIDATE_IP);
+        return filter_var(trim(trim(!empty($arrIp[0]) ? $arrIp[0] : ''), '[]'), FILTER_VALIDATE_IP);
     }
 
     /**
@@ -162,27 +162,27 @@ class Helper
      */
     public static function splitAddress($strAddress)
     {
-        $strAddress = trim($strAddress ?? '');
+        $strAddress = trim(!empty($strAddress) ? $strAddress : '');
 
         $a = preg_split(
             '/(\\s+)(\d+)/',
-            $strAddress,
+            !empty($strAddress) ? $strAddress : '',
             2,
             PREG_SPLIT_DELIM_CAPTURE
         );
-        $strStreetName = trim(array_shift($a) ?? '');
-        $strStreetNumber = trim(implode('', $a) ?? '');
+        $strStreetName = trim(!empty($a) ? array_shift($a) : '');
+        $strStreetNumber = trim(!empty($a) ? implode($a) : '');
 
         if (empty($strStreetName) || empty($strStreetNumber)) { // American address notation
             $a = preg_split(
                 '/([a-zA-Z]{2,})/',
-                $strAddress,
+                !empty($strAddress) ? $strAddress : '',
                 2,
                 PREG_SPLIT_DELIM_CAPTURE
             );
 
-            $strStreetNumber = trim(array_shift($a) ?? '');
-            $strStreetName = implode('', $a);
+            $strStreetName = trim(!empty($a) ? array_shift($a) : '');
+            $strStreetNumber = trim(!empty($a) ? implode($a) : '');
         }
 
         return array($strStreetName, substr($strStreetNumber, 0, 45));

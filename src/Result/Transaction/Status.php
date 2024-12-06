@@ -31,7 +31,7 @@ class Status extends Result
     }
 
     /**
-     * @return int the status id
+     * @return mixed the status id
      */
     public function getState()
     {

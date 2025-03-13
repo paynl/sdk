@@ -48,8 +48,8 @@ class Payment
         Model\Customer $customer,
         Model\CSE $cse,
         Model\Browser $browser,
-        Model\Statistics $statistics = null,
-        Model\Order $order = null
+        ?Model\Statistics $statistics = null,
+        ?Model\Order $order = null
     ) {
         $authenticate = new Model\Authenticate();
 

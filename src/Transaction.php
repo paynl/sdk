@@ -401,7 +401,7 @@ class Transaction
      * @throws Error\Required\ApiToken
      * @throws Error\Required\ServiceId
      */
-    public static function refund($transactionId, $amount = null, $description = null, \DateTime $processDate = null, $vatPercentage = null, $currency = null)
+    public static function refund($transactionId, $amount = null, $description = null, ?\DateTime $processDate = null, $vatPercentage = null, $currency = null)
     {
         $api = new Api\Refund();
         $api->setTransactionId($transactionId);

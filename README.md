@@ -39,7 +39,7 @@ You can download the zip on the projects [releases](https://github.com/paynl/sdk
 
 ### Requirements
 
-The PAY. PHP SDK is tested up to PHP version 8.2 and requires the PHP cURL extension.
+The PAY. PHP SDK is tested from PHP version 7.2 up to PHP version 8.2 and requires the PHP cURL extension.
 
 ### Quick start and examples
 

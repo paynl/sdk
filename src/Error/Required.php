@@ -14,7 +14,7 @@ class Required extends Error
      * @param null            $code
      * @param \Exception|null $previous
      */
-    public function __construct($message, $code = null, \Exception $previous = null)
+    public function __construct($message, $code = null, ?\Exception $previous = null)
     {
         $message = "'$message' is required";
         parent::__construct($message, (int)$code, $previous);

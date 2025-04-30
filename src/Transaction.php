@@ -405,6 +405,13 @@ class Transaction
     {
         $api = new Api\Refund();
         $api->setTransactionId($transactionId);
+
+        $prefix = (string)substr($transactionId, 0, 2);
+
+        if ($prefix == '51' || $prefix == '52') {
+            \Paynl\Config::setApiBase('https://rest-api.pay.nl');
+        }
+
         if ($amount !== null) {
             $amount = round($amount * 100);
             $api->setAmount($amount);

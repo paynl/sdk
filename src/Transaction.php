@@ -396,7 +396,7 @@ class Transaction
         $transactionId,
         $amount = null,
         $description = null,
-        \DateTime $processDate = null,
+        ?\DateTime $processDate = null,
         $vatPercentage = null,
         $currency = null
     )

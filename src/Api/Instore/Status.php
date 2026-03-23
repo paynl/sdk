@@ -31,7 +31,7 @@ class Status extends Instore
     protected function getData()
     {
         if (empty($this->hash)) {
-            throw new Error\Required('Hash is niet geset');
+            throw new Error\Required('Hash argument required');
         }
 
         $this->data['hash'] = $this->hash;

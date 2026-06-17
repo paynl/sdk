@@ -1,7 +1,9 @@
 <?php
 
-require_once '../../vendor/autoload.php';
-require_once '../config.php';
+define('PROJECT_ROOT', '');
+
+require_once PROJECT_ROOT . '/vendor/autoload.php';
+require_once PROJECT_ROOT . '/config.php';
 
 try {
     # Required

@@ -81,6 +81,54 @@ class Api
     }
 
     /**
+     * @param $endpoint
+     * @param $version
+     * @param $baseUrl
+     * @return array
+     * @throws Error\Api
+     * @throws Error\Error
+     * @throws Error\Required
+     * @throws Error\Required\ApiToken
+     */
+    public function doRequestWithBaseUrl($endpoint = null, $version = null, $baseUrl = null)
+    {
+        if ($version === null) {
+            $version = $this->version;
+        }
+
+        $auth = $this->getAuth();
+        $data = $this->getData();
+        $uri = Config::getApiUrl($endpoint, (int) $version, $baseUrl);
+
+        /** @var Curl $curl */
+        $curl = Config::getCurl();
+
+        if (Config::getCAInfoLocation()) {
+            // set a custom CAInfo file
+            $curl->setOpt(CURLOPT_CAINFO, Config::getCAInfoLocation());
+        }
+
+        if (!empty($auth)) {
+            $curl->setBasicAuthentication($auth['username'], $auth['password']);
+        }
+
+        $curl->setOpt(CURLOPT_SSL_VERIFYPEER, Config::getVerifyPeer());
+
+        $result = $curl->post($uri, $data);
+
+        if (isset($result->status) && $result->status === 'FALSE') {
+            throw new Error\Api($result->error);
+        }
+
+        if ($curl->error) {
+            throw new Error\Error($curl->errorMessage);
+
+        }
+        return $this->processResult($result);
+    }
+
+
+    /**
      * @return array
      * @throws Error\Required
      */

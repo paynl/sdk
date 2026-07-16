@@ -228,15 +228,18 @@ class Config
     /**
      * @param string $endpoint The endpoint of the API, for example Transaction/Start
      * @param int|null $version
-     *
+     * @param $baseUrl
      * @return string The url to the api
-     */
-    public static function getApiUrl($endpoint, $version = null)
+    */
+    public static function getApiUrl($endpoint, $version = null, $baseUrl = null)
     {
         if ($version === null || self::$forceApiVersion) {
             $version = self::$apiVersion;
-        }        
-        return self::$apiBase . '/v' . $version . '/' . $endpoint . '/json';
+        }
+
+        $base = empty($baseUrl) ? self::$apiBase : $baseUrl;
+
+        return $base . '/v' . $version . '/' . $endpoint . '/json';
     }
 
     /**

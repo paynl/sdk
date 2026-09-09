@@ -48,7 +48,7 @@ class ConfirmExternalPayment extends Result
      */
     public function getSuccess()
     {
-        return (boolean) $this->data['result'];
+        return (bool) $this->data['result'];
     }
 
 	/**

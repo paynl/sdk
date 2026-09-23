@@ -111,7 +111,7 @@ class Config
      */
     public static function setVerifyPeer($verifyPeer)
     {
-        self::$verifyPeer = (boolean)$verifyPeer;
+        self::$verifyPeer = (bool)$verifyPeer;
     }
 
     /**
@@ -119,7 +119,7 @@ class Config
      */
     public static function setIgnoreOnPending($pending)
     {
-        self::$ignoreOnPending = (boolean)$pending;
+        self::$ignoreOnPending = (bool)$pending;
     }
 
     /**
